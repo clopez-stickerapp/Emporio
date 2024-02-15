@@ -1,0 +1,15 @@
+{
+  "name": "commerce-system-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "StickerApp",
+  "license": "ISC",
+  "devDependencies": {
+    "vitest": "^1.2.2"
+  }
+}

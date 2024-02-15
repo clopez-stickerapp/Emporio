@@ -1,1 +1,1 @@
-export type ConditionValue = number | string | boolean | string[] | null //| number[] | boolean[];
+export type ConditionValue = number | string | boolean | string[]

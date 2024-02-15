@@ -1,5 +1,7 @@
+import { Attributes } from "./Attributes";
+
 export interface ConditionTestableInterface {
-	test(data: Map<string, any>): boolean;
+	test(data: Attributes): boolean;
 
 	toArray(): any[];
 

@@ -1,3 +1,4 @@
+import { Attributes } from "./Attributes";
 import { ConditionHelper } from "./ConditionHelper";
 import { ConditionOperators } from "./ConditionOperators";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
@@ -9,9 +10,9 @@ import { ConditionTestFailedException } from "./Exception/ConditionTestFailedExc
 export class Condition implements ConditionTestableInterface {
 	public columnName: string;
 	public operator: string;
-	public conditionValue: ConditionValue;
+	public conditionValue: ConditionValue|null;
 
-	public constructor(columnName: string, operator: string, conditionValue: ConditionValue = null) {
+	public constructor(columnName: string, operator: string, conditionValue: ConditionValue|null = null) {
 		this.columnName = columnName;
 		this.operator = operator;
 		this.conditionValue = conditionValue;
@@ -24,17 +25,17 @@ export class Condition implements ConditionTestableInterface {
 	/**
 	 * @throws ConditionTestFailedException
 	 */
-	test(data: Map<string, any>): boolean {
+	public test(data: Attributes): boolean {
 		let result = false;
 
-		if (!data.has(this.columnName)) {
+		if (data[this.columnName] == undefined) {
 			if (this.operator != ConditionOperators.IS_EMPTY &&
 				this.operator != ConditionOperators.NOT_IN) {
 				throw new ConditionTestDataKeyNotFoundException("Couldn't perform test because test data doesn't contain conditioned key: " + this.columnName);
 			}
 		}
 
-		const columnValue = data.get(this.columnName) ?? null;
+		const columnValue = data[this.columnName] ?? null;
 
 		if (this.operator == ConditionOperators.IS_EMPTY) {
 			return columnValue === null || columnValue === undefined || columnValue === "" || (Array.isArray(columnValue) && columnValue.length === 0);
@@ -44,9 +45,9 @@ export class Condition implements ConditionTestableInterface {
 
 		} else if (this.operator == ConditionOperators.IN || this.operator == ConditionOperators.NOT_IN) {
 			if (Array.isArray(columnValue) && !Array.isArray(this.conditionValue)) {
-				result = this.operator == ConditionOperators.NOT_IN ? !columnValue.includes(this.conditionValue) : columnValue.includes(this.conditionValue);
+				result = this.operator == ConditionOperators.NOT_IN ? !columnValue.includes(this.conditionValue!) : columnValue.includes(this.conditionValue!);
 			} else if (Array.isArray(this.conditionValue) && !Array.isArray(columnValue)) {
-				result = this.operator == ConditionOperators.NOT_IN ? !this.conditionValue.includes(columnValue) : this.conditionValue.includes(columnValue);
+				result = this.operator == ConditionOperators.NOT_IN ? !this.conditionValue.includes(columnValue!.toString()) : this.conditionValue.includes(columnValue!.toString());
 			} else if (Array.isArray(columnValue) && Array.isArray(this.conditionValue)) {
 				const totals = this.conditionValue.length;
 				const diff = this.conditionValue.filter((value) => !columnValue.includes(value));
@@ -63,11 +64,6 @@ export class Condition implements ConditionTestableInterface {
 			} else if (this.operator == ConditionOperators.IN && columnValue === null) {
 				return false;
 			} else {
-				// let diff = null;
-				// if (Array.isArray(columnValue) && Array.isArray(this.conditionValue)) {
-				// 	diff = this.conditionValue.filter((value) => !columnValue.includes(value));
-				// }
-
 				throw new ConditionTestFailedException("Trying to do CONTAINS in a special case that is not yet supported. $this ({$this->columnName} is " + columnValue + ")");
 			}
 		}
@@ -109,21 +105,7 @@ export class Condition implements ConditionTestableInterface {
 		throw new Error("Method not implemented.");
 	}
 
-	// public function toArray(): array {
-	// 	return [
-	// 		"columnName"     => $this -> columnName,
-	// 		"operator"       => $this -> operator,
-	// 		"conditionValue" => $this -> conditionValue
-	// 	];
-	// }
-
 	fromArray(data: any[]): void {
 		throw new Error("Method not implemented.");
 	}
-
-	// public function fromArray(array $data): void {
-	// 	$this -> columnName     = $data['columnName'];
-	// 	$this -> operator       = $data['operator'];
-	// 	$this -> conditionValue = $data['conditionValue'];
-	// }
 }

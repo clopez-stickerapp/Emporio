@@ -1,15 +1,17 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { Condition } from "../src/Helper/Condition/Condition";
 import { ConditionTestDataKeyNotFoundException } from "../src/Helper/Condition/Exception/ConditionTestDataKeyNotFoundException";
+import { Attributes } from "../src/Helper/Condition/Attributes";
 
 let condition: Condition;
-let attributes: Map<string, any>;
+let attributes: Attributes;
 
 beforeEach(() => {	
-	attributes = new Map<string, any>();
-	attributes.set("material", "white");
-	attributes.set("width", 25);
-	attributes.set("feature", ["backpaper", "hangtagging"]);
+	attributes = {
+		material: "white",
+		width: 25,
+		feature: ["backpaper", "hangtagging"]
+	};
 });
 
 describe("Test '==' operator", () => {

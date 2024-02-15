@@ -1,6 +1,5 @@
 import { Attributes } from "./Attributes";
-import { ConditionHelper } from "./ConditionHelper";
-import { ConditionOperators } from "./ConditionOperators";
+import { ConditionOperators, isOperatorAllowed } from "./ConditionOperators";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { ConditionOperatorNotAllowedException } from "./Exception/ConditionOperatorNotAllowedException";
@@ -17,8 +16,8 @@ export class Condition implements ConditionTestableInterface {
 		this.operator = operator;
 		this.conditionValue = conditionValue;
 
-		if (!ConditionHelper.isOperatorAllowed(operator)) {
-			throw new ConditionOperatorNotAllowedException("Operator is not allowed: $operator");
+		if (!isOperatorAllowed(operator)) {
+			throw new ConditionOperatorNotAllowedException("Operator " + operator + " is not allowed.");
 		}
 	}
 
@@ -68,7 +67,7 @@ export class Condition implements ConditionTestableInterface {
 			}
 		}
 		else {
-			if (ConditionHelper.isOperatorAllowed(this.operator)) {
+			if (isOperatorAllowed(this.operator)) {
 				let result: any;
 				const evalString = `return ${JSON.stringify(columnValue)} ${this.operator} ${JSON.stringify(this.conditionValue)};`;
 				try {

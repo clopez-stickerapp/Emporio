@@ -1,7 +1,7 @@
 import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 import { ProductAttrValueInvalidException } from '../../Exception/ProductAttrValueInvalidException'
-import { Util } from '../../../../../Util'
+import { isEmpty } from '../../../../../Util'
 
 export class ProductAttr {
 	protected valueType: ProductAttrValueType;
@@ -34,12 +34,11 @@ export class ProductAttr {
 	}
 
 	public getAttrValue( value: boolean | number | string ): ProductAttrValue | null {
-		value = typeof value === "boolean" ? value.toString() : value;
 		return this.values.find( attrValue => attrValue.getValue() === value ) ?? null;
 	}
 
 	public canBe( value: any, skipMultiValue: boolean = false ): boolean {
-		if ( Util.isEmpty( value ) ) {
+		if ( isEmpty( value ) ) {
 			return false;
 		}
 

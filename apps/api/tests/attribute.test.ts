@@ -2,13 +2,14 @@ import { describe, expect, test } from 'vitest'
 import { ProductAttr } from '../src/Commerce/Core/Product/Attribute/ProductAttr';
 import { ProductAttrValueType } from '../src/Commerce/Core/Product/Attribute/ProductAttrValueType'
 import { ProductAttrValueInvalidException } from '../src/Commerce/Core/Exception/ProductAttrValueInvalidException';
+import { ProductAttrValue } from '../src/Commerce/Core/Product/Attribute/ProductAttrValue';
 
 let productAttr: ProductAttr;
 
 describe( `Test ${ ProductAttrValueType.INT } type`, () => {
 	test( "With valid values", () => {
 		productAttr = new ProductAttr( ProductAttrValueType.INT );
-		expect( productAttr.addAttrValue( 1 ) );
+		expect( productAttr.addAttrValue( 1 ) ).toBeInstanceOf( ProductAttrValue );
 		productAttr = new ProductAttr( ProductAttrValueType.INT, true );
 		expect( productAttr.canBe( [ 1, 2, "3" ] ) ).toBe( true );
 	} )
@@ -26,8 +27,8 @@ describe( `Test ${ ProductAttrValueType.INT } type`, () => {
 describe( `Test ${ ProductAttrValueType.FLOAT } type`, () => {
 	test( "With valid values", () => {
 		productAttr = new ProductAttr( ProductAttrValueType.FLOAT );
-		expect( productAttr.addAttrValue( 1.1 ) );
-		expect( productAttr.addAttrValue( 1 ) );
+		expect( productAttr.addAttrValue( 1.1 ) ).toBeInstanceOf( ProductAttrValue );
+		expect( productAttr.addAttrValue( 1 ) ).toBeInstanceOf( ProductAttrValue );
 		productAttr = new ProductAttr( ProductAttrValueType.FLOAT, true );
 		expect( productAttr.canBe( [ 1.1, 1.2, 1 ] ) ).toBe( true );
 	} )
@@ -44,7 +45,7 @@ describe( `Test ${ ProductAttrValueType.FLOAT } type`, () => {
 describe( `Test ${ ProductAttrValueType.STRING } type`, () => {
 	test( "With valid values", () => {
 		productAttr = new ProductAttr( ProductAttrValueType.STRING );
-		expect( productAttr.addAttrValue( 'This is a string' ) );
+		expect( productAttr.addAttrValue( 'This is a string' ) ).toBeInstanceOf( ProductAttrValue );
 		productAttr = new ProductAttr( ProductAttrValueType.STRING, true );
 		expect( productAttr.canBe( [ "One", "Two" ] ) ).toBe( true );
 	} )
@@ -62,7 +63,10 @@ describe( `Test ${ ProductAttrValueType.STRING } type`, () => {
 describe( `Test ${ ProductAttrValueType.BOOL } type`, () => {
 	test( "With valid values", () => {
 		productAttr = new ProductAttr( ProductAttrValueType.BOOL );
-		expect( productAttr.addAttrValue( true ) );
+		expect( productAttr.addAttrValue( true ) ).toBeInstanceOf( ProductAttrValue );
+		expect( productAttr.addAttrValue( false ) ).toBeInstanceOf( ProductAttrValue );
+		expect( productAttr.getAttrValue( true ) ).toBeInstanceOf( ProductAttrValue );
+		expect( productAttr.getAttrValue( false ) ).toBeInstanceOf( ProductAttrValue );
 	} )
 
 	test( "With invalid values", () => {
@@ -70,6 +74,7 @@ describe( `Test ${ ProductAttrValueType.BOOL } type`, () => {
 		expect( () => productAttr.addAttrValue( 'This is a string' ) ).toThrow( ProductAttrValueInvalidException );
 		expect( () => productAttr.addAttrValue( 1.1 ) ).toThrow( ProductAttrValueInvalidException );
 		expect( () => productAttr.addAttrValue( 1 ) ).toThrow( ProductAttrValueInvalidException );
+		expect( productAttr.getAttrValue( false ) ).toBe( null );
 		expect( () => new ProductAttr( ProductAttrValueType.BOOL, true ) ).toThrowError();
 	} )
 } )

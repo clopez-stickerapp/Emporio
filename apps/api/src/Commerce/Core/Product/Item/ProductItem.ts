@@ -59,8 +59,19 @@ export class ProductItem {
 		throw new Error("Not implemented");
 	}
 
-	public toTestableOneDimensionalArray(){
-		throw new Error("Not implemented");
+	// Should be rename to "toTestableObject"
+	public toTestableOneDimensionalArray(): Attributes{
+		const result = {};
+
+		result["item.productFamilyName"] = this.productFamilyName;
+		result["item.productName"] = this.productName;
+		// result ["item.units"] = this.units;
+
+		for (const key in this.attributes){
+			result["item.attributes." + key] = this.attributes[key];
+		}
+
+		return result;
 	}
 
 	public jsonSerialize(): string {

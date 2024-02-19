@@ -47,7 +47,9 @@ export class ProductAttr {
 			if ( !Array.isArray( value ) ) {
 				throw new ProductAttrValueInvalidException( "Product attr value is not a multi value." );
 			} else {
-				value.forEach( nestedValue => this.canBe( nestedValue, true ) );
+				for ( const nestedValue of value ) {
+					this.canBe( nestedValue, true )
+				}
 			}
 		} else {
 			if ( !this.getAttrValue( value ) && !this.isDynamicValue() ) {
@@ -67,7 +69,9 @@ export class ProductAttr {
 
 		if ( !skipMultiValue && this.multiValue ) {
 			if ( Array.isArray( value ) ) {
-				value.forEach( nestedValue => result = this.testValueType( nestedValue, true ) );
+				for ( const nestedValue of value ) {
+					result = this.testValueType( nestedValue, true )
+				}
 			}
 		} else {
 			switch ( this.valueType ) {
@@ -92,7 +96,7 @@ export class ProductAttr {
 						value = parseFloat( value );
 					}
 
-					result = ( typeof value === "number" && !Number.isInteger( value ) && !Number.isNaN( value ) && isFinite( value ) );
+					result = ( typeof value === "number" && !Number.isNaN( value ) && isFinite( value ) );
 					break;
 			}
 		}

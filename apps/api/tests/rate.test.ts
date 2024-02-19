@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { Rate } from "../src/Commerce/Core/Price/Rate";
+import { Rate, RateType } from "../src/Commerce/Core/Price/Rate";
 
 let rate: Rate;
 
@@ -9,6 +9,7 @@ describe("Test constructor", () => {
 		expect(rate.getValue()).toBe(10);
 		expect(rate.isPercentage()).toBe(false);
 		expect(rate.getMinValue()).toBe(0);
+		expect(rate.getType()).toBe(RateType.ADDITIVE);
 	});
 
 	test("percentage with valid params", () => {

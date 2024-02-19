@@ -17,7 +17,7 @@ export class ProductItem {
 		return this.attributes[name];
 	}
 
-	public setAttribute(name: string, value: string): ProductItem {
+	public setAttribute(name: string, value: AttributeValue): ProductItem {
 		this.attributes[name] = value;
 		return this;
 	}

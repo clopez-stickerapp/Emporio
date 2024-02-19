@@ -6,7 +6,7 @@ export class ProductItem {
 	private readonly productName: string;
 	private attributes: Attributes = {};
 
-	//private units: number = 0;
+	private units: number = 0;
 
 	public constructor(productFamilyName: string, productName: string){
 		this.productFamilyName = productFamilyName;
@@ -48,11 +48,11 @@ export class ProductItem {
 	}
 
 	public getUnits(): number {
-		throw new Error("Not implemented");
+		return this.units;
 	}
 
 	public setUnits(units: number): void {
-		throw new Error("Not implemented");
+		this.units = units;
 	}
 
 	public fromJSON(json: string): ProductItem {
@@ -65,7 +65,7 @@ export class ProductItem {
 
 		result["item.productFamilyName"] = this.productFamilyName;
 		result["item.productName"] = this.productName;
-		// result ["item.units"] = this.units;
+		result ["item.units"] = this.units;
 
 		for (const key in this.attributes){
 			result["item.attributes." + key] = this.attributes[key];

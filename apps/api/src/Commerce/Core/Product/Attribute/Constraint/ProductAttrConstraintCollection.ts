@@ -2,7 +2,7 @@ import { ProductConditionBuilder } from "../../Condition/ProductConditionBuilder
 import { ProductItem } from "../../Item/ProductItem";
 import { ProductAttrConstraint } from "./ProductAttrConstraint";
 
-export class ProductAttrContraintCollection {
+export class ProductAttrConstraintCollection {
 	protected constraints: Record<string, ProductAttrConstraint> = {};
 
 	public constructor( protected collectionName: string ) {}

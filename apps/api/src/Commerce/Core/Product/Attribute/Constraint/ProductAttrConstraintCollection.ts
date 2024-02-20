@@ -17,11 +17,11 @@ export class ProductAttrConstraintCollection {
 	}
 
 	public addConstraint( constraint: ProductAttrConstraint ): ProductAttrConstraint {
-		if ( constraint.attributeName in this.constraints ) {
-			throw new Error( `Constraints for ${ constraint.attributeName } already exists.` );
+		if ( constraint.getAttributeName() in this.constraints ) {
+			throw new Error( `Constraints for ${ constraint.getAttributeName() } already exists.` );
 		}
 
-		return this.constraints[ constraint.attributeName ] = constraint;
+		return this.constraints[ constraint.getAttributeName() ] = constraint;
 	}
 
 	public getConstraints(): Record<string, ProductAttrConstraint> {

@@ -1,3 +1,4 @@
+import { AttributeValueSingle } from "../../../../../Helper/Condition/AttributeValue";
 import { ConditionRelations } from "../../../../../Helper/Condition/ConditionRelations";
 import { ProductConditionBuilder } from "../../Condition/ProductConditionBuilder";
 
@@ -6,7 +7,7 @@ export class ProductAttrConstraint {
 
 	public constructor( private attributeName: string ) {}
 
-	public createConditionsFor( attributeValue: string | number | boolean, relationMode: string = ConditionRelations.AND ) {
+	public createConditionsFor( attributeValue: AttributeValueSingle, relationMode: string = ConditionRelations.AND ): ProductConditionBuilder {
 		attributeValue = attributeValue.toString();
 
 		if ( attributeValue in this.constraints ) {
@@ -17,7 +18,7 @@ export class ProductAttrConstraint {
 		return this.constraints[ attributeValue ] = new ProductConditionBuilder( relationMode );
 	}
 
-	public getConditionsFor( attributeValue: string | number | boolean ): ProductConditionBuilder | null {
+	public getConditionsFor( attributeValue: AttributeValueSingle ): ProductConditionBuilder | null {
 		attributeValue = attributeValue.toString();
 		return attributeValue in this.constraints ? this.constraints[ attributeValue ] : null;
 	}

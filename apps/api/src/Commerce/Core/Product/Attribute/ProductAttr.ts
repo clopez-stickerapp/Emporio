@@ -2,6 +2,7 @@ import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 import { ProductAttrValueInvalidException } from '../../Exception/ProductAttrValueInvalidException'
 import { isEmpty } from '../../../../../Util'
+import { AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
 
 export class ProductAttr {
 	protected valueType: ProductAttrValueType;
@@ -26,14 +27,14 @@ export class ProductAttr {
 	 * @see ProductAttrValueTypes
 	 *
 	 */
-	public addAttrValue( value: boolean | number | string ): ProductAttrValue {
+	public addAttrValue( value: AttributeValueSingle ): ProductAttrValue {
 		this.testValueType( value, true );
 		const productAttrValue = new ProductAttrValue( value, this );
 		this.values.push( productAttrValue );
 		return productAttrValue;
 	}
 
-	public getAttrValue( value: boolean | number | string ): ProductAttrValue | null {
+	public getAttrValue( value: AttributeValueSingle ): ProductAttrValue | null {
 		return this.values.find( attrValue => attrValue.getValue() === value ) ?? null;
 	}
 

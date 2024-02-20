@@ -1,3 +1,4 @@
+import { AttributeValueSingle } from "../../../../../Helper/Condition/AttributeValue";
 import { ProductConditionBuilder } from "../../Condition/ProductConditionBuilder";
 import { ProductItem } from "../../Item/ProductItem";
 import { ProductAttrConstraint } from "./ProductAttrConstraint";
@@ -7,12 +8,12 @@ export class ProductAttrConstraintCollection {
 
 	public constructor( protected collectionName: string ) {}
 
-	public test( attributeName: string, attributeValue: string | number | boolean, againstItem: ProductItem ): boolean | null {
+	public test( attributeName: string, attributeValue: AttributeValueSingle, againstItem: ProductItem ): boolean | null {
 		// TODO: Maybe throw exception instead of returning NULL?
 		return this.findConditionsFor( attributeName, attributeValue )?.testOnItem( againstItem ) ?? null;
 	}
 
-	public findConditionsFor( attributeName: string, attributeValue: string | number | boolean ): ProductConditionBuilder | null {
+	public findConditionsFor( attributeName: string, attributeValue: AttributeValueSingle ): ProductConditionBuilder | null {
 		return this.constraints[ attributeName ]?.getConditionsFor( attributeValue ) ?? null;
 	}
 

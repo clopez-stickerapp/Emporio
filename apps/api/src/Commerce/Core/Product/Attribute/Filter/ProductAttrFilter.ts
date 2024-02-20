@@ -1,3 +1,4 @@
+import { AttributeValueMulti } from "../../../../../Helper/Condition/AttributeValue";
 import { ConditionRelations } from "../../../../../Helper/Condition/ConditionRelations";
 import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
 import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
@@ -18,7 +19,7 @@ export class ProductAttrFilter {
 		this.attributeName = attrAlias;
 	}
 
-	public createFilter( attrValues: string[] | number[] | boolean[], conditionRelationMode: string = ConditionRelations.AND ): ProductAttrFilteredValues {
+	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: string = ConditionRelations.AND ): ProductAttrFilteredValues {
 		let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
 		this.filters.push( filter );
 		return filter;

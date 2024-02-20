@@ -1,10 +1,11 @@
+import { AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
 import { ProductAttr } from "./ProductAttr";
 
 export class ProductAttrValue {
 	protected attr: ProductAttr;
-	protected value: boolean | number | string;
+	protected value: AttributeValueSingle;
 
-	public constructor( value: boolean | number | string, attr: ProductAttr ) {
+	public constructor( value: AttributeValueSingle, attr: ProductAttr ) {
 		this.value = value;
 		this.attr = attr;
 	}
@@ -13,7 +14,7 @@ export class ProductAttrValue {
 		return this.attr;
 	}
 
-	public getValue(): boolean | number | string {
+	public getValue(): AttributeValueSingle {
 		return this.value;
 	}
 }

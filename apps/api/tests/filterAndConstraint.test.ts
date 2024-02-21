@@ -7,12 +7,10 @@ import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 import { ProductConditionBuilder } from "../src/Commerce/Core/Product/Condition/ProductConditionBuilder";
 import { ProductAttrFilteredValues } from "../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilteredValues";
 
-let filterCollection: ProductAttrFilterCollection;
-let constraintCollection: ProductAttrConstraintCollection;
-let filter: ProductAttrFilter;
-let constraint: ProductAttrConstraint;
-
 describe( 'Test filter', () => {
+	let filterCollection: ProductAttrFilterCollection;
+	let filter: ProductAttrFilter;
+
 	beforeEach( () => {
 		filterCollection = new ProductAttrFilterCollection( 'stickers' );
 		filter = new ProductAttrFilter( 'test' );
@@ -32,6 +30,9 @@ describe( 'Test filter', () => {
 } )
 
 describe( 'Test constraint', () => {
+	let constraintCollection: ProductAttrConstraintCollection;
+	let constraint: ProductAttrConstraint;
+	
 	beforeEach( () => {
 		constraintCollection = new ProductAttrConstraintCollection( 'stickers' );
 		constraint = new ProductAttrConstraint( 'test' );

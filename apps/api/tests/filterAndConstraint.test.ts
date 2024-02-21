@@ -42,11 +42,13 @@ describe( 'Test constraint', () => {
 	test( "With valid values", () => {
 		expect( constraintCollection.addConstraint( new ProductAttrConstraint( 'test1' ) ) ).toBeInstanceOf( ProductAttrConstraint );
 		expect( constraint.createConditionsFor( false ) ).toBeInstanceOf( ProductConditionBuilder ); 
+		expect( constraint.getConditionsFor( true ) ).toBeInstanceOf( ProductConditionBuilder );
 	} );
 
 	test( "With invalid values", () => {
 		expect( () => constraintCollection.addConstraint( new ProductAttrConstraint( 'test' ) ) ).toThrowError();
 		expect( () => constraint.createConditionsFor( true ) ).toThrowError();
 		expect( constraintCollection.findConditionsFor( 'test', '123' ) ).toBeNull();
+		expect( constraint.getConditionsFor( false ) ).toBeNull();
 	} );
 } )

@@ -1,3 +1,5 @@
+import { Price } from "../Price/Price";
+
 export enum Currencies{
 	USD = "USD",
 	SEK = "SEK",
@@ -40,7 +42,7 @@ export function getDefaultDecimals(currency: string): number {
 export type ConversionRates = { [currency in Currencies]: number };
 
 export class CurrencyConverter {
-	constructor(private readonly conversionRates: ConversionRates) { }
+	constructor(private readonly conversionRates: ConversionRates = getConversionRates()) { }
 
 	public convert(amount: number, from: string, to: string): number {
 		if (from === to) {
@@ -50,7 +52,34 @@ export class CurrencyConverter {
 		const fromRate = this.conversionRates[from];
 		const toRate = this.conversionRates[to];
 
-		return amount * toRate / fromRate;
+		return parseFloat((amount * toRate / fromRate).toFixed(10));
+	}
+
+	public convertPrice(price: Price, to: Currencies): Price {
+		if (price.currency === to) {
+			return price;
+		}
+	
+		const total = this.convert(price.total, price.currency, to);
+
+		if (!price.breakdown) {
+			return {
+				total,
+				currency: to
+			};
+		}
+
+		const breakdown: Record<string, number> = {};
+	
+		for (const [currency, amount] of Object.entries(price.breakdown)) {
+			breakdown[currency] = this.convert(amount, price.currency, to);
+		}
+	
+		return {
+			total,
+			breakdown,
+			currency: to
+		}
 	}
 }
 

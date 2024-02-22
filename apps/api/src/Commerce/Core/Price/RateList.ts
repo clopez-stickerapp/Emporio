@@ -18,10 +18,10 @@ export class RateList extends RateProvider{
 		return this;
 	}
 
-	public getRate(productItem: ProductItem): Rate{
+	public getRate(units: number): Rate{
 		for(let rate of this.rates){
 			// This was previously just greater than, but this is more intuitive
-			if(productItem.getUnits() >= rate.getUnitThreshold()){
+			if(units >= rate.getUnitThreshold()){
 				return rate;
 			}
 		}

@@ -1,11 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { RateList } from "../src/Commerce/Core/Price/RateList";
 import { Rate } from "../src/Commerce/Core/Price/Rate";
-import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
 
 let rateList: RateList;
 let rate: Rate;
-let item: ProductItem;
 
 describe("Test constructor", () => {
 	test("with default rate", () => {
@@ -49,18 +47,16 @@ describe("Test addRate", () => {
 describe("Test getRate", () => {
 	test("with no rates", () => {
 		rateList = new RateList("test");
-		item = new ProductItem("foo", "bar");
 
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(0);
 		expect(rate).instanceOf(Rate);
 		expect(rate.getValue()).equal(0);
 	});
 
 	test("with default rate set to 5", () => {
 		rateList = new RateList("test", new Rate(5));
-		item = new ProductItem("foo", "bar");
 
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(0);
 		expect(rate).instanceOf(Rate);
 		expect(rate.getValue()).equal(5);
 	});
@@ -70,46 +66,34 @@ describe("Test getRate", () => {
 		rateList.addRate(new Rate(20), 20);
 		rateList.addRate(new Rate(10), 10);
 
-		item = new ProductItem("foo", "bar");
-
-		item.setUnits(0);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(0);
 		expect(rate.getValue()).equal(0);
 
-		item.setUnits(5);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(5);
 		expect(rate.getValue()).equal(0);
 
-		item.setUnits(9.99);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(9.99);
 		expect(rate.getValue()).equal(0);
 
-		item.setUnits(10);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(10);
 		expect(rate.getValue()).equal(10);
 
-		item.setUnits(10.01);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(10.01);
 		expect(rate.getValue()).equal(10);
 
-		item.setUnits(15);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(15);
 		expect(rate.getValue()).equal(10);
 
-		item.setUnits(19.99);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(19.99);
 		expect(rate.getValue()).equal(10);
 
-		item.setUnits(20);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(20);
 		expect(rate.getValue()).equal(20);
 
-		item.setUnits(20.01);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(20.01);
 		expect(rate.getValue()).equal(20);
 
-		item.setUnits(100);
-		rate = rateList.getRate(item);
+		rate = rateList.getRate(100);
 		expect(rate.getValue()).equal(20);
 	});
 });

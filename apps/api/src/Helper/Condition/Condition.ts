@@ -1,3 +1,4 @@
+import { isEmpty } from "../../../Util";
 import { Attributes } from "./Attributes";
 import { ConditionOperators, isOperatorAllowed } from "./ConditionOperators";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
@@ -29,7 +30,9 @@ export class Condition implements ConditionTestableInterface {
 
 		if (data[this.columnName] == undefined) {
 			if (this.operator != ConditionOperators.IS_EMPTY &&
-				this.operator != ConditionOperators.NOT_IN) {
+				this.operator != ConditionOperators.NOT_IN &&
+				this.operator != ConditionOperators.NOT_EQUAL &&
+				this.operator != ConditionOperators.NOT_IDENTICAL) {
 				throw new ConditionTestDataKeyNotFoundException("Couldn't perform test because test data doesn't contain conditioned key: " + this.columnName);
 			}
 		}
@@ -37,15 +40,15 @@ export class Condition implements ConditionTestableInterface {
 		const columnValue = data[this.columnName] ?? null;
 
 		if (this.operator == ConditionOperators.IS_EMPTY) {
-			return columnValue === null || columnValue === undefined || columnValue === "" || (Array.isArray(columnValue) && columnValue.length === 0);
+			return isEmpty(columnValue);
 
 		} else if (this.operator == ConditionOperators.IS_NOT_EMPTY) {
-			return columnValue !== null && columnValue !== undefined && columnValue !== "" && (Array.isArray(columnValue) ? columnValue.length > 0 : true);
+			return !isEmpty(columnValue);
 
 		} else if (this.operator == ConditionOperators.IN || this.operator == ConditionOperators.NOT_IN) {
 			if (Array.isArray(columnValue) && !Array.isArray(this.conditionValue)) {
 				result = this.operator == ConditionOperators.NOT_IN ? !columnValue.includes(this.conditionValue!) : columnValue.includes(this.conditionValue!);
-			} else if (Array.isArray(this.conditionValue) && !Array.isArray(columnValue)) {
+			} else if (Array.isArray(this.conditionValue) && !Array.isArray(columnValue) && columnValue !== null) {
 				result = this.operator == ConditionOperators.NOT_IN ? !this.conditionValue.includes(columnValue!.toString()) : this.conditionValue.includes(columnValue!.toString());
 			} else if (Array.isArray(columnValue) && Array.isArray(this.conditionValue)) {
 				const totals = this.conditionValue.length;
@@ -58,9 +61,9 @@ export class Condition implements ConditionTestableInterface {
 				}
 			} else if (typeof columnValue === "string" && typeof this.conditionValue === "string") {
 				result = this.operator == ConditionOperators.NOT_IN ? !columnValue.includes(this.conditionValue) : columnValue.includes(this.conditionValue);
-			} else if (this.operator == ConditionOperators.NOT_IN && columnValue === null) {
+			} else if (this.operator == ConditionOperators.NOT_IN && isEmpty(columnValue)) {
 				return true;
-			} else if (this.operator == ConditionOperators.IN && columnValue === null) {
+			} else if (this.operator == ConditionOperators.IN && isEmpty(columnValue)) {
 				return false;
 			} else {
 				throw new ConditionTestFailedException("Trying to do CONTAINS in a special case that is not yet supported. $this ({$this->columnName} is " + columnValue + ")");

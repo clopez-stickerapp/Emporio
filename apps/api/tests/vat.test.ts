@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getVatPercentage, isEuCountry, isEuropeanCountry, isExport } from "../src/Commerce/Tax/Vat";
+import { excludeVAT, getVatPercentage, isEuCountry, isEuropeanCountry, isExport } from "../src/Commerce/Tax/Vat";
 
 describe("Test isExport", ()=>{
 	test("with EU country", ()=>{
@@ -98,5 +98,19 @@ describe("Test getVatPercentage", ()=>{
 		expect(getVatPercentage("us")).equal(0);
 		expect(getVatPercentage("jp")).equal(0);
 		expect(getVatPercentage("ch")).equal(0);
+	});
+});
+
+describe("Test excludeVAT", ()=>{
+	test("with 100 and 21", ()=>{
+		expect(excludeVAT(100, 21)).equal(82.64462809917356);
+	});
+
+	test("with 100 and 19", ()=>{
+		expect(excludeVAT(100, 19)).equal(84.03361344537815);
+	});
+
+	test("with 100 and 20", ()=>{
+		expect(excludeVAT(100, 20)).equal(83.33333333333334);
 	});
 });

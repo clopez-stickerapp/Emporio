@@ -108,3 +108,7 @@ export function getVatPercentage(countryCode: string, altShippingCountry: string
 		return getVatRate(countryCode);
 	}
 }
+
+export function excludeVAT(price: number, vatPercentage: number): number {
+	return price / (1 + vatPercentage / 100);
+}

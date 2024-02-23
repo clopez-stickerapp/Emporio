@@ -9,7 +9,7 @@ const localeCodes = {
 	fi: 'fi-FI',
 	it: 'it-IT',
 	fr: 'fr-FR',
-	jp: 'jp-JP',
+	jp: 'ja-JP',
 	es: 'es-ES',
 	pt: 'pt-PT',
 	pl: 'pl-PL',

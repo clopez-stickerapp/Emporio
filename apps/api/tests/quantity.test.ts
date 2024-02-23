@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { QuantityList } from "../src/Commerce/Core/Price/QuantityList";
 import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
+import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 let quantityList: QuantityList;
 
@@ -30,7 +31,7 @@ describe("QuantityList", () => {
 
 	test("Test testOnItem", () => {
 		quantityList = new QuantityList("test", [1, 2, 3]);
-		quantityList.conditions.addCondition("item.attributes.material", "==", "white");
+		quantityList.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
 
 		const item = new ProductItem("foo", "bar");
 		expect(quantityList.testOnItem(item)).toBe(false);

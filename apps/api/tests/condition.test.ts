@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { Condition } from "../src/Helper/Condition/Condition";
 import { ConditionTestDataKeyNotFoundException } from "../src/Helper/Condition/Exception/ConditionTestDataKeyNotFoundException";
 import { Attributes } from "../src/Helper/Condition/Attributes";
-import { ConditionOperatorNotAllowedException } from "../src/Helper/Condition/Exception/ConditionOperatorNotAllowedException";
 import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 let condition: Condition;
@@ -21,10 +20,6 @@ describe("Test functions", () => {
 		test("should be able to be instanced", () => {
 			condition = new Condition("material", ConditionOperators.EQUAL, "white");
 			expect(condition).toBeInstanceOf(Condition);
-		});
-
-		test("should throw an error if operator is not allowed", () => {
-			expect(() => new Condition("material", "><", "white")).toThrow(ConditionOperatorNotAllowedException);
 		});
 	});
 

@@ -3,23 +3,18 @@ import { Attributes } from "./Attributes";
 import { ConditionOperators, isOperatorAllowed } from "./ConditionOperators";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
-import { ConditionOperatorNotAllowedException } from "./Exception/ConditionOperatorNotAllowedException";
 import { ConditionTestDataKeyNotFoundException } from "./Exception/ConditionTestDataKeyNotFoundException";
 import { ConditionTestFailedException } from "./Exception/ConditionTestFailedException";
 
 export class Condition implements ConditionTestableInterface {
 	public columnName: string;
-	public operator: string;
+	public operator: ConditionOperators;
 	public conditionValue: ConditionValue|null;
 
-	public constructor(columnName: string, operator: string, conditionValue: ConditionValue|null = null) {
+	public constructor(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null) {
 		this.columnName = columnName;
 		this.operator = operator;
 		this.conditionValue = conditionValue;
-
-		if (!isOperatorAllowed(operator)) {
-			throw new ConditionOperatorNotAllowedException("Operator " + operator + " is not allowed.");
-		}
 	}
 
 	/**

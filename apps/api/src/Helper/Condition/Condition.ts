@@ -1,6 +1,6 @@
 import { isEmpty } from "../../../Util";
 import { Attributes } from "./Attributes";
-import { ConditionOperators, isOperatorAllowed } from "./ConditionOperators";
+import { ConditionOperators } from "./ConditionOperators";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { ConditionTestDataKeyNotFoundException } from "./Exception/ConditionTestDataKeyNotFoundException";
@@ -61,22 +61,17 @@ export class Condition implements ConditionTestableInterface {
 			} else if (this.operator == ConditionOperators.IN && isEmpty(columnValue)) {
 				return false;
 			} else {
-				throw new ConditionTestFailedException("Trying to do CONTAINS in a special case that is not yet supported. $this ({$this->columnName} is " + columnValue + ")");
+				throw new ConditionTestFailedException("Trying to do CONTAINS in a special case that is not yet supported. " + this.columnName + " is " + columnValue + ")");
 			}
 		}
 		else {
-			if (isOperatorAllowed(this.operator)) {
-				let result: any;
-				const evalString = `return ${JSON.stringify(columnValue)} ${this.operator} ${JSON.stringify(this.conditionValue)};`;
-				try {
-					result = Function(evalString)();
-				} catch (error) {
-					console.error('Error occurred during evaluation:', error);
-					return false;
-				}
-				return result;
+			const evalString = `return ${JSON.stringify(columnValue)} ${this.operator} ${JSON.stringify(this.conditionValue)};`;
+			try {
+				result = Function(evalString)();
+			} catch (error) {
+				console.error('Error occurred during evaluation:', error);
+				return false;
 			}
-			return false;
 		}
 		return result;
 	}

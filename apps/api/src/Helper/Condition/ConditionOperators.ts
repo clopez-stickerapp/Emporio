@@ -12,7 +12,3 @@ export enum ConditionOperators {
 	IS_EMPTY = "IS EMPTY",
 	IS_NOT_EMPTY = "IS NOT EMPTY",
 }
-
-export function isOperatorAllowed(operator: string): boolean {
-	return Object.values(ConditionOperators).includes(operator as ConditionOperators);
-}

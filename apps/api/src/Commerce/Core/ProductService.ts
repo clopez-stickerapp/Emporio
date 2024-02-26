@@ -1,6 +1,14 @@
+import { AttributeValueSingle } from "../../Helper/Condition/AttributeValue";
+import { ProductPriceProvider } from "./Price/ProductPriceProvider";
+import { ProductQuantityListCollection } from "./Price/ProductQuantityListCollection";
+import { ProductAttrConstraintCollection } from "./Product/Attribute/Constraint/ProductAttrConstraintCollection";
+import { ProductAttrFilterCollection } from "./Product/Attribute/Filter/ProductAttrFilterCollection";
+import { ProductAttrIconCollection } from "./Product/Attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./Product/Attribute/ProductAttr";
 import { ProductAttrValue } from "./Product/Attribute/ProductAttrValue";
-import { ProductItem } from "./Product/Item/ProductItem";
+import { ProductAttrStockCollection } from "./Product/Attribute/Stock/ProductAttrStockCollection";
+import { Product } from "./Product/Product";
+import { ProductFamily } from "./Product/ProductFamily";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -187,7 +195,7 @@ export class ProductService {
 		return Array.from(Object.values(this.productFamilies));
 	}
 
-	public findAttributeValue(attributeUID: string, attributeValue: boolean | number | string): ProductAttrValue | null {
+	public findAttributeValue(attributeUID: string, attributeValue: AttributeValueSingle): ProductAttrValue | null {
 		throw new Error("I don't think this function is needed.")
 		if (this.attributes[attributeUID]) {
 			return this.attributes[attributeUID].getAttrValue(attributeValue);

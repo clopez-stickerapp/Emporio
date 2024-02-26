@@ -43,3 +43,93 @@ describe("ProductDynamicValue", () => {
 		});
 	});
 });
+
+class DummyFamily extends ProductFamily {}
+class DummyProvider extends ProductPriceProvider {
+	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
+		throw new Error("Method not implemented.");
+	}
+}
+let service: ProductService;
+
+describe("ProductService", () => {
+	beforeEach(() => {
+		service = new ProductService();
+	});
+
+	test("attrFilterCollection", () => {
+		expect(() => service.retrieveAttrFilterCollection("foo")).toThrowError(Error);
+	
+		service.registerAttrFilterCollection(new ProductAttrFilterCollection("foo"));
+		
+		expect(service.retrieveAttrFilterCollection("foo")).toBeDefined();
+	});
+
+	test("attrIconCollection", () => {
+		expect(() => service.retrieveAttrIconCollection("foo")).toThrowError(Error);
+	
+		service.registerAttrIconCollection(new ProductAttrIconCollection("foo"));
+		
+		expect(service.retrieveAttrIconCollection("foo")).toBeDefined();
+	});
+
+	test("attrConstraintCollection", () => {
+		expect(() => service.retrieveAttrConstraintCollection("foo")).toThrowError(Error);
+	
+		service.registerAttrConstraintCollection(new ProductAttrConstraintCollection("foo"));
+		
+		expect(service.retrieveAttrConstraintCollection("foo")).toBeDefined();
+	});
+
+	test("attrStockCollection", () => {
+		expect(() => service.retrieveAttrStockCollection("foo")).toThrowError(Error);
+	
+		service.registerAttrStockCollection(new ProductAttrStockCollection("foo"));
+		
+		expect(service.retrieveAttrStockCollection("foo")).toBeDefined();
+	});
+
+	test("attributes", () => {
+		let attr = new ProductAttr(ProductAttrValueType.STRING);
+		service.registerAttribute(attr);
+
+		expect(service.retrieveAttribute(attr.getUID())).toBe(attr);
+	});
+
+	test("productFamily", () => {
+		let family = new DummyFamily("foo", 10, service);
+		service.registerProductFamily(family);
+		expect(service.retrieveProductFamily("foo")).toBe(family);
+	});
+
+	test("productPriceProvider", () => {
+		let provider = new DummyProvider("foo");
+		service.registerPriceProvider(provider);
+		expect(service.retrievePriceProvider("foo")).toBe(provider);
+	});
+
+	test("quantityListCollection", () => {
+		expect(() => service.retrieveQuantityListCollection("foo")).toThrowError(Error);
+	
+		service.registerQuantityListCollection(new ProductQuantityListCollection("foo"));
+		
+		expect(service.retrieveQuantityListCollection("foo")).toBeDefined();
+	});
+
+	test("findProduct", () => {
+		let family = new DummyFamily("foo", 10, service);
+		family.addProduct("bar", "baz");
+		service.registerProductFamily(family);
+
+		let retrievedProduct = service.findProduct("foo", "bar");
+		expect(retrievedProduct.getProductFamily()).toBe(family);
+		expect(retrievedProduct.getName()).toBe("bar");
+		expect(retrievedProduct.getSku()).toBe("baz");
+	});
+
+	test("registerProductSku", () => {
+		service.registerProductSku("foo");
+		expect(() => service.registerProductSku("foo")).toThrowError(Error);
+		expect(() => service.registerProductSku("bar")).not.toThrowError(Error);
+	});
+});

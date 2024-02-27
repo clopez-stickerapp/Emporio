@@ -18,15 +18,15 @@ describe("calculateBreakdownSum", () => {
 
 describe("RateBasedProductPriceProvider", () => {
 	class RateProviderTest extends RateProvider {
-		public getRate(units: number): Rate {
+		public getRate(item: ProductItem, units: number): Rate {
 			return new Rate(units);
 		}
 	}
 
 	class RateBasedProductPriceProviderExtension extends RateBasedProductPriceProvider {
 		// getPriceFor is protected, so we need to extend the class to test it
-		public getPriceFor(providers: RateProvider[], units: number): Record<string, number> {
-			return super.getPriceFor(providers, units);
+		public getPriceFor(rates: Record<string, Rate>, units: number): Record<string, number> {
+			return super.getPriceFor(rates, units);
 		}
 	}
 
@@ -71,15 +71,26 @@ describe("RateBasedProductPriceProvider", () => {
 		expect(providers[0]).toBe(anotherRateProvider);
 	});
 
-	test("should be able to get the separate prices from rate providers", () => {
-		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
+	test("should be able to get applicable rates for product item", () => {
+		const item = new ProductItem("family", "product");
+		item.setAttribute("foo", "bar");
+
+		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
 		provider.addRateProvider(rateProvider);
 
-		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
+		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
 		provider.addRateProvider(anotherRateProvider);
 
-		const price = provider.getPriceFor([rateProvider, anotherRateProvider], 25);
-		expect(price).toEqual({ test: 25, another: 25 });
+		const rates = provider.getRatesFor(item, 25);
+		expect(rates).toEqual({ test: new Rate(25) });
+	});
+
+	test("should be able to get the separate prices from applicable rates", () => {
+		let rate1 = new Rate(25);
+		let rate2 = new Rate(37);
+
+		const price = provider.getPriceFor({ test: rate1, another: rate2}, 25);
+		expect(price).toEqual({ test: 25, another: 37 });
 	});
 
 	describe("should be able to get a price for a product item", () => {

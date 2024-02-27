@@ -9,8 +9,8 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 	protected rateProviders: Record<string, RateProvider> = {};
 
 	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
-		let providers = this.getRateProvidersFor(productItem);
-		let breakdown = this.getPriceFor(providers, units);
+		let rates = this.getRatesFor(productItem, units);
+		let breakdown = this.getPriceFor(rates, units);
 		let total = calculateBreakdownSum(breakdown);
 
 		let price: Price = {
@@ -23,28 +23,25 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		return converter.convertPrice(price, currency);	
 	}
 
-	protected getPriceFor(providers: RateProvider[], units: number): Record<string, number> {
+	protected getPriceFor(rates: Record<string, Rate>, units: number): Record<string, number> {
 		// TODO: have two modes: merge or highest wins
 		const flatRates: Record<string, Rate> = {};
 		const percentageRates: Record<string, Rate> = {};
 
-		for (const rateProvider of providers) {
-			const rate = rateProvider.getRate(units);
-			if (rate){
-				if (rate.isPercentage()) {
-					percentageRates[rateProvider.getName()] = rate;
-				} else {
-					flatRates[rateProvider.getName()] = rate;
-				}
+		for (const [name, rate] of Object.entries(rates)) {
+			if (rate.isPercentage()) {
+				percentageRates[name] = rate;
+			} else {
+				flatRates[name] = rate;
 			}
 		}
 
 		let flatTotal = 0;
-		const compound: Record<string, number> = {};
+		const breakdown: Record<string, number> = {};
 
 		for (const [provider, rate] of Object.entries(flatRates)) {
 			flatTotal += rate.getValue();
-			compound[provider] = rate.getValue();
+			breakdown[provider] = rate.getValue();
 		}
 
 		for (const [provider, rate] of Object.entries(percentageRates)) {
@@ -58,13 +55,13 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
 					// Since this function calculates the rate per unit, we can't simply add the total
 					// specified in the rate. We have to divide it by the total amount of units.
-					compound[provider] = rate.getMinValue() / units;
+					breakdown[provider] = rate.getMinValue() / units;
 				} else {
-					compound[provider] = resultRate;
+					breakdown[provider] = resultRate;
 				}
 			} else if (rate.getType() === RateType.MULTIPLICATIVE) {
 				//map to array
-				let compoundArray = Array.from(Object.values(compound));
+				let compoundArray = Array.from(Object.values(breakdown));
 				const resultRate = rate.getValue() * compoundArray.reduce((a, b) => a + b, 0);
 
 				// The minimum value is based on the total amount, the unit rate * amount of units,
@@ -75,14 +72,25 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
 					// Since this function calculates the rate per unit, we can't simply add the total
 					// specified in the rate. We have to divide it by the total amount of units.
-					compound[provider] = rate.getMinValue() / units;
+					breakdown[provider] = rate.getMinValue() / units;
 				} else {
-					compound[provider] = resultRate;
+					breakdown[provider] = resultRate;
 				}
 			}
 		}
 
-		return compound;
+		return breakdown;
+	}
+
+	public getRatesFor(productItem: ProductItem, units: number): Record<string, Rate> {
+		let providers = this.getRateProvidersFor(productItem);
+
+		const rates: Record<string, Rate> = {};
+		for (const provider of providers) {
+			rates[provider.getName()] = provider.getRate(productItem, units);
+		}
+
+		return rates;
 	}
 
 	public addRateProvider(rateProvider: RateProvider): void {

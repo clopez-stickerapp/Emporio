@@ -46,7 +46,7 @@ export abstract class RateProvider {
 		return applicable;
 	}
 
-	public abstract getRate(units: number): Rate;
+	public abstract getRate(productItem: ProductItem, units: number): Rate;
 
 	public static sortByType(_any: any) {
 		throw new Error("Method not implemented.");

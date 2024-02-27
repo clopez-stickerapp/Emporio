@@ -270,3 +270,44 @@ describe("ProductFamily", () => {
 	});
 });
 
+let product: Product;
+
+describe("Product", () => {
+	beforeEach(() => {
+		service = new ProductService();
+		family = new DummyFamily("dummy", 10, service);
+		service.registerProductFamily(family);
+
+		family.addProduct("test-product", "sku123");
+
+		product = service.findProduct("dummy", "test-product");
+	});
+
+	test("conditions", () => {
+		expect(() => product.addCondition("foo", ConditionOperators.EQUAL, "bar")).not.toThrowError(Error);
+
+		expect(product.testAttributes({ foo: "bar" })).toBe(true);
+		expect(product.testAttributes({ foo: "baz" })).toBe(false);
+	});
+
+	test("attributes", () => {
+		expect(product.isAttrRecommendedFor("foo")).toBe(false);
+		expect(product.getAttrMap()).toEqual({});
+		expect(product.getAttrValue("foo")).toBeUndefined();
+		expect(() => product.canAttrBe("foo", "bar")).toThrowError(Error);
+		expect(product.canHaveAttr("foo")).toBe(false);
+
+		service.registerAttribute(new ProductAttr(ProductAttrValueType.STRING));
+		family.requireAttr("ProductAttr", "foo");
+		product.withAttrValue("foo", "bar");		
+
+		expect(product.isAttrRecommendedFor("foo")).toBe(true);
+		expect(product.getAttrValue("foo")).toBe("bar");
+		expect(product.canAttrBe("foo", "bar")).toBe(true);
+		expect(product.canAttrBe("foo", "baz")).toBe(false);
+		expect(product.canHaveAttr("foo")).toBe(true);
+		expect(product.canHaveAttr("baz")).toBe(false);
+
+		expect(product.getAttrMap()).toEqual({ foo: "bar" });
+	});
+});

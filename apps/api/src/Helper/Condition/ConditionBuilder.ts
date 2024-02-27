@@ -140,6 +140,10 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return this;
 	}
 
+	public getConditions(): Conditions {
+		return this.conditions;
+	}
+
 	public toArray(): any[] {
 		throw new Error("Method not implemented.");
 	}

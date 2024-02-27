@@ -1,8 +1,10 @@
 import { AttributeValue, AttributeValueSingle } from "../../../Helper/Condition/AttributeValue";
 import { Attributes } from "../../../Helper/Condition/Attributes";
+import { Condition } from "../../../Helper/Condition/Condition";
 import { ConditionBuilder } from "../../../Helper/Condition/ConditionBuilder";
 import { ConditionOperators } from "../../../Helper/Condition/ConditionOperators";
 import { ConditionValue } from "../../../Helper/Condition/ConditionValue";
+import { ProductAttrValueInvalidException } from "../Exception/ProductAttrValueInvalidException";
 import { ProductService } from "../ProductService";
 import { ProductFamily } from "./ProductFamily";
 
@@ -25,6 +27,8 @@ export class Product {
 		this.sku = sku;
 	}
 
+	// Instead of making this.conditions public like in other classes, we use this method to add conditions
+	// This is because adding subgroups to conditions is not allowed in this class
 	public addCondition(attrName: string, operator: ConditionOperators, attrValue: ConditionValue|null = null): Product {
 		this.conditions.addCondition(attrName, operator, attrValue);
 
@@ -46,31 +50,21 @@ export class Product {
 	public canAttrBe(attrName: string, attrValue: ConditionValue): boolean {
 		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
 		let attr = this.productService.retrieveAttribute(attrUID);
-		if (!attrUID || !attr) {
-			throw new Error(`Cannot do Product.withAttrValue( ${attrName} ) because '${attrName}' is not an alias for product ${this.name}.`);
+
+		try{
+			attr.canBe(attrValue);
+		} catch (e) {
+			if(e instanceof ProductAttrValueInvalidException){
+				return false;
+			} else {
+				throw e;
+			}
 		}
 
-		this.attrMap[attrName] = attrValue;
-
-		if (attr.isMultiValue()) {
-			if (this.isAttrStrictlyRequiredFor(attrName)) {
-				this.addCondition(attrName, ConditionOperators.EQUAL, attrValue);
-			}
-			else {
-				if (!Array.isArray(attrValue)) {
-					attrValue = [attrValue.toString()];
-				}
-				for (let subValue of attrValue) {
-					this.addCondition(attrName, ConditionOperators.IN, subValue);
-				}
-			}
-		}
-		else {
-			if (Array.isArray(attrValue)) {
-				this.addCondition(attrName, ConditionOperators.IN, attrValue);
-			}
-			else {
-				this.addCondition(attrName, ConditionOperators.EQUAL, attrValue);
+		// this.conditions doesn't contain any Condition builders, that's why we can cast it to Condition[]
+		for (let condition of Object.values(this.conditions.getConditions()) as Condition[]) {
+			if(condition.columnName === attrName && !condition.test({[attrName]: attrValue})){
+				return false;
 			}
 		}
 
@@ -92,9 +86,6 @@ export class Product {
 	public withAttrValue(attrName: string, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
 		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
 		let attr = this.productService.retrieveAttribute(attrUID);
-		if (!attrUID || !attr) {
-			throw new Error(`Cannot do Product.withAttrValue( ${attrName} ) because '${attrName}' is not an alias for product ${this.name}.`);
-		}
 
 		this.attrMap[attrName] = value;
 
@@ -163,20 +154,11 @@ export class Product {
 		return this.attrMap;
 	}
 
-	public getConditions(): ConditionBuilder {
-		return this.conditions;
-	}
-
 	public isInStock(): boolean {
 		return this.inStock;
 	}
 
 	public getSku(): string {
 		return this.sku;
-	}
-
-	public setSku(sku: string): Product {
-		this.sku = sku;
-		return this;
 	}
 }

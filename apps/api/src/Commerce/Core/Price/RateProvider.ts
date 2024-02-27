@@ -3,7 +3,7 @@ import { ProductConditionBuilder } from "../Product/Condition/ProductConditionBu
 import { ProductItem } from "../Product/Item/ProductItem";
 import { Rate } from "./Rate";
 
-export enum RateListType {
+export enum RateProviderType {
 	BASE = "base",
 	ADDON = "addon"
 }
@@ -15,7 +15,7 @@ export abstract class RateProvider {
 
 	public constructor(name: string) {
 		this.name = name;
-		this.type = RateListType.BASE;
+		this.type = RateProviderType.BASE;
 		this.conditions = new ProductConditionBuilder();
 	}
 
@@ -27,7 +27,7 @@ export abstract class RateProvider {
 		return this.type;
 	}
 
-	public setType(type: RateListType): RateProvider {
+	public setType(type: RateProviderType): RateProvider {
 		this.type = type;
 		return this;
 	}

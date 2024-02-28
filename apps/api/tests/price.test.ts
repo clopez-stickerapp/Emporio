@@ -6,6 +6,7 @@ import { calculateBreakdownSum } from "../src/Commerce/Core/Price/Price";
 import { RateBasedProductPriceProvider } from "../src/Commerce/Core/Price/RateBasedProductPriceProvider";
 import { RateProvider } from "../src/Commerce/Core/Price/RateProvider";
 import { Rate } from "../src/Commerce/Core/Price/Rate";
+import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 describe("calculateBreakdownSum", () => {
 	test("should be able to calculate the sum of a breakdown", () => {
@@ -59,10 +60,10 @@ describe("RateBasedProductPriceProvider", () => {
 		const item = new ProductItem("family", "product");
 		item.setAttribute("foo", "bar");
 
-		rateProvider.conditions.addCondition("item.attributes.foo", "==", "baz");
+		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
 		provider.addRateProvider(rateProvider);
 
-		anotherRateProvider.conditions.addCondition("item.attributes.foo", "==", "bar");
+		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
 		provider.addRateProvider(anotherRateProvider);
 
 		const providers = provider.getRateProvidersFor(item);
@@ -71,10 +72,10 @@ describe("RateBasedProductPriceProvider", () => {
 	});
 
 	test("should be able to get the separate prices from rate providers", () => {
-		rateProvider.conditions.addCondition("item.attributes.foo", "==", "baz");
+		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
 		provider.addRateProvider(rateProvider);
 
-		anotherRateProvider.conditions.addCondition("item.attributes.foo", "==", "bar");
+		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
 		provider.addRateProvider(anotherRateProvider);
 
 		const price = provider.getPriceFor([rateProvider, anotherRateProvider], 25);
@@ -85,10 +86,10 @@ describe("RateBasedProductPriceProvider", () => {
 		test("without attributes on the product item", () => {
 			const item = new ProductItem("family", "product");
 
-			rateProvider.conditions.addCondition("item.attributes.foo", "!=", "baz");
+			rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "baz");
 			provider.addRateProvider(rateProvider);
 	
-			anotherRateProvider.conditions.addCondition("item.attributes.foo", "!=", "bar");
+			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "bar");
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = provider.calculatePrice(item, 25, Currencies.USD);
@@ -99,10 +100,10 @@ describe("RateBasedProductPriceProvider", () => {
 			const item = new ProductItem("family", "product");
 			item.setAttribute("foo", "bar");
 
-			rateProvider.conditions.addCondition("item.attributes.foo", "==", "baz");
+			rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
 			provider.addRateProvider(rateProvider);
 	
-			anotherRateProvider.conditions.addCondition("item.attributes.foo", "==", "bar");
+			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = provider.calculatePrice(item, 25, Currencies.USD);

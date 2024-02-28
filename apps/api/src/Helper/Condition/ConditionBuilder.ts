@@ -1,5 +1,6 @@
 import { Attributes } from "./Attributes";
 import { Condition } from "./Condition";
+import { ConditionOperators } from "./ConditionOperators";
 import { ConditionRelations } from "./ConditionRelations";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
@@ -20,7 +21,7 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	public calculateComplexityScore(): number {
 		let score = this.baseComplexityScore;
 
-		if (this.relationMode == ConditionRelations.AND && this.count() > 0) {
+		if (this.relationMode == ConditionRelations.AND && this.count() >= 2) {
 			score += 5;
 		}
 
@@ -40,7 +41,7 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.keys(this.conditions).length;
 	}
 
-	public addSubGroup(mode: string = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
+	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
 		if (!alias) {
 			alias = `subgroup_${this.count()}`;
 		}
@@ -76,7 +77,7 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		delete this.conditions[alias];
 	}
 
-	public addCondition(columnName: string, operator: string, conditionValue: ConditionValue|null = null): ConditionBuilder {
+	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
 		const condition = new Condition(columnName, operator, conditionValue);
 
 		if (!this.hasCondition(condition)) {
@@ -137,6 +138,10 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	public setBaseComplexityScore(baseComplexityScore: number): ConditionBuilder {
 		this.baseComplexityScore = baseComplexityScore;
 		return this;
+	}
+
+	public getConditions(): Conditions {
+		return this.conditions;
 	}
 
 	public toArray(): any[] {

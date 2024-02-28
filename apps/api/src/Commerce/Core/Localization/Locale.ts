@@ -1,3 +1,5 @@
+import { Currencies } from "../Currency/Currency";
+
 const localeCodes = {
 	us: 'en-US',
 	se: 'sv-SE',
@@ -16,20 +18,20 @@ const localeCodes = {
 };
 
 const currencies = {
-	us: 'USD',
-	se: 'SEK',
-	dk: 'DKK',
-	uk: 'GBP',
-	de: 'EUR',
-	no: 'NOK',
-	nl: 'EUR',
-	fi: 'EUR',
-	it: 'EUR',
-	fr: 'EUR',
-	jp: 'JPY',
-	es: 'EUR',
-	pt: 'EUR',
-	pl: 'PLN',
+	us: Currencies.USD,
+	se: Currencies.SEK,
+	dk: Currencies.DKK,
+	uk: Currencies.GBP,
+	de: Currencies.EUR,
+	no: Currencies.NOK,
+	nl: Currencies.EUR,
+	fi: Currencies.EUR,
+	it: Currencies.EUR,
+	fr: Currencies.EUR,
+	jp: Currencies.JPY,
+	es: Currencies.EUR,
+	pt: Currencies.EUR,
+	pl: Currencies.PLN,
 };
 
 export function getLocale(market: string): string {
@@ -39,7 +41,7 @@ export function getLocale(market: string): string {
 	throw new Error(`No language code exists for lang: ${market}.`);
 }
 
-export function getCurrency(market: string): string {
+export function getCurrency(market: string): Currencies {
 	if (currencies[market]) {
 		return currencies[market];
 	}

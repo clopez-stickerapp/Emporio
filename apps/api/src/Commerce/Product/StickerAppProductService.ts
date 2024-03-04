@@ -54,10 +54,14 @@ import { WhiteLayerAttribute } from "./Attribute/Sticker/WhiteLayerAttribute";
 import { TemplateAttribute } from "./Attribute/TemplateAttribute";
 import { WidthAttribute } from "./Attribute/WidthAttribute";
 import { CustomStickerFamily } from "./Family/CustomStickerFamily";
+import { PromoProductFamily } from "./Family/PromoProductFamily";
 import { SkinProductFamily } from "./Family/SkinProductFamily";
+import { PromoProductPriceProvider } from "./Price/PromoProductPriceProvider";
+import { StickerPriceProvider } from "./Price/StickerPriceProvider";
+import { StickerQuantityListCollection } from "./Price/StickerQuantityListCollection";
 
 export class StickerAppProductService extends ProductService {
-	public constructor( figureModel: any, vatModel: any ) {
+	public constructor() {
 		super();
 
 		this.registerAttribute( new SheetTypeAttribute() );
@@ -115,16 +119,16 @@ export class StickerAppProductService extends ProductService {
 		this.registerAttrFilterCollection( new SkinFilterCollection() );
 		this.registerAttrStockCollection( new StickerWizardStockCollection() );
 		this.registerAttrIconCollection( new StickerAttributeIconCollection() );
-		this.registerQuantityListCollection( new StickerQuantityListCollection( this ) );
+		this.registerQuantityListCollection( new StickerQuantityListCollection() );
 
-		this.registerPriceProvider( new StickerPriceProvider( this, figureModel, vatModel ) );
-		this.registerPriceProvider( new SkinPriceProvider( this, vatModel ) );
-		this.registerPriceProvider( new PromoProductPriceProvider( this, figureModel, vatModel ) );
+		this.registerPriceProvider( new StickerPriceProvider() );
+		// this.registerPriceProvider( new SkinPriceProvider( this ) );
+		this.registerPriceProvider( new PromoProductPriceProvider() );
 
 		this.registerProductFamily( new CustomStickerFamily( this ) );
-		this.registerProductFamily( new PhoneCaseProductFamily( this ) );
-		this.registerProductFamily( new SkinProductFamily( this ) );
+		// this.registerProductFamily( new PhoneCaseProductFamily( this ) );
+		// this.registerProductFamily( new SkinProductFamily( this ) );
 		this.registerProductFamily( new PromoProductFamily( this ) );
-		this.registerProductFamily( new FeeFamily( this ) );
+		// this.registerProductFamily( new FeeFamily( this ) );
 	}
 }

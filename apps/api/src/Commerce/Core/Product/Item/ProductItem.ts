@@ -13,8 +13,8 @@ export class ProductItem {
 		this.productName = productName;
 	}
 
-	public getAttribute<T extends AttributeValue>(name: string): T {
-		return this.attributes[name] as T;
+	public getAttribute<T extends AttributeValue>(name: string): T | undefined {
+		return this.attributes[name] as T | undefined;
 	}
 
 	public setAttribute(name: string, value: AttributeValue): ProductItem {

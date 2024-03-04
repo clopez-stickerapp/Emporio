@@ -19,10 +19,10 @@ export class StickerQuantityListCollection extends ProductQuantityListCollection
 	public initDefaultQuantityLists(): void {
 		this.addQuantityList( new QuantityList("smallQuantities", [
 			1, 3, 5, 7, 10, 12, 15, 17, 20, 22, 25
-		]).setMinQuantity(0));
+		]).setMinQuantity(1));
 
 		this.addQuantityList( new QuantityList("mediumQuantities", [
-			1, 5, 10, 15, 25, 35, 45, 50, 65, 75, 100
+			10, 15, 25, 35, 45, 50, 65, 75, 100
 		]).setMinQuantity(6));
 
 		this.addQuantityList( new QuantityList("bigQuantities", [

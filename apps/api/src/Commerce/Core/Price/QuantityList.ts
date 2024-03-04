@@ -29,8 +29,8 @@ export class QuantityList {
 			throw new Error("Min quantity can't be higher than the highest quantity in the list");
 		}
 
-		if (Math.min(...this.quantities) < minQuantity) {
-			throw new Error("Min quantity can't be lower than the lowest quantity in the list");
+		if (minQuantity <= 0) {
+			throw new Error("Min quantity can't be (lower than) zero");
 		}
 
 		this.minQuantity = minQuantity;

@@ -50,6 +50,8 @@ import { StickerWizardStockCollection } from "../Attribute/Sticker/Stock/Sticker
 import { WhiteLayerAttribute } from "../Attribute/Sticker/WhiteLayerAttribute";
 import { TemplateAttribute } from "../Attribute/TemplateAttribute";
 import { WidthAttribute } from "../Attribute/WidthAttribute";
+import { StickerPriceProvider } from "../Price/StickerPriceProvider";
+import { StickerQuantityListCollection } from "../Price/StickerQuantityListCollection";
 
 export class CustomStickerFamily extends ProductFamily {
 	public static readonly NAME = "custom_sticker";

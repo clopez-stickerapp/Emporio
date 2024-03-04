@@ -10,7 +10,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 
 	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
 		let rates = this.getRatesFor(productItem, units);
-		let breakdown = this.getPriceFor(rates, units);
+		let breakdown = this.getBreakdownFor(rates, units);
 		let total = calculateBreakdownSum(breakdown);
 
 		let price: Price = {
@@ -23,7 +23,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		return converter.convertPrice(price, currency);	
 	}
 
-	protected getPriceFor(rates: Record<string, Rate>, units: number): Record<string, number> {
+	protected getBreakdownFor(rates: Record<string, Rate>, units: number): Record<string, number> {
 		// TODO: have two modes: merge or highest wins
 		const flatRates: Record<string, Rate> = {};
 		const percentageRates: Record<string, Rate> = {};
@@ -40,8 +40,8 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		const breakdown: Record<string, number> = {};
 
 		for (const [provider, rate] of Object.entries(flatRates)) {
-			flatTotal += rate.getValue();
-			breakdown[provider] = rate.getValue();
+			flatTotal += rate.getValue() * units;
+			breakdown[provider] = rate.getValue() * units;
 		}
 
 		for (const [provider, rate] of Object.entries(percentageRates)) {

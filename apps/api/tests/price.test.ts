@@ -24,9 +24,9 @@ describe("RateBasedProductPriceProvider", () => {
 	}
 
 	class RateBasedProductPriceProviderExtension extends RateBasedProductPriceProvider {
-		// getPriceFor is protected, so we need to extend the class to test it
-		public getPriceFor(rates: Record<string, Rate>, units: number): Record<string, number> {
-			return super.getPriceFor(rates, units);
+		// getBreakdownFor is protected, so we need to extend the class to test it
+		public getBreakdownFor(rates: Record<string, Rate>, units: number): Record<string, number> {
+			return super.getBreakdownFor(rates, units);
 		}
 	}
 
@@ -82,15 +82,15 @@ describe("RateBasedProductPriceProvider", () => {
 		provider.addRateProvider(anotherRateProvider);
 
 		const rates = provider.getRatesFor(item, 25);
-		expect(rates).toEqual({ test: new Rate(25) });
+		expect(rates).toEqual({ test: new Rate(25)});
 	});
 
 	test("should be able to get the separate prices from applicable rates", () => {
 		let rate1 = new Rate(25);
 		let rate2 = new Rate(37);
 
-		const price = provider.getPriceFor({ test: rate1, another: rate2}, 25);
-		expect(price).toEqual({ test: 25, another: 37 });
+		const price = provider.getBreakdownFor({ test: rate1, another: rate2}, 25);
+		expect(price).toEqual({ test: 25*25, another: 37*25 });
 	});
 
 	describe("should be able to get a price for a product item", () => {
@@ -104,7 +104,7 @@ describe("RateBasedProductPriceProvider", () => {
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = provider.calculatePrice(item, 25, Currencies.USD);
-			expect(price.total).toBe(50);
+			expect(price.total).toBe((25+25)*25);
 		});
 
 		test("with attributes on the product item", () => {
@@ -118,7 +118,7 @@ describe("RateBasedProductPriceProvider", () => {
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = provider.calculatePrice(item, 25, Currencies.USD);
-			expect(price.total).toBe(25);
+			expect(price.total).toBe(25*25);
 		});
 		
 	});

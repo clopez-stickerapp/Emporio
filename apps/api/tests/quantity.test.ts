@@ -98,6 +98,32 @@ describe("ProductQuantityListCollection", () => {
 		expect(collection.getConditionedQuantityLists()).toEqual({ test: list });
 	});
 
+	describe("should return the correct amount of steps", () => {
+		test("with no list", () => {
+			const item = new ProductItem("foo", "bar");
+			expect(collection.getQuantityStepsFor(item, 1)).toEqual([1]);
+		});
+
+		test("with default list", () => {
+			const list = new QuantityList("test", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+			collection.addQuantityList(list);
+
+			const item = new ProductItem("foo", "bar");
+			expect(collection.getQuantityStepsFor(item, 3)).toEqual([3, 4, 5, 6, 7, 8, 9, 10, 11]);
+			expect(collection.getQuantityStepsFor(item, 4)).toEqual([4, 5, 6, 7, 8, 9, 10, 11, 12]);
+		});
+
+		test("with conditioned list", () => {
+			const list = new QuantityList("test", [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+			collection.addConditionedQuantityList(list);
+
+			const item = new ProductItem("foo", "bar");
+			// Min quantity is ignored for conditioned lists
+			expect(collection.getQuantityStepsFor(item, 3)).toEqual([3, 4, 5, 6, 7, 8, 9, 10, 11]);
+			expect(collection.getQuantityStepsFor(item, 4)).toEqual([3, 4, 5, 6, 7, 8, 9, 10, 11]);
+		});
+	});
+
 	describe("Test findConditionedQuantityListFor", () => {
 		test("with no list", () => {
 			const item = new ProductItem("foo", "bar");

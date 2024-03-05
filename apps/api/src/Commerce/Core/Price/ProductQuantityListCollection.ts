@@ -64,7 +64,7 @@ export class ProductQuantityListCollection {
 		let i = 0;
 		for (let step of steps) {
 			if (step >= minQuantity) {
-				return steps.slice(i, 9);
+				return steps.slice(i, i + 9);
 			}
 			i++;
 		}

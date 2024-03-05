@@ -50,6 +50,7 @@ import { StickerWizardStockCollection } from "../Attribute/Sticker/Stock/Sticker
 import { WhiteLayerAttribute } from "../Attribute/Sticker/WhiteLayerAttribute";
 import { TemplateAttribute } from "../Attribute/TemplateAttribute";
 import { WidthAttribute } from "../Attribute/WidthAttribute";
+import { StickerSquareMeterMinimumUnitValues } from "../MinUnit/StickerSquareMeterMinimumUnitValues";
 import { StickerPriceProvider } from "../Price/StickerPriceProvider";
 import { StickerQuantityListCollection } from "../Price/StickerQuantityListCollection";
 
@@ -78,6 +79,8 @@ export class CustomStickerFamily extends ProductFamily {
 
 	public constructor( productService: ProductService ) {
 		super( CustomStickerFamily.NAME, 0.1215, productService );
+
+		this.minimumUnitsValue = new StickerSquareMeterMinimumUnitValues();
 
 		this.relateConstraintCollection( StickerProductionContraintCollection.NAME );
 		this.relateFilterCollection( StickerWizardFilterCollection.NAME );

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { RateListType, RateProvider } from "../src/Commerce/Core/Price/RateProvider";
+import { RateProviderType, RateProvider } from "../src/Commerce/Core/Price/RateProvider";
 import { Rate } from "../src/Commerce/Core/Price/Rate";
 import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
 
@@ -28,8 +28,8 @@ describe("Test creating RateProvider", () => {
 
 	test("changing type", () => {
 		provider = new ProviderTest("test");
-		provider.setType(RateListType.ADDON);
-		expect(provider.getType()).toBe(RateListType.ADDON);
+		provider.setType(RateProviderType.ADDON);
+		expect(provider.getType()).toBe(RateProviderType.ADDON);
 	});
 });
 

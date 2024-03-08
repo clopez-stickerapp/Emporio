@@ -24,12 +24,13 @@ export class ProductQuantityListCollection {
 		this.quantityLists[quantityList.getName()] = quantityList;
 	}
 
-	public addConditionedQuantityList(quantityList: QuantityList): void {
+	public addConditionedQuantityList(quantityList: QuantityList): QuantityList {
 		if (this.conditionedQuantityLists[quantityList.getName()]) {
 			throw new Error("Cannot add conditioned quantity list. Quantity list '" + quantityList.getName() + "' already exists.");
 		}
 
 		this.conditionedQuantityLists[quantityList.getName()] = quantityList;
+		return quantityList;
 	}
 
 	public getQuantityStepsFor(productItem: ProductItem, minQuantity: number = 1): number[] {

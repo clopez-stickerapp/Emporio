@@ -93,7 +93,8 @@ describe("ProductQuantityListCollection", () => {
 
 	test("Test addConditionedQuantityList", () => {
 		const list = new QuantityList("test", [1, 2, 3]);
-		collection.addConditionedQuantityList(list);
+		const result = collection.addConditionedQuantityList(list);
+		expect(result).toBe(list);
 		expect(collection.getConditionedQuantityLists()).toEqual({ test: list });
 	});
 

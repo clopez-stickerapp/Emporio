@@ -4,8 +4,14 @@ import { ProductConditionBuilder } from "../../Condition/ProductConditionBuilder
 
 export class ProductAttrFilteredValues {
 	public conditionBuilder: ProductConditionBuilder;
+	protected values: AttributeValueMulti;
 
-	public constructor( public values: AttributeValueMulti, conditionRelationMode: string = ConditionRelations.AND ) {
+	public constructor( values: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ) {
+		this.values = values;
 		this.conditionBuilder = new ProductConditionBuilder( conditionRelationMode );
+	}
+
+	public getValues(): AttributeValueMulti {
+		return this.values;
 	}
 }

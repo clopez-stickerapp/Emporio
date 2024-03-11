@@ -124,7 +124,7 @@ export class ProductAttr {
 		return this.multiValue;
 	}
 
-	public getValueType(): string {
+	public getValueType(): ProductAttrValueType {
 		return this.valueType;
 	}
 

@@ -49,8 +49,7 @@ export class PhoneCaseProductFamily extends ProductFamily {
 			.withAttrValue( SheetTypeAttribute.ALIAS, "case" );
 	}
 
-	public validateUnits( productItem: ProductItem ): boolean {
-		productItem.setUnits( parseInt( productItem.getAttribute( QuantityAttribute.ALIAS ) ?? '0' ) );
-		return true;
+	public calculateUnits( productItem: ProductItem ): number {
+		return productItem.getAttribute<number>( QuantityAttribute.ALIAS ) ?? 0;
 	}
 }

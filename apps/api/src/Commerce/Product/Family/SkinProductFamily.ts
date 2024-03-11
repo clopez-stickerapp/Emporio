@@ -22,6 +22,7 @@ import { SheetTypeAttribute } from "../Attribute/Sticker/SheetTypeAttribute";
 import { StickerSheetNameAttribute } from "../Attribute/Sticker/StickerSheetNameAttribute";
 import { TemplateAttribute } from "../Attribute/TemplateAttribute";
 import { WidthAttribute } from "../Attribute/WidthAttribute";
+import { SkinPriceProvider } from "../Price/SkinPriceProvider";
 import { StickerQuantityListCollection } from "../Price/StickerQuantityListCollection";
 
 export class SkinProductFamily extends ProductFamily {
@@ -62,8 +63,7 @@ export class SkinProductFamily extends ProductFamily {
 			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.SKIN );
 	}
 
-	public validateUnits( productItem: ProductItem ): boolean {
-		productItem.setUnits( parseInt( productItem.getAttribute( QuantityAttribute.ALIAS ) ?? '0' ) );
-		return true;
+	public calculateUnits( productItem: ProductItem ): number {
+		return productItem.getAttribute<number>( QuantityAttribute.ALIAS ) ?? 0;
 	}
 }

@@ -58,7 +58,11 @@ describe("ProductDynamicValue", () => {
 	});
 });
 
-class DummyFamily extends ProductFamily {}
+class DummyFamily extends ProductFamily {
+	public calculateUnits(productItem: ProductItem): number {
+		throw new Error("Method not implemented.");
+	}
+}
 class DummyProvider extends ProductPriceProvider {
 	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
 		throw new Error("Method not implemented.");

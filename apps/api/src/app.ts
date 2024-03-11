@@ -11,7 +11,7 @@ export default async function app() {
 
 	const server = await buildServer();
 	await server.ready();
-	// server.swagger();
+	server.swagger();
 	await server.listen({
 		port,
 	});

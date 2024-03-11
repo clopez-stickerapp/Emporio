@@ -1,43 +1,43 @@
-// import fs from 'fs';
-// import path from 'path';
+import fs from 'fs';
+import path from 'path';
 import fastify from 'fastify';
 import pino from 'pino';
-// import AutoLoad from '@fastify/autoload';
+import AutoLoad from '@fastify/autoload';
 import formbody from '@fastify/formbody';
 import cors from '@fastify/cors';
-// import swagger from '@fastify/swagger';
-// import swaggerUi from '@fastify/swagger-ui';
-import { BadRequestError, NotFoundError } from '$app/utils';
+import { BadRequestError, NotFoundError } from './app/utils';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 
 async function buildServer() {
 	const server = fastify({
 		logger: pino({ level: process.env.LOG_LEVEL || 'info' }),
 	});
 
-	// await server.register(swagger, {});
+	await server.register(swagger, {});
 
-	// await server.register(swaggerUi, {
-	// 	routePrefix: '/documentation',
-	// });
+	await server.register(swaggerUi, {
+		routePrefix: '/documentation',
+	});
 
-	// server.register(AutoLoad, {
-	// 	dir: path.join(__dirname, 'plugins'),
-	// 	options: {},
-	// });
+	server.register(AutoLoad, {
+		dir: path.join(__dirname, 'plugins'),
+		options: {},
+	});
 
-	// const appFolder = path.join(__dirname, 'app');
-	// for (const appFeature of fs.readdirSync(appFolder)) {
-	// 	const appFeatureRoutes = path.join(appFolder, appFeature, 'routes');
-	// 	if (fs.existsSync(appFeatureRoutes)) {
-	// 		server.register(AutoLoad, {
-	// 			dir: appFeatureRoutes,
-	// 			options: {
-	// 				prefix: appFeature,
-	// 				dirNameRoutePrefix: true,
-	// 			},
-	// 		});
-	// 	}
-	// }
+	const appFolder = path.join(__dirname, 'app');
+	for (const appFeature of fs.readdirSync(appFolder)) {
+		const appFeatureRoutes = path.join(appFolder, appFeature, 'routes');
+		if (fs.existsSync(appFeatureRoutes)) {
+			server.register(AutoLoad, {
+				dir: appFeatureRoutes,
+				options: {
+					prefix: appFeature,
+					dirNameRoutePrefix: true,
+				},
+			});
+		}
+	}
 
 	server.register(formbody);
 	server.register(cors);
@@ -74,7 +74,7 @@ async function buildServer() {
 	}
 
 	await server.ready();
-	// server.swagger();
+	server.swagger();
 
 	return server;
 }

@@ -1,323 +1,510 @@
-import { AttributeValueMulti, AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
-import { ProductService } from "../../ProductService";
-import { ProductAttrFilterMode } from "../Attribute/Filter/ProductAttrFilterMode";
-import { ProductAttrFilteredValues } from "../Attribute/Filter/ProductAttrFilteredValues";
+import { AttributeValue, AttributeValueMulti, AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
+import { Attributes } from "../../../../Helper/Condition/Attributes";
+import { ProductAttrValueType } from "../Attribute/ProductAttrValueType";
 import { ProductItem } from "../Item/ProductItem";
-import { Product } from "../Product";
+import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
+import { ProductAttributeMap } from "./ProductAttrMap";
 
-export class ProductAttrComputer {
-	/**
-	 * TODO: IT IS IMPORTANT THAT THIS HELPER REPLICATES EXACT SAME BEHAVIOUR AS ProductAttrComputer.ts
-	 *
-	 * Until we move the whole ProductService to a Node server where backend and frontend can share same logic.
-	 */
-	public constructor( private ps: ProductService, public useFilters: boolean = true ) {}
+export class ProductAttrComputer
+{
+	protected attributes:               Record<string, ProductAttributeMap> = {};
+	protected attributesOutOfStock:     Attributes<string[]>                = {};
+	protected attributesFiltersMatched: Attributes<number>                  = {};
+	protected attributesPreferred:      Attributes                          = {};
+	protected attributesConstrained:    Attributes<AttributeValueMulti>     = {};
+	protected attributesSuggested:      Attributes<AttributeValueMulti>     = {};
+	protected attributesFiltered:       Attributes<AttributeValueMulti>     = {};
 
-	public getProduct( productItem: ProductItem ): Product {
-		return this.ps.findProduct( productItem.getProductFamilyName(), productItem.getProductName() );
-	}
-
-	public canHaveAttribute( productItem: ProductItem, attributeName: string ): boolean {
-		return this.getProduct( productItem ).canHaveAttr( attributeName );
-	}
+	constructor( public attrEvaluator: ProductAttrConditionEvaluator, public useFilters: boolean = true ) {}
 
 	/**
-	 * Checks if an attribute alias has a recommended value by the product.
-	 * Will also return true if the attribute itself is required by the family.
+	 * Resets old and feeds new attributes to the computer.
+	 * 
+	 * @param attributes The new attributes to be set.
 	 */
-	public hasProductRecommendedValuesFor( productItem: ProductItem, attributeName: string ): boolean {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		
-		if ( productFamily.isRequired( attributeName ) ) {
-			return true;
-		} else if ( productFamily.isSupported( attributeName ) ) {
-			return this.getProduct( productItem ).isAttrRecommendedFor( attributeName );
+	public reset( attributes: Record<string, ProductAttributeMap> ): void 
+	{
+		this.attributes = attributes;
+	}
+
+	/**
+	 * Evaluates filtered, constrained, suggested and out-of-stock values. 
+	 * 
+	 * @param productItem 
+	 */
+	public evaluate( productItem: ProductItem ): void 
+	{
+		this.evaluateFilteredValues( productItem );
+		this.evaluateConstrainedValues( productItem );
+		this.evaluateSuggestedValues();
+		this.evaluateOutOfStockValues();
+	}
+
+	protected evaluateFilteredValues( productItem: ProductItem ): void 
+	{
+		this.attributesFiltered = {};
+		this.attributesFiltersMatched = {};
+
+		for ( const attributeName in this.attributes )
+		{
+			this.attributesFiltered[ attributeName ] = this.attrEvaluator.filter( productItem.toTestableOneDimensionalArray(), attributeName, ( values, filtersMatched ) => {
+
+				this.attributesFiltersMatched[ attributeName ] = filtersMatched.length;
+
+				return values;
+				
+			} );
+		}
+	}
+
+	protected evaluateConstrainedValues( productItem: ProductItem ): void
+	{
+		this.attrEvaluator.clearDebug();
+
+		this.attributesConstrained = {};
+
+		for ( const attributeName in this.attributes )
+		{
+			const attr = this.attributes[ attributeName ];
+
+			this.attributesConstrained[ attributeName ] = [];
+
+			for ( const attributeValue in attr.valuesAndConstraints )
+			{
+				const result = this.attrEvaluator.canIChangeAttribute( productItem.toTestableOneDimensionalArray(), attributeName, attributeValue );
+				
+				if ( !result )
+				{
+					this.attributesConstrained[ attributeName ].push( attributeValue );
+				}
+			}
+		}
+	}
+
+	protected evaluateSuggestedValues(): void
+	{
+		this.attributesSuggested = {};
+
+		for ( const attributeName in this.attributes ) 
+		{
+			let values = this.useFilters ? this.getFilteredValues( attributeName ) : [];
+
+			if ( !values.length )
+			{
+				values = this.getAllValues( attributeName );
+			}
+
+			let preferredValue = this.getPreferredValue( attributeName );
+
+			if ( preferredValue !== null ) 
+			{
+				if ( !Array.isArray( preferredValue ) )
+				{
+					preferredValue = [ preferredValue ];
+				}
+
+				preferredValue = preferredValue.filter( value => !this.isConstrained( attributeName, value ) && this.canValueBe( attributeName, value ) && values.indexOf( value ) < 0 );
+				
+				values = values.concat( preferredValue );
+			}
+
+			this.attributesSuggested[ attributeName ] = values;
+		}
+	}
+
+	/**
+	 * We want to read in the out-of-stock values for "stockable" attributes
+	 * so that we can still show them but make them unselectable
+	 * and indicate to the customer that they are not currently in stock.
+	 */
+	protected evaluateOutOfStockValues(): void
+	{
+		this.attributesOutOfStock = {};
+
+		for ( const attributeName in this.attributes )
+		{
+			const values = this.attributes[ attributeName ].outOfStockValues;
+
+			if ( values.length )
+			{
+				this.attributesOutOfStock[ attributeName ] = values;
+			}
+		}
+	}
+
+	/**
+	 * Determines whether the value is suggested and not constrained.
+	 * 
+	 * @param attributeName 
+	 * @param value 
+	 */
+	public isAvailable( attributeName: string, value: AttributeValueSingle ): boolean 
+	{
+		return !this.isConstrained( attributeName, value ) && ( this.isInSuggestedValues( attributeName, value ) || this.isDynamicValue( attributeName ) );
+	}
+
+	/**
+	 * Determines whether the value is constrained or not suggested.
+	 * 
+	 * @param attributeName 
+	 * @param value 
+	 */
+	public isUnavailable( attributeName: string, value: AttributeValueSingle ): boolean 
+	{
+		return !this.isAvailable( attributeName, value );
+	}
+
+	/**
+	 * Gets the first suggested value that isn't constrained.
+	 * 
+	 * @param attributeName 
+	 */
+	public getDefaultValue( attributeName: string ): AttributeValue | null 
+	{
+		if ( this.isMultiValue( attributeName ) ) 
+		{
+			return [];
+		}
+
+		return this.getSuggestedValues( attributeName ).find( value => !this.isConstrained( attributeName, value ) ) ?? null;
+	}
+
+	/**
+	 * Gets all values.
+	 * 
+	 * @param attributeName 
+	 * @returns 
+	 */
+	public getAllValues( attributeName: string ): AttributeValueMulti 
+	{
+		if ( this.attributes.hasOwnProperty( attributeName ) ) 
+		{
+			return Object.keys( this.attributes[ attributeName ].valuesAndConstraints ).map( attrValueRaw => {
+
+				if ( this.isBooleanType( attributeName ) ) 
+				{
+					try
+					{
+						return JSON.parse( attrValueRaw );
+					}
+					catch ( e )
+					{
+						// Do nothing
+					}
+				}
+				else if ( this.isIntType( attributeName ) )
+				{
+					return parseInt( attrValueRaw );
+				}
+				else if ( this.isFloatType( attrValueRaw ) )
+				{
+					return parseFloat( attrValueRaw );
+				}
+
+				return attrValueRaw;
+			} );
+		}
+
+		return [];
+	}
+
+	/**
+	 * Iterates through suggested values and returns the highest non-constrained number.
+	 * 
+	 * @param attributeName 
+	 */
+	public getHighestAvailableValue( attributeName: string ): number | null
+	{
+		const values = this.getSuggestedValues( attributeName ).filter( value => !this.isConstrained( attributeName, value ) );
+
+		const highestValue = Math.max( ...values.map( value => parseFloat( String( value ) ) ) );
+
+		return isNaN( highestValue ) ? null : highestValue;
+	}
+
+	/**
+	 * Iterates through suggested values and returns the lowest non-constrained number.
+	 * 
+	 * @param attributeName
+	 */
+	public getLowestAvailableValue( attributeName: string ): number | null
+	{
+		const values = this.getSuggestedValues( attributeName ).filter( value => !this.isConstrained( attributeName, value ) );
+
+		const lowestValue = Math.min( ...values.map( value => parseFloat( String( value ) ) ) );
+
+		return isNaN( lowestValue ) ? null : lowestValue;
+	}
+
+	/**
+	 * Suggested values are filtered values, but if filtered values are empty it will fallback to all values.
+	 * 
+	 * OBS! Can contain constrained values.
+	 * 
+	 * @param attributeName 
+	 */
+	public getSuggestedValues( attributeName: string ): AttributeValueMulti
+	{
+		if ( this.attributesSuggested.hasOwnProperty( attributeName ) )
+		{
+			return this.attributesSuggested[ attributeName ];
+		}
+
+		return [];
+	}
+
+	/**
+	 * @param attributeName 
+	 */
+	public getFilteredValues( attributeName: string ): AttributeValueMulti
+	{
+		if ( this.attributesFiltered.hasOwnProperty( attributeName ) )
+		{
+			return this.attributesFiltered[ attributeName ];
+		}
+
+		return [];
+	}
+
+	/**
+	 * Determines whether the attribute has been filtered.
+	 * 
+	 * @param attributeName 
+	 */
+	public hasBeenFiltered( attributeName: string ): boolean
+	{
+		if ( this.attributesFiltersMatched.hasOwnProperty( attributeName ) )
+		{
+			return this.attributesFiltersMatched[ attributeName ] > 0;
 		}
 
 		return false;
 	}
 
-	/**
-	 * Checks if an attribute alias has a required value by the product.
-	 * Will also return true if the attribute is required by the family.
-	 */
-	public isAttrRequired( productItem: ProductItem, attributeName: string ): boolean {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		
-		if ( productFamily.isRequired( attributeName ) ) {
-			return true;
-		} else if ( productFamily.isSupported( attributeName ) ) {
-			return this.getProduct( productItem ).isAttrStrictlyRequiredFor( attributeName );
-		}
-
-		return false;
+	public hasPreferredValue( attributeName: string ): boolean
+	{
+		return this.attributesPreferred.hasOwnProperty( attributeName );
 	}
 
-	public getAllValues( attrUID: string ): AttributeValueSingle[] {
-		return this.ps.retrieveAttribute( attrUID ).getValues().map( attrValue => attrValue.getValue() );
+	public removePreferredValue( attributeName: string, attributeValue: AttributeValueSingle ): void
+	{
+		const preferredValue = this.getPreferredValue( attributeName );
+
+		if ( this.isMultiValue( attributeName ) && Array.isArray( preferredValue ) )
+		{
+			this.setPreferredValue( attributeName, preferredValue.filter( value => value != attributeValue ) );
+		}
+		else
+		{
+			delete this.attributesPreferred[ attributeName ];
+		}
 	}
 
-	public getDefaultAttrValueOptionsForProduct( product: Product, attrAlias: string ): Record<string, AttributeValueSingle> {
-		const attrValues: Record<string, AttributeValueSingle> = {};
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
-		const attr = product.getProductService().retrieveAttribute( attrUID );
-		let withAttrValues = product.getAttrValue( attrAlias ) ? product.getAttrValue( attrAlias ) : [];
-
-		if ( !Array.isArray( withAttrValues ) ) {
-			withAttrValues = [ withAttrValues ]
-		}
-
-		for ( const attrRawValue of withAttrValues ) {
-			if ( attr.isDynamicValue() ) {
-				attrValues[ attrRawValue.toString() ] = attrRawValue;
-			} else {
-				const attrValue = this.ps.findAttributeValue( attrUID, attrRawValue );
-				if ( attrValue ) {
-					attrValues[ attrValue.getValue().toString() ] = attrValue.getValue();
-				}
-			}
-		}
-
-		return attrValues;
-	}
-
-	public getAllAttrValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti {
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
-		const attrValues = this.getDefaultAttrValueOptionsForProduct( product, attrAlias );
-
-		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) {
-			for ( const attrValue of this.ps.retrieveAttribute( attrUID ).getValues() ) {
-				let valueAsIndexable = attrValue.getValue().toString();
-				if ( !( valueAsIndexable in attrValues ) ) {
-					attrValues[ valueAsIndexable ] = attrValue.getValue();
-				}
-			}
-		}
-
-		return Object.values( attrValues );
-	}
-
-	/**
-	 * WARNING! This needs to be on pair with ProductAttrComputer.ts
-	 */
-	public getDefaultValue( productItem: ProductItem, attributeName: string ): AttributeValueSingle | null {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const attrUID = productFamily.findAttrUIDByAlias( attributeName );
-		const attr = this.ps.retrieveAttribute( attrUID );
-
-		if ( attr && productFamily ) {
-			let values = this.getSuggestedValues( productItem,  attributeName );
-			values = this.removeConstrainedValues( productItem, attributeName, values );
-			return values.shift() ?? null;
+	public getPreferredValue( attributeName: string ): AttributeValue | null
+	{
+		if ( this.hasPreferredValue( attributeName ) )
+		{
+			return this.attributesPreferred[ attributeName ];
 		}
 
 		return null;
 	}
 
 	/**
-	 * WARNING! This needs to be on pair with ProductAttrComputer.ts
-	 */
-	public getLowestAvailableValue( productItem: ProductItem, attributeName: string ): number | null {
-		// TODO: return number only?
-		let values = this.getSuggestedValues( productItem, attributeName );
-		values = this.removeConstrainedValues( productItem, attributeName, values );
-		return values.length ? Math.min( ...values.map( value => parseInt( String( value ) ) ) ) : null;
-		
-		// let lowestValue: number | null = null;
-
-		// if ( values.length ) {
-		// 	for ( const value of values ) {
-		// 		let valueAsInt = parseInt( String( value ) );
-		// 		if ( lowestValue === null || valueAsInt < lowestValue ) {
-		// 			lowestValue = valueAsInt;
-		// 		}
-		// 	}
-		// }
-
-		// return lowestValue;
-	}
-
-	/**
-	 * WARNING! This needs to be on pair with ProductAttrComputer.ts
-	 */
-	public getHighestAvailableValue( productItem: ProductItem, attributeName: string ): number | null {
-		// TODO: return number only?
-		let values = this.getSuggestedValues( productItem, attributeName );
-		values = this.removeConstrainedValues( productItem, attributeName, values );
-		return values.length ? Math.max( ...values.map( value => parseInt( String( value ) ) ) ) : null;
-
-		// let highestValue: number | null = null;
-		
-		// if ( values.length ) {
-		// 	for ( const value of values ) {
-		// 		let valueAsInt = parseInt( String( value ) );
-		// 		if ( highestValue === null || valueAsInt > highestValue ) {
-		// 			highestValue = valueAsInt;
-		// 		}
-		// 	}
-		// }
-
-		// return highestValue;
-	}
-
-	/**
-	 * WARNING! This needs to be on pair with ProductAttrComputer.ts
+	 * Sets a preferred value. Will be available as a suggested value if not constrained. 
 	 * 
-	 * Suggested values are filtered values, but if filtered values are empty
-	 * it will fallback to all non constrained values.
+	 * @param attributeName 
+	 * @param attributeValue 
 	 */
-	public getSuggestedValues( productItem: ProductItem, attributeName: string ): AttributeValueMulti {
-		// Will throw errors
-		const values = this.getFilteredValues( productItem, attributeName );
-
-		// Fallback to all values if filter didn't result in any
-		return values.length ? values : this.getAllAttrValueOptionsForProduct( this.getProduct( productItem ), attributeName );
+	public setPreferredValue( attributeName: string, attributeValue: AttributeValue ): void
+	{
+		this.attributesPreferred[ attributeName ] = attributeValue;
 	}
 
-	/**
-	 * WARNING! This needs to be on pair with ProductAttrComputer.ts
-	 */
-	public getFilteredValues( productItem: ProductItem, attributeAlias: string ): AttributeValueMulti {
-		if ( !this.useFilters ) {
-			return [];
-		}
-
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const filter = productFamily.getFilterCollection()?.getFilterFor( attributeAlias );
-		
-		if ( filter ) {
-			let successfulFilters: Record<string, ProductAttrFilteredValues> = {};
-
-			for ( const productAttrFilteredValues of filter.getAllFilters() ) {
-				try {
-					if ( productAttrFilteredValues.conditionBuilder.testOnItem( productItem ) ) {
-						let complexityScore = productAttrFilteredValues.conditionBuilder.calculateComplexityScore();
-					
-						while ( complexityScore in successfulFilters ) {
-							complexityScore++;
-						}
-
-						successfulFilters[ complexityScore ] = productAttrFilteredValues;
-					}
-				} catch ( error ) {
-					// Do nothing about this
-				}
-			}
-
-			if ( Object.values( successfulFilters ).length ) {
-				switch ( filter.mode ) {
-					case ProductAttrFilterMode.MODE_MERGE_ALL_WINNERS:
-						const result: AttributeValueMulti = Object.values( successfulFilters ).flatMap( filter => filter.getValues() );
-
-						return this.removeInvalidValues( productItem, attributeAlias, [ ...new Set( result ) ] );
-					
-					case ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS:
-					default:
-
-						// krsort($successfulFilters, SORT_NUMERIC);
-						// /** @var ProductAttrFilteredValues $winner */
-						// winner = array_shift(successfulFilters);
-
-						const winner = Object.entries( successfulFilters ).sort( ( [ cs1 ], [ cs2 ] ) => Number( cs2 ) - Number( cs1 ) )[ 0 ][ 1 ];
-
-						return this.removeInvalidValues( productItem, attributeAlias, winner.getValues() );
-				}
-			}
+	public getConstrainedValues( attributeName: string ): AttributeValueMulti
+	{
+		if ( this.attributesConstrained.hasOwnProperty( attributeName ) )
+		{
+			return this.attributesConstrained[ attributeName ];
 		}
 
 		return [];
 	}
 
-	public getConstrainedValues( productItem: ProductItem, attributeName: string ): AttributeValueMulti {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const attrUID = productFamily.findAttrUIDByAlias( attributeName );
-
-		let values: AttributeValueMulti = [];
-		const constraintCollection = productFamily.getConstraintsCollection();
-		
-		if ( constraintCollection ) {
-			for ( const value of this.ps.retrieveAttribute( attrUID ).getValues() ) {
-				try {
-					let result = constraintCollection.test( attributeName, value.getValue(), productItem );
-					if ( result === false ) {
-						values.push( value.getValue() );
-					}
-				}
-				catch ( error ) {
-					// Do nothing about this error
-				}
-			}
+	public getOutOfStockValues( attributeName: string ): AttributeValueMulti
+	{
+		if ( this.attributesOutOfStock.hasOwnProperty( attributeName ) )
+		{
+			return this.attributesOutOfStock[ attributeName ];
 		}
 
-		return values;
+		return [];
 	}
 
-	public getOutOfStockValues( productItem: ProductItem, attributeName: string ): string[] {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const outOfStockCollection = productFamily.getStockCollection();
-		return outOfStockCollection?.getOutOfStockFor( attributeName )?.getOutOfStock() ?? [];
+	public getIcons( attributeName: string ): Record<string, string>
+	{
+		return this.attributes[ attributeName ]?.icons ?? {};
 	}
 
 	/**
-	 * Removes values that aren't registered in that attribute (or aren't matching product description)
-	 * unless the attribute is marked as "dynamic value" which can have
-	 * basically what ever value as long as value type is matching.
+	 * Determines whether the attribute is supported.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is supported, false otherwise.
 	 */
-	public removeInvalidValues( productItem: ProductItem, attributeAlias: string, values: AttributeValueMulti ): AttributeValueMulti {
-		// TODO: Check for type as well?
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const attrUID = productFamily.findAttrUIDByAlias( attributeAlias );
-		const attr = this.ps.retrieveAttribute( attrUID );
+	public isSupported( attributeName: string ): boolean
+	{
+		return this.attributes.hasOwnProperty( attributeName );
+	}
+
+	/**
+	 * Determines whether the attribute is required.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is required, false otherwise.
+	 */
+	public isRequired( attributeName: string ): boolean
+	{
+		return this.isSupported( attributeName ) && this.attributes[ attributeName ]?.isRequired;
+	}
+
+	/**
+	 * Determines whether the attribute supports multiple values.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute supports multiple values, false otherwise.
+	 */
+	public isMultiValue( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.isMultiValue;
+	}
+
+	/**
+	 * Determines whether the attribute is a dynamic value.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is a dynamic value, false otherwise.
+	 */
+	public isDynamicValue( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.isDynamicValue;
+	}
+
+	/**
+	 * Determines whether the attribute is of type boolean.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is of type boolean, false otherwise.
+	 */
+	public isBooleanType( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.BOOL;
+	}
+
+	/**
+	 * Determines whether the attribute is of type integer.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is of type integer, false otherwise.
+	 */
+	public isIntType( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.INT;
+	}
+
+	/**
+	 * Determines whether the attribute is of type float.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is of type float, false otherwise.
+	 */
+	public isFloatType( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.FLOAT;
+	}
+
+	/**
+	 * Determines whether the attribute is of type number (float or integer).
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is of type number, false otherwise.
+	 */
+	public isNumberType( attributeName: string ): boolean
+	{
+		return this.isIntType( attributeName ) || this.isFloatType( attributeName );
+	}
+
+	public isInFilteredValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		const filteredValues = this.getFilteredValues( attributeName );
 		
-		if ( !attr.isDynamicValue() ) {
-			const allValueOptions = this.getAllAttrValueOptionsForProduct( this.getProduct( productItem ), attributeAlias );
-			return values.filter( ( attrValue ) => allValueOptions.includes( attrValue ) ); // return array_filter($values, fn ($v, $k) => in_array($v, $allValueOptions), ARRAY_FILTER_USE_BOTH);
+		if ( filteredValues.length )
+		{
+			return filteredValues.indexOf( attributeValue ) >= 0;
 		}
 
-		return values;
+		return false;
 	}
 
-	public removeConstrainedValues( productItem: ProductItem, attributeName: string, values: AttributeValueMulti ): AttributeValueMulti {
-		const constrainedValues = this.getConstrainedValues( productItem, attributeName );
+	public isInSuggestedValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		const suggestedValues = this.getSuggestedValues( attributeName );
+		
+		if ( suggestedValues.length )
+		{
+			return suggestedValues.indexOf( attributeValue ) >= 0;
+		}
 
-		return values.filter( attrValue => !constrainedValues.includes( attrValue ) ); // return array_diff( $values, this.getConstrainedValues( productItem, attributeName ) );
+		return false;
 	}
 
-	public isConstrained( productItem: ProductItem, attributeName: string, value: AttributeValueSingle ): boolean {
-		return this.getConstrainedValues( productItem, attributeName ).includes( value );
+	public isInOutOfStockValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		const outOfStockValues = this.getOutOfStockValues( attributeName );
+
+		if ( outOfStockValues.length )
+		{
+			return outOfStockValues.indexOf( attributeValue ) >= 0;
+		}
+
+		return false;
 	}
 
-	public isOutOfStock( productItem: ProductItem, attributeName: string, value: string ): boolean {
-		return this.getOutOfStockValues( productItem, attributeName ).includes( value );
+	public canValueBe( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		if ( !this.isDynamicValue( attributeName ) ) 
+		{
+			return this.attributes[ attributeName ]?.valuesAndConstraints.hasOwnProperty( attributeValue.toString() );
+		}
+
+		return true;
 	}
 
-	public isAvailable( productItem: ProductItem, attributeName: string, value: AttributeValueSingle ): boolean {
-		return !this.isConstrained( productItem, attributeName, value ) && ( this.isDynamicValue( productItem, attributeName ) || this.isInSuggestedValues( productItem, attributeName, value ) );
+	public isConstrained( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		let disabledValues = this.getConstrainedValues( attributeName );
+		
+		if ( disabledValues.length )
+		{
+			return disabledValues.indexOf( attributeValue ) >= 0 || disabledValues.indexOf( String( attributeValue ) ) >= 0;
+		}
+
+		return false;
 	}
 
-	public isUnavailable( productItem: ProductItem, attributeName: string, value: AttributeValueSingle ): boolean {
-		return !this.isAvailable( productItem, attributeName, value );
+	/* SET AND GET */
+	public get debugList(): string[]
+	{
+		return this.attrEvaluator.debugList;
 	}
 
-	public isDynamicValue( productItem: ProductItem, attributeName: string ): boolean {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const attrUID = productFamily.findAttrUIDByAlias( attributeName );
-
-		return this.ps.retrieveAttribute( attrUID ).isDynamicValue();
+	public set debugEnabled( value: boolean )
+	{
+		this.attrEvaluator.debugEnabled = value;
 	}
 
-	public isMultiValue( productItem: ProductItem, attributeName: string ): boolean {
-		const productFamily = this.ps.retrieveProductFamily( productItem.getProductFamilyName() );
-		const attrUID = productFamily.findAttrUIDByAlias( attributeName );
-
-		return this.ps.retrieveAttribute( attrUID ).isMultiValue();
-	}
-
-	public isInSuggestedValues( productItem: ProductItem, attributeName: string, value: AttributeValueSingle ): boolean {
-		return this.getSuggestedValues( productItem, attributeName ).includes( value );
-	}
-
-	public isInFilteredValues( productItem: ProductItem, attributeName: string, value: AttributeValueSingle ): boolean {
-		return this.getFilteredValues( productItem, attributeName ).includes( value );
+	public get debugEnabled(): boolean
+	{
+		return this.attrEvaluator.debugEnabled;
 	}
 }

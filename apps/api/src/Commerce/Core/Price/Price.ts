@@ -15,7 +15,7 @@ export function calculateBreakdownSum(breakdown: Record<string, number>){
 export function excludeVATFromPrice(price: Price, vatPercentage: number): Price {
 	//remove vat percentage from total and breakdown
 	let total = excludeVAT(price.total, vatPercentage);
-	let breakdown = {};
+	let breakdown: Record<string,number> = {};
 
 	for (let [key, value] of Object.entries(price.breakdown ?? {})) {
 		breakdown[key] = excludeVAT(value, vatPercentage);
@@ -31,7 +31,7 @@ export function excludeVATFromPrice(price: Price, vatPercentage: number): Price 
 export function toMajorUnits(price: Price): Price {
 	//convert to major units
 	let total = price.total / 100;
-	let breakdown = {};
+	let breakdown: Record<string, number> = {};
 
 	for (let [key, value] of Object.entries(price.breakdown ?? {})) {
 		breakdown[key] = value / 100;
@@ -47,11 +47,14 @@ export function toMajorUnits(price: Price): Price {
 export function formatPrice(price: Price, lang: string, maxDecimals: number): Record<string, any>{
 	let locale = getLocale(lang);
 
+	let breakdown: Record<string, string> = {};
+	let breakdownFormatted: Record<string, string> = {};
+
 	let result = {
 		total: price.total.toFixed(maxDecimals),
-		breakdown: {},
+		breakdown,
 		totalFormatted: formatCurrency(price.total, { currency: price.currency, locale, maxDecimals }),
-		breakdownFormatted: {},
+		breakdownFormatted,
 		currency: price.currency
 	}
 

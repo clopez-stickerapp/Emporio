@@ -61,7 +61,7 @@ export class ProductItem {
 
 	// Should be rename to "toTestableObject"
 	public toTestableOneDimensionalArray(): Attributes{
-		const result = {};
+		const result: Record<string, AttributeValue> = {};
 
 		result["item.productFamilyName"] = this.productFamilyName;
 		result["item.productName"] = this.productName;

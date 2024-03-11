@@ -1,6 +1,6 @@
 import { Currencies } from "../Currency/Currency";
 
-const localeCodes = {
+const localeCodes: { [key:string]: string } = {
 	us: 'en-US',
 	se: 'sv-SE',
 	dk: 'da-DK',
@@ -17,7 +17,7 @@ const localeCodes = {
 	pl: 'pl-PL',
 };
 
-const currencies = {
+const currencies: { [key:string]: Currencies } = {
 	us: Currencies.USD,
 	se: Currencies.SEK,
 	dk: Currencies.DKK,

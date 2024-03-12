@@ -14,7 +14,14 @@ async function buildServer() {
 		logger: pino({ level: process.env.LOG_LEVEL || 'info' }),
 	});
 
-	await server.register(swagger, {});
+	await server.register(swagger, {
+		openapi:{
+			info: {
+				title: 'StickerApp API',
+				version: '1.0.0',
+			},
+		}
+	});
 
 	await server.register(swaggerUi, {
 		routePrefix: '/documentation',

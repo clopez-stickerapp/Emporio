@@ -1,4 +1,4 @@
-import { AttributeValueSingle } from "../../Helper/Condition/AttributeValue";
+import { AttributeValueMulti, AttributeValueSingle } from "../../Helper/Condition/AttributeValue";
 import { ProductPriceProvider } from "./Price/ProductPriceProvider";
 import { ProductQuantityListCollection } from "./Price/ProductQuantityListCollection";
 import { ProductAttrConstraintCollection } from "./Product/Attribute/Constraint/ProductAttrConstraintCollection";
@@ -7,6 +7,7 @@ import { ProductAttrIconCollection } from "./Product/Attribute/Icon/ProductAttrI
 import { ProductAttr } from "./Product/Attribute/ProductAttr";
 import { ProductAttrValue } from "./Product/Attribute/ProductAttrValue";
 import { ProductAttrStockCollection } from "./Product/Attribute/Stock/ProductAttrStockCollection";
+import { ProductItem } from "./Product/Item/ProductItem";
 import { Product } from "./Product/Product";
 import { ProductFamily } from "./Product/ProductFamily";
 
@@ -218,5 +219,72 @@ export class ProductService {
 		}
 
 		this.productSkus.push(sku);
+	}
+
+	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
+	{
+		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
+		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
+
+		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) 
+		{
+			for ( const attrValue of this.retrieveAttribute( attrUID ).getValues() ) 
+			{
+				if ( !attrValues.includes( attrValue.getValue() ) ) 
+				{
+					attrValues.push( attrValue.getValue() );
+				}
+			}
+		}
+
+		return attrValues;
+	}
+
+	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
+	{
+		const attrValues: AttributeValueMulti = [];
+		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
+		const attr = product.getProductService().retrieveAttribute( attrUID );
+		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
+
+		if ( !Array.isArray( withAttrValues ) ) 
+		{
+			withAttrValues = [ withAttrValues ]
+		}
+
+		for ( const attrRawValue of withAttrValues ) 
+		{
+			if ( attr.isDynamicValue() ) 
+			{
+				attrValues.push( attrRawValue );
+			} 
+			else 
+			{
+				const attrValue = this.retrieveAttribute( attrUID ).getAttrValue( attrRawValue );
+				
+				if ( attrValue ) 
+				{
+					attrValues.push( attrValue.getValue() );
+				}
+			}
+		}
+
+		return attrValues;
+	}
+
+	public hasProductRecommendedValuesFor( productItem: ProductItem, attributeName: string ): boolean 
+	{
+		const productFamily = this.retrieveProductFamily( productItem.getProductFamilyName() );
+		
+		if ( productFamily.isRequired( attributeName ) ) 
+		{
+			return true;
+		} 
+		else if ( productFamily.isSupported( attributeName ) ) 
+		{
+			return this.findProduct( productItem.getProductFamilyName(), productItem.getProductName() ).isAttrRecommendedFor( attributeName );
+		}
+
+		return false;
 	}
 }

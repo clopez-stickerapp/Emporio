@@ -62,8 +62,8 @@ export class ProductHelper {
 		return this.getProductFromItem( productItem ).canHaveAttr( attributeName );
 	}
 
-	public getAttributeMap( productItem: ProductItem, includeFilters: boolean = true ): ProductAttrMap {
-		return new ProductAttrMap( this.ps, this.getProductFromItem( productItem ), includeFilters );
+	public getAttributeMap( product: Product, includeFilters: boolean = true ): ProductAttrMap {
+		return new ProductAttrMap( this.ps, product, includeFilters );
 	}
 
 	public getProductFromItem( productItem: ProductItem ): Product {

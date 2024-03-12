@@ -8,8 +8,13 @@ import { getVatPercentage } from "./Commerce/Tax/Vat";
 export class Emporio {
 	public productService: ProductService;
 
-	public constructor() {
-		this.productService = new StickerAppProductService();
+	public constructor(service: ProductService = new StickerAppProductService()) {
+		this.productService = service;
+	}
+
+	public calculateUnits(productItem: ProductItem): number {
+		let productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
+		return productFamily.calculateUnits(productItem);
 	}
 
 	public calculatePrice(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Price {

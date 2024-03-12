@@ -55,6 +55,8 @@ async function buildServer() {
 			reply.status(404).send('Resource not found');
 		} else if (error instanceof BadRequestError) {
 			reply.status(400).send(error.message);
+		} else if (error instanceof SyntaxError) {
+			reply.status(400).send(error.message);
 		} else {
 			server.log.error(error);
 			reply.status(500).send('Internal server error');

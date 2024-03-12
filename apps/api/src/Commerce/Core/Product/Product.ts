@@ -79,7 +79,7 @@ export class Product {
 		return false;
 	}
 
-	public getAttrValue(attrName: string): AttributeValue {
+	public getAttrValue(attrName: string): AttributeValue | undefined {
 		return this.attrMap[attrName];
 	}
 

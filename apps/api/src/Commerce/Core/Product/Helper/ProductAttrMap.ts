@@ -3,7 +3,7 @@ import { ProductService } from "../../ProductService";
 import { ProductAttrFilterMode } from "../Attribute/Filter/ProductAttrFilterMode";
 import { ProductAttrValueType } from "../Attribute/ProductAttrValueType";
 import { Product } from "../Product";
-import { ProductHelper } from "./ProductHelper";
+import { ProductServiceHelper } from "../../ProductServiceHelper";
 
 export type ProductAttributeMap = {
 	alias: string,
@@ -26,16 +26,14 @@ export type ProductAttributeFilter = {
 
 export class ProductAttrMap {
 	protected map:            Record<string, ProductAttributeMap> = {};
-	protected ps:             ProductService;
 	protected product:        Product;
-	protected productHelper:  ProductHelper;
+	protected psHelper:       ProductServiceHelper;
 	protected includeFilters: boolean;
 
 	public constructor( ps: ProductService, product: Product, includeFilters: boolean = true ) {
-		this.ps              = ps;
 		this.product         = product;
 		this.includeFilters  = includeFilters;
-		this.productHelper   = new ProductHelper( this.ps );
+		this.psHelper        = new ProductServiceHelper( ps );
 
 		for ( const [ attrAlias, attrUID ] of Object.entries( product.getProductFamily().getAttributes() ) ) {
 			this.run( attrUID, attrAlias );
@@ -51,8 +49,8 @@ export class ProductAttrMap {
 		const constraintsCollection   = this.product.getProductFamily().getConstraintsCollection();
 		const iconsCollection         = this.product.getProductFamily().getIconsCollection();
 		const outOfStockAttrValues    = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrAlias )?.getOutOfStock() ?? [];
-		const attr                    = this.ps.retrieveAttribute( attrUID );
-		const allPossibleValueOptions = this.productHelper.getAllAttributeValueOptionsForProduct( this.product, attrAlias );
+		const attr                    = this.psHelper.getProductService().retrieveAttribute( attrUID );
+		const allPossibleValueOptions = this.psHelper.getAllAttributeValueOptionsForProduct( this.product, attrAlias );
 
 		let icons: Record<string, string> = {};
 

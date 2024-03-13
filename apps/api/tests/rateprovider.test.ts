@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { RateProviderType, RateProvider } from "../src/Commerce/Core/Price/RateProvider";
 import { Rate } from "../src/Commerce/Core/Price/Rate";
 import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
-
+import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 class ProviderTest extends RateProvider {
 	public getRate(productItem: ProductItem): Rate {
 		return new Rate(productItem.getAttribute("test-attribute") as number * 2);
@@ -36,7 +36,7 @@ describe("Test creating RateProvider", () => {
 describe("Test test function", () => {
 	test("with applicable condition", () => {
 		provider = new ProviderTest("test");
-		provider.conditions.addCondition("item.attributes.test-attribute", ">", 0);
+		provider.conditions.addCondition("item.attributes.test-attribute", ConditionOperators.GREATER_THAN, 0);
 
 		item = new ProductItem("foo", "bar");
 		item.setAttribute("test-attribute", 5);
@@ -46,7 +46,7 @@ describe("Test test function", () => {
 
 	test("with inapplicable condition", () => {
 		provider = new ProviderTest("test");
-		provider.conditions.addCondition("item.attributes.test-attribute", ">", 0);
+		provider.conditions.addCondition("item.attributes.test-attribute", ConditionOperators.GREATER_THAN, 0);
 
 		item = new ProductItem("foo", "bar");
 		item.setAttribute("test-attribute", 0);
@@ -62,5 +62,5 @@ test("Test getRate function", () => {
 	item = new ProductItem("foo", "bar");
 	item.setAttribute("test-attribute", 5);
 
-	expect(provider.getRate(item).getValue()).toBe(10);
+	expect(provider.getRate(item, 0).getValue()).toBe(10);
 });

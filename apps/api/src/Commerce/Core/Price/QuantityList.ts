@@ -10,7 +10,7 @@ import { ProductItem } from "../Product/Item/ProductItem";
  */
 export class QuantityList {
 	protected name: string;
-	protected minQuantity: number;
+	protected minQuantity: number = Number.MAX_SAFE_INTEGER;
 	protected quantities: number[];
 	public conditions: ProductConditionBuilder;
 

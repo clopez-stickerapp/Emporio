@@ -43,7 +43,7 @@ export class ProductDynamicValue {
 
 		if(Object.keys(result).length > 0){
 			let sortedResult = Object.keys(result).sort((a, b) => parseFloat(b) - parseFloat(a));
-			return result[sortedResult[0]];
+			return result[parseFloat(sortedResult[0])];
 		}
 
 		return this.defaultValue;

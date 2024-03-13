@@ -180,9 +180,11 @@ export abstract class ProductFamily {
 		return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
 	}
 
-	public validateUnits(productItem: ProductItem): boolean {
-		return true;
+	public validateUnits(productItem: ProductItem): void{
+		productItem.setUnits(this.calculateUnits(productItem));
 	}
+
+	public abstract calculateUnits(productItem: ProductItem): number;
 
 	public getMinimumQuantity(productItem: ProductItem): number {
 		return 1;

@@ -55,13 +55,16 @@ export class ProductItem {
 		this.units = units;
 	}
 
-	public fromJSON(json: string): ProductItem {
-		throw new Error("Not implemented");
+	public static fromJSON(json: Record<string, any>): ProductItem {
+		const item = new ProductItem(json["productFamilyName"], json["productName"]);
+		item.setAttributes(json["attributes"]);
+		item.setUnits(json["units"]);
+		return item;
 	}
 
 	// Should be rename to "toTestableObject"
 	public toTestableOneDimensionalArray(): Attributes{
-		const result = {};
+		const result: Record<string, AttributeValue> = {};
 
 		result["item.productFamilyName"] = this.productFamilyName;
 		result["item.productName"] = this.productName;

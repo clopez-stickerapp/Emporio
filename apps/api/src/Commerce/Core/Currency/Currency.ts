@@ -44,7 +44,7 @@ export type ConversionRates = { [currency in Currencies]: number };
 export class CurrencyConverter {
 	constructor(private readonly conversionRates: ConversionRates = getConversionRates()) { }
 
-	public convert(amount: number, from: string, to: string): number {
+	public convert(amount: number, from: Currencies, to: Currencies): number {
 		if (from === to) {
 			return amount;
 		}

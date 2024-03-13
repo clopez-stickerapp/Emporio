@@ -24,9 +24,7 @@ export class FeeFamily extends ProductFamily {
 			.withAttrValue( SheetTypeAttribute.ALIAS, "text" );
 	}
 
-	public validateUnits( productItem: ProductItem ): boolean {
-		productItem.setUnits( parseInt( productItem.getAttribute( QuantityAttribute.ALIAS ) ?? '0' ) );
-
-		return true;
+	public calculateUnits(productItem: ProductItem): number {
+		return productItem.getAttribute<number>( QuantityAttribute.ALIAS ) ?? 0;
 	}
 }

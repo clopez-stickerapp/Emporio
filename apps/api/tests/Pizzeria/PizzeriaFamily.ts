@@ -1,3 +1,5 @@
+import { ProductItem } from "$/Commerce/Core/Product/Item/ProductItem";
+import { QuantityAttribute } from "$/Commerce/Product/Attribute/QuantityAttribute";
 import { ProductFamily } from "../../src/Commerce/Core/Product/ProductFamily";
 import { ProductService } from "../../src/Commerce/Core/ProductService";
 import { CrustAttribute } from "./Attributes/CrustAttribute";
@@ -66,5 +68,9 @@ export class PizzeriaFamily extends ProductFamily {
 				IngredientAttribute.GARLIC,
 				IngredientAttribute.WALNUT
 			] );
+	}
+
+	public calculateUnits( productItem: ProductItem ): number {
+		return productItem.getAttribute<number>( QuantityAttribute.ALIAS ) ?? 0;
 	}
 }

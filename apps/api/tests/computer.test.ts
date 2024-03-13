@@ -135,7 +135,6 @@ describe( 'Test If The Attribute Value Is', () => {
 			expect( computer.isConstrained( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
 		} );
 	} );
-	console.log(computer.getAllValues( IngredientAttribute.NAME ));
 	
 	describe( 'In Filtered Values', () => {
 		test( 'When The Attribute Value Is In Filtered Values', () => {

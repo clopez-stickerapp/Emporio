@@ -38,14 +38,9 @@ export class ProductItemBuilder
 				}
 			}
 
-			if ( Array.isArray( attrValue ) && !attr.isMultiValue() ) 
+			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
 			{
-				const firstValue = attrValue.shift();
-
-				if ( firstValue !== undefined )
-				{
-					attrValue = firstValue;
-				}
+				attrValue = attrValue[ 0 ];
 			}
 
 			// TODO: Can we set attribute only if attrValue !== undefined?
@@ -57,14 +52,9 @@ export class ProductItemBuilder
 			const attrUID = productFamily.findAttrUIDByAlias( attrName );
 			const attr = this.ps.retrieveAttribute( attrUID );
 
-			if ( Array.isArray( attrValue ) && !attr.isMultiValue() ) 
+			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
 			{
-				const firstValue = attrValue.shift();
-
-				if ( firstValue !== undefined )
-				{
-					attrValue = firstValue;
-				}
+				attrValue = attrValue[ 0 ];
 			}
 
 			if ( !item.getAttribute( attrName ) && attr.canBe( attrValue ) ) 

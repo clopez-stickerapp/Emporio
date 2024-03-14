@@ -57,7 +57,7 @@ export class Emporio {
 	public getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): PriceList {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
-		const steps = [...productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? []];
+		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
 
 		const units = productItem.getUnits() / (productItem.getAttribute<number>("quantity") ?? 1);
 

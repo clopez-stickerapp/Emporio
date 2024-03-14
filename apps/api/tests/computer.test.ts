@@ -84,6 +84,12 @@ describe( 'Test If The Attribute Value Is', () => {
 		test( 'When The Attribute Value Is Constrained', () => {
 			expect( computer.isAvailable( CuisineAttribute.NAME, CuisineAttribute.NEOPOLITAN ) ).toBe( false );
 		} );
+
+		test( 'When The Attribute And/Or Value Does Not Exist', () => {
+			expect( computer.isAvailable( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isAvailable( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isAvailable( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+		} );
 	} );
 
 	describe( 'Supported', () => {
@@ -134,6 +140,12 @@ describe( 'Test If The Attribute Value Is', () => {
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
 			expect( computer.isConstrained( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
 		} );
+
+		test( 'When The Attribute And/Or Value Does Not Exist', () => {
+			expect( computer.isConstrained( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isConstrained( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isConstrained( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+		} );
 	} );
 	
 	describe( 'In Filtered Values', () => {
@@ -156,6 +168,12 @@ describe( 'Test If The Attribute Value Is', () => {
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
 			expect( computer.isInFilteredValues( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
 		} );
+
+		test( 'When The Attribute And/Or Value Does Not Exist', () => {
+			expect( computer.isInFilteredValues( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInFilteredValues( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInFilteredValues( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+		} );
 	} );
 
 	describe( 'In Suggested Values', () => {
@@ -177,6 +195,12 @@ describe( 'Test If The Attribute Value Is', () => {
 
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
 			expect( computer.isInSuggestedValues( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
+		} );
+
+		test( 'When The Attribute And/Or Value Does Not Exist', () => {
+			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInSuggestedValues( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
 		} );
 	} );
 } );

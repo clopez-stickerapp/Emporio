@@ -376,7 +376,7 @@ export class ProductAttrComputer
 	 */
 	public isMultiValue( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.isMultiValue;
+		return this.isSupported( attributeName ) && this.attributes[ attributeName ]?.isMultiValue;
 	}
 
 	/**
@@ -387,7 +387,7 @@ export class ProductAttrComputer
 	 */
 	public isDynamicValue( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.isDynamicValue;
+		return this.isSupported( attributeName ) && this.attributes[ attributeName ]?.isDynamicValue;
 	}
 
 	/**

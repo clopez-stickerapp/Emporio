@@ -38,7 +38,7 @@ export class QuantityList {
 	}
 
 	public getQuantities(): number[] {
-		return this.quantities;
+		return [...this.quantities];
 	}
 
 	public testOnItem(productItem: ProductItem): boolean {

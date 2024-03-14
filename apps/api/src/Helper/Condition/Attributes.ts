@@ -1,3 +1,3 @@
 import { AttributeValue } from "./AttributeValue";
 
-export type Attributes = { [key: string]: AttributeValue };
+export type Attributes<T extends AttributeValue = AttributeValue> = Record<string, T>;

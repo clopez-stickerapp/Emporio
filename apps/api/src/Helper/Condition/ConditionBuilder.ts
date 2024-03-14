@@ -144,6 +144,13 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return this.conditions;
 	}
 
+	public toString(): string {
+		const relation = this.relationMode === ConditionRelations.OR ? '||' : '&&';
+		return Object.values( this.conditions ).map( condition => {
+			return condition instanceof ConditionBuilder ? `(${ condition })` : `${ condition }`;
+        } ).join( ` ${ relation } ` );
+	}
+
 	public toArray(): any[] {
 		throw new Error("Method not implemented.");
 	}

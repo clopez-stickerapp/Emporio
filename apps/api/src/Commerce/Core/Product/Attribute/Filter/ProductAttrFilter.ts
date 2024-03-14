@@ -19,27 +19,11 @@ export class ProductAttrFilter {
 		this.attributeName = attrAlias;
 	}
 
-	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: string = ConditionRelations.AND ): ProductAttrFilteredValues {
+	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {
 		let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
 		this.filters.push( filter );
 		return filter;
 	}
-
-	// public function jsonSerialize()
-	// {
-	// 	$filters = array();
-	// 	foreach ($this->filtersMap as $filteredValues)
-	// 	{
-	// 		$filter    = array(
-	// 			"values"                    => $filteredValues->values,
-	// 			"conditions"                => "$filteredValues->conditionBuilder",
-	// 			"conditionsComplexityScore" => $filteredValues->conditionBuilder->calculateComplexityScore(),
-	// 		);
-	// 		$filters[] = $filter;
-	// 	}
-
-	// 	return $filters;
-	// }
 
 	public getAllFilters(): ProductAttrFilteredValues[] {
 		return this.filters;

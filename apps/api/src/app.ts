@@ -13,6 +13,7 @@ export default async function app() {
 	await server.ready();
 	server.swagger();
 	await server.listen({
+		host: '0.0.0.0',
 		port,
 	});
 }

@@ -4,6 +4,8 @@ import { StickerAppProductService } from '../../../Commerce/Product/StickerAppPr
 import { FormattedPrice, formatPrice } from '$/Commerce/Core/Price/Price';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 import { Emporio, FormattedPriceList } from '$/Emporio';
+import { formatCurrency } from '$/Commerce/Core/Currency/Currency';
+import { getLocale } from '$/Commerce/Core/Localization/Locale';
 
 export const paramSchema = Type.Object({
 	family: Type.String({ examples: ['custom_sticker'] }),
@@ -30,7 +32,12 @@ export default async function (fastify: FastifyInstance) {
 				operationId: 'getPrices',
 				querystring: querySchema,
 				response: {
-					200: { price: FormattedPrice },
+					200: Type.Object({ 
+						price: FormattedPrice,
+						unitPrice: Type.Number(),
+						unitPriceFormatted: Type.String(),
+						quantity: Type.Number(),
+					}),
 					400: Type.Object({
 						message: Type.String(),
 					}),
@@ -46,10 +53,15 @@ export default async function (fastify: FastifyInstance) {
 
 			const units = emporio.calculateUnits(item);
 
-			let price = emporio.calculatePrice(item, units, request.query.lang, request.query.incVat)
+			const price = emporio.calculatePrice(item, units, request.query.lang, request.query.incVat)
+			const unitPrice = price.total / (item.getAttribute<number>("quantity") ?? 1);
+			const unitPriceFormatted = formatCurrency(unitPrice, {currency: price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true});
 
 			return {
-				"price": formatPrice(price, request.query.lang, 2)
+				"price": formatPrice(price, request.query.lang, 2),
+				"unitPrice": unitPrice,
+				"unitPriceFormatted": unitPriceFormatted,
+				"quantity": units,
 			};
 		},
 	);

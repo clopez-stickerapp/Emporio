@@ -2,9 +2,8 @@ import { Type, TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
 import { StickerAppProductService } from '../../../Commerce/Product/StickerAppProductService';
 import { FormattedPrice, formatPrice } from '$/Commerce/Core/Price/Price';
-import { Attributes } from '$/Helper/Condition/Attributes';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
-import { Emporio } from '$/Emporio';
+import { Emporio, FormattedPriceList } from '$/Emporio';
 
 export const paramSchema = Type.Object({
 	family: Type.String({ examples: ['custom_sticker'] }),
@@ -31,14 +30,14 @@ export default async function (fastify: FastifyInstance) {
 				operationId: 'getPrices',
 				querystring: querySchema,
 				response: {
-					200: FormattedPrice,
+					200: { price: FormattedPrice },
 					400: Type.Object({
 						message: Type.String(),
 					}),
 				},
 			},
 		},
-		async function (request, reply) {
+		async function (request) {
 			let item = ProductItem.fromJSON({
 				productFamilyName: request.params.family,
 				productName: request.params.name,
@@ -48,7 +47,10 @@ export default async function (fastify: FastifyInstance) {
 			const units = emporio.calculateUnits(item);
 
 			let price = emporio.calculatePrice(item, units, request.query.lang, request.query.incVat)
-			return formatPrice(price, request.query.lang, 2);
+
+			return {
+				"price": formatPrice(price, request.query.lang, 2)
+			};
 		},
 	);
 
@@ -60,14 +62,14 @@ export default async function (fastify: FastifyInstance) {
 				operationId: 'getPriceList',
 				querystring: querySchema,
 				response: {
-					200: Type.Array(FormattedPrice),
+					200: { prices: FormattedPriceList },
 					400: Type.Object({
 						message: Type.String(),
 					}),
 				},
 			},
 		},
-		async function (request, reply) {
+		async function (request) {
 			let item = ProductItem.fromJSON({
 				productFamilyName: request.params.family,
 				productName: request.params.name,
@@ -77,7 +79,19 @@ export default async function (fastify: FastifyInstance) {
 			item.setUnits(emporio.calculateUnits(item));
 
 			let prices = emporio.getPriceList(item, request.query.lang, request.query.incVat)
-			return prices.map(price => formatPrice(price, request.query.lang, 0));
+
+			//for each price step in prices, format the price
+			let formattedPrices = prices.map(priceStep => {
+				return {
+					price: formatPrice(priceStep.price, request.query.lang, 2),
+					unitPrice: priceStep.unitPrice,
+					quantity: priceStep.quantity
+				}
+			});
+
+			return {
+				prices: formattedPrices
+			};
 		},
 	)
 }

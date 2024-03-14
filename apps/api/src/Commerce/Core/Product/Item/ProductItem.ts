@@ -58,7 +58,6 @@ export class ProductItem {
 	public static fromJSON(json: Record<string, any>): ProductItem {
 		const item = new ProductItem(json["productFamilyName"], json["productName"]);
 		item.setAttributes(json["attributes"]);
-		item.setUnits(json["units"]);
 		return item;
 	}
 

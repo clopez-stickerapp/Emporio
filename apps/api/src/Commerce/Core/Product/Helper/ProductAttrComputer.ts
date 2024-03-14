@@ -78,6 +78,9 @@ export class ProductAttrComputer
 					this.attributesConstrained[ attributeName ].push( attributeValue );
 				}
 			}
+			
+			// TODO: Test this solution since we removed removeConstrainedValues() in ProductAttrMap.
+			this.attributesFiltered[ attributeName ] = this.attributesFiltered[ attributeName ].filter( value => !this.attributesConstrained[ attributeName ].includes( value ) );
 		}
 	}
 

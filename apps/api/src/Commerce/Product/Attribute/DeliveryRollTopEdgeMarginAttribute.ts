@@ -7,6 +7,6 @@ export class DeliveryRollTopEdgeMarginAttribute extends ProductAttr {
 	public static readonly DEFAULT_VALUE = 2;
 
 	public constructor() {
-		super( ProductAttrValueType.INT, false, true );
+		super( ProductAttrValueType.FLOAT, false, true );
 	}
 }

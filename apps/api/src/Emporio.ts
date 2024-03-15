@@ -42,6 +42,12 @@ export class Emporio {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const currency = getCurrency(lang);
 
+		const minUnits = productFamily.getMinimumUnits(productItem);
+
+		if(units < minUnits) {
+			units = minUnits;
+		}		
+
 		let price = productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency) ?? { total: 0, currency: currency };
 
 		if (!incVAT) {

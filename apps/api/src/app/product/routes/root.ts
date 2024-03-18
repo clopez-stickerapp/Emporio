@@ -41,4 +41,32 @@ export default async function ( fastify: FastifyInstance ) {
 			}
 		},
 	)
+
+	f.get( 
+		'/attribute-map/:family/:name', {
+			schema: {
+				params: paramSchema,
+				querystring: Type.Object( {
+					includeFilters: Type.Boolean( {
+						default: true
+					} ),
+				} ),
+				operationId: 'attributeMap',
+				response: {
+					200: Type.Object( {
+						attributes: Type.Any(),
+					} ),
+					400: Type.Object( {
+						message: Type.String()
+					} )
+				},
+			},
+		},
+		async function ( request ) {
+			const attrMap = emporio.createAttributeMap( request.params.family, request.params.name, request.query.includeFilters );
+			return { 
+				attributes: attrMap.getMap() 
+			};
+		}
+	)
 }

@@ -6,6 +6,7 @@ import { ProductService } from "./Commerce/Core/ProductService";
 import { StickerAppProductService } from "./Commerce/Product/StickerAppProductService";
 import { getVatPercentage } from "./Commerce/Tax/Vat";
 import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
+import { ProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 
 export const PriceStep = Type.Object({
 	price: Price,
@@ -85,5 +86,10 @@ export class Emporio {
 
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {
 		return this.builder.createItem( productFamilyName, productName, useFilters );
+	}
+
+	public createAttributeMap( productFamilyName: string, productName: string, includeFilters: boolean ): ProductAttrMap {
+		const product = this.productService.findProduct( productFamilyName, productName );
+		return new ProductAttrMap( this.productService, product, includeFilters );
 	}
 }

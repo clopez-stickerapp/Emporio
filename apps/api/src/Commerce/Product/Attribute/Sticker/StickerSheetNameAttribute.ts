@@ -21,7 +21,6 @@ export class StickerSheetNameAttribute extends ProductAttr {
 
 		this.addAttrValue( StickerSheetNameAttribute.RECTANGLE );
 		this.addAttrValue( StickerSheetNameAttribute.CONTOUR );
-		this.addAttrValue( StickerSheetNameAttribute.RECTANGLE );
 		this.addAttrValue( StickerSheetNameAttribute.ROUND );
 		this.addAttrValue( StickerSheetNameAttribute.ROUNDED );
 		this.addAttrValue( StickerSheetNameAttribute.STICKER_INDIVIDUAL );

@@ -118,7 +118,7 @@ export class StickerAppProductService extends ProductService {
 		this.registerAttrFilterCollection( new StickerWizardFilterCollection() );
 		this.registerAttrFilterCollection( new SkinFilterCollection() );
 		this.registerAttrStockCollection( new StickerWizardStockCollection() );
-		this.registerAttrIconCollection( new StickerAttributeIconCollection() );
+		this.registerAttrIconCollection( new StickerAttributeIconCollection( this ) );
 		this.registerQuantityListCollection( new StickerQuantityListCollection() );
 
 		this.registerPriceProvider( new StickerPriceProvider() );

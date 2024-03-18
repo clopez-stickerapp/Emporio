@@ -23,7 +23,10 @@ export class ProductAttrIconCollection {
 			throw new Error(`Icon for ${icon.getAttributeName()} ${icon.getAttributeValue()} already exists.`);
 		}
 
-		this.icons[icon.getAttributeName()] = {};
+		if ( !this.icons[ icon.getAttributeName() ] ) {
+			this.icons[ icon.getAttributeName() ] = {};
+		}
+
 		this.icons[icon.getAttributeName()][icon.getAttributeValue()] = icon;
 	}
 

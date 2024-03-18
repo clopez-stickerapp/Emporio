@@ -5,6 +5,7 @@ import { ProductItem } from "./Commerce/Core/Product/Item/ProductItem";
 import { ProductService } from "./Commerce/Core/ProductService";
 import { StickerAppProductService } from "./Commerce/Product/StickerAppProductService";
 import { getVatPercentage } from "./Commerce/Tax/Vat";
+import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
 
 export const PriceStep = Type.Object({
 	price: Price,
@@ -28,9 +29,11 @@ export type FormattedPriceList = Static<typeof FormattedPriceList>;
 
 export class Emporio {
 	public productService: ProductService;
+	protected builder: ProductItemBuilder;
 
 	public constructor(service: ProductService = new StickerAppProductService()) {
 		this.productService = service;
+		this.builder = new ProductItemBuilder( service );
 	}
 
 	public calculateUnits(productItem: ProductItem): number {
@@ -78,5 +81,9 @@ export class Emporio {
 		});
 
 		return prices;
+	}
+
+	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {
+		return this.builder.createItem( productFamilyName, productName, useFilters );
 	}
 }

@@ -51,17 +51,16 @@ export default async function (fastify: FastifyInstance) {
 				attributes: JSON.parse(request.query.attributes),
 			});
 
-			const units = emporio.calculateUnits(item);
+			const quantity = item.getAttribute<number>('quantity') ?? 1;
 
-			const price = emporio.calculatePrice(item, units, request.query.lang, request.query.incVat)
-			const unitPrice = price.total / (item.getAttribute<number>("quantity") ?? 1);
-			const unitPriceFormatted = formatCurrency(unitPrice, {currency: price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true});
+			const priceDTO = emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
+			const unitPriceFormatted = formatCurrency(priceDTO.unitPrice, {currency: priceDTO.price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true});
 
 			return {
-				"price": formatPrice(price, request.query.lang, 2),
-				"unitPrice": unitPrice,
-				"unitPriceFormatted": unitPriceFormatted,
-				"quantity": units,
+				"price": formatPrice(priceDTO.price, request.query.lang, 2),
+				"unitPrice": priceDTO.unitPrice,
+				unitPriceFormatted,
+				quantity,
 			};
 		},
 	);

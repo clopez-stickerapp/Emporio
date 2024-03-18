@@ -8,14 +8,14 @@ import { getVatPercentage } from "./Commerce/Tax/Vat";
 import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
 import { ProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 
-export const PriceStep = Type.Object({
+export const PriceDTO = Type.Object({
 	price: Price,
 	unitPrice: Type.Number(),
 	quantity: Type.Number(),
 });
-export type PriceStep = Static<typeof PriceStep>;
+export type PriceDTO = Static<typeof PriceDTO>;
 
-export const PriceList = Type.Array(PriceStep);
+export const PriceList = Type.Array(PriceDTO);
 export type PriceList = Static<typeof PriceList>;
 
 export const FormattedPriceStep = Type.Object({
@@ -42,7 +42,7 @@ export class Emporio {
 		return productFamily.calculateUnits(productItem);
 	}
 
-	public calculatePrice(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Price {
+	public calculatePriceByUnits(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Price {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const currency = getCurrency(lang);
 
@@ -64,21 +64,30 @@ export class Emporio {
 		return price;
 	}
 
+
+	public calculatePrice(productItem: ProductItem, quantity: number, lang: string, incVAT: boolean): PriceDTO {
+		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
+		
+		let units = (productFamily.calculateUnits(productItem) / (productItem.getAttribute<number>("quantity") ?? 1)) * quantity;
+		let price = this.calculatePriceByUnits(productItem, units, lang, incVAT);
+
+		let unitPrice = price.total / quantity;
+		unitPrice = parseFloat(unitPrice.toFixed(8));
+
+		return {
+			price,
+			unitPrice,
+			quantity,
+		};
+	}
+
 	public getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): PriceList {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
 		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
 
-		const units = productItem.getUnits() / (productItem.getAttribute<number>("quantity") ?? 1);
-
 		const prices = steps.map(step => {
-			let price = this.calculatePrice(productItem, step * units, lang, inclVat);
-
-			return {
-				price,
-				unitPrice: price.total / step,
-				quantity: step
-			}
+			return this.calculatePrice(productItem, step, lang, inclVat);
 		});
 
 		return prices;

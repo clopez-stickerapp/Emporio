@@ -14,8 +14,9 @@ export class ProductAttrComputer
 	protected attributesConstrained:    Attributes<AttributeValueMulti>     = {};
 	protected attributesSuggested:      Attributes<AttributeValueMulti>     = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti>     = {};
+	public useFilters:                  boolean                             = true;
 
-	constructor( public attrEvaluator: ProductAttrConditionEvaluator, public useFilters: boolean = true ) {}
+	constructor( public attrEvaluator: ProductAttrConditionEvaluator ) {}
 
 	/**
 	 * Resets old and feeds new attributes to the computer.
@@ -240,7 +241,7 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * Suggested values are filtered values, but if filtered values are empty it will fallback to all values.
+	 * Suggested values are filtered values, but if filtered values are empty or useFilters is set to false it will fallback to all values.
 	 * 
 	 * OBS! Can contain constrained values.
 	 * 

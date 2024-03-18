@@ -1,4 +1,3 @@
-import { Attributes } from "../../../../Helper/Condition/Attributes";
 import { ProductService } from "../../ProductService";
 import { ProductItem } from "../Item/ProductItem";
 import { ProductAttrComputerExtended } from "./ProductAttrComputerExtended";
@@ -8,20 +7,20 @@ export class ProductItemBuilder
 	protected ps:           ProductService;
 	protected attrComputer: ProductAttrComputerExtended;
 
-	public constructor( productService: ProductService, useFilters: boolean = true ) 
+	public constructor( productService: ProductService ) 
 	{
 		this.ps           = productService;
-		this.attrComputer = new ProductAttrComputerExtended( this.ps, useFilters );
+		this.attrComputer = new ProductAttrComputerExtended( this.ps );
 	}
 
-	public createItem( productFamilyName: string, productName: string, withAttributes: Attributes = {} ): ProductItem 
+	public createItem( productFamilyName: string, productName: string, useFilters: boolean = true ): ProductItem 
 	{
 		const productFamily = this.ps.retrieveProductFamily( productFamilyName );
 		const product       = productFamily.getProduct( productName );
 		const item          = new ProductItem( productFamilyName, productName );
 		
 		// item.setSku( product.getSku() );
-		this.attrComputer.prepare( item );
+		this.attrComputer.prepare( item, true, useFilters );
 
 		for ( const [ attrName, attrUID ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
 		{
@@ -62,11 +61,6 @@ export class ProductItemBuilder
 				item.setAttribute( attrName, attrValue );
 			}
 		}
-
-		item.setAttributes( {
-			...item.getAttributes(),
-			...withAttributes
-		} );
 
 		item.setUnits( productFamily.getMinimumUnits( item ) );
 

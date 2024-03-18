@@ -18,9 +18,17 @@ export class ProductItemValidator
 		this.attrComputer = new ProductAttrComputerExtended( this.ps );
 	}
 
-	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = true ): boolean 
+	/**
+	 * Validates a ProductItem. If invalid, an error will be thrown.
+	 * 
+	 * @param item The ProductItem to validate.
+	 * @param allowUnsupportedAttributeAliases Determines whether it should allow unsupported attribute aliases.
+	 * @param allowUnsuggestedAttributeValues Determines whether it should allow unsuggested attribute values.
+	 * @param checkAgainstFilteredValues Determines whether it should check against filtered values. Will be applied only if allowUnsuggestedAttributeValues is set to false.
+	 */
+	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = false, checkAgainstFilteredValues: boolean = true ): void 
 	{
-		this.attrComputer.prepare( item );
+		this.attrComputer.prepare( item, true, checkAgainstFilteredValues );
 		
 		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
 		const product = productFamily.getProduct( item.getProductName() );
@@ -73,7 +81,7 @@ export class ProductItemValidator
 					{
 						if ( !this.attrComputer.isInSuggestedValues( attrName, attrValue ) )
 						{
-							throw new ProductAttrValueNotSupportedException( `${ JSON.stringify( attrValue ) } is not suggested as '${ attrName }'.` );
+							throw new ProductAttrValueNotSupportedException( `${ attrValue } is not suggested as ${ attrName }` );
 						}
 					}
 				}
@@ -84,7 +92,7 @@ export class ProductItemValidator
 
 					if ( productAttrValue && productFamily.getConstraintsCollection()?.test( attrName, productAttrValue.getValue(), item ) === false ) 
 					{
-						throw new ProductItemInvalidException( `Failed due to constraints related to ${ productAttrValue.getValue() } (${ attrName })\n` );
+						throw new ProductItemInvalidException( `Failed due to constraints related to ${ productAttrValue.getValue() } (${ attrName })` );
 					}
 				}
 
@@ -102,7 +110,5 @@ export class ProductItemValidator
 				}
 			}
 		}
-
-		return true;
 	}
 }

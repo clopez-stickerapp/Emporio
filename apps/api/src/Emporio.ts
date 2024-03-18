@@ -7,6 +7,7 @@ import { StickerAppProductService } from "./Commerce/Product/StickerAppProductSe
 import { getVatPercentage } from "./Commerce/Tax/Vat";
 import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
 import { ProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
+import { ProductItemValidator } from "./Commerce/Core/Product/Helper/ProductItemValidator";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -31,10 +32,12 @@ export type FormattedPriceList = Static<typeof FormattedPriceList>;
 export class Emporio {
 	public productService: ProductService;
 	protected builder: ProductItemBuilder;
+	protected validator: ProductItemValidator;
 
 	public constructor(service: ProductService = new StickerAppProductService()) {
 		this.productService = service;
 		this.builder = new ProductItemBuilder( service );
+		this.validator = new ProductItemValidator( service );
 	}
 
 	public calculateUnits(productItem: ProductItem): number {
@@ -100,5 +103,9 @@ export class Emporio {
 	public createAttributeMap( productFamilyName: string, productName: string, includeFilters: boolean ): ProductAttrMap {
 		const product = this.productService.findProduct( productFamilyName, productName );
 		return new ProductAttrMap( this.productService, product, includeFilters );
+	}
+
+	public validate( productItem: ProductItem, allowUnsupportedAttributeAliases: boolean, allowUnsuggestedAttributeValues: boolean, checkAgainstFilteredValues: boolean ): void {
+		return this.validator.validate( productItem, allowUnsupportedAttributeAliases, allowUnsuggestedAttributeValues, checkAgainstFilteredValues );
 	}
 }

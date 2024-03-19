@@ -163,14 +163,14 @@ export class ProductAttrComputer
 	 * 
 	 * @param attributeName 
 	 */
-	public getDefaultValue( attributeName: string ): AttributeValue | null 
+	public getDefaultValue<T extends AttributeValueSingle | []>( attributeName: string ): T | null
 	{
 		if ( this.isMultiValue( attributeName ) ) 
 		{
-			return [];
+			return [] as T;
 		}
 
-		return this.getSuggestedValues( attributeName ).find( value => !this.isConstrained( attributeName, value ) ) ?? null;
+		return ( this.getSuggestedValues( attributeName ).find( value => !this.isConstrained( attributeName, value ) ) ?? null ) as T;
 	}
 
 	/**
@@ -179,7 +179,7 @@ export class ProductAttrComputer
 	 * @param attributeName 
 	 * @returns 
 	 */
-	public getAllValues( attributeName: string ): AttributeValueMulti 
+	public getAllValues<T extends AttributeValueSingle>( attributeName: string ): T[] 
 	{
 		if ( this.attributes.hasOwnProperty( attributeName ) ) 
 		{
@@ -247,11 +247,11 @@ export class ProductAttrComputer
 	 * 
 	 * @param attributeName 
 	 */
-	public getSuggestedValues( attributeName: string ): AttributeValueMulti
+	public getSuggestedValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
 		if ( this.attributesSuggested.hasOwnProperty( attributeName ) )
 		{
-			return this.attributesSuggested[ attributeName ];
+			return this.attributesSuggested[ attributeName ] as T[];
 		}
 
 		return [];
@@ -260,11 +260,11 @@ export class ProductAttrComputer
 	/**
 	 * @param attributeName 
 	 */
-	public getFilteredValues( attributeName: string ): AttributeValueMulti
+	public getFilteredValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
 		if ( this.attributesFiltered.hasOwnProperty( attributeName ) )
 		{
-			return this.attributesFiltered[ attributeName ];
+			return this.attributesFiltered[ attributeName ] as T[];
 		}
 
 		return [];
@@ -304,11 +304,11 @@ export class ProductAttrComputer
 		}
 	}
 
-	public getPreferredValue( attributeName: string ): AttributeValue | null
+	public getPreferredValue<T extends AttributeValue>( attributeName: string ): T | null
 	{
 		if ( this.hasPreferredValue( attributeName ) )
 		{
-			return this.attributesPreferred[ attributeName ];
+			return this.attributesPreferred[ attributeName ] as T;
 		}
 
 		return null;
@@ -325,17 +325,17 @@ export class ProductAttrComputer
 		this.attributesPreferred[ attributeName ] = attributeValue;
 	}
 
-	public getConstrainedValues( attributeName: string ): AttributeValueMulti
+	public getConstrainedValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
 		if ( this.attributesConstrained.hasOwnProperty( attributeName ) )
 		{
-			return this.attributesConstrained[ attributeName ];
+			return this.attributesConstrained[ attributeName ] as T[];
 		}
 
 		return [];
 	}
 
-	public getOutOfStockValues( attributeName: string ): AttributeValueMulti
+	public getOutOfStockValues( attributeName: string ): string[]
 	{
 		if ( this.attributesOutOfStock.hasOwnProperty( attributeName ) )
 		{
@@ -462,7 +462,7 @@ export class ProductAttrComputer
 		return false;
 	}
 
-	public isInOutOfStockValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	public isInOutOfStockValues( attributeName: string, attributeValue: string ): boolean
 	{
 		const outOfStockValues = this.getOutOfStockValues( attributeName );
 

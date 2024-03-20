@@ -14,8 +14,8 @@ export class CutDirectionAttribute extends ProductAttr {
 		super( ProductAttrValueType.STRING );
 
 		this.addAttrValue( CutDirectionAttribute.AUTO );
-		this.addAttrValue( CutDirectionAttribute.TOP_FIRST );
 		this.addAttrValue( CutDirectionAttribute.BOTTOM_FIRST );
+		this.addAttrValue( CutDirectionAttribute.TOP_FIRST );
 		this.addAttrValue( CutDirectionAttribute.RIGHT_FIRST );
 		this.addAttrValue( CutDirectionAttribute.LEFT_FIRST );
 	}

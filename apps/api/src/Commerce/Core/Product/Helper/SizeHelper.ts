@@ -52,7 +52,7 @@ export class SizeHelper
 	{
 		let fixedSize = this.productItem.getAttribute<boolean>( "fixed_size" );
 
-		if ( !fixedSize )
+		if ( fixedSize === undefined )
 		{
 			fixedSize = this.attrComputer.isInFilteredValues( "fixed_size", true );
 		}

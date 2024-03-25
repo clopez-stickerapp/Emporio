@@ -66,13 +66,11 @@ export class ProductAttrComputer
 
 		for ( const attributeName in this.attributes )
 		{
-			const attr = this.attributes[ attributeName ];
-
 			this.attributesConstrained[ attributeName ] = [];
 
-			for ( const attributeValue in attr.valuesAndConstraints )
+			for ( const attributeValue of this.getAllValues( attributeName ) )
 			{
-				const result = this.attrEvaluator.canIChangeAttribute( productItem.toTestableOneDimensionalArray(), attributeName, attributeValue );
+				const result = this.attrEvaluator.canIChangeAttribute( productItem.toTestableOneDimensionalArray(), attributeName, String( attributeValue ) );
 				
 				if ( !result )
 				{
@@ -116,11 +114,6 @@ export class ProductAttrComputer
 		}
 	}
 
-	/**
-	 * We want to read in the out-of-stock values for "stockable" attributes
-	 * so that we can still show them but make them unselectable
-	 * and indicate to the customer that they are not currently in stock.
-	 */
 	protected evaluateOutOfStockValues(): void
 	{
 		this.attributesOutOfStock = {};
@@ -174,39 +167,18 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * Gets all values.
+	 * Retrieves all values related to the attribute.
 	 * 
-	 * @param attributeName 
-	 * @returns 
+	 * @param attributeName The name of the attribute.
+	 * @returns An array of all values related to the attribute.
 	 */
 	public getAllValues<T extends AttributeValueSingle>( attributeName: string ): T[] 
 	{
-		if ( this.attributes.hasOwnProperty( attributeName ) ) 
+		if ( this.isSupported( attributeName ) ) 
 		{
-			return Object.keys( this.attributes[ attributeName ].valuesAndConstraints ).map( attrValueRaw => {
+			const attrValuesRaw = Object.keys( this.attributes[ attributeName ].valuesAndConstraints );
 
-				if ( this.isBooleanType( attributeName ) ) 
-				{
-					try
-					{
-						return JSON.parse( attrValueRaw );
-					}
-					catch ( e )
-					{
-						// Do nothing
-					}
-				}
-				else if ( this.isIntType( attributeName ) )
-				{
-					return parseInt( attrValueRaw );
-				}
-				else if ( this.isFloatType( attrValueRaw ) )
-				{
-					return parseFloat( attrValueRaw );
-				}
-
-				return attrValueRaw;
-			} );
+			return attrValuesRaw.map( attrValueRaw => this.parseAttributeValue( attributeName, attrValueRaw ) ?? attrValueRaw as T );
 		}
 
 		return [];
@@ -427,6 +399,11 @@ export class ProductAttrComputer
 		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.FLOAT;
 	}
 
+	public isStringType( attributeName: string ): boolean
+	{
+		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.STRING;
+	}
+
 	/**
 	 * Determines whether the attribute is of type number (float or integer).
 	 * 
@@ -494,6 +471,44 @@ export class ProductAttrComputer
 		}
 
 		return false;
+	}
+
+	/**
+	 * Parses a raw attribute value to its correct type.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValueRaw The raw attribute value.
+	 * @returns The parsed attribute value on succes, null on failure.
+	 */
+	public parseAttributeValue<T extends AttributeValueSingle>( attributeName: string, attributeValueRaw: any ): T | null
+	{
+		if ( this.isStringType( attributeName ) )
+		{
+			return String( attributeValueRaw ) as T;
+		}
+		else if ( this.isBooleanType( attributeName ) ) 
+		{
+			try
+			{
+				const value = JSON.parse( attributeValueRaw );
+
+				if ( typeof value === 'boolean' )
+				{
+					return value as T;
+				}
+			}
+			catch ( e ) {}
+		}
+		else if ( this.isIntType( attributeName ) )
+		{
+			return parseInt( attributeValueRaw ) as T;
+		}
+		else if ( this.isFloatType( attributeName ) )
+		{
+			return parseFloat( attributeValueRaw ) as T;
+		}
+
+		return null;
 	}
 
 	/* SET AND GET */

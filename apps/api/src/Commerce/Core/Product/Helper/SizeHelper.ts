@@ -15,6 +15,8 @@ export class SizeHelper
 	public minSize:             Size    = new Size( this );
 	public maxSize:             Size    = new Size( this );
 	public maxSizeOtherSide:    Size    = new Size( this );
+	public maxWidth:            Size    = new Size( this );
+	public maxHeight:           Size    = new Size( this );
 	public meassureDisplayAbbr: string  = "cm";
 	public deliverySheet:       DeliverySheetSizeHelper;
 	public transform:           TransformHelper = new TransformHelper( this );
@@ -44,11 +46,13 @@ export class SizeHelper
 		this.evaluateMinSize();
 		this.evaluateMaxSizeOtherSide();
 		this.evaluateFixedSize();
+		this.evaluateMaxWidth();
+		this.evaluateMaxHeight();
 
 		this.meassureDisplayAbbr = this.isImperialUnits() ? '"' : 'cm';
 	}
 
-	public evaluateFixedSize(): void
+	protected evaluateFixedSize(): void
 	{
 		let fixedSize = this.productItem.getAttribute<boolean>( "fixed_size" );
 
@@ -60,7 +64,7 @@ export class SizeHelper
 		this.fixedSize = fixedSize;
 	}
 
-	public evaluateMaxSize(): void
+	protected evaluateMaxSize(): void
 	{
 		let maxSizeBasedOnProductionLine: number = this.canBeProductionLine( "digital" ) ? SizeHelper.MAX_SIZE_MM_DIGITAL : SizeHelper.MAX_SIZE_MM_LASER;
 
@@ -79,7 +83,7 @@ export class SizeHelper
 		this.maxSize.mm = Math.min( Number( maxSizeMM ) || Infinity, maxSizeBasedOnProductionLine );
 	}
 
-	public evaluateMinSize(): void
+	protected evaluateMinSize(): void
 	{
 		let minSizeMM = this.productItem.getAttribute<number>( "min_size_mm" );
 
@@ -91,7 +95,7 @@ export class SizeHelper
 		this.minSize.mm = minSizeMM;
 	}
 
-	public evaluateMaxSizeOtherSide(): void
+	protected evaluateMaxSizeOtherSide(): void
 	{
 		let maxSizeOtherSide = this.getMaxSizeOtherSideValue();
 
@@ -115,6 +119,30 @@ export class SizeHelper
 		}
 
 		this.maxSizeOtherSide.mm = maxSizeOtherSide;
+	}
+
+	protected evaluateMaxWidth(): void
+	{
+		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) < this.getMeasureAttrInMM( "height" ) )
+		{
+			this.maxWidth.mm = this.maxSizeOtherSide.mm;
+		}
+		else
+		{
+			this.maxWidth.mm = this.maxSize.mm;
+		}
+	}
+
+	protected evaluateMaxHeight(): void
+	{
+		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) >= this.getMeasureAttrInMM( "height" ) )
+		{
+			this.maxHeight.mm = this.maxSizeOtherSide.mm;
+		}
+		else
+		{
+			this.maxHeight.mm = this.maxSize.mm;
+		}
 	}
 
 	public getSizeOptions(): AttributeValueMulti
@@ -170,8 +198,7 @@ export class SizeHelper
 	{
 		if ( sizeString )
 		{
-			let meassures = this.extractMeassuresFromString( sizeString );
-
+			const meassures = this.extractMeassuresFromString( sizeString );
 			this.setMeasureAttr( "width_mm", meassures.width );
 			this.setMeasureAttr( "height_mm", meassures.height );
 		}
@@ -196,8 +223,8 @@ export class SizeHelper
 
 	public setMeasureAttr( attributeName: string, measureInInchesOrCM: number ): number
 	{
-		attributeName   = this.sanitizeMeasureAttrName( attributeName );
-		let measureInMM = this.convertMeassureToMM( measureInInchesOrCM );
+		attributeName = this.sanitizeMeasureAttrName( attributeName );
+		const measureInMM = this.convertMeassureToMM( measureInInchesOrCM );
 
 		return this.setMeasureAttrInMM( attributeName, measureInMM );
 	}
@@ -224,18 +251,12 @@ export class SizeHelper
 
 	public convertMeassureToMM( measureInInchesOrCM: number ): number
 	{
-		let measureInMM: number;
-
 		if ( this.isImperialUnits() )
 		{
-			measureInMM = this.convertInchesToMM( measureInInchesOrCM );
+			return this.convertInchesToMM( measureInInchesOrCM );
 		}
-		else
-		{
-			measureInMM = this.convertCMToMM( measureInInchesOrCM );
-		}
-
-		return measureInMM;
+		
+		return this.convertCMToMM( measureInInchesOrCM );
 	}
 
 	public getMeasureAttrInMM( attributeName: string ): number
@@ -309,11 +330,11 @@ export class SizeHelper
 
 		if ( !value )
 		{
-			const values = this.attrComputer.getFilteredValues( "max_size_other_side_mm" );
+			const values = this.attrComputer.getFilteredValues<number>( "max_size_other_side_mm" );
 
 			if ( values.length )
 			{
-				value = Number( values[ 0 ] );
+				value = values[ 0 ];
 			}
 		}
 
@@ -335,31 +356,6 @@ export class SizeHelper
 	public get heightDisplayable(): number
 	{
 		return this.getMeasureAttrDisplayable( "height_mm" );
-	}
-
-	public get selectedProductionLine(): string | null
-	{
-		return this.productItem.getAttribute<string>( "production_line" ) ?? null;
-	}
-
-	public get maxSizeWidthMM(): number
-	{
-		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) < this.getMeasureAttrInMM( "height" ) )
-		{
-			return this.maxSizeOtherSide.mm;
-		}
-
-		return this.maxSize.mm;
-	}
-
-	public get maxSizeHeightMM(): number
-	{
-		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) >= this.getMeasureAttrInMM( "height" ) )
-		{
-			return this.maxSizeOtherSide.mm;
-		}
-
-		return this.maxSize.mm;
 	}
 }
 

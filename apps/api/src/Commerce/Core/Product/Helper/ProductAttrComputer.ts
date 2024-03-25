@@ -417,38 +417,22 @@ export class ProductAttrComputer
 
 	public isInFilteredValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
-		const filteredValues = this.getFilteredValues( attributeName );
-		
-		if ( filteredValues.length )
-		{
-			return filteredValues.indexOf( attributeValue ) >= 0;
-		}
-
-		return false;
+		return this.getFilteredValues( attributeName ).includes( attributeValue );
 	}
 
 	public isInSuggestedValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
-		const suggestedValues = this.getSuggestedValues( attributeName );
-		
-		if ( suggestedValues.length )
-		{
-			return suggestedValues.indexOf( attributeValue ) >= 0;
-		}
+		return this.getSuggestedValues( attributeName ).includes( attributeValue );
+	}
 
-		return false;
+	public isConstrained( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+	{
+		return this.getConstrainedValues( attributeName ).includes( attributeValue );
 	}
 
 	public isInOutOfStockValues( attributeName: string, attributeValue: string ): boolean
 	{
-		const outOfStockValues = this.getOutOfStockValues( attributeName );
-
-		if ( outOfStockValues.length )
-		{
-			return outOfStockValues.indexOf( attributeValue ) >= 0;
-		}
-
-		return false;
+		return this.getOutOfStockValues( attributeName ).includes( attributeValue );
 	}
 
 	public canValueBe( attributeName: string, attributeValue: AttributeValueSingle ): boolean
@@ -459,18 +443,6 @@ export class ProductAttrComputer
 		}
 
 		return true;
-	}
-
-	public isConstrained( attributeName: string, attributeValue: AttributeValueSingle ): boolean
-	{
-		let disabledValues = this.getConstrainedValues( attributeName );
-		
-		if ( disabledValues.length )
-		{
-			return disabledValues.indexOf( attributeValue ) >= 0 || disabledValues.indexOf( String( attributeValue ) ) >= 0;
-		}
-
-		return false;
 	}
 
 	/**

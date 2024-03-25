@@ -13,19 +13,19 @@ export class TransformHelper
 
 		if ( !this.areDimensionsValid( "min_size_mm", dimensions ) )
 		{
-			return this.size.minSizeMM / minSide;
+			return this.size.minSize.mm / minSide;
 		}
 		else if ( 
 			this.size.hasMaxSizeOtherSide() 
 			&& !this.areDimensionsValid( "max_size_other_side_mm", dimensions ) 
-			&& maxSide / minSide < this.size.maxSizeMM / this.size.maxSizeOtherSideMM 
+			&& maxSide / minSide < this.size.maxSize.mm / this.size.maxSizeOtherSide.mm 
 		)
 		{
-			return this.size.maxSizeOtherSideMM / minSide;
+			return this.size.maxSizeOtherSide.mm / minSide;
 		}
 		else if ( !this.areDimensionsValid( "max_size_mm", dimensions ) )
 		{
-			return this.size.maxSizeMM / maxSide;
+			return this.size.maxSize.mm / maxSide;
 		}
 
 		return scale;
@@ -36,13 +36,13 @@ export class TransformHelper
 		switch ( sizeAttrName )
 		{
 			case "min_size_mm":
-				return !dimensions.some( dimension => dimension < this.size.minSizeMM );
+				return !dimensions.some( dimension => dimension < this.size.minSize.mm );
 			
 			case "max_size_other_side_mm":
-				return !dimensions.every( dimension => dimension > this.size.maxSizeOtherSideMM );
+				return !dimensions.every( dimension => dimension > this.size.maxSizeOtherSide.mm );
 
 			case "max_size_mm":
-				return !dimensions.some( dimension => dimension > this.size.maxSizeMM );
+				return !dimensions.some( dimension => dimension > this.size.maxSize.mm );
 
 			default:
 				return false;

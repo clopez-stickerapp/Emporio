@@ -48,13 +48,11 @@ export class ProductAttrComputer
 
 		for ( const attributeName in this.attributes )
 		{
-			this.attributesFiltered[ attributeName ] = this.attrEvaluator.filter( productItem.toTestableOneDimensionalArray(), attributeName, ( values, filtersMatched ) => {
-
-				this.attributesFiltersMatched[ attributeName ] = filtersMatched.length;
-
-				return values;
-				
-			} );
+			const [ attrValues, filters ] = this.attrEvaluator.filter( productItem.toTestableOneDimensionalArray(), attributeName );
+			
+			this.attributesFiltered[ attributeName ] = attrValues;
+			
+			this.attributesFiltersMatched[ attributeName ] = filters.length;
 		}
 	}
 
@@ -77,9 +75,6 @@ export class ProductAttrComputer
 					this.attributesConstrained[ attributeName ].push( attributeValue );
 				}
 			}
-			
-			// TODO: Test this solution since we removed removeConstrainedValues() in ProductAttrMap.
-			this.attributesFiltered[ attributeName ] = this.attributesFiltered[ attributeName ].filter( value => !this.attributesConstrained[ attributeName ].includes( value ) );
 		}
 	}
 

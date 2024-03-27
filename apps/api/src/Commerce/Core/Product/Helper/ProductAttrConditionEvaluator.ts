@@ -90,10 +90,11 @@ export class ProductAttrConditionEvaluator
 		return false;
 	}
 
-	public filter( productItemAsOneDimensionalObject: Attributes, attrName: string, callback: ( values: AttributeValueMulti, filtersMatched: ProductAttributeFilter[] ) => AttributeValueMulti ): AttributeValueMulti
+	public filter( productItemAsOneDimensionalObject: Attributes, attrName: string ): [ AttributeValueMulti, ProductAttributeFilter[] ]
 	{
 		const attr = this.getAttribute( attrName );
-		let values: AttributeValueMulti = [];
+
+		let values:  AttributeValueMulti      = [];
 		let filters: ProductAttributeFilter[] = [];
 		
 		if ( attr?.filters )
@@ -128,7 +129,7 @@ export class ProductAttrConditionEvaluator
 			}
 		}
 
-		return callback ? callback( values, filters ) : values;
+		return [ values, filters ];
 	}
 
 	/**
@@ -233,7 +234,7 @@ export class ProductAttrConditionEvaluator
 						for ( const attrValueIndex in allValues )
 						{
 							const attrValue = allValues[ attrValueIndex ];
-							const condition = this.getConstraintsFor( attrName, attrValue.toString() );
+							const condition = this.getConstraintsFor( attrName, `${ attrValue }` );
 
 							if ( condition )
 							{

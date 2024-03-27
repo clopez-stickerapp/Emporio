@@ -45,15 +45,15 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection   = this.product.getProductFamily().getConstraintsCollection();
-		const iconsCollection         = this.product.getProductFamily().getIconsCollection();
-		const outOfStockAttrValues    = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrAlias )?.getOutOfStock() ?? [];
-		const attr                    = this.ps.retrieveAttribute( attrUID );
-		const allPossibleValueOptions = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrAlias );
+		const constraintsCollection = this.product.getProductFamily().getConstraintsCollection();
+		const iconsCollection       = this.product.getProductFamily().getIconsCollection();
+		const outOfStockAttrValues  = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrAlias )?.getOutOfStock() ?? [];
+		const attr                  = this.ps.retrieveAttribute( attrUID );
+		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrAlias );
 
 		let icons: Record<string, string> = {};
 
-		for ( const attrValue of allPossibleValueOptions ) {
+		for ( const attrValue of attrValueOptions ) {
 			const conditionsBuilder = constraintsCollection?.findConditionsFor( attrAlias, attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {

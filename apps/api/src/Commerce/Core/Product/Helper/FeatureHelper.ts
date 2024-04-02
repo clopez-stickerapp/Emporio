@@ -20,7 +20,7 @@ export class FeatureHelper
     {
         let features = this.getFeatures();
 
-		if ( !value && features.length )
+		if ( !value )
 		{
 			features = features.filter( feature => feature != featureName );
 		}
@@ -29,7 +29,14 @@ export class FeatureHelper
 			features.push( featureName );
 		}
 
-		this.setFeatures( features );
+		if ( features.length )
+		{
+			this.setFeatures( features );
+		}
+		else
+		{
+			this.removeFeatures();
+		}
     }
 
     public hasFeature( featureName: string ): boolean
@@ -45,5 +52,10 @@ export class FeatureHelper
 	public setFeatures( features: string[] ): void
 	{
 		this.item.setAttribute( FeatureAttribute.ALIAS, features );
+	}
+
+	public removeFeatures(): void
+	{
+		this.item.removeAttribute( FeatureAttribute.ALIAS );
 	}
 }

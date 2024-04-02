@@ -8,6 +8,9 @@ import { getVatPercentage } from "./Commerce/Tax/Vat";
 import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
 import { ProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 import { ProductItemValidator } from "./Commerce/Core/Product/Helper/ProductItemValidator";
+import { ProductionHelper } from "./Commerce/Core/Product/Helper/ProductionHelper";
+import { FeatureHelper } from "./Commerce/Core/Product/Helper/FeatureHelper";
+import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/ProductAttrComputerExtended";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -107,5 +110,13 @@ export class Emporio {
 
 	public validate( productItem: ProductItem, allowUnsupportedAttributeAliases: boolean, allowUnsuggestedAttributeValues: boolean, checkAgainstFilteredValues: boolean ): void {
 		return this.validator.validate( productItem, allowUnsupportedAttributeAliases, allowUnsuggestedAttributeValues, checkAgainstFilteredValues );
+	}
+
+	public setProductionSettings( productItem: ProductItem, useFilters: boolean ): ProductItem {
+		const computer = new ProductAttrComputerExtended( this.productService );
+		computer.prepare( productItem, true, useFilters );
+		const productionHelper = new ProductionHelper( this.productService, computer, productItem, new FeatureHelper( computer, productItem ) );
+		productionHelper.setSettingsAutomatically();
+		return productItem;
 	}
 }

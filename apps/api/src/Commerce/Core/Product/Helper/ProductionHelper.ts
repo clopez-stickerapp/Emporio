@@ -21,7 +21,7 @@ export class ProductionHelper
     /**
      * Will unset production settings if the product doesn't have a recommended production setting.
      */
-    public unset(): void
+    public unsetSettingsAutomatically(): void
     {
         if ( !this.isRecommended( ProductionLineAttribute.ALIAS ) )
         {
@@ -49,7 +49,7 @@ export class ProductionHelper
      * 
      * @return void
      */
-    public automaticallySetProductionSettings(): void
+    public setSettingsAutomatically(): void
     {
 		if ( !this.getProductionLine() && this.attrComputer.isSupported( ProductionLineAttribute.ALIAS ) )
         {

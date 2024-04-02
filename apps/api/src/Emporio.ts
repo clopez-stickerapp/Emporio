@@ -36,11 +36,13 @@ export class Emporio {
 	public productService: ProductService;
 	protected builder: ProductItemBuilder;
 	protected validator: ProductItemValidator;
+	protected computer: ProductAttrComputerExtended;
 
 	public constructor(service: ProductService = new StickerAppProductService()) {
 		this.productService = service;
 		this.builder = new ProductItemBuilder( service );
 		this.validator = new ProductItemValidator( service );
+		this.computer = new ProductAttrComputerExtended( service );
 	}
 
 	public calculateUnits(productItem: ProductItem): number {
@@ -112,11 +114,17 @@ export class Emporio {
 		return this.validator.validate( productItem, allowUnsupportedAttributeAliases, allowUnsuggestedAttributeValues, checkAgainstFilteredValues );
 	}
 
-	public setProductionSettings( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		const computer = new ProductAttrComputerExtended( this.productService );
-		computer.prepare( productItem, true, useFilters );
-		const productionHelper = new ProductionHelper( this.productService, computer, productItem, new FeatureHelper( computer, productItem ) );
+	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
+		this.computer.prepare( productItem, true, useFilters );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.setSettingsAutomatically();
+		return productItem;
+	}
+
+	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
+		this.computer.prepare( productItem, true, useFilters );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
+		productionHelper.unsetSettingsAutomatically();
 		return productItem;
 	}
 }

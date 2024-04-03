@@ -13,7 +13,7 @@ const attributesExample = {
 	"width_mm": 51,
 	"height_mm": 25,
 	"quantity": 111
-}; 
+};
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -21,10 +21,10 @@ export default async function ( fastify: FastifyInstance ) {
 	const emporio = new Emporio();
 
 	f.get( 
-		'/settings/set/:family/:name', {
+		'/item-with-settings/:family/:name', {
 			schema: {
 				params: paramSchema,
-				operationId: 'setProductionSettings',
+				operationId: 'getItemWithProductionSettings',
 				querystring: Type.Object( {
 					attributes: Type.String( { 
 						examples: [ 
@@ -37,14 +37,19 @@ export default async function ( fastify: FastifyInstance ) {
 				} ),
 				response: {
 					200: Type.Object( {
-						'attributes': Type.Record( Type.String(), Type.Any(), { 
-							'examples': [
-								{
-									...attributesExample,
-									'production_line': 'laser',
-									'cut_direction': 'auto'
-								}
-							] 
+						item: Type.Object( {
+							productName: Type.String(),
+							productFamilyName: Type.String(),
+							attributes: Type.Record( Type.String(), Type.Any(), { 
+								'examples': [
+									{
+										...attributesExample,
+										'production_line': 'laser',
+										'cut_direction': 'auto'
+									}
+								] 
+							} ),
+							units: Type.Number()
 						} )
 					} ),
 					400: Type.Object( {
@@ -60,17 +65,24 @@ export default async function ( fastify: FastifyInstance ) {
 				attributes: JSON.parse( request.query.attributes ),
 			} );
 
-			const attributes = emporio.setProductionSettingsOnItem( item, request.query.useFilters ).getAttributes();
+			item = emporio.setProductionSettingsOnItem( item, request.query.useFilters );
 
-			return { attributes };
+			return { 
+				item: {
+					'productFamilyName': item.getProductFamilyName(),
+					'productName': item.getProductName(),
+					'attributes': item.getAttributes(),
+					'units': item.getUnits()
+				} 
+			};
 		},
 	)
 
 	f.get( 
-		'/settings/unset/:family/:name', {
+		'/item-without-settings/:family/:name', {
 			schema: {
 				params: paramSchema,
-				operationId: 'unsetProductionSettings',
+				operationId: 'getItemWithoutProductionSettings',
 				querystring: Type.Object( {
 					attributes: Type.String( { 
 						examples: [ 
@@ -87,10 +99,15 @@ export default async function ( fastify: FastifyInstance ) {
 				} ),
 				response: {
 					200: Type.Object( {
-						'attributes': Type.Record( Type.String(), Type.Any(), { 
-							'examples': [ 
-								attributesExample 
-							] 
+						item: Type.Object( {
+							productName: Type.String(),
+							productFamilyName: Type.String(),
+							attributes: Type.Record( Type.String(), Type.Any(), { 
+								'examples': [
+									attributesExample
+								] 
+							} ),
+							units: Type.Number()
 						} )
 					} ),
 					400: Type.Object( {
@@ -106,9 +123,16 @@ export default async function ( fastify: FastifyInstance ) {
 				attributes: JSON.parse( request.query.attributes ),
 			} );
 
-			const attributes = emporio.unsetProductionSettingsOnItem( item, request.query.useFilters ).getAttributes();
+			item = emporio.unsetProductionSettingsOnItem( item, request.query.useFilters );
 
-			return { attributes };
+			return { 
+				item: {
+					'productFamilyName': item.getProductFamilyName(),
+					'productName': item.getProductName(),
+					'attributes': item.getAttributes(),
+					'units': item.getUnits()
+				} 
+			};
 		},
 	)
 }

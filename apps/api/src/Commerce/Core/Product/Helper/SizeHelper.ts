@@ -10,7 +10,6 @@ export class SizeHelper
 	public static readonly MAX_SIZE_MM_LASER   = 275;
 	public static readonly MIN_SIZE_MM_DEFAULT = 25;
 
-	private mm2pxFactor:        number  = 2.83465;
 	public fixedSize:           boolean = false;
 	public minSize:             Size    = new Size( this );
 	public maxSize:             Size    = new Size( this );
@@ -30,8 +29,8 @@ export class SizeHelper
 	{
 		let value = "|";
 
-		value += this.getMeasureAttrInMM( "width" ) + "|";
-		value += this.getMeasureAttrInMM( "height" ) + "|";
+		value += this.width.mm + "|";
+		value += this.height.mm + "|";
 		value += this.minSize.mm + "|";
 		value += this.maxSize.mm + "|";
 		value += this.fixedSize + "|";
@@ -123,7 +122,7 @@ export class SizeHelper
 
 	protected evaluateMaxWidth(): void
 	{
-		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) < this.getMeasureAttrInMM( "height" ) )
+		if ( this.hasMaxSizeOtherSide() && this.width.mm < this.height.mm )
 		{
 			this.maxWidth.mm = this.maxSizeOtherSide.mm;
 		}
@@ -135,7 +134,7 @@ export class SizeHelper
 
 	protected evaluateMaxHeight(): void
 	{
-		if ( this.hasMaxSizeOtherSide() && this.getMeasureAttrInMM( "width" ) >= this.getMeasureAttrInMM( "height" ) )
+		if ( this.hasMaxSizeOtherSide() && this.width.mm >= this.height.mm )
 		{
 			this.maxHeight.mm = this.maxSizeOtherSide.mm;
 		}
@@ -259,34 +258,6 @@ export class SizeHelper
 		return this.convertCMToMM( measureInInchesOrCM );
 	}
 
-	public getMeasureAttrInMM( attributeName: string ): number
-	{
-		attributeName = this.sanitizeMeasureAttrName( attributeName );
-
-		return parseInt( this.productItem.getAttribute<string>( attributeName ) ?? '0' );
-	}
-
-	public getMeasureAttrInInches( attributeName: string ): number
-	{
-		let mm: number = this.getMeasureAttrInMM( attributeName );
-
-		return this.convertMMToInches( mm );
-	}
-
-	public getMeasureAttrInPixels( attributeName: string ): number
-	{
-		let mm: number = this.getMeasureAttrInMM( attributeName );
-
-		return mm * this.mm2pxFactor;
-	}
-
-	public getMeasureAttrDisplayable( attributeName: string ): number
-	{
-		attributeName = this.sanitizeMeasureAttrName( attributeName );
-
-		return this.convertMMToLocalizedMeassure( this.getMeasureAttrInMM( attributeName ) );
-	}
-
 	public convertMMToLocalizedMeassure( meassureInMM: number ): number
 	{
 		if ( this.isImperialUnits() )
@@ -345,23 +316,29 @@ export class SizeHelper
 	{
 		let quantity = Number( this.productItem.getAttribute( "quantity" ) );
 
-		return ( this.getMeasureAttrInMM( "width" ) * this.getMeasureAttrInMM( "height" ) * quantity ) / 1000000;
+		return ( this.width.mm * this.height.mm * quantity ) / 1000000;
 	}
 
-	public get widthDisplayable(): number
+	public get width(): Size
 	{
-		return this.getMeasureAttrDisplayable( "width_mm" );
+		const size = new Size( this );
+		size.mm = parseInt( this.productItem.getAttribute<string>( "width_mm" ) ?? '0' );
+		return size;
 	}
 
-	public get heightDisplayable(): number
+	public get height(): Size
 	{
-		return this.getMeasureAttrDisplayable( "height_mm" );
+		const size = new Size( this );
+		size.mm = parseInt( this.productItem.getAttribute<string>( "height_mm" ) ?? '0' );
+		return size;
 	}
 }
 
 class Size
 {
 	public mm: number = 0;
+
+	private mm2pxFactor: number = 2.83465;
 
 	public constructor( protected size: SizeHelper ) {}
 
@@ -373,6 +350,11 @@ class Size
 	public get cm(): number
 	{
 		return this.size.convertMMToCM( this.mm );
+	}
+
+	public get px(): number
+	{
+		return this.mm * this.mm2pxFactor;
 	}
 
 	public get localized(): number

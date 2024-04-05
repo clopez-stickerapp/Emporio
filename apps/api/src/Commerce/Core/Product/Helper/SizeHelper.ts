@@ -10,15 +10,15 @@ export class SizeHelper
 	public static readonly MAX_SIZE_MM_LASER   = 275;
 	public static readonly MIN_SIZE_MM_DEFAULT = 25;
 
-	public fixedSize:           boolean = false;
-	public minSize:             Size    = new Size( this );
-	public maxSize:             Size    = new Size( this );
-	public maxSizeOtherSide:    Size    = new Size( this );
-	public maxWidth:            Size    = new Size( this );
-	public maxHeight:           Size    = new Size( this );
-	public meassureDisplayAbbr: string  = "cm";
-	public deliverySheet:       DeliverySheetSizeHelper;
+	public fixedSize:           boolean         = false;
+	public meassureDisplayAbbr: string          = "cm";
+	public minSize:             SizeConverter   = new SizeConverter( this );
+	public maxSize:             SizeConverter   = new SizeConverter( this );
+	public maxSizeOtherSide:    SizeConverter   = new SizeConverter( this );
+	public maxWidth:            SizeConverter   = new SizeConverter( this );
+	public maxHeight:           SizeConverter   = new SizeConverter( this );
 	public transform:           TransformHelper = new TransformHelper( this );
+	public deliverySheet:       DeliverySheetSizeHelper;
 
 	constructor( protected attrComputer: ProductAttrComputer, protected productItem: ProductItem )
 	{
@@ -319,22 +319,22 @@ export class SizeHelper
 		return ( this.width.mm * this.height.mm * quantity ) / 1000000;
 	}
 
-	public get width(): Size
+	public get width(): SizeConverter
 	{
-		const size = new Size( this );
-		size.mm = parseInt( this.productItem.getAttribute<string>( "width_mm" ) ?? '0' );
-		return size;
+		const width = new SizeConverter( this );
+		width.mm = parseInt( this.productItem.getAttribute<string>( "width_mm" ) ?? '0' );
+		return width;
 	}
 
-	public get height(): Size
+	public get height(): SizeConverter
 	{
-		const size = new Size( this );
-		size.mm = parseInt( this.productItem.getAttribute<string>( "height_mm" ) ?? '0' );
-		return size;
+		const height = new SizeConverter( this );
+		height.mm = parseInt( this.productItem.getAttribute<string>( "height_mm" ) ?? '0' );
+		return height;
 	}
 }
 
-class Size
+class SizeConverter
 {
 	public mm: number = 0;
 

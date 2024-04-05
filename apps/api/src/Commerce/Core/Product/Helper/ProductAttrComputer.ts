@@ -3,18 +3,18 @@ import { Attributes } from "../../../../Helper/Condition/Attributes";
 import { ProductAttrValueType } from "../Attribute/ProductAttrValueType";
 import { ProductItem } from "../Item/ProductItem";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
-import { ProductAttributeMap } from "./ProductAttrMap";
+import { TProductAttrMap } from "./ProductAttrMap";
 
 export class ProductAttrComputer
 {
-	protected attributes:               Record<string, ProductAttributeMap> = {};
-	protected attributesOutOfStock:     Attributes<string[]>                = {};
-	protected attributesFiltersMatched: Attributes<number>                  = {};
-	protected attributesPreferred:      Attributes                          = {};
-	protected attributesConstrained:    Attributes<AttributeValueMulti>     = {};
-	protected attributesSuggested:      Attributes<AttributeValueMulti>     = {};
-	protected attributesFiltered:       Attributes<AttributeValueMulti>     = {};
-	public useFilters:                  boolean                             = true;
+	protected attributes:               TProductAttrMap                 = {};
+	protected attributesOutOfStock:     Attributes<string[]>            = {};
+	protected attributesFiltersMatched: Attributes<number>              = {};
+	protected attributesPreferred:      Attributes                      = {};
+	protected attributesConstrained:    Attributes<AttributeValueMulti> = {};
+	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
+	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
+	public useFilters:                  boolean                         = true;
 
 	constructor( public attrEvaluator: ProductAttrConditionEvaluator ) {}
 
@@ -23,7 +23,7 @@ export class ProductAttrComputer
 	 * 
 	 * @param attributes The new attributes to be set.
 	 */
-	public reset( attributes: Record<string, ProductAttributeMap> ): void 
+	public reset( attributes: TProductAttrMap ): void 
 	{
 		this.attributes = attributes;
 	}
@@ -45,6 +45,11 @@ export class ProductAttrComputer
 	{
 		this.attributesFiltered = {};
 		this.attributesFiltersMatched = {};
+
+		if ( !this.useFilters )
+		{
+			return;
+		}
 
 		for ( const attributeName in this.attributes )
 		{
@@ -84,7 +89,7 @@ export class ProductAttrComputer
 
 		for ( const attributeName in this.attributes ) 
 		{
-			let values = this.useFilters ? this.getFilteredValues( attributeName ) : [];
+			let values = this.getFilteredValues( attributeName );
 
 			if ( !values.length )
 			{

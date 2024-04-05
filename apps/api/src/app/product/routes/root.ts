@@ -47,11 +47,6 @@ export default async function ( fastify: FastifyInstance ) {
 		'/attribute-map/:family/:name', {
 			schema: {
 				params: paramSchema,
-				querystring: Type.Object( {
-					includeFilters: Type.Boolean( {
-						default: true
-					} ),
-				} ),
 				operationId: 'attributeMap',
 				response: {
 					200: Type.Object( {
@@ -64,10 +59,7 @@ export default async function ( fastify: FastifyInstance ) {
 			},
 		},
 		async function ( request ) {
-			const attrMap = emporio.createAttributeMap( request.params.family, request.params.name, request.query.includeFilters );
-			return { 
-				attributes: attrMap.getMap() 
-			};
+			return { attributes: emporio.getAttributeMap( request.params.family, request.params.name ) };
 		}
 	)
 

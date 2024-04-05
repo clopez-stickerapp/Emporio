@@ -1,7 +1,7 @@
 import { AttributeValue, AttributeValueMulti } from "../../../../Helper/Condition/AttributeValue";
 import { Attributes } from "../../../../Helper/Condition/Attributes";
 import { ProductAttrFilterMode } from "../Attribute/Filter/ProductAttrFilterMode";
-import { ProductAttributeFilter, ProductAttributeMap } from "./ProductAttrMap";
+import { ProductAttributeFilter, TProductAttrMap, TProductAttrMapValue } from "./ProductAttrMap";
 
 type Constraints = Record<string, string[]>;
 
@@ -10,13 +10,13 @@ export class ProductAttrConditionEvaluator
 	public debugEnabled: boolean  = false;
 	public debugList:    string[] = [];
 
-	protected attributes:         Record<string, ProductAttributeMap> = {};
-	protected ignoredConstraints: Constraints                         = {};
-	protected debugConstraints:   Record<string, Constraints>         = {};
-	protected regex:              RegExp                              = /[$][{].*?[}]/g;
-	protected logEnabled:         boolean                             = false;
+	protected attributes:         TProductAttrMap             = {};
+	protected ignoredConstraints: Constraints                 = {};
+	protected debugConstraints:   Record<string, Constraints> = {};
+	protected regex:              RegExp                      = /[$][{].*?[}]/g;
+	protected logEnabled:         boolean                     = false;
 
-	public reset( attributes: Record<string, ProductAttributeMap> ): void
+	public reset( attributes: TProductAttrMap ): void
 	{
 		this.attributes = attributes;
 	}
@@ -419,7 +419,7 @@ export class ProductAttrConditionEvaluator
 		return null;
 	}
 
-	public getAttribute( attributeName: string ): ProductAttributeMap | null
+	public getAttribute( attributeName: string ): TProductAttrMapValue | null
 	{
 		if( this.attributes.hasOwnProperty( attributeName ) )
 		{

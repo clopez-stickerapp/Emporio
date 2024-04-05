@@ -4,7 +4,7 @@ import { ProductAttrFilterMode } from "../Attribute/Filter/ProductAttrFilterMode
 import { ProductAttrValueType } from "../Attribute/ProductAttrValueType";
 import { Product } from "../Product";
 
-export type ProductAttributeMap = {
+export type TProductAttrMapValue = {
 	alias: string,
 	isDynamicValue: boolean,
 	isMultiValue: boolean,
@@ -12,10 +12,12 @@ export type ProductAttributeMap = {
 	isRequired : boolean,
 	valuesAndConstraints: Record<string, string | null>,
 	icons: Record<string, string>,
-	filters: ProductAttributeFilter[] | null,
+	filters: ProductAttributeFilter[],
 	filterMode: ProductAttrFilterMode | null,
 	outOfStockValues: string[]
 }
+
+export type TProductAttrMap = Record<string, TProductAttrMapValue>
 
 export type ProductAttributeFilter = {
 	values: AttributeValueMulti;
@@ -24,16 +26,9 @@ export type ProductAttributeFilter = {
 }
 
 export class ProductAttrMap {
-	protected map:            Record<string, ProductAttributeMap> = {};
-	protected product:        Product;
-	protected ps:             ProductService;
-	protected includeFilters: boolean;
+	protected map: TProductAttrMap = {};
 
-	public constructor( ps: ProductService, product: Product, includeFilters: boolean = true ) {
-		this.product         = product;
-		this.includeFilters  = includeFilters;
-		this.ps               = ps;
-
+	public constructor( protected ps: ProductService, protected product: Product ) {
 		for ( const [ attrAlias, attrUID ] of Object.entries( product.getProductFamily().getAttributes() ) ) {
 			this.run( attrUID, attrAlias );
 		}
@@ -67,20 +62,18 @@ export class ProductAttrMap {
 			attrValues[ attrValue.toString() ] = conditionsBuilder ? `${ conditionsBuilder }` : null;
 		}
 
-		let filters: ProductAttributeFilter[] | null = null;
+		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		if ( this.includeFilters ) {
-			const filter = this.product.getProductFamily().getFilterCollection()?.getFilterFor( attrAlias );
+		const filter = this.product.getProductFamily().getFilterCollection()?.getFilterFor( attrAlias );
 
-			if ( filter ) {
-				filterMode = filter.mode;
-				filters = filter.getAllFilters().map( filteredValues => ( {
-					"values": filteredValues.getValues(),
-					"conditions": `${ filteredValues.conditionBuilder }`,
-					"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
-				} ) );
-			}
+		if ( filter ) {
+			filterMode = filter.mode;
+			filters = filter.getAllFilters().map( filteredValues => ( {
+				"values": filteredValues.getValues(),
+				"conditions": `${ filteredValues.conditionBuilder }`,
+				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
+			} ) );
 		}
 
 		// TODO: Double check all filter values that they are correct value types (especially for booleans and ints), if not throw error
@@ -99,7 +92,7 @@ export class ProductAttrMap {
 		};
 	}
 
-	public getMap(): Record<string, ProductAttributeMap> {
+	public getMap(): TProductAttrMap {
 		return this.map;
 	}
 }

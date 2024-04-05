@@ -20,7 +20,7 @@ export class ProductItemBuilder
 		const item          = new ProductItem( productFamilyName, productName );
 		
 		// item.setSku( product.getSku() );
-		this.attrComputer.prepare( item, true, useFilters );
+		this.attrComputer.prepare( item, useFilters );
 
 		for ( const [ attrName, attrUID ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
 		{

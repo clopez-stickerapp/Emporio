@@ -6,11 +6,11 @@ import { ProductService } from "./Commerce/Core/ProductService";
 import { StickerAppProductService } from "./Commerce/Product/StickerAppProductService";
 import { getVatPercentage } from "./Commerce/Tax/Vat";
 import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
-import { ProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 import { ProductItemValidator } from "./Commerce/Core/Product/Helper/ProductItemValidator";
 import { ProductionHelper } from "./Commerce/Core/Product/Helper/ProductionHelper";
 import { FeatureHelper } from "./Commerce/Core/Product/Helper/FeatureHelper";
 import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/ProductAttrComputerExtended";
+import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -105,9 +105,9 @@ export class Emporio {
 		return this.builder.createItem( productFamilyName, productName, useFilters );
 	}
 
-	public createAttributeMap( productFamilyName: string, productName: string, includeFilters: boolean ): ProductAttrMap {
+	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {
 		const product = this.productService.findProduct( productFamilyName, productName );
-		return new ProductAttrMap( this.productService, product, includeFilters );
+		return ( new ProductAttrMap( this.productService, product ) ).getMap();
 	}
 
 	public validate( productItem: ProductItem, allowUnsupportedAttributeAliases: boolean, allowUnsuggestedAttributeValues: boolean, checkAgainstFilteredValues: boolean ): void {
@@ -115,14 +115,14 @@ export class Emporio {
 	}
 
 	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, true, useFilters );
+		this.computer.prepare( productItem, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.setSettingsAutomatically();
 		return productItem;
 	}
 
 	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, true, useFilters );
+		this.computer.prepare( productItem, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;

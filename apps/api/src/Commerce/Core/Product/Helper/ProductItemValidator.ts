@@ -28,7 +28,7 @@ export class ProductItemValidator
 	 */
 	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = false, checkAgainstFilteredValues: boolean = true ): void 
 	{
-		this.attrComputer.prepare( item, true, checkAgainstFilteredValues );
+		this.attrComputer.prepare( item, checkAgainstFilteredValues );
 		
 		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
 		const product = productFamily.getProduct( item.getProductName() );

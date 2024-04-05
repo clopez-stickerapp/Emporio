@@ -12,7 +12,7 @@ export class FeatureHelper extends MultiValueHelper
 
     public doesSupportEffectLayer(): boolean
     {
-		return this.attrComputer.isAvailable( FeatureAttribute.ALIAS, FeatureAttribute.EFFECT_LAYER );
+		return this.doesSupportFeature( FeatureAttribute.EFFECT_LAYER );
     }
 
     public doesSupportFeature( feature: string ): boolean
@@ -22,11 +22,13 @@ export class FeatureHelper extends MultiValueHelper
 
     public setFeature( featureName: string, value: boolean ): void
     {
-		this.insertOrDeleteOne( featureName, value );
+		if ( value )
+		{
+			this.insertOne( featureName );
+		}
+		else
+		{
+			this.deleteOne( featureName );
+		}
     }
-
-	public hasFeature( featureName: string ): boolean
-	{
-		return this.has( featureName );
-	}
 }

@@ -5,17 +5,13 @@ export class MultiValueHelper
 {
     public constructor( protected item: ProductItem, protected attrAlias: string ) {}
 
-    public insertOrDeleteOne( attrValue: AttributeValueSingle, value: boolean ): void
-    {
-        let attrValues = this.getAll() ?? [];
-
-		if ( !value )
+	public insertOne( value: AttributeValueSingle ): void
+	{
+		let attrValues = this.get() ?? [];
+		
+		if ( !attrValues.includes( value ) )
 		{
-			attrValues = attrValues.filter( v => v != attrValue );
-		}
-		else if ( !attrValues.includes( attrValue ) )
-		{
-			attrValues.push( attrValue );
+			attrValues.push( value );
 		}
 
 		if ( attrValues.length )
@@ -24,26 +20,32 @@ export class MultiValueHelper
 		}
 		else
 		{
-			this.deleteAll();
+			this.delete();
 		}
-    }
-
-	public insertOne( attrValue: AttributeValueSingle ): void
-	{
-		this.insertOrDeleteOne( attrValue, true );
 	}
 
-	public deleteOne( attrValue: AttributeValueSingle ): void
+	public deleteOne( value: AttributeValueSingle ): void
 	{
-		this.insertOrDeleteOne( attrValue, false );
+		let attrValues = this.get() ?? [];
+
+		attrValues = attrValues.filter( v => v != value );
+
+		if ( attrValues.length )
+		{
+			this.set( attrValues );
+		}
+		else
+		{
+			this.delete();
+		}
 	}
 
     public has( attrValue: AttributeValueSingle ): boolean
     {
-		return ( this.getAll() ?? [] ).includes( attrValue );
+		return ( this.get() ?? [] ).includes( attrValue );
     }
 
-	public getAll(): AttributeValueMulti | undefined
+	public get(): AttributeValueMulti | undefined
 	{
 		return this.item.getAttribute( this.attrAlias );
 	}
@@ -53,7 +55,7 @@ export class MultiValueHelper
 		this.item.setAttribute( this.attrAlias, attrValues );
 	}
 
-	public deleteAll(): void
+	public delete(): void
 	{
 		this.item.removeAttribute( this.attrAlias );
 	}

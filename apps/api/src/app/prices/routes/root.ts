@@ -7,9 +7,12 @@ import { Emporio, FormattedPriceList } from '$/Emporio';
 import { formatCurrency } from '$/Commerce/Core/Currency/Currency';
 import { getLocale } from '$/Commerce/Core/Localization/Locale';
 
+const service = new StickerAppProductService();
+const family = service.retrieveProductFamily( 'custom_sticker' );
+
 export const paramSchema = Type.Object({
-	family: Type.String({ examples: ['custom_sticker'] }),
-	name: Type.String({ examples: ['die_cut'] }),
+	family: Type.String({ examples: [ family.getName() ] }),
+	name: Type.String({ examples: Object.keys( family.getProducts() ) }),
 });
 
 export const querySchema = Type.Object({

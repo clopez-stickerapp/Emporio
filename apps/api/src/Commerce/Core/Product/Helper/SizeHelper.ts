@@ -12,11 +12,11 @@ export class SizeHelper
 
 	public fixedSize:           boolean         = false;
 	public meassureDisplayAbbr: string          = "cm";
-	public minSize:             SizeConverter   = new SizeConverter( this );
-	public maxSize:             SizeConverter   = new SizeConverter( this );
-	public maxSizeOtherSide:    SizeConverter   = new SizeConverter( this );
-	public maxWidth:            SizeConverter   = new SizeConverter( this );
-	public maxHeight:           SizeConverter   = new SizeConverter( this );
+	public minSize:             SizeUnitConverter   = new SizeUnitConverter( this );
+	public maxSize:             SizeUnitConverter   = new SizeUnitConverter( this );
+	public maxSizeOtherSide:    SizeUnitConverter   = new SizeUnitConverter( this );
+	public maxWidth:            SizeUnitConverter   = new SizeUnitConverter( this );
+	public maxHeight:           SizeUnitConverter   = new SizeUnitConverter( this );
 	public transform:           TransformHelper = new TransformHelper( this );
 	public deliverySheet:       DeliverySheetSizeHelper;
 
@@ -319,22 +319,22 @@ export class SizeHelper
 		return ( this.width.mm * this.height.mm * quantity ) / 1000000;
 	}
 
-	public get width(): SizeConverter
+	public get width(): SizeUnitConverter
 	{
-		const width = new SizeConverter( this );
+		const width = new SizeUnitConverter( this );
 		width.mm = parseInt( this.productItem.getAttribute<string>( "width_mm" ) ?? '0' );
 		return width;
 	}
 
-	public get height(): SizeConverter
+	public get height(): SizeUnitConverter
 	{
-		const height = new SizeConverter( this );
+		const height = new SizeUnitConverter( this );
 		height.mm = parseInt( this.productItem.getAttribute<string>( "height_mm" ) ?? '0' );
 		return height;
 	}
 }
 
-class SizeConverter
+class SizeUnitConverter
 {
 	public mm: number = 0;
 

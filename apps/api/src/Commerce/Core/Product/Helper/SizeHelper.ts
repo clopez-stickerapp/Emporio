@@ -361,4 +361,15 @@ class SizeUnitConverter
 	{
 		return this.size.convertMMToLocalizedMeassure( this.mm );
 	}
+
+	public toObject()
+	{
+		return {
+			'mm': this.mm,
+			'inches': this.inches,
+			'cm': this.cm,
+			'px': this.px,
+			'localized': this.localized
+		}
+	}
 }

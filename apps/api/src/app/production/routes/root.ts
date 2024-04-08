@@ -4,7 +4,7 @@ import { Emporio } from '$/Emporio';
 import { paramSchema } from '$app/prices/routes/root';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 
-const attributesExample = {
+export const attributesExample = {
 	"sheet_type": "single",
 	"sheet_name": "path",
 	"delivery": "single",

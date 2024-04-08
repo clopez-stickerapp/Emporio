@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { Emporio } from '$/Emporio';
 import { paramSchema } from '$app/prices/routes/root';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
+import { attributesExample } from '$app/production/routes/root';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -112,6 +113,34 @@ export default async function ( fastify: FastifyInstance ) {
 					}
 				};
 			}
+		},
+	)
+
+	f.get( 
+		'/size/:family/:name', {
+			schema: {
+				params: paramSchema,
+				operationId: 'getSizeDetails',
+				querystring: Type.Object( {
+					attributes: Type.String( { examples: [ JSON.stringify( attributesExample ) ] } ),
+					useFilters: Type.Boolean( { default: true } )
+				} ),
+				response: {
+					200: Type.Record( Type.String(), Type.Any() ),
+					400: Type.Object( { message: Type.String() } )
+				},
+			},
+		},
+		async function ( request ) {
+			const item = ProductItem.fromJSON( {
+				productFamilyName: request.params.family,
+				productName: request.params.name,
+				attributes: JSON.parse( request.query.attributes ),
+			} );
+
+			const sizeDetails = emporio.getSizeDetails( item, request.query.useFilters );
+
+			return { sizeDetails };
 		},
 	)
 }

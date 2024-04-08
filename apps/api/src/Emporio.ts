@@ -11,6 +11,7 @@ import { ProductionHelper } from "./Commerce/Core/Product/Helper/ProductionHelpe
 import { FeatureHelper } from "./Commerce/Core/Product/Helper/FeatureHelper";
 import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/ProductAttrComputerExtended";
 import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
+import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -126,5 +127,25 @@ export class Emporio {
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;
+	}
+
+	public getSizeDetails( productItem: ProductItem, useFilters: boolean ) {
+		this.computer.prepare( productItem, useFilters );
+		const sizeHelper = new SizeHelper( this.computer, productItem );
+		sizeHelper.evaluate();
+
+		return {
+			fixedSize:        sizeHelper.fixedSize,
+			imperialUnits:    sizeHelper.isImperialUnits(),
+			abbreviation:     sizeHelper.meassureDisplayAbbr,
+			options:          sizeHelper.getSizeOptions(),
+			maxSizeOtherSide: sizeHelper.maxSizeOtherSide.toObject(),
+			minSize:          sizeHelper.minSize.toObject(),
+			maxSize:          sizeHelper.maxSize.toObject(),
+			maxWidth:         sizeHelper.maxWidth.toObject(),
+			maxHeight:        sizeHelper.maxHeight.toObject(),
+			width:            sizeHelper.width.toObject(),
+			height:           sizeHelper.height.toObject()
+		}
 	}
 }

@@ -12,6 +12,7 @@ import { FeatureHelper } from "./Commerce/Core/Product/Helper/FeatureHelper";
 import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/ProductAttrComputerExtended";
 import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
+import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -147,5 +148,11 @@ export class Emporio {
 			width:            sizeHelper.width.toObject(),
 			height:           sizeHelper.height.toObject()
 		}
+	}
+
+	public isAttributeAvailable( productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean ): boolean {
+		this.computer.prepare( productItem, useFilters );
+		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
+		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
 }

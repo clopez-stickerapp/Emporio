@@ -143,4 +143,35 @@ export default async function ( fastify: FastifyInstance ) {
 			return { sizeDetails };
 		},
 	)
+
+	f.get( 
+		'/attribute/available/:name/:value', {
+			schema: {
+				params: Type.Object( {
+					name: Type.String(),
+					value: Type.Union( [ Type.String(), Type.Number(), Type.Boolean() ] )
+				} ),
+				operationId: 'isAttributeAvailable',
+				querystring: Type.Object( {
+					item: Type.String( { examples: [ JSON.stringify( {
+						productFamilyName: 'custom_sticker',
+						productName: 'die_cut',
+						attributes: attributesExample
+					} ) ] } ),
+					useFilters: Type.Boolean( { default: true } )
+				} ),
+				response: {
+					200: Type.Object( { available: Type.Boolean() } ),
+					400: Type.Object( { message: Type.String() } )
+				},
+			},
+		},
+		async function ( request ) {
+			const item = ProductItem.fromJSON( JSON.parse( request.query.item ) );
+
+			const available = emporio.isAttributeAvailable( item, request.params.name, request.params.value, request.query.useFilters );
+
+			return { available };
+		},
+	)
 }

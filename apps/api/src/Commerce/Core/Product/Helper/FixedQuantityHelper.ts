@@ -4,7 +4,7 @@ import { ProductAttrComputer } from "./ProductAttrComputer";
 
 export class FixedQuantityHelper
 {
-	public fixedQuantity: boolean | null = null;
+	public fixedQuantity: boolean = false;
 
 	public constructor( protected attrComputer: ProductAttrComputer, protected productItem: ProductItem ) {}
 

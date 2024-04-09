@@ -174,4 +174,32 @@ export default async function ( fastify: FastifyInstance ) {
 			return { available };
 		},
 	)
+
+	f.get( 
+		'/attribute/fixed-quantity-evaluated/:family/:name', {
+			schema: {
+				params: paramSchema,
+				operationId: 'getFixedQuantityEvaluated',
+				querystring: Type.Object( {
+					attributes: Type.String( { examples: [ JSON.stringify( attributesExample ) ] } ),
+					useFilters: Type.Boolean( { default: true } )
+				} ),
+				response: {
+					200: Type.Object( { fixedQuantity: Type.Boolean() } ),
+					400: Type.Object( { message: Type.String() } )
+				},
+			},
+		},
+		async function ( request ) {
+			const item = ProductItem.fromJSON( {
+				productFamilyName: request.params.family,
+				productName: request.params.name,
+				attributes: JSON.parse( request.query.attributes ),
+			} );
+
+			const fixedQuantity = emporio.getFixedQuantityEvaluated( item, request.query.useFilters );
+
+			return { fixedQuantity };
+		},
+	)
 }

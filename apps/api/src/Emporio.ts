@@ -13,6 +13,7 @@ import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/Prod
 import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
 import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
 import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
+import { FixedQuantityHelper } from "./Commerce/Core/Product/Helper/FixedQuantityHelper";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -154,5 +155,12 @@ export class Emporio {
 		this.computer.prepare( productItem, useFilters );
 		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
+	}
+
+	public getFixedQuantityEvaluated( productItem: ProductItem, useFilters: boolean ): boolean {
+		this.computer.prepare( productItem, useFilters );
+		const fixedQuantityHelper = new FixedQuantityHelper( this.computer, productItem );
+		fixedQuantityHelper.evaluate();
+		return fixedQuantityHelper.fixedQuantity;
 	}
 }

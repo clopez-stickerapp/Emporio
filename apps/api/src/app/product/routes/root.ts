@@ -79,11 +79,13 @@ export default async function ( fastify: FastifyInstance ) {
 				} ),
 				response: {
 					200: Type.Object( {
-						valid: Type.Boolean(),
-						error: Type.Optional( Type.Object( {
-							name: Type.String(),
-							message: Type.String()
-						} ) )
+						validation: Type.Object( {
+							valid: Type.Boolean(),
+							error: Type.Optional( Type.Object( {
+								name: Type.String(),
+								message: Type.String()
+							} ) )
+						} )
 					} ),
 					400: Type.Object( {
 						message: Type.String()
@@ -98,21 +100,22 @@ export default async function ( fastify: FastifyInstance ) {
 				attributes: JSON.parse( request.query.attributes ),
 			} );
 
+			let validation: { valid: boolean, error?: { name: string, message: string } } = {
+				valid: false
+			};
+
 			try {
 				item.setUnits( emporio.calculateUnits( item ) );
 				emporio.validate( item, request.query.allowUnsupportedAttributeAliases, request.query.allowUnsuggestedAttributeValues, request.query.checkAgainstFilteredValues );
-				return { 
-					valid: true 
-				};
+				validation.valid = true;
 			} catch ( error: any ) {
-				return {
-					valid: false,
-					error: {
-						name: error.name,
-						message: error.message
-					}
+				validation.error = {
+					name: error.name,
+					message: error.message
 				};
 			}
+
+			return { validation }
 		},
 	)
 

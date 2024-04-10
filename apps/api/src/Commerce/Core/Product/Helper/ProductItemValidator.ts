@@ -62,7 +62,7 @@ export class ProductItemValidator
 			{
 				if ( !allowUnsupportedAttributeAliases )
 				{
-					throw new ProductAttrNotSupportedException( `Attribute name is not supported by product: ${ attrName }` );
+					throw new ProductAttrNotSupportedException( `Attribute name "${ attrName }" is not supported by product` );
 				}
 
 				continue;
@@ -81,7 +81,7 @@ export class ProductItemValidator
 					{
 						if ( !this.attrComputer.isInSuggestedValues( attrName, attrValue ) )
 						{
-							throw new ProductAttrValueNotSupportedException( `${ attrValue } is not suggested as ${ attrName }` );
+							throw new ProductAttrValueNotSupportedException( `"${ attrValue }" is not suggested as ${ attrName }` );
 						}
 					}
 				}
@@ -92,7 +92,7 @@ export class ProductItemValidator
 
 					if ( productAttrValue && productFamily.getConstraintsCollection()?.test( attrName, productAttrValue.getValue(), item ) === false ) 
 					{
-						throw new ProductItemInvalidException( `Failed due to constraints related to ${ productAttrValue.getValue() } (${ attrName })` );
+						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue.getValue() }" (${ attrName })` );
 					}
 				}
 
@@ -104,7 +104,7 @@ export class ProductItemValidator
 					{
 						if ( typeof attrValue === 'string' && outOfStock.isOutOfStock( attrValue ) ) 
 						{
-							throw new ProductItemOutOfStockException( `The product item can't be ordered because the value for ${ attrName } is out of stock: ${ attrValue }` );
+							throw new ProductItemOutOfStockException( `${ attrName } "${ attrValue }" is out of stock` );
 						}
 					}
 				}

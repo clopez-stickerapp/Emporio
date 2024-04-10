@@ -50,14 +50,14 @@ async function buildServer() {
 	server.register(cors);
 	server.setErrorHandler((error, request, reply) => {
 		if (error.code === 'FST_ERR_VALIDATION') {
-			reply.status(400).send(error.message);
+			reply.status(400).send({message: error.message});
 		} else if (error instanceof NotFoundError) {
 			reply.status(404).send('Resource not found');
 		} else if (error instanceof BadRequestError) {
-			reply.status(400).send(error.message);
+			reply.status(400).send({message: error.message});
 		} else {
 			server.log.error(error);
-			reply.status(500).send('Internal server error');
+			reply.status(500).send({message:'Internal server error'});
 		}
 	});
 

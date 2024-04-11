@@ -42,12 +42,9 @@ export class ProductItemBuilder
 				attrValue = attrValue[ 0 ];
 			}
 
-			// TODO: Can we set attribute only if attrValue !== undefined?
-			if( attrValue === undefined){
-				throw new Error(`Test to see if this happens. Attribute ${attrName} is undefined`);
-			}
-
-			item.setAttribute( attrName, attrValue );
+			if( attrValue !== undefined){
+				item.setAttribute( attrName, attrValue );
+			}			
 		}
 
 		for ( let [ attrName, attrValue ] of Object.entries( product.getAttrMap() ) ) 

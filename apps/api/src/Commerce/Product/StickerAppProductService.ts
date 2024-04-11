@@ -54,9 +54,12 @@ import { WhiteLayerAttribute } from "./Attribute/Sticker/WhiteLayerAttribute";
 import { TemplateAttribute } from "./Attribute/TemplateAttribute";
 import { WidthAttribute } from "./Attribute/WidthAttribute";
 import { CustomStickerFamily } from "./Family/CustomStickerFamily";
+import { FeeFamily } from "./Family/FeeFamily";
+import { PhoneCaseProductFamily } from "./Family/PhoneCaseProductFamily";
 import { PromoProductFamily } from "./Family/PromoProductFamily";
 import { SkinProductFamily } from "./Family/SkinProductFamily";
 import { PromoProductPriceProvider } from "./Price/PromoProductPriceProvider";
+import { SkinPriceProvider } from "./Price/SkinPriceProvider";
 import { StickerPriceProvider } from "./Price/StickerPriceProvider";
 import { StickerQuantityListCollection } from "./Price/StickerQuantityListCollection";
 
@@ -122,13 +125,13 @@ export class StickerAppProductService extends ProductService {
 		this.registerQuantityListCollection( new StickerQuantityListCollection() );
 
 		this.registerPriceProvider( new StickerPriceProvider() );
-		// this.registerPriceProvider( new SkinPriceProvider( this ) );
+		this.registerPriceProvider( new SkinPriceProvider() );
 		this.registerPriceProvider( new PromoProductPriceProvider() );
 
 		this.registerProductFamily( new CustomStickerFamily( this ) );
-		// this.registerProductFamily( new PhoneCaseProductFamily( this ) );
-		// this.registerProductFamily( new SkinProductFamily( this ) );
+		this.registerProductFamily( new PhoneCaseProductFamily( this ) );
+		this.registerProductFamily( new SkinProductFamily( this ) );
 		this.registerProductFamily( new PromoProductFamily( this ) );
-		// this.registerProductFamily( new FeeFamily( this ) );
+		this.registerProductFamily( new FeeFamily( this ) );
 	}
 }

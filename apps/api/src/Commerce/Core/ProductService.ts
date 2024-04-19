@@ -186,13 +186,11 @@ export class ProductService {
 		return this.quantityListCollections[collectionName];
 	}
 
-	public retrieveAttributes(): ProductAttr[] {
-		throw new Error("Where is this used, just curious to see if it's needed, should be called getAttributes")
+	public getAttributes(): ProductAttr[] {
 		return Array.from(Object.values(this.attributes));
 	}
 
-	public retrieveProductFamilies(): ProductFamily[] {
-		throw new Error("Where is this used, just curious to see if it's needed, should also just be named getProductFamilies")
+	public getProductFamilies(): ProductFamily[] {
 		return Array.from(Object.values(this.productFamilies));
 	}
 

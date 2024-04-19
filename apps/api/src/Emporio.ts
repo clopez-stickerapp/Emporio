@@ -14,6 +14,7 @@ import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/
 import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
 import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
 import { FixedQuantityHelper } from "./Commerce/Core/Product/Helper/FixedQuantityHelper";
+import { ProductFamily } from "./Commerce/Core/Product/ProductFamily";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -36,7 +37,7 @@ export const FormattedPriceList = Type.Array(FormattedPriceStep);
 export type FormattedPriceList = Static<typeof FormattedPriceList>;
 
 export class Emporio {
-	public productService: ProductService;
+	protected productService: ProductService;
 	protected builder: ProductItemBuilder;
 	protected validator: ProductItemValidator;
 	protected computer: ProductAttrComputerExtended;
@@ -162,5 +163,10 @@ export class Emporio {
 		const fixedQuantityHelper = new FixedQuantityHelper( this.computer, productItem );
 		fixedQuantityHelper.evaluate();
 		return fixedQuantityHelper.fixedQuantity;
+	}
+
+	public getFamilies(): ProductFamily[]
+	{
+		return this.productService.getProductFamilies();
 	}
 }

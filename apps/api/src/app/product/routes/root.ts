@@ -5,6 +5,8 @@ import { paramSchema } from '$app/prices/routes/root';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 import { attributesExample } from '$app/production/routes/root';
 
+const AttributeValueSingle = Type.Union( [ Type.String(), Type.Number(), Type.Boolean() ] );
+
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
@@ -152,7 +154,7 @@ export default async function ( fastify: FastifyInstance ) {
 			schema: {
 				params: Type.Object( {
 					name: Type.String(),
-					value: Type.Union( [ Type.String(), Type.Number(), Type.Boolean() ] )
+					value: AttributeValueSingle
 				} ),
 				operationId: 'isAttributeAvailable',
 				querystring: Type.Object( {
@@ -203,6 +205,49 @@ export default async function ( fastify: FastifyInstance ) {
 			const fixedQuantity = emporio.getFixedQuantityEvaluated( item, request.query.useFilters );
 
 			return { fixedQuantity };
+		},
+	)
+
+	f.get( 
+		'/families', {
+			schema: {
+				operationId: 'getFamilies',
+				response: {
+					200: Type.Object( {
+						families: Type.Record( Type.String(), Type.Object( {
+							name: Type.String(),
+							supported: Type.Array( Type.String() ),
+							required: Type.Array( Type.String() ),
+							products: Type.Record( Type.String(), Type.Object( {
+								name: Type.String(),
+								attributes: Type.Record( Type.String(), Type.Union( [ AttributeValueSingle, Type.Array( AttributeValueSingle ) ] ) )
+							} ) ),
+						} ) )
+					} ),
+					400: Type.Object( { message: Type.String() } )
+				},
+			},
+		},
+		async function ( request ) {
+			const families: Record<string, any> = {};
+
+			for ( const family of emporio.getFamilies() ) {
+				families[ family.getName() ] = {
+					'name': family.getName(),
+					'supported': Object.keys( family.getSupportedAttrs() ),
+					'required': Object.keys( family.getRequiredAttrs() ),
+					'products': {}
+				}
+
+				for ( const product of Object.values( family.getProducts() ) ) {
+					families[ family.getName() ].products[ product.getName() ] = {
+						'name': product.getName(),
+						'attributes': product.getAttrMap()
+					}
+				}
+			}
+
+			return { families };
 		},
 	)
 }

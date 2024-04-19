@@ -250,4 +250,40 @@ export default async function ( fastify: FastifyInstance ) {
 			return { families };
 		},
 	)
+
+	f.get( 
+		'/attributes', {
+			schema: {
+				operationId: 'getAttributes',
+				response: {
+					200: Type.Object( {
+						attributes: Type.Record( Type.String(), Type.Object( {
+							name: Type.String(),
+							values: Type.Array( AttributeValueSingle ),
+							dynamic: Type.Boolean(),
+							multi: Type.Boolean(),
+							type: Type.String()
+						} ) )
+					} ),
+					400: Type.Object( { message: Type.String() } )
+				},
+			},
+		},
+		async function ( request ) {
+			const attributes: Record<string, any> = {};
+
+			for ( const attribute of emporio.getProductAttributes() )
+			{
+				attributes[ attribute.getUID() ] = {
+					'name': attribute.getUID(),
+					'values': attribute.getValues().map( value => value.getValue() ),
+					'dynamic': attribute.isDynamicValue(),
+					'multi': attribute.isMultiValue(),
+					'type': attribute.getValueType()
+				}
+			}
+
+			return { attributes };
+		},
+	)
 }

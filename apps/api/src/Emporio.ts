@@ -15,6 +15,7 @@ import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
 import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
 import { FixedQuantityHelper } from "./Commerce/Core/Product/Helper/FixedQuantityHelper";
 import { ProductFamily } from "./Commerce/Core/Product/ProductFamily";
+import { ProductAttr } from "./Commerce/Core/Product/Attribute/ProductAttr";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -168,5 +169,10 @@ export class Emporio {
 	public getFamilies(): ProductFamily[]
 	{
 		return this.productService.getProductFamilies();
+	}
+
+	public getProductAttributes(): ProductAttr[]
+	{
+		return this.productService.getAttributes();
 	}
 }

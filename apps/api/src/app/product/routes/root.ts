@@ -220,7 +220,8 @@ export default async function ( fastify: FastifyInstance ) {
 							required: Type.Array( Type.String() ),
 							products: Type.Record( Type.String(), Type.Object( {
 								name: Type.String(),
-								attributes: Type.Record( Type.String(), Type.Union( [ AttributeValueSingle, Type.Array( AttributeValueSingle ) ] ) )
+								attributes: Type.Record( Type.String(), Type.Union( [ AttributeValueSingle, Type.Array( AttributeValueSingle ) ] ) ),
+								sku: Type.String()
 							} ) ),
 						} ) )
 					} ),
@@ -242,7 +243,8 @@ export default async function ( fastify: FastifyInstance ) {
 				for ( const product of Object.values( family.getProducts() ) ) {
 					families[ family.getName() ].products[ product.getName() ] = {
 						'name': product.getName(),
-						'attributes': product.getAttrMap()
+						'attributes': product.getAttrMap(),
+						'sku': product.getSku()
 					}
 				}
 			}

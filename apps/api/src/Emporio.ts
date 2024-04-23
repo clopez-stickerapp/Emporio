@@ -166,13 +166,15 @@ export class Emporio {
 		return fixedQuantityHelper.fixedQuantity;
 	}
 
-	public getFamilies(): ProductFamily[]
-	{
+	public getFamilies(): ProductFamily[] {
 		return this.productService.getProductFamilies();
 	}
 
-	public getProductAttributes(): ProductAttr[]
-	{
+	public getFamily( name: string ): ProductFamily {
+		return this.productService.retrieveProductFamily( name );
+	}
+
+	public getProductAttributes(): ProductAttr[] {
 		return this.productService.getAttributes();
 	}
 }

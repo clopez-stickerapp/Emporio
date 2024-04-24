@@ -147,6 +147,23 @@ class PromoProductPriceProvider extends ProductPriceProvider
         ]
     );
 
+    private array $stickerFreebiePrices = array(
+        'se' => 150,
+        'uk' => 15,
+        'fi' => 15,
+        'no' => 150,
+        'dk' => 150,
+        'nl' => 15,
+        'de' => 15,
+        'us' => 15,
+        'it' => 15,
+        'fr' => 15,
+        'jp' => 1500,
+        'es' => 15,
+        'pt' => 15,
+        'pl' => 64,
+    );
+
     public function __construct(ProductService $service, Figure_Model $figureModel, VAT_Model $vatModel)
     {
         parent::__construct(self::NAME, $service, $vatModel);
@@ -168,7 +185,11 @@ class PromoProductPriceProvider extends ProductPriceProvider
                 case PromoProductFamily::PRODUCT_UV_LAMP:
                     $price = 0;
                     break;
-    
+                    
+                case PromoProductFamily::PRODUCT_STICKER_FREEBIE:
+                    $price = $this->stickerFreebiePrices[$lang];
+                    break;
+
                 case PromoProductFamily::PRODUCT_GIFTCARD:
                     $giftcardId = $productItem->getAttribute(FigureAttribute::ALIAS);
     

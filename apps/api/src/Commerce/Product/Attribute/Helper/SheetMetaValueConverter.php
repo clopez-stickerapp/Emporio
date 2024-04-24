@@ -28,6 +28,8 @@ use StickerApp\Babylon\Commerce\Product\Attribute\DeliveryRollTopEdgeMarginAttri
 use StickerApp\Babylon\Commerce\Product\Attribute\DeliveryRollItemMarginAttribute;
 use StickerApp\Babylon\Commerce\Product\Attribute\EffectLayerFileAppIdAttribute;
 use StickerApp\Babylon\Commerce\Product\Attribute\EffectLayerFileNameDataAttribute;
+use StickerApp\Babylon\Commerce\Product\Attribute\ProductReferenceIDAttribute;
+use StickerApp\Babylon\Commerce\Product\Attribute\TextAttribute;
 
 class SheetMetaValueConverter
 {
@@ -54,9 +56,15 @@ class SheetMetaValueConverter
         "DELIVERY_ROLL_TOP_EDGE_MARGIN"  => DeliveryRollTopEdgeMarginAttribute::ALIAS,
         "DELIVERY_ROLL_ITEM_MARGIN"      => DeliveryRollItemMarginAttribute::ALIAS,
         "EFFECT_LAYER_UPLOAD_FILE_NAME"  => EffectLayerFileNameDataAttribute::ALIAS,
-        "EFFECT_LAYER_UPLOAD_FILEAPP_ID"  => EffectLayerFileAppIdAttribute::ALIAS,
-        "MATERIAL_COLOR"  => MaterialColorAttribute::ALIAS,
+        "EFFECT_LAYER_UPLOAD_FILEAPP_ID" => EffectLayerFileAppIdAttribute::ALIAS,
+        "MATERIAL_COLOR"                 => MaterialColorAttribute::ALIAS,
     );
+
+    /* This array is only to be used when setting productattribute from sheet meta */
+    public array $sheetMetaToProductAttributeMapping = [
+        "TEXT"                           => TextAttribute::ALIAS,
+        "REFERENCE_ID"                   => ProductReferenceIDAttribute::ALIAS
+    ];
 
     public function setAttributesFromSheetMeta(array $sheetMeta, ProductItem &$item): void
     {
@@ -79,6 +87,19 @@ class SheetMetaValueConverter
         }
 
         foreach ($this->metaToAttributeDirectMapping as $metaKey => $productAttrName)
+        {
+            $metaValue = array_key_exists($metaKey, $sheetMeta) ? $sheetMeta[$metaKey] : NULL;
+            if (array_key_exists($metaKey, $sheetMeta) && is_null($metaValue))
+            {
+                $item->removeAttribute($productAttrName);
+            }
+            else if (!is_null($metaValue))
+            {
+                $item->setAttribute($productAttrName, $metaValue);
+            }
+        }
+
+        foreach ($this->sheetMetaToProductAttributeMapping as $metaKey => $productAttrName)
         {
             $metaValue = array_key_exists($metaKey, $sheetMeta) ? $sheetMeta[$metaKey] : NULL;
             if (array_key_exists($metaKey, $sheetMeta) && is_null($metaValue))

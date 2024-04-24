@@ -52,6 +52,7 @@ import { StickerSheetNameAttribute } from "./Attribute/Sticker/StickerSheetNameA
 import { StickerWizardStockCollection } from "./Attribute/Sticker/Stock/StickerWizardStockCollection";
 import { WhiteLayerAttribute } from "./Attribute/Sticker/WhiteLayerAttribute";
 import { TemplateAttribute } from "./Attribute/TemplateAttribute";
+import { TextAttribute } from "./Attribute/TextAttribute";
 import { WidthAttribute } from "./Attribute/WidthAttribute";
 import { CustomStickerFamily } from "./Family/CustomStickerFamily";
 import { FeeFamily } from "./Family/FeeFamily";
@@ -116,6 +117,7 @@ export class StickerAppProductService extends ProductService {
 		this.registerAttribute( new DeliveryRollTopEdgeMarginAttribute() );
 		this.registerAttribute( new EffectLayerFileNameDataAttribute() );
 		this.registerAttribute( new EffectLayerFileAppIdAttribute() );
+		this.registerAttribute( new TextAttribute() );
 
 		this.registerAttrConstraintCollection( new StickerProductionContraintCollection() );
 		this.registerAttrFilterCollection( new StickerWizardFilterCollection() );

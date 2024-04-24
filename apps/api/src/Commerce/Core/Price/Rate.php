@@ -19,7 +19,7 @@
 		protected float $value;
 		protected float $minValue;
 		protected bool $percentage;
-		protected float $threshold;
+		protected float $threshold = 0;
         protected string $type = self::TYPE_ADDITIVE;
 		
 		public function __construct( float $value, bool $isPercentage = false, float $minValue = 0 )

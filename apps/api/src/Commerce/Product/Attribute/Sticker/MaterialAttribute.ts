@@ -42,7 +42,8 @@ export class MaterialAttribute extends ProductAttr {
 	public static readonly SPECIAL         = "special";
 
 	public static readonly OUT_OF_STOCK = [ 
-		MaterialAttribute.WARRANTY 
+		MaterialAttribute.WARRANTY,
+		MaterialAttribute.CLEAR_BACKSCORE,
 	];
 
 	public static readonly MATERIALS_LABELS_ON_ROLL = [

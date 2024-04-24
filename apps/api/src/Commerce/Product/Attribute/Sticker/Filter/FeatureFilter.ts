@@ -32,6 +32,7 @@ export class FeatureFilter extends ProductAttrFilter {
 				MaterialAttribute.HOLOGRAPHIC,
 				MaterialAttribute.MIRROR,
 				MaterialAttribute.CLEAR,
+				MaterialAttribute.PIXIE_DUST,
 			] )
 			.addCondition( "item.attributes.laminate", ConditionOperators.IN, [
 				LaminateAttribute.GLOSSY_UV,

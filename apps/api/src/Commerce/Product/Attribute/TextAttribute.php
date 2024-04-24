@@ -5,14 +5,12 @@
 	use StickerApp\Babylon\Commerce\Core\Product\Attribute\ProductAttr;
 	use StickerApp\Babylon\Commerce\Core\Product\Attribute\ProductAttrValueTypes;
 
-	class NoteAttribute extends ProductAttr
+	class TextAttribute extends ProductAttr
 	{
-		const ALIAS 		 = "note";
-		const HANG_TAG 		 = "Hang tag";
-		const FRONT_ADHESIVE = "Front adhesive";
+		const ALIAS = "text";
 
 		public function __construct()
 		{
-			parent::__construct( ProductAttrValueTypes::STRING, FALSE, TRUE );
+			parent::__construct( ProductAttrValueTypes::STRING );
 		}
 	}

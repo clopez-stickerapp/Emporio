@@ -33,9 +33,9 @@ abstract class RateProvider
         return $this->type;
     }
 
-    public function setType( string $rateListType ) : RateProvider
+    public function setType( string $rateProviderType ) : RateProvider
     {
-        $this->type = $rateListType;
+        $this->type = $rateProviderType;
         return $this;
     }
 

@@ -25,7 +25,6 @@
             $this->createFilter( array(
 				MaterialAttribute::WHITE,
 				MaterialAttribute::HOLOGRAPHIC,
-				MaterialAttribute::GITD,
 				MaterialAttribute::GLITTER,
 				MaterialAttribute::CLEAR,
 				MaterialAttribute::MIRROR,
@@ -34,8 +33,8 @@
 				MaterialAttribute::WHITE_HI_TACK,
 				MaterialAttribute::KRAFT_PAPER,
 				MaterialAttribute::WHITE_REMOVABLE,
-				MaterialAttribute::WHITE_WALL,
 				MaterialAttribute::PIXIE_DUST,
+				MaterialAttribute::GITD,
 			) )
 				->conditionBuilder
 				->addCondition( "item.productName", "IN", array(
@@ -47,17 +46,16 @@
 			$this->createFilter( array(
 				MaterialAttribute::WHITE,
 				MaterialAttribute::HOLOGRAPHIC,
-				MaterialAttribute::GITD,
-				MaterialAttribute::GLITTER,
 				MaterialAttribute::CLEAR,
+				MaterialAttribute::GLITTER,
 				MaterialAttribute::MIRROR,
+				MaterialAttribute::PIXIE_DUST,
 				MaterialAttribute::PRISMATIC,
 				MaterialAttribute::BRUSHED_ALLOY,
-				MaterialAttribute::WHITE_HI_TACK,
 				MaterialAttribute::KRAFT_PAPER,
+				MaterialAttribute::WHITE_HI_TACK,
+				MaterialAttribute::GITD,
 				MaterialAttribute::WHITE_REMOVABLE,
-				MaterialAttribute::WHITE_WALL,
-				MaterialAttribute::PIXIE_DUST,
 			) )
 				->conditionBuilder
 				->addCondition( "item.productName", "IN", array(
@@ -84,9 +82,9 @@
 
 			$this->createFilter( array(
 				MaterialAttribute::WHITE_STURDY,
-				MaterialAttribute::HOLOGRAPHIC,
-				MaterialAttribute::MIRROR,
-				MaterialAttribute::BRUSHED_ALLOY,
+				// MaterialAttribute::HOLOGRAPHIC,  // TODO: Will be released after Magnus template fix.
+				// MaterialAttribute::MIRROR,
+				// MaterialAttribute::BRUSHED_ALLOY,
 			) )
 				->conditionBuilder
 				->addCondition( "item.productName", "IN", array(
@@ -161,7 +159,7 @@
 				->addCondition( "item.productName", "IN", array(
 					CustomStickerFamily::PRODUCT_LABELS_ON_ROLL,
 				) );
-				
+
 			$this->createFilter( array(
 					MaterialAttribute::CLEAR,
 				) )
@@ -188,7 +186,6 @@
             $this->createFilter( array(
 				MaterialAttribute::WHITE,
 				MaterialAttribute::HOLOGRAPHIC,
-				MaterialAttribute::GITD,
 				MaterialAttribute::GLITTER,
 				MaterialAttribute::CLEAR,
 				MaterialAttribute::MIRROR,
@@ -198,6 +195,7 @@
 				MaterialAttribute::KRAFT_PAPER,
 				MaterialAttribute::WHITE_REMOVABLE,
 				MaterialAttribute::WHITE_WALL,
+				MaterialAttribute::GITD,
                 MaterialAttribute::REFLECTIVE,
 			) )
 				->conditionBuilder

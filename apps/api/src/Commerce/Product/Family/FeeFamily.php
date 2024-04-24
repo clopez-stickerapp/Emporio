@@ -8,6 +8,7 @@ use StickerApp\Babylon\Commerce\Core\Product\ProductFamily;
 	use StickerApp\Babylon\Commerce\Product\Attribute\DynamicStringAttr;
 	use StickerApp\Babylon\Commerce\Product\Attribute\QuantityAttribute;
 	use StickerApp\Babylon\Commerce\Product\Attribute\Sticker\SheetTypeAttribute;
+use StickerApp\Babylon\Commerce\Product\Attribute\TextAttribute;
 
 	class FeeFamily extends ProductFamily
 	{
@@ -18,7 +19,9 @@ use StickerApp\Babylon\Commerce\Core\Product\ProductFamily;
 		public function __construct( ProductService $ps )
 		{
 			parent::__construct( self::NAME, 1, $ps );
+			$this->productService->registerAttribute( new TextAttribute() );
 
+			$this->requireAttr( TextAttribute::class, TextAttribute::ALIAS );
 			$this->requireAttr( SheetTypeAttribute::class, "sheet_type" );
 			$this->requireAttr( DynamicStringAttr::class, "sheet_name" );
 			$this->requireAttr( QuantityAttribute::class, "quantity" );

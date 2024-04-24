@@ -20,7 +20,9 @@ export class LaminateAttribute extends ProductAttr {
 	public static readonly GLOSSY_THIN                 = "glossy_thin";
 	public static readonly GLOSSY_THIN_NO_UV           = "glossy_thin_no_uv";
 
-	public static readonly OUT_OF_STOCK: string[] = [];
+	public static readonly OUT_OF_STOCK: string[] = [
+		LaminateAttribute.CRACKED_ICE,
+	];
 
 	public constructor() {
 		super( ProductAttrValueType.STRING );

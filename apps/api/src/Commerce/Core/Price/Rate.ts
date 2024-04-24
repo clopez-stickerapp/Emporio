@@ -7,7 +7,7 @@ export class Rate {
 	protected value: number;
 	protected minValue: number;
 	protected percentage: boolean;
-	protected threshold: number|undefined;
+	protected threshold: number = 0;
 	protected type: string = RateType.ADDITIVE;
 
 	public constructor(value: number, isPercentage: boolean = false, minValue: number = 0) {
@@ -39,10 +39,6 @@ export class Rate {
 	}
 
 	public getUnitThreshold(): number {
-		if(!this.threshold){
-			throw new Error("Rate threshold has not been set.");
-		}
-
 		return this.threshold;
 	}
 

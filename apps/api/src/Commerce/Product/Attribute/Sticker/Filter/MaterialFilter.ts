@@ -18,7 +18,6 @@ export class MaterialFilter extends ProductAttrFilter {
 		this.createFilter( [
 			MaterialAttribute.WHITE,
 			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.GITD,
 			MaterialAttribute.GLITTER,
 			MaterialAttribute.CLEAR,
 			MaterialAttribute.MIRROR,
@@ -27,8 +26,8 @@ export class MaterialFilter extends ProductAttrFilter {
 			MaterialAttribute.WHITE_HI_TACK,
 			MaterialAttribute.KRAFT_PAPER,
 			MaterialAttribute.WHITE_REMOVABLE,
-			MaterialAttribute.WHITE_WALL,
-			MaterialAttribute.PIXIE_DUST
+			MaterialAttribute.PIXIE_DUST,
+			MaterialAttribute.GITD,
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -40,17 +39,16 @@ export class MaterialFilter extends ProductAttrFilter {
 		this.createFilter( [
 			MaterialAttribute.WHITE,
 			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.GITD,
-			MaterialAttribute.GLITTER,
 			MaterialAttribute.CLEAR,
+			MaterialAttribute.GLITTER,
 			MaterialAttribute.MIRROR,
+			MaterialAttribute.PIXIE_DUST,
 			MaterialAttribute.PRISMATIC,
 			MaterialAttribute.BRUSHED_ALLOY,
-			MaterialAttribute.WHITE_HI_TACK,
 			MaterialAttribute.KRAFT_PAPER,
+			MaterialAttribute.WHITE_HI_TACK,
+			MaterialAttribute.GITD,
 			MaterialAttribute.WHITE_REMOVABLE,
-			MaterialAttribute.WHITE_WALL,
-			MaterialAttribute.PIXIE_DUST
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -78,9 +76,10 @@ export class MaterialFilter extends ProductAttrFilter {
 
 		this.createFilter( [
 			MaterialAttribute.WHITE_STURDY,
-			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.MIRROR,
-			MaterialAttribute.BRUSHED_ALLOY
+			// TODO: Will be released after Magnus template fix.
+			// MaterialAttribute.HOLOGRAPHIC,
+			// MaterialAttribute.MIRROR,
+			// MaterialAttribute.BRUSHED_ALLOY,
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -153,7 +152,7 @@ export class MaterialFilter extends ProductAttrFilter {
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_LABELS_ON_ROLL
 			] );
-			
+
 		this.createFilter( [
 				MaterialAttribute.CLEAR
 		] )
@@ -179,7 +178,6 @@ export class MaterialFilter extends ProductAttrFilter {
 		this.createFilter( [
 			MaterialAttribute.WHITE,
 			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.GITD,
 			MaterialAttribute.GLITTER,
 			MaterialAttribute.CLEAR,
 			MaterialAttribute.MIRROR,
@@ -189,7 +187,8 @@ export class MaterialFilter extends ProductAttrFilter {
 			MaterialAttribute.KRAFT_PAPER,
 			MaterialAttribute.WHITE_REMOVABLE,
 			MaterialAttribute.WHITE_WALL,
-			MaterialAttribute.REFLECTIVE
+			MaterialAttribute.GITD,
+			MaterialAttribute.REFLECTIVE,
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 120 )

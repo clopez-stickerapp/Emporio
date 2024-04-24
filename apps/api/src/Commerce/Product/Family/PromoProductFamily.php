@@ -31,6 +31,7 @@ class PromoProductFamily extends ProductFamily
 	const PRODUCT_SAMPLE_STICKER_PACK = "sample_sticker_pack";
 	const PRODUCT_MOST_LIKED_PACK_2023 = "most_liked_pack_2023";
 	const PRODUCT_SLAP_PACK = "slap_pack";
+	const PRODUCT_STICKER_FREEBIE = "sticker_freebie";
 
 	public function __construct(ProductService $service)
 	{
@@ -59,6 +60,10 @@ class PromoProductFamily extends ProductFamily
 		$this->addProduct(self::PRODUCT_UV_LAMP, "UL-31")
 			->withAttrValue("sheet_type", "promo")
 			->withAttrValue("sheet_name", "uv_lamp");
+
+		$this->addProduct(self::PRODUCT_STICKER_FREEBIE, "SF-31")
+			->withAttrValue("sheet_type", "sticker_freebie")
+			->withAttrValue("material", "special");
 
 		foreach ( get_sticker_packs_model()->getStickerPacks() as $stickerPack )
 		{

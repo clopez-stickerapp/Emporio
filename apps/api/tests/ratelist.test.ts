@@ -10,11 +10,13 @@ describe("Test constructor", () => {
 	test("with default rate", () => {
 		rateList = new RateList("test", new Rate(0));
 		expect(rateList).instanceOf(RateList);
+		expect(rateList.getRates()).lengthOf(1);
 	});
 
 	test("without default rate", () => {
 		rateList = new RateList("test");
 		expect(rateList).instanceOf(RateList);
+		expect(rateList.getRates()).lengthOf(1);
 	});
 });
 
@@ -22,26 +24,27 @@ describe("Test addRate", () => {
 	test("with positive threshold", () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(10), 10);
-		expect(rateList.getRates()).lengthOf(1);
+		expect(rateList.getRates()).lengthOf(2);
 	});
 
 	test("with negative threshold", () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(10), -10);
-		expect(rateList.getRates()).lengthOf(1);
+		expect(rateList.getRates()).lengthOf(2);
 	});
 
 	test("with zero threshold", () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(10), 0);
-		expect(rateList.getRates()).lengthOf(1);
+		expect(rateList.getRates()).lengthOf(2);
 	});
 
 	test("with multiple rates", () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(10), 10);
 		rateList.addRate(new Rate(20), 20);
-		expect(rateList.getRates()).lengthOf(2);
+		console.log(rateList.getRates());
+		expect(rateList.getRates()).lengthOf(3);
 	});
 });
 

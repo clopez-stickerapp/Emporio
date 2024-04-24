@@ -95,6 +95,7 @@
 			$this->relateStockCollection( StickerWizardStockCollection::NAME );
 
 			$this->requireAttr(SheetTypeAttribute::class, SheetTypeAttribute::ALIAS);
+			$this->requireAttr(StickerSheetNameAttribute::class, StickerSheetNameAttribute::ALIAS);
 			$this->requireAttr(MaterialAttribute::class, MaterialAttribute::ALIAS);
 			$this->requireAttr(LaminateAttribute::class, LaminateAttribute::ALIAS);
 			$this->requireAttr(HeightAttribute::class, HeightAttribute::ALIAS);
@@ -107,7 +108,6 @@
 			$this->supportAttr(ReorderAttribute::class, ReorderAttribute::ALIAS);
 			$this->supportAttr(NoteAttribute::class, NoteAttribute::ALIAS);
 			$this->supportAttr(SheetTypeSaveAsAttribute::class, SheetTypeSaveAsAttribute::ALIAS);
-			$this->supportAttr(StickerSheetNameAttribute::class, StickerSheetNameAttribute::ALIAS);
 			$this->supportAttr(TemplateAttribute::class, TemplateAttribute::ALIAS);
 			$this->supportAttr(SizeAttribute::class, SizeAttribute::ALIAS);
 			$this->supportAttr(ImperialUnitsAttribute::class, ImperialUnitsAttribute::ALIAS);
@@ -165,7 +165,7 @@
 			$this->addProduct( self::PRODUCT_SHEET, 'SRR-108' )
 			     ->withAttrValue( StickerSheetNameAttribute::ALIAS, array(
 				     StickerSheetNameAttribute::RECTANGLE,
-				     StickerSheetNameAttribute::ROUNDED
+				    //  StickerSheetNameAttribute::ROUNDED // TODO: Disabled for now as they are not printing correctly.
 			     ) )
 				 ->withAttrValue( InnercutAsKisscutAttribute::ALIAS, "yes")
 			     ->withAttrValue( SheetTypeAttribute::ALIAS, SheetTypeAttribute::SHEET )
@@ -174,8 +174,7 @@
 
 			$this->addProduct( self::PRODUCT_SHEET_KISS_CUT, 'SKCRR-108' )
 				->withAttrValue( StickerSheetNameAttribute::ALIAS, array(
-					StickerSheetNameAttribute::RECTANGLE,
-					StickerSheetNameAttribute::ROUNDED
+					StickerSheetNameAttribute::RECTANGLE
 				) )
 				->withAttrValue( InnercutAsKisscutAttribute::ALIAS, "yes")
 				->withAttrValue( SheetTypeAttribute::ALIAS, SheetTypeAttribute::SHEET )
@@ -199,6 +198,7 @@
 			     ->withAttrValue( SheetTypeAttribute::ALIAS, SheetTypeAttribute::SINGLE )
 				 ->withAttrValue( StickerSheetNameAttribute::ALIAS, StickerSheetNameAttribute::CONTOUR, FALSE)
 			     ->withAttrValue( FeatureAttribute::ALIAS, array(FeatureAttribute::HANGTAGGING), TRUE, FALSE )
+				 ->withAttrValue( NoteAttribute::ALIAS, NoteAttribute::HANG_TAG, FALSE, FALSE )
 				 ->setStock();
 
 			$this->addProduct( self::PRODUCT_3D_DOME, '3DDSRDSE-108' )
@@ -213,10 +213,10 @@
 			     ->withAttrValue( MaterialAttribute::ALIAS, MaterialAttribute::CLEAR )
 				 ->withAttrValue( WhiteLayerAttribute::ALIAS, WhiteLayerAttribute::MANUALLY )
 			     ->withAttrValue( LaminateAttribute::ALIAS, array(
-				     LaminateAttribute::GLOSSY_UV,
-				     LaminateAttribute::SOFT_TOUCH
+				     LaminateAttribute::GLOSSY_UV
 			     ) )
 				 ->withAttrValue( StickerSheetNameAttribute::ALIAS, StickerSheetNameAttribute::CONTOUR, FALSE)
+				 ->withAttrValue( NoteAttribute::ALIAS, NoteAttribute::FRONT_ADHESIVE, FALSE, FALSE )
 				 ->setStock();
 
 			$this->addProduct( self::PRODUCT_HEAVY_DUTY, 'HDSWHTGUMHD-108' )

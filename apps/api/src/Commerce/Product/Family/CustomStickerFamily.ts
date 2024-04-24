@@ -90,6 +90,7 @@ export class CustomStickerFamily extends ProductFamily {
 		this.relateStockCollection( StickerWizardStockCollection.NAME );
 
 		this.requireAttr( SheetTypeAttribute.name, SheetTypeAttribute.ALIAS );
+		this.requireAttr( StickerSheetNameAttribute.name, StickerSheetNameAttribute.ALIAS );
 		this.requireAttr( MaterialAttribute.name, MaterialAttribute.ALIAS );
 		this.requireAttr( LaminateAttribute.name, LaminateAttribute.ALIAS );
 		this.requireAttr( HeightAttribute.name, HeightAttribute.ALIAS );
@@ -102,7 +103,6 @@ export class CustomStickerFamily extends ProductFamily {
 		this.supportAttr( ReorderAttribute.name, ReorderAttribute.ALIAS );
 		this.supportAttr( NoteAttribute.name, NoteAttribute.ALIAS );
 		this.supportAttr( SheetTypeSaveAsAttribute.name, SheetTypeSaveAsAttribute.ALIAS );
-		this.supportAttr( StickerSheetNameAttribute.name, StickerSheetNameAttribute.ALIAS );
 		this.supportAttr( TemplateAttribute.name, TemplateAttribute.ALIAS );
 		this.supportAttr( SizeAttribute.name, SizeAttribute.ALIAS );
 		this.supportAttr( ImperialUnitsAttribute.name, ImperialUnitsAttribute.ALIAS );
@@ -159,7 +159,6 @@ export class CustomStickerFamily extends ProductFamily {
 		this.addProduct( CustomStickerFamily.PRODUCT_SHEET, 'SRR-108' )
 			.withAttrValue( StickerSheetNameAttribute.ALIAS, [
 				StickerSheetNameAttribute.RECTANGLE,
-				StickerSheetNameAttribute.ROUNDED
 			] )
 			.withAttrValue( InnercutAsKisscutAttribute.ALIAS, "yes" )
 			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.SHEET )
@@ -169,7 +168,6 @@ export class CustomStickerFamily extends ProductFamily {
 		this.addProduct( CustomStickerFamily.PRODUCT_SHEET_KISS_CUT, 'SKCRR-108' )
 			.withAttrValue( StickerSheetNameAttribute.ALIAS, [
 				StickerSheetNameAttribute.RECTANGLE,
-				StickerSheetNameAttribute.ROUNDED
 			] )
 			.withAttrValue( InnercutAsKisscutAttribute.ALIAS, "yes" )
 			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.SHEET )
@@ -192,6 +190,7 @@ export class CustomStickerFamily extends ProductFamily {
 		this.addProduct( CustomStickerFamily.PRODUCT_HANG_TAG, 'HTSH-108' )
 			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.SINGLE )
 			.withAttrValue( StickerSheetNameAttribute.ALIAS, StickerSheetNameAttribute.CONTOUR, false )
+			.withAttrValue( NoteAttribute.ALIAS, NoteAttribute.HANG_TAG, false, false)
 			.withAttrValue( FeatureAttribute.ALIAS, [
 				FeatureAttribute.HANGTAGGING 
 			], true, false )
@@ -210,9 +209,9 @@ export class CustomStickerFamily extends ProductFamily {
 			.withAttrValue( WhiteLayerAttribute.ALIAS, WhiteLayerAttribute.MANUALLY )
 			.withAttrValue( LaminateAttribute.ALIAS, [
 				LaminateAttribute.GLOSSY_UV,
-				LaminateAttribute.SOFT_TOUCH
 			] )
 			.withAttrValue( StickerSheetNameAttribute.ALIAS, StickerSheetNameAttribute.CONTOUR, false )
+			.withAttrValue( NoteAttribute.ALIAS, NoteAttribute.FRONT_ADHESIVE, false, false )
 			.setStock();
 
 		this.addProduct( CustomStickerFamily.PRODUCT_HEAVY_DUTY, 'HDSWHTGUMHD-108' )

@@ -51,7 +51,7 @@
 
 		public function getRates()
 		{
-			return $this->rates;
+			return array_merge($this->rates, [$this->defaultRate]);
 		}
 
 		/** 

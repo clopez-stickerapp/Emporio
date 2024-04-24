@@ -141,7 +141,21 @@ class LaminateFilter extends ProductAttrFilter
 			LaminateAttribute::UNCOATED,
 		))
 			->conditionBuilder
+			// The complexity of this filter needs to be lower than the one below
+			// To ensure that kraft_thin doesn't get the glossy option
 			->setBaseComplexityScore(1000)
+			->addCondition("item.productName", "IN", array(
+				CustomStickerFamily::PRODUCT_LABELS_ON_ROLL
+			));
+
+		$this->createFilter(array(
+			LaminateAttribute::UNCOATED,
+		))
+			->conditionBuilder
+			// The complexity of this filter needs to be higher than the one above
+			// To ensure that kraft_thin doesn't get the glossy option
+			->setBaseComplexityScore(1001)
+			->addCondition("item.attributes.material", "==", MaterialAttribute::KRAFT_THIN)
 			->addCondition("item.productName", "IN", array(
 				CustomStickerFamily::PRODUCT_LABELS_ON_ROLL
 			));

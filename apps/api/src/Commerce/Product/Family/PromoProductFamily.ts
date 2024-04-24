@@ -28,6 +28,7 @@ export class PromoProductFamily extends ProductFamily {
 	public static readonly PRODUCT_SAMPLE_STICKER_PACK  = "sample_sticker_pack";
 	public static readonly PRODUCT_MOST_LIKED_PACK_2023 = "most_liked_pack_2023";
 	public static readonly PRODUCT_SLAP_PACK            = "slap_pack";
+	public static readonly PRODUCT_STICKER_FREEBIE	    = "sticker_freebie";
 
 	public constructor( productService: ProductService ) {
 		super( PromoProductFamily.NAME, 1, productService );
@@ -55,6 +56,10 @@ export class PromoProductFamily extends ProductFamily {
 		this.addProduct( PromoProductFamily.PRODUCT_UV_LAMP, "UL-31" )
 			.withAttrValue( SheetTypeAttribute.ALIAS, "promo" )
 			.withAttrValue( StickerSheetNameAttribute.ALIAS, "uv_lamp" );
+
+		this.addProduct( PromoProductFamily.PRODUCT_STICKER_FREEBIE, "SF-31" )
+			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.STICKER_FREEBIE )
+			.withAttrValue( MaterialAttribute.ALIAS, MaterialAttribute.SPECIAL );
 
 		this.addProduct( PromoProductFamily.PRODUCT_MONSTER_PACK, 'MP-31' )
 			.withAttrValue( SheetTypeAttribute.ALIAS, SheetTypeAttribute.STICKER_PACK )

@@ -4,8 +4,6 @@
 
 	use StickerApp\Babylon\Commerce\Core\Product\Attribute\ProductAttr;
 	use StickerApp\Babylon\Commerce\Core\Product\Attribute\ProductAttrValueTypes;
-	use StickerApp\Babylon\Commerce\Product\Attribute\Sticker\LaminateAttribute;
-	use StickerApp\Babylon\Helper\Condition\ConditionOperators;
 
 	class MaterialAttribute extends ProductAttr
 	{
@@ -47,14 +45,17 @@
         const HEAT_TRANSFER   = "heat_transfer";
         const SPECIAL         = "special";
 
-		const OUT_OF_STOCK = array( MaterialAttribute::WARRANTY );
+		const OUT_OF_STOCK = array(
+			MaterialAttribute::WARRANTY,
+			MaterialAttribute::CLEAR_BACKSCORE
+		);
 
 		const MATERIALS_LABELS_ON_ROLL = array(
 			MaterialAttribute::WHITE_THIN,
 			MaterialAttribute::PAPER_THIN,
 			MaterialAttribute::CLEAR_THIN,
 			MaterialAttribute::KRAFT_THIN,
-			MaterialAttribute::SILVER_THIN,
+			MaterialAttribute::SILVER_THIN
 		);
 
 		public function __construct()

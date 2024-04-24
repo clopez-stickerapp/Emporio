@@ -10,6 +10,7 @@ export class SheetTypeAttribute extends ProductAttr {
 	public static readonly DIE_CUT      = "die_cut";
 	public static readonly GIFTCARD     = "giftcard";
 	public static readonly STICKER_PACK = "sticker_pack";
+	public static readonly STICKER_FREEBIE = "sticker_freebie";
 
 	public constructor() {
 		super( ProductAttrValueType.STRING, false, true );

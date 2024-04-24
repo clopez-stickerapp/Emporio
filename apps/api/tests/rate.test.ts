@@ -31,8 +31,8 @@ describe("Test threshold", () => {
 		expect(rate.getUnitThreshold()).toBe(25);
 	});
 
-	test("with invalid params", () => {
+	test("without explicitly setting it", () => {
 		rate = new Rate(10, true, 5);
-		expect(() => rate.getUnitThreshold()).toThrow( Error );
+		expect(rate.getUnitThreshold()).toBe(0);
 	});
 });

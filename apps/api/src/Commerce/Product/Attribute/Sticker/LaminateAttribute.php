@@ -24,7 +24,9 @@
         const GLOSSY_THIN                   = "glossy_thin";
 		const GLOSSY_THIN_NO_UV     				= "glossy_thin_no_uv";
 
-		const OUT_OF_STOCK = array();
+		const OUT_OF_STOCK = array(
+			LaminateAttribute::CRACKED_ICE
+		);
 
 		public function __construct()
 		{

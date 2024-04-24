@@ -84,6 +84,17 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 		}
 	};
 
+	private stickerFreebiePrices: Record<string, number> = {
+		SEK: 150,
+		USD: 15,
+		EUR: 15,
+		NOK: 150,
+		DKK: 150,
+		GBP: 15,
+		JPY: 1500,
+		PLN: 64
+	};
+
 	public constructor() {
 		super(PromoProductPriceProvider.NAME);
 	}
@@ -97,6 +108,10 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			switch (productItem.getProductName()) {
 				case PromoProductFamily.PRODUCT_UV_LAMP:
 					price = 0;
+					break;
+
+				case PromoProductFamily.PRODUCT_STICKER_FREEBIE:
+					price = this.stickerFreebiePrices[currency];
 					break;
 
 				case PromoProductFamily.PRODUCT_GIFTCARD:

@@ -20,7 +20,10 @@ export class RateList extends RateProvider{
 
 	public getRate(productItem: ProductItem, units: number): Rate{
 		for(let rate of this.rates){
-			// This was previously just greater than, but this is more intuitive
+			/**
+			 * Since rates are sorted in reverse order, the thresholds are in descending order
+			 * So the first threshold we go over is the one we want
+			 */
 			if(units >= rate.getUnitThreshold()){
 				return rate;
 			}
@@ -29,7 +32,7 @@ export class RateList extends RateProvider{
 	}
 
 	public getRates(): Rate[]{
-		return this.rates;
+		return [...this.rates, this.defaultRate];
 	}
 
 	// Rates are sorted in reverse order, so the highest threshold comes first
@@ -37,13 +40,5 @@ export class RateList extends RateProvider{
 		rates.sort((a, b) => {
 			return a.getUnitThreshold() < b.getUnitThreshold() ? 1 : -1;
 		});
-	}
-
-	public addFromArray(rates: Rate[]): RateList{
-		throw new Error("Check if still used or if there's a better way")
-		for(let rate of rates){
-			this.addRate(rate, rate.getUnitThreshold());
-		}
-		return this;
 	}
 }

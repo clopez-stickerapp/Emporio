@@ -62,22 +62,22 @@
 		 */
 		private function mergeRateLists( ...$lists )
 		{
-			$combinedMaxUnitArray = array();
+			$combinedUnitThresholdArray = array();
 
 			foreach ($lists as $list)
 			{
                 if($list->getType() === RateProvider::TYPE_BASE)
                 {
-                    $combinedMaxUnitArray = array_unique(array_merge($combinedMaxUnitArray, $this->getMaxUnitArray($list)));
+                    $combinedUnitThresholdArray = array_unique(array_merge($combinedUnitThresholdArray, $this->getUnitThresholdArray($list)));
                 }
 			}
 
-            asort($combinedMaxUnitArray);
-            $combinedMaxUnitArray = array_values($combinedMaxUnitArray);
+            asort($combinedUnitThresholdArray);
+            $combinedUnitThresholdArray = array_values($combinedUnitThresholdArray);
 
 			$result = new RateList("");
 
-			foreach ($combinedMaxUnitArray as $maxUnits) 
+			foreach ($combinedUnitThresholdArray as $maxUnits) 
 			{
                 $productItem = clone $this->item;
                 $productItem->setUnits($maxUnits);
@@ -111,7 +111,7 @@
 		 *
 		 * @return array
 		 */
-		private function getMaxUnitArray( RateList $rateList ): array
+		private function getUnitThresholdArray( RateList $rateList ): array
 		{
 			$result = array();
 			foreach ($rateList->getRates() as $rate) {

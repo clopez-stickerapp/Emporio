@@ -31,6 +31,12 @@
 		protected string $valueType;
 		protected bool   $multiValue;
 		protected bool   $dynamicValue = FALSE;
+		protected array $supportedTypes = array(
+			ProductAttrValueTypes::STRING,
+			ProductAttrValueTypes::FLOAT,
+			ProductAttrValueTypes::BOOL,
+			ProductAttrValueTypes::INT,
+		);
 		/**
 		 * @var ProductAttrValue[]
 		 */
@@ -38,9 +44,12 @@
 
 		public function __construct( string $valueType, bool $multiValue = FALSE, bool $dynamicValue = FALSE )
 		{
-			// TODO: Throw error if trying to make a multivalue attribute with boolean type
-
-			if ( $valueType != ProductAttrValueTypes::STRING && $valueType != ProductAttrValueTypes::FLOAT && $valueType != ProductAttrValueTypes::BOOL && $valueType != ProductAttrValueTypes::INT )
+			if ($valueType === ProductAttrValueTypes::BOOL && $multiValue)
+			{
+				throw new ProductAttrException( "Boolean type can not be multivalue.");
+			}
+			
+			if ( !in_array($valueType, $this->supportedTypes) )
 			{
 				throw new ProductAttrValueTypeInvalidException( "Value type is not supported: " . var_export( $valueType, TRUE ) );
 			}

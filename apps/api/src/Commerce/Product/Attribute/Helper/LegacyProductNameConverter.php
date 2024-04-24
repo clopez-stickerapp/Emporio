@@ -102,6 +102,12 @@ class LegacyProductNameConverter
                 $productName       = FeeFamily::PRODUCT_CUSTOM_FEE;
 
                 break;
+            
+            case "sticker_freebie":
+                $productFamilyName = PromoProductFamily::NAME;
+                $productName       = PromoProductFamily::PRODUCT_STICKER_FREEBIE;
+                
+                break;
         }
         switch ($sheetName)
         {

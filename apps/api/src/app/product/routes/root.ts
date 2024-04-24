@@ -262,6 +262,9 @@ export default async function ( fastify: FastifyInstance ) {
 		'/attributes', {
 			schema: {
 				operationId: 'getAttributes',
+				querystring: Type.Object( {
+					name: Type.Optional( Type.String() )
+				} ),
 				response: {
 					200: Type.Object( {
 						attributes: Type.Record( Type.String(), Type.Object( {
@@ -279,7 +282,9 @@ export default async function ( fastify: FastifyInstance ) {
 		async function ( request ) {
 			const attributes: Record<string, any> = {};
 
-			for ( const attribute of emporio.getProductAttributes() )
+			const attrs = request.query.name ? [ emporio.getAttribute( request.query.name ) ] : emporio.getAttributes();
+
+			for ( const attribute of attrs )
 			{
 				attributes[ attribute.getUID() ] = {
 					'name': attribute.getUID(),

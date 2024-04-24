@@ -174,7 +174,11 @@ export class Emporio {
 		return this.productService.retrieveProductFamily( name );
 	}
 
-	public getProductAttributes(): ProductAttr[] {
+	public getAttributes(): ProductAttr[] {
 		return this.productService.getAttributes();
+	}
+
+	public getAttribute( name: string ): ProductAttr {
+		return this.productService.retrieveAttribute( name );
 	}
 }

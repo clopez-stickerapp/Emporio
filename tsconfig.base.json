@@ -3,7 +3,7 @@
 		"module": "ESNext",
 		"types": [
 			"vitest/globals",
-			// "svelte"
+			"svelte"
 		],
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,

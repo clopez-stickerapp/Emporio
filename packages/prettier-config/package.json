@@ -1,0 +1,14 @@
+{
+  "name": "@stickerapp-org/prettier-config",
+  "main": ".prettierrc.js",
+  "module": ".prettierrc.js",
+  "type": "module",
+  "scripts": {
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2"
+  }
+}

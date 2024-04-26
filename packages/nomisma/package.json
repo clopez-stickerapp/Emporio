@@ -1,0 +1,69 @@
+{
+  "name": "@stickerapp-org/nomisma",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "svelte-kit sync && svelte-package && publint",
+    "dev": "svelte-package --watch",
+    "preview": "vite preview",
+    "package": "svelte-kit sync && svelte-package && publint",
+    "prepublishOnly": "npm run package",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*/index.d.ts",
+      "default": "./dist/*/index.js"
+    },
+    "./app.css": "./src/app.css",
+    "./tailwind.config.js*": "./tailwind.config.js"
+  },
+  "files": [
+    "tailwind.config.js",
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
+  ],
+  "devDependencies": {
+    "@stickerapp-org/eslint-config": "*",
+    "@stickerapp-org/prettier-config": "*",
+    "@stickerapp-org/tailwind-config": "*",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/package": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/eslint": "8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.35.1",
+    "postcss": "^8.4.33",
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2",
+    "publint": "^0.1.9",
+    "svelte-check": "^3.6.0",
+    "tailwind-merge": "^2.2.0",
+    "tailwind-variants": "^0.1.20",
+    "tailwindcss": "^3.4.1",
+    "tslib": "^2.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.3",
+    "vitest": "^1.0.0"
+  },
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "dependencies": {
+    "@stickerapp-org/emporio-api-contract": "*",
+    "clsx": "^2.1.0",
+    "svelte": "^5.0.0-next.52"
+  }
+}

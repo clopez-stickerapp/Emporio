@@ -8,7 +8,7 @@ async function loadConfig() {
   const config = defineConfig({
     plugins: [tsconfigPaths()],
     test: {
-      include: ['tests/**/*.{test,spec}.{js,ts}'],
+      include: ['test/**/*.{test,spec}.{js,ts}'],
       exclude: ['node_modules', 'dist', '*.config.ts'],
       server: {
         deps: {

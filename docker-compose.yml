@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    image: emporio-api
+    container_name: emporio-api
+    ports:
+      - '5012:5012'
+#   ui:
+#     build:
+#       context: .
+#       dockerfile: docker/ui.Dockerfile
+#     image: emporio-ui
+#     container_name: emporio-ui
+#     ports:
+#       - '5173:3000'
+#   database:
+#     image: mysql:latest
+#     container_name: emporio-db
+#     environment:
+#       MYSQL_ROOT_PASSWORD: password
+#       MYSQL_DATABASE: emporio
+#     ports:
+#       - '3306:3306'
+#   migration-service:
+#     build:
+#       context: .
+#       dockerfile: docker/migration.Dockerfile
+#     image: emporio-run-migrations
+#     container_name: emporio-run-migrations
+#     environment:
+#       NODE_ENV: production
+#     ports:
+#       - '5002:5002'
+#     restart: 'no' # We only want to run migrations manually
+

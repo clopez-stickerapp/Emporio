@@ -1,0 +1,19 @@
+{
+  "name": "@stickerapp-org/eslint-config",
+  "main": ".eslintrc.cjs",
+  "scripts": {
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-svelte": "^2.30.0"
+  },
+  "devDependencies": {
+    "@stickerapp-org/prettier-config": "*"
+  }
+}

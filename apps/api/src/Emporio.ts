@@ -16,6 +16,8 @@ import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
 import { FixedQuantityHelper } from "./Commerce/Core/Product/Helper/FixedQuantityHelper";
 import { ProductFamily } from "./Commerce/Core/Product/ProductFamily";
 import { ProductAttr } from "./Commerce/Core/Product/Attribute/ProductAttr";
+import { ProductItemConditionablesMap } from "./Commerce/Core/Product/Helper/ProductItemConditionablesMap";
+import { ProductItemConditionableParam } from "./Commerce/Core/Product/Condition/ProductItemConditionableParam";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -113,6 +115,12 @@ export class Emporio {
 	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {
 		const product = this.productService.findProduct( productFamilyName, productName );
 		return ( new ProductAttrMap( this.productService, product ) ).getMap();
+	}
+
+	public getConditionableMap( productFamilyName: string ): Record<string, ProductItemConditionableParam> {
+		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
+		const conditionableMap = new ProductItemConditionablesMap( this.productService, productFamily );
+		return conditionableMap.map;
 	}
 
 	public validate( productItem: ProductItem, allowUnsupportedAttributeAliases: boolean, allowUnsuggestedAttributeValues: boolean, checkAgainstFilteredValues: boolean ): void {

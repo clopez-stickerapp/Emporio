@@ -2,7 +2,7 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
 import { Emporio } from '$/Emporio';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
-import { getAttributeMapSchema, getAttributesSchema, getCreateItemSchema, getFamiliesSchema, getFixedQuantitySchema, getSizeDetailsSchema, getValidationSchema, isAttributeAvailableSchema } from '../schema';
+import { getAttributeMapSchema, getAttributesSchema, getConditionableMapSchema, getCreateItemSchema, getFamiliesSchema, getFixedQuantitySchema, getSizeDetailsSchema, getValidationSchema, isAttributeAvailableSchema } from '../schema';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -21,6 +21,10 @@ export default async function ( fastify: FastifyInstance ) {
 
 	f.get( '/attribute-map/:family/:name', { schema: getAttributeMapSchema }, async function ( request ) {
 		return { attributes: emporio.getAttributeMap( request.params.family, request.params.name ) };
+	} )
+
+	f.get( '/conditionable-map/:family', { schema: getConditionableMapSchema }, async function ( request ) {
+		return { map: emporio.getConditionableMap( request.params.family ) }
 	} )
 
 	f.get( '/validate/:family/:name', { schema: getValidationSchema }, async function ( request ) {

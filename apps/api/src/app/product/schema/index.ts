@@ -30,6 +30,19 @@ export const getAttributeMapSchema = {
 	}
 }
 
+export const getConditionableMapSchema = {
+	operationId: 'getConditionableMap',
+	params: Type.Object( {
+		family: TypeHelper.ProductFamily(),
+	} ),
+	response: {
+		200: Type.Object( {
+			map: Type.Record( Type.String(), Type.Any() ),
+		} ),
+		400: TypeHelper.Error()
+	}
+}
+
 export const getValidationSchema = {
 	operationId: 'validate',
 	params: Type.Object( {

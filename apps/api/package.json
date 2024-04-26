@@ -4,8 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest",
-    "dev": "concurrently --kill-others \"tsc -p tsconfig.json --watch --preserveWatchOutput\" \"ts-node-dev -r tsconfig-paths/register -r dotenv/config --respawn ./src/app.ts | pino-pretty --colorize\""
+	"clean": "rimraf dist",
+    "build": "npm run clean && tspc -p tsconfig.json && cp-cli ./src/plugins/ ./dist/src/plugins/",
+    "start": "node -r dotenv/config dist/src/app.js | pino-pretty --colorize",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "dev": "concurrently --kill-others \"tsc -p tsconfig.json --watch --preserveWatchOutput\" \"ts-node-dev -r tsconfig-paths/register -r dotenv/config --respawn ./src/app.ts | pino-pretty --colorize\"",
+    "lint": "prettier --check . && eslint ."
   },
   "keywords": [],
   "author": "StickerApp",
@@ -17,6 +22,7 @@
     "@types/pino": "^7.0.5",
 	"@types/supertest": "^6.0.2",
     "concurrently": "^8.2.2",
+	"cp-cli": "^2.0.0",
     "pino-pretty": "^10.3.1",
 	"prettier": "^3.1.1",
     "rimraf": "^5.0.5",

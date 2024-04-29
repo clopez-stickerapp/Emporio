@@ -1,9 +1,7 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { StickerAppProductService } from '../../../Commerce/Product/StickerAppProductService';
 import { formatPrice } from '$/Commerce/Core/Price/Price';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
-import { Emporio } from '$/Emporio';
 import { formatCurrency } from '$/Commerce/Core/Currency/Currency';
 import { getLocale } from '$/Commerce/Core/Localization/Locale';
 import { getPriceListSchema, getPricesSchema } from '../schema';
@@ -11,8 +9,7 @@ import { getPriceListSchema, getPricesSchema } from '../schema';
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
-	const service = new StickerAppProductService();
-	const emporio = new Emporio(service);
+	const emporio = fastify.emporio;
 
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
 		let item = ProductItem.fromJSON({

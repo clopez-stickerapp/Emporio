@@ -8,11 +8,22 @@ import cors from '@fastify/cors';
 import { BadRequestError, NotFoundError } from './app/utils';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
+import { Emporio } from './Emporio';
+import { StickerAppProductService } from './Commerce/Product/StickerAppProductService';
+
+declare module 'fastify' {
+	interface FastifyInstance{
+		emporio: Emporio;
+	}
+}
 
 async function buildServer() {
 	const server = fastify({
 		logger: pino({ level: process.env.LOG_LEVEL || 'info' }),
 	});
+
+	const service = new StickerAppProductService();
+	server.decorate("emporio", new Emporio(service));
 
 	await server.register(swagger, {
 		openapi:{

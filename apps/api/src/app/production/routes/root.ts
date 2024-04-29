@@ -1,13 +1,12 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { Emporio } from '$/Emporio';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 import { getItemWithProductionSettingsSchema, getItemWithoutProductionSettingsSchema } from '../schema';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
-	const emporio = new Emporio();
+	const emporio = fastify.emporio;
 
 	f.get( '/item-with-settings/:family/:name', { schema: getItemWithProductionSettingsSchema }, async function ( request ) {
 		let item = ProductItem.fromJSON( {

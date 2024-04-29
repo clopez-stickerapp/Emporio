@@ -1,13 +1,12 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { Emporio } from '$/Emporio';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 import { getAttributeMapSchema, getAttributesSchema, getConditionableMapSchema, getCreateItemSchema, getFamiliesSchema, getFixedQuantitySchema, getSizeDetailsSchema, getValidationSchema, isAttributeAvailableSchema } from '../schema';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
-	const emporio = new Emporio();
+	const emporio = fastify.emporio;
 
 	f.get( '/item/:family/:name', { schema: getCreateItemSchema }, async function ( request ) {
 		const item = emporio.createItem( request.params.family, request.params.name, request.query.useFilters );

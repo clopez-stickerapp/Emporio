@@ -37,7 +37,7 @@ export const getMinimumQuantitySchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ()
+		attributes: TypeHelper.AttributesString()
 	} ),
 	response: {
 		200: Type.Object( {
@@ -67,7 +67,7 @@ export const getValidationSchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ(),
+		attributes: TypeHelper.AttributesString(),
 		allowUnsupportedAttributeAliases: Type.Boolean(),
 		allowUnsuggestedAttributeValues: Type.Boolean(),
 		checkAgainstFilteredValues: TypeHelper.UseFilters()
@@ -93,7 +93,7 @@ export const getSizeDetailsSchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ(),
+		attributes: TypeHelper.AttributesString(),
 		useFilters: TypeHelper.UseFilters()
 	} ),
 	response: {
@@ -109,7 +109,7 @@ export const isAttributeAvailableSchema = {
 		value: TypeHelper.AttributeValueSingle()
 	} ),
 	querystring: Type.Object( {
-		item: TypeHelper.ProductItemQ(),
+		item: TypeHelper.ProductItemString(),
 		useFilters: TypeHelper.UseFilters()
 	} ),
 	response: {
@@ -125,7 +125,7 @@ export const getFixedQuantitySchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ(),
+		attributes: TypeHelper.AttributesString(),
 		useFilters: TypeHelper.UseFilters()
 	} ),
 	response: {

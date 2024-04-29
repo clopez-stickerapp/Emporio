@@ -44,7 +44,7 @@ export const Attributes = ( withProductionAttributes: boolean = false ) => Type.
 	examples: [ getAttributes( withProductionAttributes ) ]
 } );
 
-export const AttributesQ = ( withProductionAttributes: boolean = false ) => Type.String( {
+export const AttributesString = ( withProductionAttributes: boolean = false ) => Type.String( {
 	examples: [ JSON.stringify( getAttributes( withProductionAttributes ) ) ]
 } );
 
@@ -59,7 +59,7 @@ export const ProductItem = ( withProductionAttributes: boolean = false ) => Type
 	units: Type.Number()
 } );
 
-export const ProductItemQ = ( withProductionAttributes: boolean = false ) => Type.String( {
+export const ProductItemString = ( withProductionAttributes: boolean = false ) => Type.String( {
 	examples: [ JSON.stringify( {
 		productFamilyName: 'custom_sticker',
 		productName: 'die_cut',

@@ -4,7 +4,7 @@ import * as TypeHelper from "$/Helper/TypeHelper"
 import { FormattedPriceList } from "$/Emporio";
 
 const querySchema = Type.Object({
-	attributes: TypeHelper.AttributesQ(),
+	attributes: TypeHelper.AttributesString(),
 	lang: Type.String({ examples: ['us'] }),
 	incVat: Type.Boolean({ default: true }),
 });

@@ -8,7 +8,7 @@ export const getItemWithProductionSettingsSchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ(),
+		attributes: TypeHelper.AttributesString(),
 		useFilters: TypeHelper.UseFilters()
 	} ),
 	response: {
@@ -26,7 +26,7 @@ export const getItemWithoutProductionSettingsSchema = {
 		name: TypeHelper.ProductName()
 	} ),
 	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesQ( true ),
+		attributes: TypeHelper.AttributesString( true ),
 		useFilters: TypeHelper.UseFilters()
 	} ),
 	response: {

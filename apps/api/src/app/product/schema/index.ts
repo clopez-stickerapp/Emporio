@@ -30,6 +30,23 @@ export const getAttributeMapSchema = {
 	}
 }
 
+export const getMinimumQuantitySchema = {
+	operationId: 'getMinimumQuantity',
+	params: Type.Object( {
+		family: TypeHelper.ProductFamily(),
+		name: TypeHelper.ProductName()
+	} ),
+	querystring: Type.Object( {
+		attributes: TypeHelper.AttributesQ()
+	} ),
+	response: {
+		200: Type.Object( {
+			minimumQuantity: Type.Number()
+		} ),
+		400: TypeHelper.Error()
+	}
+}
+
 export const getConditionableMapSchema = {
 	operationId: 'getConditionableMap',
 	params: Type.Object( {

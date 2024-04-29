@@ -108,6 +108,11 @@ export class Emporio {
 		return prices;
 	}
 
+	public getMinimumQuantity( productItem: ProductItem ): number {
+		const productFamily = this.productService.retrieveProductFamily( productItem.getProductFamilyName() );
+		return productFamily.getMinimumQuantity( productItem );
+	}
+
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {
 		return this.builder.createItem( productFamilyName, productName, useFilters );
 	}

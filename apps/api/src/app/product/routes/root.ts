@@ -1,7 +1,18 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
 import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
-import { getAttributeMapSchema, getAttributesSchema, getConditionableMapSchema, getCreateItemSchema, getFamiliesSchema, getFixedQuantitySchema, getSizeDetailsSchema, getValidationSchema, isAttributeAvailableSchema } from '../schema';
+import { 
+	getAttributeMapSchema, 
+	getAttributesSchema, 
+	getConditionableMapSchema, 
+	getCreateItemSchema, 
+	getFamiliesSchema, 
+	getFixedQuantitySchema, 
+	getMinimumQuantitySchema, 
+	getSizeDetailsSchema, 
+	getValidationSchema, 
+	isAttributeAvailableSchema 
+} from '../schema';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -17,6 +28,16 @@ export default async function ( fastify: FastifyInstance ) {
 			units: item.getUnits()
 		}
 	} );
+
+	f.get( '/minimum-quantity/:family/:name', { schema: getMinimumQuantitySchema }, async function ( request ) {
+		const item = ProductItem.fromJSON( {
+			productFamilyName: request.params.family,
+			productName: request.params.name,
+			attributes: JSON.parse( request.query.attributes ),
+		} );
+
+		return { minimumQuantity: emporio.getMinimumQuantity( item ) };
+	} )
 
 	f.get( '/attribute-map/:family/:name', { schema: getAttributeMapSchema }, async function ( request ) {
 		return { attributes: emporio.getAttributeMap( request.params.family, request.params.name ) };

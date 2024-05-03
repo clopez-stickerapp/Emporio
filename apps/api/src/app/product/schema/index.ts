@@ -174,3 +174,20 @@ export const getAttributesSchema = {
 		400: TypeHelper.Error()
 	}
 }
+
+export const getLegacySKUSchema = {
+	operationId: 'getLegacySKU',
+	params: Type.Object( {
+		family: TypeHelper.ProductFamily(),
+		name: TypeHelper.ProductName()
+	} ),
+	querystring: Type.Object( {
+		attributes: TypeHelper.AttributesString()
+	} ),
+	response: {
+		200: Type.Object( {
+			legacySKU: Type.Number()
+		} ),
+		400: TypeHelper.Error()
+	}
+}

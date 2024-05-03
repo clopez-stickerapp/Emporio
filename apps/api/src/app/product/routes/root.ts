@@ -8,6 +8,7 @@ import {
 	getCreateItemSchema, 
 	getFamiliesSchema, 
 	getFixedQuantitySchema, 
+	getLegacySKUSchema, 
 	getMinimumQuantitySchema, 
 	getSizeDetailsSchema, 
 	getValidationSchema, 
@@ -138,5 +139,15 @@ export default async function ( fastify: FastifyInstance ) {
 		}
 
 		return { attributes };
+	} )
+
+	f.get( '/legacy-sku/:family/:name', { schema: getLegacySKUSchema }, async function ( request ) {
+		const item = ProductItem.fromJSON( {
+			productFamilyName: request.params.family,
+			productName: request.params.name,
+			attributes: JSON.parse( request.query.attributes ),
+		} );
+
+		return { legacySKU: emporio.getStickerAppLegacySKU( item ) };
 	} )
 }

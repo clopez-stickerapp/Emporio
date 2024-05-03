@@ -18,6 +18,7 @@ import { ProductFamily } from "./Commerce/Core/Product/ProductFamily";
 import { ProductAttr } from "./Commerce/Core/Product/Attribute/ProductAttr";
 import { ProductItemConditionablesMap } from "./Commerce/Core/Product/Helper/ProductItemConditionablesMap";
 import { ProductItemConditionableParam } from "./Commerce/Core/Product/Condition/ProductItemConditionableParam";
+import { StickerAppProductLegacySKUService } from "./Commerce/Product/SKU/StickerAppProductLegacySKUService";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -44,12 +45,14 @@ export class Emporio {
 	protected builder: ProductItemBuilder;
 	protected validator: ProductItemValidator;
 	protected computer: ProductAttrComputerExtended;
+	protected stickerAppLegacySKU: StickerAppProductLegacySKUService;
 
 	public constructor(service: ProductService = new StickerAppProductService()) {
 		this.productService = service;
 		this.builder = new ProductItemBuilder( service );
 		this.validator = new ProductItemValidator( service );
 		this.computer = new ProductAttrComputerExtended( service );
+		this.stickerAppLegacySKU = new StickerAppProductLegacySKUService();
 	}
 
 	public calculateUnits(productItem: ProductItem): number {
@@ -194,4 +197,8 @@ export class Emporio {
 	public getAttribute( name: string ): ProductAttr {
 		return this.productService.retrieveAttribute( name );
 	}
+
+	public getStickerAppLegacySKU( item: ProductItem ): number {
+		return this.stickerAppLegacySKU.getSKU( item );
+	} 
 }

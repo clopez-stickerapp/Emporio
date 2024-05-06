@@ -44,8 +44,8 @@ export class SkinPriceProvider extends RateBasedProductPriceProvider {
 		this.addRateProvider( pads );
 	}
 
-	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
-		let price = super.calculatePrice(productItem, units, currency);
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
+		let price = await super.calculatePrice(productItem, units, currency);
 
 		price.total = Math.round(price.total);
 

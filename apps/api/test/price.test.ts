@@ -18,7 +18,7 @@ describe("calculateBreakdownSum", () => {
 
 describe("RateBasedProductPriceProvider", () => {
 	class RateProviderTest extends RateProvider {
-		public getRate(item: ProductItem, units: number): Rate {
+		public async getRate(item: ProductItem, units: number): Promise<Rate> {
 			return new Rate(units);
 		}
 	}
@@ -71,7 +71,7 @@ describe("RateBasedProductPriceProvider", () => {
 		expect(providers[0]).toBe(anotherRateProvider);
 	});
 
-	test("should be able to get applicable rates for product item", () => {
+	test("should be able to get applicable rates for product item", async () => {
 		const item = new ProductItem("family", "product");
 		item.setAttribute("foo", "bar");
 
@@ -81,7 +81,7 @@ describe("RateBasedProductPriceProvider", () => {
 		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
 		provider.addRateProvider(anotherRateProvider);
 
-		const rates = provider.getRatesFor(item, 25);
+		const rates = await provider.getRatesFor(item, 25);
 		expect(rates).toEqual({ test: new Rate(25)});
 	});
 
@@ -94,7 +94,7 @@ describe("RateBasedProductPriceProvider", () => {
 	});
 
 	describe("should be able to get a price for a product item", () => {
-		test("without attributes on the product item", () => {
+		test("without attributes on the product item", async () => {
 			const item = new ProductItem("family", "product");
 
 			rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "baz");
@@ -103,11 +103,11 @@ describe("RateBasedProductPriceProvider", () => {
 			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "bar");
 			provider.addRateProvider(anotherRateProvider);
 	
-			const price = provider.calculatePrice(item, 25, Currencies.USD);
+			const price = await provider.calculatePrice(item, 25, Currencies.USD);
 			expect(price.total).toBe((25+25)*25);
 		});
 
-		test("with attributes on the product item", () => {
+		test("with attributes on the product item", async () => {
 			const item = new ProductItem("family", "product");
 			item.setAttribute("foo", "bar");
 
@@ -117,7 +117,7 @@ describe("RateBasedProductPriceProvider", () => {
 			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
 			provider.addRateProvider(anotherRateProvider);
 	
-			const price = provider.calculatePrice(item, 25, Currencies.USD);
+			const price = await provider.calculatePrice(item, 25, Currencies.USD);
 			expect(price.total).toBe(25*25);
 		});
 		

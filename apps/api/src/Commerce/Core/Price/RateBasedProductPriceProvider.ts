@@ -8,8 +8,8 @@ import { RateProvider } from "./RateProvider";
 export class RateBasedProductPriceProvider extends ProductPriceProvider {
 	protected rateProviders: Record<string, RateProvider> = {};
 
-	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
-		let rates = this.getRatesFor(productItem, units);
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
+		let rates = await this.getRatesFor(productItem, units);
 		let breakdown = this.getBreakdownFor(rates, units);
 		let total = calculateBreakdownSum(breakdown);
 
@@ -82,12 +82,12 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		return breakdown;
 	}
 
-	public getRatesFor(productItem: ProductItem, units: number): Record<string, Rate> {
+	public async getRatesFor(productItem: ProductItem, units: number): Promise<Record<string, Rate>> {
 		let providers = this.getRateProvidersFor(productItem);
 
 		const rates: Record<string, Rate> = {};
 		for (const provider of providers) {
-			rates[provider.getName()] = provider.getRate(productItem, units);
+			rates[provider.getName()] = await provider.getRate(productItem, units);
 		}
 
 		return rates;

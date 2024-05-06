@@ -51,55 +51,55 @@ describe("Test addRate", () => {
 describe("Test getRate", () => {
 	let item: ProductItem = new ProductItem("foo", "bar");
 
-	test("with no rates", () => {
+	test("with no rates", async () => {
 		rateList = new RateList("test");
 
-		rate = rateList.getRate(item, 0);
+		rate = await rateList.getRate(item, 0);
 		expect(rate).instanceOf(Rate);
 		expect(rate.getValue()).equal(0);
 	});
 
-	test("with default rate set to 5", () => {
+	test("with default rate set to 5", async () => {
 		rateList = new RateList("test", new Rate(5));
 
-		rate = rateList.getRate(item, 0);
+		rate = await rateList.getRate(item, 0);
 		expect(rate).instanceOf(Rate);
 		expect(rate.getValue()).equal(5);
 	});
 
-	test("with rates", () => {
+	test("with rates", async () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(20), 20);
 		rateList.addRate(new Rate(10), 10);
 
-		rate = rateList.getRate(item, 0);
+		rate = await rateList.getRate(item, 0);
 		expect(rate.getValue()).equal(0);
 
-		rate = rateList.getRate(item, 5);
+		rate = await rateList.getRate(item, 5);
 		expect(rate.getValue()).equal(0);
 
-		rate = rateList.getRate(item, 9.99);
+		rate = await rateList.getRate(item, 9.99);
 		expect(rate.getValue()).equal(0);
 
-		rate = rateList.getRate(item, 10);
+		rate = await rateList.getRate(item, 10);
 		expect(rate.getValue()).equal(10);
 
-		rate = rateList.getRate(item, 10.01);
+		rate = await rateList.getRate(item, 10.01);
 		expect(rate.getValue()).equal(10);
 
-		rate = rateList.getRate(item, 15);
+		rate = await rateList.getRate(item, 15);
 		expect(rate.getValue()).equal(10);
 
-		rate = rateList.getRate(item, 19.99);
+		rate = await rateList.getRate(item, 19.99);
 		expect(rate.getValue()).equal(10);
 
-		rate = rateList.getRate(item, 20);
+		rate = await rateList.getRate(item, 20);
 		expect(rate.getValue()).equal(20);
 
-		rate = rateList.getRate(item, 20.01);
+		rate = await rateList.getRate(item, 20.01);
 		expect(rate.getValue()).equal(20);
 
-		rate = rateList.getRate(item, 100);
+		rate = await rateList.getRate(item, 100);
 		expect(rate.getValue()).equal(20);
 	});
 });

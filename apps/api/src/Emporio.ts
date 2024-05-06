@@ -60,7 +60,7 @@ export class Emporio {
 		return productFamily.calculateUnits(productItem);
 	}
 
-	public calculatePriceByUnits(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Price {
+	public async calculatePriceByUnits(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Promise<Price> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const currency = getCurrency(lang);
 
@@ -70,7 +70,7 @@ export class Emporio {
 			units = minUnits;
 		}		
 
-		let price = productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency) ?? { total: 0, currency: currency };
+		let price = await productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency) ?? { total: 0, currency: currency };
 
 		if (!incVAT) {
 			const vat = getVatPercentage(lang);
@@ -83,11 +83,11 @@ export class Emporio {
 	}
 
 
-	public calculatePrice(productItem: ProductItem, quantity: number, lang: string, incVAT: boolean): PriceDTO {
+	public async calculatePrice(productItem: ProductItem, quantity: number, lang: string, incVAT: boolean): Promise<PriceDTO> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		
 		let units = (productFamily.calculateUnits(productItem) / (productItem.getAttribute<number>("quantity") ?? 1)) * quantity;
-		let price = this.calculatePriceByUnits(productItem, units, lang, incVAT);
+		let price = await this.calculatePriceByUnits(productItem, units, lang, incVAT);
 
 		let unitPrice = price.total / quantity;
 		unitPrice = parseFloat(unitPrice.toFixed(8));
@@ -99,14 +99,14 @@ export class Emporio {
 		};
 	}
 
-	public getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): PriceList {
+	public async getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): Promise<PriceList> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
 		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
 
-		const prices = steps.map(step => {
-			return this.calculatePrice(productItem, step, lang, inclVat);
-		});
+		const prices = await Promise.all(steps.map(async step => {
+			return await this.calculatePrice(productItem, step, lang, inclVat);
+		}));
 
 		return prices;
 	}

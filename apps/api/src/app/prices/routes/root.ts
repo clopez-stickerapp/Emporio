@@ -20,7 +20,7 @@ export default async function (fastify: FastifyInstance) {
 
 		const quantity = item.getAttribute<number>('quantity') ?? 1;
 
-		const priceDTO = emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
+		const priceDTO = await emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
 		const unitPriceFormatted = formatCurrency(priceDTO.unitPrice, {currency: priceDTO.price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true});
 
 		return {
@@ -40,7 +40,7 @@ export default async function (fastify: FastifyInstance) {
 
 		item.setUnits(emporio.calculateUnits(item));
 
-		let prices = emporio.getPriceList(item, request.query.lang, request.query.incVat)
+		let prices = await emporio.getPriceList(item, request.query.lang, request.query.incVat)
 
 		//for each price step in prices, format the price
 		let formattedPrices = prices.map(priceStep => {

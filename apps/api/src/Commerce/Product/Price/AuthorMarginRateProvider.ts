@@ -16,10 +16,10 @@ export class AuthorMarginRateProvider extends RateProvider{
 		this.conditions.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LIBRARY_DESIGN);
 	}
 
-	public getRate(productItem: ProductItem, units: number): Rate {
+	public async getRate(productItem: ProductItem, units: number): Promise<Rate> {
 		let figureId = productItem.getAttribute(FigureAttribute.ALIAS) as number;
 
-		let priceMarginPercentage = fetchPriceMarginPercentage(figureId);
+		let priceMarginPercentage = await fetchPriceMarginPercentage(figureId);
 		
 		if(priceMarginPercentage > AuthorMarginRateProvider.PRICE_MARGIN_LIMIT){
 			priceMarginPercentage = AuthorMarginRateProvider.PRICE_MARGIN_LIMIT;

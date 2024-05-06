@@ -99,7 +99,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 		super(PromoProductPriceProvider.NAME);
 	}
 
-	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price{
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price>{
 		let price: number | null = null;
 
 		if (productItem.getAttribute(SheetTypeAttribute.ALIAS) === SheetTypeAttribute.STICKER_PACK) {
@@ -117,9 +117,9 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 				case PromoProductFamily.PRODUCT_GIFTCARD:
 					const giftcardId = productItem.getAttribute(FigureAttribute.ALIAS) as number;
 
-					const [giftcardSetPrice, giftcardHasDiscount, giftcardDiscount] = fetchGiftcardData(giftcardId);
+					const [giftcardSetPrice, giftcardHasDiscount, giftcardDiscount] = await fetchGiftcardData(giftcardId);
 
-					let giftcardPrice = giftcardSetPrice;
+					let giftcardPrice = giftcardSetPrice * 100;
 
 					if (giftcardHasDiscount) {
 						giftcardPrice = giftcardSetPrice - giftcardDiscount;
@@ -138,7 +138,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 		}
 
 		return {
-			total: price,
+			total: price * units,
 			currency: currency
 		};
 	}

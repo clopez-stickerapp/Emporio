@@ -4,7 +4,7 @@ import { Rate } from "../src/Commerce/Core/Price/Rate";
 import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
 import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 class ProviderTest extends RateProvider {
-	public getRate(productItem: ProductItem): Rate {
+	public async getRate(productItem: ProductItem): Promise<Rate> {
 		return new Rate(productItem.getAttribute("test-attribute") as number * 2);
 	}
 	constructor(name: string) {
@@ -56,11 +56,11 @@ describe("Test test function", () => {
 });
 
 
-test("Test getRate function", () => {
+test("Test getRate function", async () => {
 	provider = new ProviderTest("test");
 
 	item = new ProductItem("foo", "bar");
 	item.setAttribute("test-attribute", 5);
 
-	expect(provider.getRate(item, 0).getValue()).toBe(10);
+	expect((await provider.getRate(item, 0)).getValue()).toBe(10);
 });

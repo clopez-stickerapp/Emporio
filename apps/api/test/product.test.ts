@@ -64,7 +64,7 @@ class DummyFamily extends ProductFamily {
 	}
 }
 class DummyProvider extends ProductPriceProvider {
-	public calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Price {
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
 		throw new Error("Method not implemented.");
 	}
 }

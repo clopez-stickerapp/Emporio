@@ -18,7 +18,7 @@ export class RateList extends RateProvider{
 		return this;
 	}
 
-	public getRate(productItem: ProductItem, units: number): Rate{
+	public async getRate(productItem: ProductItem, units: number): Promise<Rate>{
 		for(let rate of this.rates){
 			/**
 			 * Since rates are sorted in reverse order, the thresholds are in descending order

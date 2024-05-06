@@ -28,7 +28,7 @@ async function buildServer() {
 	await server.register(swagger, {
 		openapi:{
 			info: {
-				title: 'StickerApp API',
+				title: 'Emporio - the Commerce API',
 				version: '1.0.0',
 			},
 		}

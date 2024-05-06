@@ -192,3 +192,16 @@ export const getLegacySKUSchema = {
 		400: TypeHelper.Error()
 	}
 }
+
+export const getOutOfStockSchema = {
+	operationId: 'getOutOfStock',
+	params: Type.Object( {
+		family: TypeHelper.ProductFamily()
+	} ),
+	response: {
+		200: Type.Object( {
+			outOfStock: Type.Array( Type.String() )
+		} ),
+		400: TypeHelper.Error()
+	}
+}

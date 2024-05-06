@@ -10,6 +10,7 @@ import {
 	getFixedQuantitySchema, 
 	getLegacySKUSchema, 
 	getMinimumQuantitySchema, 
+	getOutOfStockSchema, 
 	getSizeDetailsSchema, 
 	getValidationSchema, 
 	isAttributeAvailableSchema 
@@ -150,5 +151,9 @@ export default async function ( fastify: FastifyInstance ) {
 		} );
 
 		return { legacySKU: emporio.getStickerAppLegacySKU( item ) };
+	} )
+
+	f.get( '/out-of-stock/:family', { schema: getOutOfStockSchema }, async function ( request ) {
+		return { outOfStock: emporio.getFamily( request.params.family ).getOutOfStockProducts() };
 	} )
 }

@@ -68,6 +68,7 @@ export const getValidationSchema = {
 	} ),
 	querystring: Type.Object( {
 		attributes: TypeHelper.AttributesString(),
+		units: Type.Number(),
 		allowUnsupportedAttributeAliases: Type.Boolean(),
 		allowUnsuggestedAttributeValues: Type.Boolean(),
 		checkAgainstFilteredValues: TypeHelper.UseFilters()

@@ -56,8 +56,9 @@ export default async function ( fastify: FastifyInstance ) {
 			attributes: JSON.parse( request.query.attributes ),
 		} );
 
+		item.setUnits( request.query.units );
+
 		try {
-			item.setUnits( emporio.calculateUnits( item ) );
 			emporio.validate( item, request.query.allowUnsupportedAttributeAliases, request.query.allowUnsuggestedAttributeValues, request.query.checkAgainstFilteredValues );
 			return { 
 				validation: { 

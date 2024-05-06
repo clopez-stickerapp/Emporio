@@ -148,7 +148,8 @@ export const getFamiliesSchema = {
 				products: Type.Record( Type.String(), Type.Object( {
 					name: Type.String(),
 					attributes: TypeHelper.Attributes(),
-					sku: Type.String()
+					sku: Type.String(),
+					inStock: Type.Boolean()
 				} ) ),
 			} ) )
 		} ),

@@ -115,7 +115,8 @@ export default async function ( fastify: FastifyInstance ) {
 				families[ family.getName() ].products[ product.getName() ] = {
 					'name': product.getName(),
 					'attributes': product.getAttrMap(),
-					'sku': product.getSku()
+					'sku': product.getSku(),
+					'inStock': product.isInStock()
 				}
 			}
 		}

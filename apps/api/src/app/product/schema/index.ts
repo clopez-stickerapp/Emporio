@@ -119,6 +119,21 @@ export const isAttributeAvailableSchema = {
 	}
 }
 
+export const isAttributeRequiredSchema = {
+	operationId: 'isAttributeRequired',
+	params: Type.Object( {
+		name: Type.String()
+	} ),
+	querystring: Type.Object( {
+		family: TypeHelper.ProductFamily(),
+		name: TypeHelper.ProductName()
+	} ),
+	response: {
+		200: Type.Object( { required: Type.Boolean() } ),
+		400: TypeHelper.Error()
+	}
+}
+
 export const getFixedQuantitySchema = {
 	operationId: 'getFixedQuantityEvaluated',
 	params: Type.Object( {

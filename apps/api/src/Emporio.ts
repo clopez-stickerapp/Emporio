@@ -175,6 +175,19 @@ export class Emporio {
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
 
+	public isAttributeRequired( productFamilyName: string, productName: string, attributeName: string ): boolean {
+		const family = this.productService.retrieveProductFamily( productFamilyName );
+
+		if ( family.isRequired( attributeName ) ) {
+			return true;
+		} else if ( family.isSupported( attributeName ) ) {
+			const product = this.productService.findProduct( productFamilyName, productName );
+			return product.isAttrStrictlyRequiredFor( attributeName );
+		}
+
+		return false;
+	}
+
 	public getFixedQuantityEvaluated( productItem: ProductItem, useFilters: boolean ): boolean {
 		this.computer.prepare( productItem, useFilters );
 		const fixedQuantityHelper = new FixedQuantityHelper( this.computer, productItem );

@@ -13,7 +13,8 @@ import {
 	getOutOfStockSchema, 
 	getSizeDetailsSchema, 
 	getValidationSchema, 
-	isAttributeAvailableSchema 
+	isAttributeAvailableSchema, 
+	isAttributeRequiredSchema
 } from '../schema';
 
 export default async function ( fastify: FastifyInstance ) {
@@ -90,6 +91,10 @@ export default async function ( fastify: FastifyInstance ) {
 	f.get( '/attribute/available/:name/:value', { schema: isAttributeAvailableSchema }, async function ( request ) {
 		const item = ProductItem.fromJSON( JSON.parse( request.query.item ) );
 		return { available: emporio.isAttributeAvailable( item, request.params.name, request.params.value, request.query.useFilters ) };
+	} );
+
+	f.get( '/attribute/required/:name', { schema: isAttributeRequiredSchema }, async function ( request ) {
+		return { required: emporio.isAttributeRequired( request.query.family, request.query.name, request.params.name ) };
 	} );
 
 	f.get( '/attribute/fixed-quantity-evaluated/:family/:name', { schema: getFixedQuantitySchema }, async function ( request ) {

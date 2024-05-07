@@ -29,7 +29,8 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.2",
-    "vite-tsconfig-paths": "^4.3.1"
+    "vite-tsconfig-paths": "^4.3.1",
+	"vitest": "^1.0.0"
   },
   "dependencies": {
     "@fastify/autoload": "^5.8.0",

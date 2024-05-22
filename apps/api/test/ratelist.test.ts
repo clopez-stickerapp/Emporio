@@ -43,7 +43,6 @@ describe("Test addRate", () => {
 		rateList = new RateList("test");
 		rateList.addRate(new Rate(10), 10);
 		rateList.addRate(new Rate(20), 20);
-		console.log(rateList.getRates());
 		expect(rateList.getRates()).lengthOf(3);
 	});
 });

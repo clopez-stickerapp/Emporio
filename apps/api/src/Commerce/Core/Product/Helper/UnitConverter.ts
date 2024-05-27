@@ -7,7 +7,7 @@ export function convertMMToInches( mm: number ): number
 {
 	const inches = formatMM( mm ) / FACTOR.inches_to_mm;
 
-	return toFixed( inches, 1 );
+	return Math.round( inches * 10 ) / 10;
 }
 
 export function convertInchesToMM( inches: number ): number
@@ -28,7 +28,7 @@ export function convertCMToMM( cm: number ): number
 {
 	const mm = cm * 10;
 
-	return formatMM( mm );
+	return toFixed( mm, 0 );
 }
 
 export function convertMMToPX( mm: number ): number

@@ -3,6 +3,8 @@ import { ProductAttrComputer } from "./ProductAttrComputer";
 import { DeliverySheetSizeHelper } from "./DeliverySheetSizeHelper";
 import { TransformHelper } from "./TransformHelper";
 import { AttributeValueMulti } from "$/Helper/Condition/AttributeValue";
+import { convertCMToMM, convertInchesToMM, formatMM } from "./UnitConverter";
+import { SizeConverter } from "./SizeConverter";
 
 export class SizeHelper
 {
@@ -10,35 +12,34 @@ export class SizeHelper
 	public static readonly MAX_SIZE_MM_LASER   = 275;
 	public static readonly MIN_SIZE_MM_DEFAULT = 25;
 
-	public fixedSize:           boolean         = false;
-	public meassureDisplayAbbr: string          = "cm";
-	public minSize:             SizeUnitConverter   = new SizeUnitConverter( this );
-	public maxSize:             SizeUnitConverter   = new SizeUnitConverter( this );
-	public maxSizeOtherSide:    SizeUnitConverter   = new SizeUnitConverter( this );
-	public maxWidth:            SizeUnitConverter   = new SizeUnitConverter( this );
-	public maxHeight:           SizeUnitConverter   = new SizeUnitConverter( this );
-	public transform:           TransformHelper = new TransformHelper( this );
-	public deliverySheet:       DeliverySheetSizeHelper;
+	public fixedSize:        boolean = false;
+	public minSize:          SizeConverter;
+	public maxSize:          SizeConverter;
+	public maxSizeOtherSide: SizeConverter;
+	public maxWidth:         SizeConverter;
+	public maxHeight:        SizeConverter;
+	public transform:        TransformHelper;
+	public deliverySheet:    DeliverySheetSizeHelper;
 
-	constructor( protected attrComputer: ProductAttrComputer, protected productItem: ProductItem )
+	public constructor( protected attrComputer: ProductAttrComputer, protected productItem: ProductItem )
 	{
-		this.deliverySheet = new DeliverySheetSizeHelper( productItem );
+		this.transform        = new TransformHelper( this );
+		this.deliverySheet    = new DeliverySheetSizeHelper( productItem );
+		this.minSize          = new SizeConverter( productItem );
+		this.maxSize          = new SizeConverter( productItem );
+		this.maxSizeOtherSide = new SizeConverter( productItem );
+		this.maxWidth         = new SizeConverter( productItem );
+		this.maxHeight        = new SizeConverter( productItem );
 	}
 
 	public toString(): string
 	{
-		let value = "|";
-
-		value += this.width.mm + "|";
-		value += this.height.mm + "|";
-		value += this.minSize.mm + "|";
-		value += this.maxSize.mm + "|";
-		value += this.fixedSize + "|";
-		value += this.isImperialUnits() + "|";
-
-		return value;
+		return `|${ this.width.mm }|${ this.height.mm }|${ this.minSize.mm }|${ this.maxSize.mm }|${ this.fixedSize }|${ this.isImperialUnits() }|`;
 	}
 
+	/**
+	 * Evaluates maxSize, minSize, maxSizeOtherSide, fixedSize, maxWidth and maxHeight.
+	 */
 	public evaluate(): void
 	{
 		this.evaluateMaxSize();
@@ -47,8 +48,171 @@ export class SizeHelper
 		this.evaluateFixedSize();
 		this.evaluateMaxWidth();
 		this.evaluateMaxHeight();
+	}
 
-		this.meassureDisplayAbbr = this.isImperialUnits() ? '"' : 'cm';
+	public getSizeOptions(): AttributeValueMulti
+	{
+		return this.attrComputer.getSuggestedValues( "size" );
+	}
+
+	public canBeProductionLine( productionLine: string ): boolean
+	{
+		return !this.attrComputer.isConstrained( "production_line", productionLine );
+	}
+
+	/**
+	 * Creates a displayable measurement string.
+	 * 
+	 * @param measureInInchesOrCM The localized measurement value in inches or centimeters.
+	 * @returns A formatted and displayable string, such as '20 cm' or '4 "'.
+	 */
+	public formatDisplayableMeassure( measureInInchesOrCM: number ): string
+	{
+		return `${ measureInInchesOrCM } ${ this.meassureDisplayAbbr }`;
+	}
+
+	/**
+	 * Takes a size string and extracts the numbers, but does NOT convert it to millimeters.
+	 * 
+	 * @param sizeString The size string, such as 2" x 2" or 10 x 10 cm.
+	 * @returns An object with the width and height extracted.
+	 */
+	public extractMeassuresFromString( sizeString: string ): { width: number, height: number }
+	{
+		const [ width, height ] = sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g ) as string[];
+
+		return { width: parseFloat( width ), height: parseFloat( height ) };
+	}
+
+	/**
+	 * Converts the localized measurement value to millimeters and sets the value.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param measureInInchesOrCM The measurement value in inches or centimeters.
+	 * @returns The measurement value set in millimeters.
+	 */
+	public setMeasureAttrLocalized( attributeName: string, measureInInchesOrCM: number ): number
+	{
+		return this.setMeasureAttrInMM( attributeName, this.localizedToMM( measureInInchesOrCM ) );
+	}
+
+	/**
+	 * Converts the localized measurement value to millimeters.
+	 * 
+	 * @param measureInInchesOrCM The measurement value in inches or centimeters.
+	 * @returns The measurement value in millimeters.
+	 */
+	public localizedToMM( measureInInchesOrCM: number ): number
+	{
+		return this.isImperialUnits() ? convertInchesToMM( measureInInchesOrCM ) : convertCMToMM( measureInInchesOrCM );
+	}
+
+	/**
+	 * Sets the measurement value in millimeters.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param measureInMM The measurement value in millimeters.
+	 * @returns The measurement value set in millimeters.
+	 */
+	public setMeasureAttrInMM( attributeName: string, measureInMM: number ): number
+	{
+		attributeName = this.sanitizeMeasureAttrName( attributeName );
+
+		if ( this.maxSize.mm && measureInMM > this.maxSize.mm )
+		{
+			measureInMM = this.maxSize.mm;
+		}
+		else if ( this.minSize.mm && measureInMM < this.minSize.mm )
+		{
+			measureInMM = this.minSize.mm;
+		}
+
+		measureInMM = formatMM( measureInMM );
+
+		this.productItem.setAttribute( attributeName, measureInMM );
+
+		return measureInMM;
+	}
+
+	/**
+	 * Creates a SizeConverter instance.
+	 * 
+	 * @param mm The value in millimeters.
+	 * @returns A SizeConverter instance to access the value in different units.
+	 */
+	public getSizeByMM( mm: number ): SizeConverter
+	{
+		return new SizeConverter( this.productItem, mm );
+	}
+
+	/**
+	 * Creates a SizeConverter instance.
+	 * 
+	 * @param attributeName The attribute name.
+	 * @returns A SizeConverter instance to access the value in different units.
+	 */
+	public getSizeByAttribute( attributeName: string ): SizeConverter
+	{
+		attributeName = this.sanitizeMeasureAttrName( attributeName );
+
+		const mm = Number( this.productItem.getAttribute<string>( attributeName ) || '0' );
+
+		return this.getSizeByMM( mm );
+	}
+
+	/**
+	 * Determines whether the product item uses imperial units.
+	 */
+	public isImperialUnits(): boolean
+	{
+		return this.productItem.getAttribute( "imperial_units" )?.toString() === "true";
+	}
+
+	/**
+	 * Determines whether the product item uses fixed size.
+	 */
+	public isSizeFixed(): boolean
+	{
+		return this.fixedSize;
+	}
+
+	/**
+	 * Determines whether the product item has maxSizeOtherSide.
+	 */
+	public hasMaxSizeOtherSide(): boolean
+	{
+		return this.maxSizeOtherSide.mm != this.maxSize.mm;
+	}
+
+	public get sqm(): number
+	{
+		let quantity = Number( this.productItem.getAttribute( "quantity" ) );
+
+		return ( this.width.mm * this.height.mm * quantity ) / 1000000;
+	}
+
+	/**
+	 * Returns either '"' or 'cm' depending on whether the product item uses imperial units.
+	 */
+	public get meassureDisplayAbbr(): '"' | 'cm'
+	{
+		return this.isImperialUnits() ? '"' : 'cm';
+	}
+
+	/**
+	 * Creates a SizeConverter instance to access the width in different units.
+	 */
+	public get width(): SizeConverter
+	{
+		return this.getSizeByAttribute( "width_mm" );
+	}
+
+	/**
+	 * Creates a SizeConverter instance to access the height in different units.
+	 */
+	public get height(): SizeConverter
+	{
+		return this.getSizeByAttribute( "height_mm" );
 	}
 
 	protected evaluateFixedSize(): void
@@ -96,7 +260,17 @@ export class SizeHelper
 
 	protected evaluateMaxSizeOtherSide(): void
 	{
-		let maxSizeOtherSide = this.getMaxSizeOtherSideValue();
+		let maxSizeOtherSide = this.productItem.getAttribute<number>( "max_size_other_side_mm" );
+
+		if ( !maxSizeOtherSide )
+		{
+			const values = this.attrComputer.getFilteredValues<number>( "max_size_other_side_mm" );
+
+			if ( values.length )
+			{
+				maxSizeOtherSide = values[ 0 ];
+			}
+		}
 
 		if ( !this.maxSize.mm )
 		{
@@ -144,232 +318,13 @@ export class SizeHelper
 		}
 	}
 
-	public getSizeOptions(): AttributeValueMulti
-	{
-		return this.attrComputer.getSuggestedValues( "size" );
-	}
-
-	public canBeProductionLine( productionLine: string ): boolean
-	{
-		return !this.attrComputer.isConstrained( "production_line", productionLine );
-	}
-
-	public formatDisplayableMeassure( measureInInchesOrCM: number ): string
-	{
-		return measureInInchesOrCM.toString() + " " + this.meassureDisplayAbbr;
-	}
-
-	public formatMM( mm: number ): number
-	{
-		mm = Math.round( mm * 10 ) / 10;
-		mm = Number( mm.toFixed( 0 ) );
-
-		return mm;
-	}
-
-	public convertMMToInches( mm: number ): number
-	{
-		mm = this.formatMM( mm );
-		var inches = mm / 25.4;
-		var roundedInches = Math.round( inches * 10 ) / 10;
-
-		return roundedInches;
-	}
-
-	public convertInchesToMM( inches: number ): number
-	{
-		var mm = this.formatMM(inches * 25.4);
-
-		return mm;
-	}
-
-	public convertMMToCM( mm: number ): number
-	{
-		return Number( (mm / 10).toFixed( 1 ) );
-	}
-
-	public convertCMToMM( cm: number ): number
-	{
-		return Number( (cm * 10).toFixed( 0 ) );
-	}
-
-	public setMeasureBySizeString( sizeString: string ): void
-	{
-		if ( sizeString )
-		{
-			const meassures = this.extractMeassuresFromString( sizeString );
-			this.setMeasureAttr( "width_mm", meassures.width );
-			this.setMeasureAttr( "height_mm", meassures.height );
-		}
-	}
-
-	/**
-	 * Takes a size string like 2" x 2" or 10 x 10 cm and extract the numbers (but does NOT convert it to millimeters).
-	 *
-	 * @param sizeString
-	 */
-	public extractMeassuresFromString( sizeString: string ): { width: number, height: number }
-	{
-		let widthAndHeight: string[] = sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g ) as string[];
-		let width:          number   = parseFloat( widthAndHeight[ 0 ] );
-		let height:         number   = parseFloat( widthAndHeight[ 1 ] );
-
-		return {
-			width: width,
-			height: height
-		}
-	}
-
-	public setMeasureAttr( attributeName: string, measureInInchesOrCM: number ): number
-	{
-		attributeName = this.sanitizeMeasureAttrName( attributeName );
-		const measureInMM = this.convertMeassureToMM( measureInInchesOrCM );
-
-		return this.setMeasureAttrInMM( attributeName, measureInMM );
-	}
-
-	public setMeasureAttrInMM( attributeName: string, measureInMM: number ): number
-	{
-		attributeName = this.sanitizeMeasureAttrName( attributeName );
-
-		if ( this.maxSize.mm && measureInMM > this.maxSize.mm )
-		{
-			measureInMM = this.maxSize.mm;
-		}
-		else if ( this.minSize.mm && measureInMM < this.minSize.mm )
-		{
-			measureInMM = this.minSize.mm;
-		}
-
-		measureInMM = this.formatMM( measureInMM );
-
-		this.productItem.setAttribute( attributeName, measureInMM );
-
-		return measureInMM;
-	}
-
-	public convertMeassureToMM( measureInInchesOrCM: number ): number
-	{
-		if ( this.isImperialUnits() )
-		{
-			return this.convertInchesToMM( measureInInchesOrCM );
-		}
-		
-		return this.convertCMToMM( measureInInchesOrCM );
-	}
-
-	public convertMMToLocalizedMeassure( meassureInMM: number ): number
-	{
-		if ( this.isImperialUnits() )
-		{
-			return this.convertMMToInches( meassureInMM );
-		}
-		
-		return this.convertMMToCM( meassureInMM );
-	}
-
-	public isImperialUnits(): boolean
-	{
-		let value = this.productItem.getAttribute<boolean | string>( "imperial_units" );
-
-		return value === true || value === "true";
-	}
-
-	public isSizeFixed(): boolean
-	{
-		return this.fixedSize;
-	}
-
-	public hasMaxSizeOtherSide(): boolean
-	{
-		return this.maxSizeOtherSide.mm != this.maxSize.mm;
-	}
-
-	private sanitizeMeasureAttrName( attributeName: string )
+	protected sanitizeMeasureAttrName( attributeName: string ): string
 	{
 		if ( attributeName.indexOf( "_mm" ) < 0 )
 		{
-			attributeName = attributeName + "_mm";
+			attributeName += "_mm";
 		}
 
 		return attributeName;
-	}
-
-	private getMaxSizeOtherSideValue(): number | null
-	{
-		let value = this.productItem.getAttribute<number>( "max_size_other_side_mm" );
-
-		if ( !value )
-		{
-			const values = this.attrComputer.getFilteredValues<number>( "max_size_other_side_mm" );
-
-			if ( values.length )
-			{
-				value = values[ 0 ];
-			}
-		}
-
-		return value ?? null;
-	}
-
-	public get sqm(): number
-	{
-		let quantity = Number( this.productItem.getAttribute( "quantity" ) );
-
-		return ( this.width.mm * this.height.mm * quantity ) / 1000000;
-	}
-
-	public get width(): SizeUnitConverter
-	{
-		const width = new SizeUnitConverter( this );
-		width.mm = parseInt( this.productItem.getAttribute<string>( "width_mm" ) ?? '0' );
-		return width;
-	}
-
-	public get height(): SizeUnitConverter
-	{
-		const height = new SizeUnitConverter( this );
-		height.mm = parseInt( this.productItem.getAttribute<string>( "height_mm" ) ?? '0' );
-		return height;
-	}
-}
-
-class SizeUnitConverter
-{
-	public mm: number = 0;
-
-	private mm2pxFactor: number = 2.83465;
-
-	public constructor( protected size: SizeHelper ) {}
-
-	public get inches(): number
-	{
-		return this.size.convertMMToInches( this.mm );
-	}
-
-	public get cm(): number
-	{
-		return this.size.convertMMToCM( this.mm );
-	}
-
-	public get px(): number
-	{
-		return this.mm * this.mm2pxFactor;
-	}
-
-	public get localized(): number
-	{
-		return this.size.convertMMToLocalizedMeassure( this.mm );
-	}
-
-	public toObject()
-	{
-		return {
-			'mm': this.mm,
-			'inches': this.inches,
-			'cm': this.cm,
-			'px': this.px,
-			'localized': this.localized
-		}
 	}
 }

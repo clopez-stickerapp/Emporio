@@ -46,11 +46,6 @@ export class ProductAttrComputer
 		this.attributesFiltered = {};
 		this.attributesFiltersMatched = {};
 
-		if ( !this.useFilters )
-		{
-			return;
-		}
-
 		for ( const attributeName in this.attributes )
 		{
 			const [ attrValues, filters ] = this.attrEvaluator.filter( productItem.toTestableOneDimensionalArray(), attributeName );
@@ -91,7 +86,7 @@ export class ProductAttrComputer
 		{
 			let values = this.getFilteredValues( attributeName );
 
-			if ( !values.length )
+			if ( !this.useFilters || !values.length )
 			{
 				values = this.getAllValues( attributeName );
 			}
@@ -132,29 +127,18 @@ export class ProductAttrComputer
 	/**
 	 * Determines whether the value is suggested and not constrained.
 	 * 
-	 * @param attributeName 
-	 * @param value 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValue The value of the attribute.
 	 */
-	public isAvailable( attributeName: string, value: AttributeValueSingle ): boolean 
+	public isAvailable( attributeName: string, attributeValue: AttributeValueSingle ): boolean 
 	{
-		return !this.isConstrained( attributeName, value ) && ( this.isInSuggestedValues( attributeName, value ) || this.isDynamicValue( attributeName ) );
-	}
-
-	/**
-	 * Determines whether the value is constrained or not suggested.
-	 * 
-	 * @param attributeName 
-	 * @param value 
-	 */
-	public isUnavailable( attributeName: string, value: AttributeValueSingle ): boolean 
-	{
-		return !this.isAvailable( attributeName, value );
+		return !this.isConstrained( attributeName, attributeValue ) && ( this.isInSuggestedValues( attributeName, attributeValue ) || this.isDynamicValue( attributeName ) );
 	}
 
 	/**
 	 * Gets the first suggested value that isn't constrained.
 	 * 
-	 * @param attributeName 
+	 * @param attributeName The name of the attribute.
 	 */
 	public getDefaultValue<T extends AttributeValueSingle | []>( attributeName: string ): T | null
 	{

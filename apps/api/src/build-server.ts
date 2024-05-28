@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 import fastify from 'fastify';
-import pino from 'pino';
 import AutoLoad from '@fastify/autoload';
 import formbody from '@fastify/formbody';
 import cors from '@fastify/cors';
@@ -12,21 +11,27 @@ import { Emporio } from './Emporio';
 import { StickerAppProductService } from './Commerce/Product/StickerAppProductService';
 
 declare module 'fastify' {
-	interface FastifyInstance{
+	interface FastifyInstance {
 		emporio: Emporio;
 	}
 }
 
 async function buildServer() {
+	const logDir = path.join('/var/log/emporio/'); //TODO: make this configurable
+	const logFile = path.join(logDir, 'api.log');
+
 	const server = fastify({
-		logger: pino({ level: process.env.LOG_LEVEL || 'info' }),
+		logger: {
+			level: process.env.LOG_LEVEL || 'info',
+			file: fs.existsSync(logDir) ? logFile : undefined,
+		}
 	});
 
 	const service = new StickerAppProductService();
 	server.decorate("emporio", new Emporio(service));
 
 	await server.register(swagger, {
-		openapi:{
+		openapi: {
 			info: {
 				title: 'Emporio - the Commerce API',
 				version: '1.0.0',
@@ -61,14 +66,14 @@ async function buildServer() {
 	server.register(cors);
 	server.setErrorHandler((error, request, reply) => {
 		if (error.code === 'FST_ERR_VALIDATION') {
-			reply.status(400).send({message: error.message});
+			reply.status(400).send({ message: error.message });
 		} else if (error instanceof NotFoundError) {
 			reply.status(404).send('Resource not found');
 		} else if (error instanceof BadRequestError) {
-			reply.status(400).send({message: error.message});
+			reply.status(400).send({ message: error.message });
 		} else {
 			server.log.error(error);
-			reply.status(500).send({message:'Internal server error'});
+			reply.status(500).send({ message: 'Internal server error' });
 		}
 	});
 

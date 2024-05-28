@@ -1,0 +1,132 @@
+name: Emporio Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose an environment to deploy to'
+        type: environment
+        required: true
+        default: testing
+
+env:
+  DIR_SOURCE: /home/svc.stickerapp/commerce-source/commerce
+  ENVIRONMENT: ${{ inputs.environment }}
+
+run-name: Emporio deploy (${{ inputs.environment }})
+# only run one deploy at a time for this workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.environment }}
+
+jobs:
+  init:
+    name: Init workflow (${{ inputs.environment }})
+    environment: ${{ inputs.environment }}
+    runs-on: atlas-${{ inputs.environment }}-01
+    outputs:
+      commit_id_short: ${{ steps.git.outputs.commit_id_short }}
+      branch: ${{ steps.git.outputs.branch }}
+      run_url: ${{ steps.git.outputs.run_url }}
+      runners: ${{steps.runners.outputs.runners}}
+    steps:
+      - name: Runners
+        id: runners
+        run: |
+          run=$(jq -c -n --argjson str '"${{vars.ATLAS_RUNNERS}}"' '$str|split(",")')
+          echo "runners={\"runners\":$run}" >> $GITHUB_OUTPUT
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: commerce-source/
+      - name: Git context
+        id: git
+        run: |
+          cd $DIR_SOURCE
+          commit_id_short=$(git rev-parse --short=10 "${{ github.sha }}")
+          branch=${{github.ref_name}}
+          run_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          echo "branch=$branch" >> $GITHUB_OUTPUT
+          echo "commit_id_short=$commit_id_short" >> $GITHUB_OUTPUT
+          echo "run_url=$run_url" >> $GITHUB_OUTPUT
+      - name: Notify Slack
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notification_title: "*Emporio deploy initiated... (${{ inputs.environment }})*"
+          message_format: |
+            *Environment:* ${{ inputs.environment }}
+            *Branch:* ${{ steps.git.outputs.branch }}
+            *Commit:* <{commit_url}|${{ steps.git.outputs.commit_id_short }}>
+          footer: "<{run_url}|View Run>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  update-source:
+    environment: ${{ inputs.environment }}
+    strategy:
+      max-parallel: 1
+      matrix: ${{fromJson(needs.init.outputs.runners)}}
+    name: Deploy ${{ matrix.runners }}
+    runs-on: ${{ matrix.runners }}
+    needs: [init]
+    steps:
+      - name: Configure 1Password Connect
+        uses: 1password/load-secrets-action/configure@v2
+        with:
+          connect-host: ${{vars.OP_CONNECT_HOST}}
+          connect-token: ${{secrets.OP_CONNECT_TOKEN}}
+      - name: Load secret
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: true
+        env:
+          LOG_LEVEL: op://${{ inputs.environment }}/emporio/log_level
+          API_PORT: op://${{ inputs.environment }}/emporio/api/port
+          API_HOST: op://${{ inputs.environment }}/emporio/api/host
+          API_URL: op://${{ inputs.environment }}/emporio/api/url
+      - name: Checkout source
+        run: |
+          cd $DIR_SOURCE
+          git fetch
+          current_branch=$(git branch --show-current)
+          echo "previous_branch=$current_branch" >> $GITHUB_ENV
+          new_branch=release-${{ needs.init.outputs.commit_id_short }}
+          git reset --hard
+          git checkout -B $new_branch ${{ github.sha }}
+          echo "new_branch=$new_branch" >> $GITHUB_ENV
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Update docker
+        run: |
+          cd $DIR_SOURCE/
+          docker compose build && docker compose up -d
+          # docker compose -f docker-compose.yml -f docker-compose-prod.yml pull && docker compose -f docker-compose.yml -f docker-compose-prod.yml up -d
+  notify-result:
+    name: Notify result
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    if: ${{ always() }}
+    needs: [init, update-source, run-migration]
+    steps:
+      - name: Set run status
+        run: |
+          if [ "${{ needs.init.result }}" == "failure" ] || [ "${{ needs.update-source.result }}" == "failure" ] || [ "${{ needs.run-migration.result }}" == "failure" ]; then
+              result="failure"
+          elif [ "${{ needs.update-source.result }}" == "success" ]; then
+              result="success"
+          else
+              result="unknown"
+          fi
+          echo "result=$result" >> $GITHUB_ENV
+      - name: Notify slack
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ env.result }}
+          notification_title: "*Emporio deploy done (${{ inputs.environment }})*"
+          message_format: |
+            {emoji} Emporio deploy {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|${{ needs.init.outputs.commit_id_short }}>
+          footer: "<{run_url}|View Run>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

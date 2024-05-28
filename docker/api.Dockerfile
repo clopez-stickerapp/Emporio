@@ -1,21 +1,24 @@
-FROM node:21-slim as build
+FROM node:20.12.2-alpine as builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy root package.json and lockfile
-COPY package.json ./
-COPY package-lock.json ./
-
-# Set environment variables
-ENV API_PORT=5012
-ENV API_HOST=0.0.0.0
-
-# Copy app source and build
+COPY package.json package-lock.json ./
 COPY . .
-RUN npm install
-RUN npm run build -w @stickerapp-org/emporio-api-contract
-RUN npm run build -w @stickerapp-org/emporio-api
+
+RUN npm ci \
+    && npm run build -w @stickerapp-org/ts-transform-module-type \
+    && npm run build -w @stickerapp-org/emporio-api-contract \
+    && npm run build -w @stickerapp-org/emporio-api
+RUN npm prune --omit dev
+
+FROM node:20.12.2-alpine
+USER node
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/packages ./packages
 
 EXPOSE 5012
-
-ENTRYPOINT ["node", "apps/api/dist/src/app.js"]
+ENTRYPOINT ["node", "/app/apps/api/dist/src/app.js"]

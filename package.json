@@ -27,8 +27,7 @@
 		"typescript-transform-paths": "^3.4.7"
 	},
 	"overrides": {
-		"@sinclair/typebox": "$@sinclair/typebox",
-		"svelte": "$svelte"
+		"@sinclair/typebox": "$@sinclair/typebox"
 	},
 	"engines": {
 		"node": ">=18"

@@ -1,0 +1,40 @@
+{
+	"name": "@stickerapp-org/nomisma",
+	"version": "1.0.0",
+	"scripts": {
+		"clean": "rimraf dist",
+		"build:cjs": "npm run clean && tsc -p tsconfig.json",
+		"build:esm": "npm run clean && tsc -p tsconfig.esm.json",
+		"build": "concurrently \"npm run build:cjs\" \"npm run build:esm\"",
+		"dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+		"dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
+		"dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
+		"lint": "prettier --check . && eslint ."
+	},
+	"license": "UNLICENSED",
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/stickerapp-org/commerce"
+	},
+	"types": "./dist/esm/index.d.ts",
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.mjs",
+	"exports": {
+		".": {
+			"types": "./dist/esm/index.d.ts",
+			"import": "./dist/esm/index.mjs",
+			"require": "./dist/cjs/index.js"
+		},
+		"./*": {
+			"types": "./dist/esm/*/index.d.ts",
+			"import": "./dist/esm/*/index.mjs",
+			"require": "./dist/cjs/*/index.js"
+		}
+	},
+	"devDependencies": {
+		"typescript": "^5.4.5"
+	}
+}

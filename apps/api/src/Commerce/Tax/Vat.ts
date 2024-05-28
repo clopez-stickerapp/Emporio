@@ -63,10 +63,10 @@ const vatRates: Record<string, number> = {
 };
 
 export function isExport(countryCode: string): boolean {
-	if (!isEuCountry(countryCode) && !isVatRegistered(countryCode)) {
-		return true;
+	if (isEuCountry(countryCode) || isVatRegistered(countryCode)) {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 export function isEuCountry(countryCode: string): boolean {
@@ -92,21 +92,27 @@ export function getVatRate(countryCode: string): number {
 /**
  * This country returns the correct VAT percentage based on the country code.
  * 
- * @param countryCode If alternate shipping country is set, this should be the billing country
- * @param altShippingCountry Only needs to be filled in if the shipping country is different from the billing country
+ * @param billingCountry What the name says
+ * @param shippingCountry Only needs to be filled in if the shipping country is different from the billing country
  * @param hasValidVATNumber 
  * @returns 
  */
-export function getVatPercentage(countryCode: string, altShippingCountry: string | null = null, hasValidVATNumber: boolean = false): number {
-	if (altShippingCountry && isExport(countryCode) && !isExport(altShippingCountry)) {
-		countryCode = "se";
+export function getVatPercentage(billingCountry: string, shippingCountry: string|null = null, hasValidVATNumber: boolean = false): number {
+	if(!shippingCountry) {
+		shippingCountry = billingCountry;
 	}
 
-	if (isExport(countryCode) || (!isVatRegistered(countryCode) && hasValidVATNumber)) {
-		return 0;
-	} else {
-		return getVatRate(countryCode);
+	if (isExport(billingCountry) && !isExport(shippingCountry)) {
+		shippingCountry = "se";
 	}
+
+	const isExportOrNotVatRegisteredWithValidVATNumber = isExport(shippingCountry) || (!isVatRegistered(shippingCountry) && hasValidVATNumber);
+
+	if (isExportOrNotVatRegisteredWithValidVATNumber) {
+		return 0;
+	}
+
+	return getVatRate(shippingCountry);
 }
 
 export function excludeVAT(price: number, vatPercentage: number): number {

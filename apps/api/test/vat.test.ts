@@ -73,15 +73,15 @@ describe("Test getVatPercentage", ()=>{
 	});
 
 	test("with country that isn't export and shipping country that is", ()=>{
-		expect(getVatPercentage("nl", "gb")).equal(21);
-		expect(getVatPercentage("de", "jp")).equal(19);
-		expect(getVatPercentage("fr", "us")).equal(20);
+		expect(getVatPercentage("nl", "gb")).equal(20);
+		expect(getVatPercentage("de", "jp")).equal(0);
+		expect(getVatPercentage("fr", "us")).equal(0);
 	});
 
 	test("with country that isn't export and shipping country that isn't", ()=>{
-		expect(getVatPercentage("nl", "de")).equal(21);
-		expect(getVatPercentage("de", "nl")).equal(19);
-		expect(getVatPercentage("fr", "nl")).equal(20);
+		expect(getVatPercentage("nl", "de")).equal(19);
+		expect(getVatPercentage("de", "nl")).equal(21);
+		expect(getVatPercentage("fr", "nl")).equal(21);
 	});
 
 	test("with country that is VAT registered and valid VAT", ()=>{

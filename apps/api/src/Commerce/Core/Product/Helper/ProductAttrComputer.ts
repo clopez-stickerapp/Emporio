@@ -171,7 +171,8 @@ export class ProductAttrComputer
 	/**
 	 * Iterates through suggested values and returns the highest non-constrained number.
 	 * 
-	 * @param attributeName 
+	 * @param attributeName The name of the attribute.
+	 * @returns A non-constrained number if found, null otherwise.
 	 */
 	public getHighestAvailableValue( attributeName: string ): number | null
 	{
@@ -185,7 +186,8 @@ export class ProductAttrComputer
 	/**
 	 * Iterates through suggested values and returns the lowest non-constrained number.
 	 * 
-	 * @param attributeName
+	 * @param attributeName The name of the attribute.
+	 * @returns A non-constrained number if found, null otherwise.
 	 */
 	public getLowestAvailableValue( attributeName: string ): number | null
 	{
@@ -197,11 +199,12 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * Suggested values are filtered values, but if filtered values are empty or useFilters is set to false it will fallback to all values.
+	 * Suggested values are filtered values, but if filtered values are empty or useFilters is set to false, it will fallback to all values.
 	 * 
 	 * OBS! Can contain constrained values.
 	 * 
-	 * @param attributeName 
+	 * @param attributeName The name of the attribute.
+	 * @returns An array of suggested values.
 	 */
 	public getSuggestedValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
@@ -214,7 +217,10 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * @param attributeName 
+	 * Retrieves filtered values.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns An array of filtered values.
 	 */
 	public getFilteredValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
@@ -229,7 +235,8 @@ export class ProductAttrComputer
 	/**
 	 * Determines whether the attribute has been filtered.
 	 * 
-	 * @param attributeName 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute has been filtered, false otherwise.
 	 */
 	public hasBeenFiltered( attributeName: string ): boolean
 	{
@@ -273,14 +280,21 @@ export class ProductAttrComputer
 	/**
 	 * Sets a preferred value. Will be available as a suggested value if not constrained. 
 	 * 
-	 * @param attributeName 
-	 * @param attributeValue 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValue The value of the attribute.
+	 * @returns void
 	 */
 	public setPreferredValue( attributeName: string, attributeValue: AttributeValue ): void
 	{
 		this.attributesPreferred[ attributeName ] = attributeValue;
 	}
 
+	/**
+	 * Retrieves constrained values related to an attribute.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns An array of constrained values.
+	 */
 	public getConstrainedValues<T extends AttributeValueSingle>( attributeName: string ): T[]
 	{
 		if ( this.attributesConstrained.hasOwnProperty( attributeName ) )
@@ -399,16 +413,37 @@ export class ProductAttrComputer
 		return this.isIntType( attributeName ) || this.isFloatType( attributeName );
 	}
 
+	/**
+	 * Checks if a given attribute value is present in the list of filtered values for a specified attribute.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValue The value of the attribute.
+	 * @returns True if the attribute value is in the list of filtered values for the specified attribute, false otherwise.
+	 */
 	public isInFilteredValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
 		return this.getFilteredValues( attributeName ).includes( attributeValue );
 	}
 
+	/**
+	 * Checks if a given attribute value is present in the list of suggested values for a specified attribute.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValue The value of the attribute.
+	 * @returns True if the attribute value is in the list of suggested values for the specified attribute, false otherwise.
+	 */
 	public isInSuggestedValues( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
 		return this.getSuggestedValues( attributeName ).includes( attributeValue );
 	}
 
+	/**
+	 * Checks if a given attribute value is present in the list of constrained values for a specified attribute.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @param attributeValue The value of the attribute.
+	 * @returns True if the attribute value is in the list of constrained values for the specified attribute, false otherwise.
+	 */
 	public isConstrained( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
 		return this.getConstrainedValues( attributeName ).includes( attributeValue );

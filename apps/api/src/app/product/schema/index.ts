@@ -3,6 +3,7 @@ import * as TypeHelper from "$/Helper/TypeHelper";
 
 export const getCreateItemSchema = {
 	operationId: 'createItem',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -18,6 +19,7 @@ export const getCreateItemSchema = {
 
 export const getAttributeMapSchema = {
 	operationId: 'getAttributeMap',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -32,6 +34,7 @@ export const getAttributeMapSchema = {
 
 export const getMinimumQuantitySchema = {
 	operationId: 'getMinimumQuantity',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -49,6 +52,7 @@ export const getMinimumQuantitySchema = {
 
 export const getConditionableMapSchema = {
 	operationId: 'getConditionableMap',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 	} ),
@@ -62,6 +66,7 @@ export const getConditionableMapSchema = {
 
 export const getValidationSchema = {
 	operationId: 'validate',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -89,6 +94,7 @@ export const getValidationSchema = {
 
 export const getSizeDetailsSchema = {
 	operationId: 'getSizeDetails',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -105,6 +111,7 @@ export const getSizeDetailsSchema = {
 
 export const isAttributeAvailableSchema = {
 	operationId: 'isAttributeAvailable',
+	tags: ['Product'],
 	params: Type.Object( {
 		name: Type.String(),
 		value: TypeHelper.AttributeValueSingle()
@@ -121,6 +128,7 @@ export const isAttributeAvailableSchema = {
 
 export const isAttributeRequiredSchema = {
 	operationId: 'isAttributeRequired',
+	tags: ['Product'],
 	params: Type.Object( {
 		name: Type.String()
 	} ),
@@ -136,6 +144,7 @@ export const isAttributeRequiredSchema = {
 
 export const getFixedQuantitySchema = {
 	operationId: 'getFixedQuantityEvaluated',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -152,6 +161,7 @@ export const getFixedQuantitySchema = {
 
 export const getFamiliesSchema = {
 	operationId: 'getFamilies',
+	tags: ['Product'],
 	querystring: Type.Object( {
 		name: Type.Optional( TypeHelper.ProductFamily() )
 	} ),
@@ -175,6 +185,7 @@ export const getFamiliesSchema = {
 
 export const getAttributesSchema = {
 	operationId: 'getAttributes',
+	tags: ['Product'],
 	querystring: Type.Object( {
 		name: Type.Optional( TypeHelper.AttributeUID() )
 	} ),
@@ -194,6 +205,7 @@ export const getAttributesSchema = {
 
 export const getLegacySKUSchema = {
 	operationId: 'getLegacySKU',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -211,6 +223,7 @@ export const getLegacySKUSchema = {
 
 export const getOutOfStockSchema = {
 	operationId: 'getOutOfStock',
+	tags: ['Product'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily()
 	} ),

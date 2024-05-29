@@ -11,6 +11,7 @@ const querySchema = Type.Object({
 
 export const getPricesSchema = {
 	operationId: 'getPrices',
+	tags: ['Price'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -29,6 +30,7 @@ export const getPricesSchema = {
 
 export const getPriceListSchema = {
 	operationId: 'getPriceList',
+	tags: ['Price'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()

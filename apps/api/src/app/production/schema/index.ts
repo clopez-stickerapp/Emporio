@@ -3,6 +3,7 @@ import * as TypeHelper from "$/Helper/TypeHelper";
 
 export const getItemWithProductionSettingsSchema = {
 	operationId: 'getItemWithProductionSettings',
+	tags: ['Production'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()
@@ -21,6 +22,7 @@ export const getItemWithProductionSettingsSchema = {
 
 export const getItemWithoutProductionSettingsSchema = {
 	operationId: 'getItemWithoutProductionSettings',
+	tags: ['Production'],
 	params: Type.Object( {
 		family: TypeHelper.ProductFamily(),
 		name: TypeHelper.ProductName()

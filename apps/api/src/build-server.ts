@@ -36,6 +36,12 @@ async function buildServer() {
 				title: 'Emporio - the Commerce API',
 				version: '1.0.0',
 			},
+			tags: [
+				{ name: 'Price', description: 'Price related endpoints' },
+				{ name: 'Product', description: 'Product related endpoints' },
+				{ name: 'Production', description: 'Production related endpoints' },
+				{ name: 'Other', description: 'Other endpoints' },
+			],
 		}
 	});
 
@@ -77,7 +83,7 @@ async function buildServer() {
 		}
 	});
 
-	server.get('/health-check', async (request, reply) => {
+	server.get('/health-check', { schema: { tags: ['Other'] }}, async (request, reply) => {
 		try {
 			reply.status(200).send();
 		} catch (e) {

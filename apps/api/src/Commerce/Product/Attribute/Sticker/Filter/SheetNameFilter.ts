@@ -12,8 +12,7 @@ export class SheetNameFilter extends ProductAttrFilter {
 			StickerSheetNameAttribute.CONTOUR,
 			StickerSheetNameAttribute.RECTANGLE,
 			StickerSheetNameAttribute.ROUND,
-			StickerSheetNameAttribute.ROUNDED,
-			StickerSheetNameAttribute.MANUAL
+			StickerSheetNameAttribute.ROUNDED
 		] );
 
 		this.createFilter( [

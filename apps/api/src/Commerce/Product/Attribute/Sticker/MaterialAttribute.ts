@@ -48,7 +48,6 @@ export class MaterialAttribute extends ProductAttr {
 
 	public static readonly MATERIALS_LABELS_ON_ROLL = [
 		MaterialAttribute.WHITE_THIN,
-		MaterialAttribute.PAPER_THIN,
 		MaterialAttribute.CLEAR_THIN,
 		MaterialAttribute.KRAFT_THIN,
 		MaterialAttribute.SILVER_THIN,

@@ -56,7 +56,8 @@ export const ProductItem = ( withProductionAttributes: boolean = false ) => Type
 	productFamilyName: ProductFamily(),
 	productName: ProductName(),
 	attributes: Attributes( withProductionAttributes ),
-	units: Type.Number()
+	units: Type.Optional( Type.Number() ),
+	sku: Type.Optional( Type.String() )
 } );
 
 export const ProductItemString = ( withProductionAttributes: boolean = false ) => Type.String( {
@@ -64,7 +65,8 @@ export const ProductItemString = ( withProductionAttributes: boolean = false ) =
 		productFamilyName: 'custom_sticker',
 		productName: 'die_cut',
 		attributes: getAttributes( withProductionAttributes ),
-		units: 1
+		units: 1,
+		sku: 'DCRS-108'
 	} ) ]
 } );
 

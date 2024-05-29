@@ -28,7 +28,8 @@ export default async function ( fastify: FastifyInstance ) {
 			productName: item.getProductName(),
 			productFamilyName: item.getProductFamilyName(),
 			attributes: item.getAttributes(),
-			units: item.getUnits()
+			units: item.getUnits(),
+			sku: item.getSku()
 		}
 	} );
 

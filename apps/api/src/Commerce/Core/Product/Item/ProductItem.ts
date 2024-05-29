@@ -5,6 +5,7 @@ export class ProductItem {
 	private readonly productFamilyName: string;
 	private readonly productName: string;
 	private attributes: Attributes = {};
+	private sku: string = '';
 
 	private units: number = 0;
 
@@ -76,15 +77,11 @@ export class ProductItem {
 		return result;
 	}
 
-	public jsonSerialize(): string {
-		throw new Error("Not implemented");
-	}
-
 	public getSku(): string {
-		throw new Error("Not implemented");
+		return this.sku;
 	}
 
 	public setSku(sku: string): void {
-		throw new Error("Not implemented");
+		this.sku = sku;
 	}
 }

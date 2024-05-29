@@ -111,8 +111,8 @@ export function formatCurrency(amount: number, options: FormatCurrencyOptions): 
 	}
 
 	// This function ignores decimals automatically for JPY
-	let res = new Intl.NumberFormat(locale, { style: 'currency', currency: currency, maximumFractionDigits: decimals });
-	return res.format(amount);
+	let nf = new Intl.NumberFormat(locale, { style: 'currency', currency: currency, maximumFractionDigits: decimals });
+	return nf.format(amount);
 }
 
 /**

@@ -449,10 +449,33 @@ export class ProductAttrComputer
 		return this.getConstrainedValues( attributeName ).includes( attributeValue );
 	}
 
-	public isInOutOfStockValues( attributeName: string, attributeValue: string ): boolean
+	public isOutOfStock( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{
 		return this.getOutOfStockValues( attributeName ).includes( attributeValue );
 	}
+
+	/**
+     * Determines whether the attribute is recommended, i.e. not constrained, in stock and in the list of filtered values.
+     * 
+     * @param attributeName The name of the attribute.
+     * @param attributeValue The value of the attribute.
+     * @returns True if the attribute is recommended, false otherwise.
+     */
+    public isRecommended( attributeName: string, attributeValue: AttributeValueSingle ): boolean
+    {
+        if ( this.isConstrained( attributeName, attributeValue ) || this.isOutOfStock( attributeName, attributeValue ) )
+        {
+            return false;
+        }
+
+        if ( this.isDynamicValue( attributeName ) )
+        {
+            return true;
+        }
+
+        return this.hasBeenFiltered( attributeName ) && this.isInFilteredValues( attributeName, attributeValue );
+    }
+
 
 	public canValueBe( attributeName: string, attributeValue: AttributeValueSingle ): boolean
 	{

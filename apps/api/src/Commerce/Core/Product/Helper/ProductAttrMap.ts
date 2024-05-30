@@ -14,7 +14,7 @@ export type TProductAttrMapValue = {
 	icons: Record<string, string>,
 	filters: ProductAttributeFilter[],
 	filterMode: ProductAttrFilterMode | null,
-	outOfStockValues: string[]
+	outOfStockValues: AttributeValueMulti
 }
 
 export type TProductAttrMap = Record<string, TProductAttrMapValue>

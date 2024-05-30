@@ -102,7 +102,7 @@ export class ProductItemValidator
 
 					for ( const attrValue of attrValues ) 
 					{
-						if ( typeof attrValue === 'string' && outOfStock.isOutOfStock( attrValue ) ) 
+						if ( outOfStock.isOutOfStock( attrValue ) ) 
 						{
 							throw new ProductItemOutOfStockException( `${ attrName } "${ attrValue }" is out of stock` );
 						}

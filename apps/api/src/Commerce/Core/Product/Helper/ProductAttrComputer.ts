@@ -8,9 +8,9 @@ import { TProductAttrMap } from "./ProductAttrMap";
 export class ProductAttrComputer
 {
 	protected attributes:               TProductAttrMap                 = {};
-	protected attributesOutOfStock:     Attributes<string[]>            = {};
 	protected attributesFiltersMatched: Attributes<number>              = {};
 	protected attributesPreferred:      Attributes                      = {};
+	protected attributesOutOfStock:     Attributes<AttributeValueMulti> = {};
 	protected attributesConstrained:    Attributes<AttributeValueMulti> = {};
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
@@ -305,7 +305,7 @@ export class ProductAttrComputer
 		return [];
 	}
 
-	public getOutOfStockValues( attributeName: string ): string[]
+	public getOutOfStockValues( attributeName: string ): AttributeValueMulti
 	{
 		if ( this.attributesOutOfStock.hasOwnProperty( attributeName ) )
 		{

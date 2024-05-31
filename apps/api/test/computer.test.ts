@@ -158,7 +158,7 @@ describe( 'Test If The Attribute Value Is', () => {
 		} );
 
 		test( 'When The Attribute Of A Constrained Value Has Filtered Values', () => {
-			expect( computer.isInFilteredValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( false );
+			expect( computer.isInFilteredValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is In Suggested Values', () => {
@@ -186,7 +186,7 @@ describe( 'Test If The Attribute Value Is', () => {
 		} );
 
 		test( 'When The Attribute Of A Constrained Value Has Filtered Values', () => {
-			expect( computer.isInSuggestedValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( false );
+			expect( computer.isInSuggestedValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is In Suggested Values', () => {

@@ -278,6 +278,16 @@ export class ProductAttrComputer
 	}
 
 	/**
+	 * Deletes all preferred values.
+	 * 
+	 * @returns void
+	 */
+	public resetPreferredValues(): void
+	{
+		this.attributesPreferred = {};
+	}
+
+	/**
 	 * Sets a preferred value. Will be available as a suggested value if not constrained. 
 	 * 
 	 * @param attributeName The name of the attribute.
@@ -365,6 +375,17 @@ export class ProductAttrComputer
 	}
 
 	/**
+	 * Retrieves the value type of the attribute.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns A ProductAttrValueType ('string', 'boolean', 'integer' or 'float'), or null if the attribute does not exist.
+	 */
+	public getValueType( attributeName: string ): ProductAttrValueType | null
+	{
+		return this.attributes[ attributeName ]?.valueType ?? null;
+	}
+
+	/**
 	 * Determines whether the attribute is of type boolean.
 	 * 
 	 * @param attributeName The name of the attribute.
@@ -372,7 +393,7 @@ export class ProductAttrComputer
 	 */
 	public isBooleanType( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.BOOL;
+		return this.getValueType( attributeName ) === ProductAttrValueType.BOOL;
 	}
 
 	/**
@@ -383,7 +404,7 @@ export class ProductAttrComputer
 	 */
 	public isIntType( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.INT;
+		return this.getValueType( attributeName ) === ProductAttrValueType.INT;
 	}
 
 	/**
@@ -394,12 +415,18 @@ export class ProductAttrComputer
 	 */
 	public isFloatType( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.FLOAT;
+		return this.getValueType( attributeName ) === ProductAttrValueType.FLOAT;
 	}
 
+	/**
+	 * Determines whether the attribute is of type string.
+	 * 
+	 * @param attributeName The name of the attribute.
+	 * @returns True if the attribute is of type string, false otherwise.
+	 */
 	public isStringType( attributeName: string ): boolean
 	{
-		return this.attributes[ attributeName ]?.valueType == ProductAttrValueType.STRING;
+		return this.getValueType( attributeName ) === ProductAttrValueType.STRING;
 	}
 
 	/**

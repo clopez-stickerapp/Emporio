@@ -5,6 +5,7 @@ services:
       dockerfile: docker/api.Dockerfile
     image: emporio-api
     container_name: emporio-api
+    restart: unless-stopped
     ports:
       - '5012:5012'
     environment:

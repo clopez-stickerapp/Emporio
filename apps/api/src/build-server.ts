@@ -20,10 +20,18 @@ async function buildServer() {
 	const logDir = path.join('/var/log/emporio/'); //TODO: make this configurable
 	const logFile = path.join(logDir, 'api.log');
 
+	let hasFileAccess = true;
+	try{
+		fs.accessSync(logDir, fs.constants.F_OK);
+	} catch (e) {
+		hasFileAccess = false;
+	}
+
+
 	const server = fastify({
 		logger: {
 			level: process.env.LOG_LEVEL || 'info',
-			file: fs.existsSync(logDir) ? logFile : undefined,
+			file: fs.existsSync(logDir) && hasFileAccess ? logFile : undefined,
 		}
 	});
 

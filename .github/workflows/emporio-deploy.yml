@@ -108,11 +108,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     if: ${{ always() }}
-    needs: [init, update-source, run-migration]
+    needs: [init, update-source]
     steps:
       - name: Set run status
         run: |
-          if [ "${{ needs.init.result }}" == "failure" ] || [ "${{ needs.update-source.result }}" == "failure" ] || [ "${{ needs.run-migration.result }}" == "failure" ]; then
+          if [ "${{ needs.init.result }}" == "failure" ] || [ "${{ needs.update-source.result }}" == "failure" ]; then
               result="failure"
           elif [ "${{ needs.update-source.result }}" == "success" ]; then
               result="success"

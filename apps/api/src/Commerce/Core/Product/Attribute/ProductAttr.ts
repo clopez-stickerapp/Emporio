@@ -2,7 +2,7 @@ import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 import { ProductAttrValueInvalidException } from '../../Exception/ProductAttrValueInvalidException'
 import { isEmpty } from '../../../../../Util'
-import { AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
+import { AttributeValue, AttributeValueSingle } from "../../../../Helper/Condition/AttributeValue";
 
 export class ProductAttr {
 	protected valueType: ProductAttrValueType;
@@ -38,7 +38,7 @@ export class ProductAttr {
 		return this.values.find( attrValue => attrValue.getValue() === value ) ?? null;
 	}
 
-	public canBe( value: any, skipMultiValue: boolean = false ): boolean {
+	public canBe( value: AttributeValue, skipMultiValue: boolean = false ): boolean {
 		if ( isEmpty( value ) ) {
 			return false;
 		}
@@ -52,7 +52,7 @@ export class ProductAttr {
 				}
 			}
 		} else {
-			if ( !this.getAttrValue( value ) && !this.isDynamicValue() ) {
+			if ( !this.getAttrValue( value as AttributeValueSingle ) && !this.isDynamicValue() ) {
 				if ( typeof value === "boolean" && this.getValueType() !== ProductAttrValueType.BOOL ) {
 					throw new ProductAttrValueInvalidException( `Product attr value not found: ${ value } (for ${ this.getUID() })` );
 				}

@@ -1,4 +1,4 @@
-const baseUrl = "https://api.danjan.dev.stickerapp.com";
+const baseUrl = process.env.ATLAS_API_URL || 'http://api.testing.stickerapp.com';
 
 /**
  * Fetches the price margin percentage for a given figure ID.

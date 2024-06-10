@@ -82,7 +82,7 @@ jobs:
           LOG_LEVEL: op://${{ inputs.environment }}/emporio/log_level
           API_PORT: op://${{ inputs.environment }}/emporio/api/port
         #   API_HOST: op://${{ inputs.environment }}/emporio/api/host
-        #   API_URL: op://${{ inputs.environment }}/emporio/api/url
+          ATLAS_API_URL: op://${{ inputs.environment }}/emporio/api/atlas_url
       - name: Checkout source
         run: |
           cd $DIR_SOURCE

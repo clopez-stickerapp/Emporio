@@ -4,6 +4,7 @@ export const options = {};
 
 export default async function app() {
 	const port = Number(process.env.API_PORT ?? '5000');
+	const host = process.env.API_HOST ?? '0.0.0.0';
 
 	process.on('unhandledRejection', (e) => {
 		console.error(e);
@@ -13,7 +14,7 @@ export default async function app() {
 	await server.ready();
 	server.swagger();
 	await server.listen({
-		host: '0.0.0.0',
+		host,
 		port,
 	});
 }

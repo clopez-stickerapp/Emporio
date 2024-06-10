@@ -14,5 +14,13 @@ export class MaxSizeOtherSideFilter extends ProductAttrFilter {
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_LABELS_ON_ROLL,
 			] );
+
+		this.createFilter( [ 
+			MaxSizeOtherSideAttribute.MAX_SIZE_OTHER_SIDE_WALL
+		] )
+			.conditionBuilder
+			.addCondition( "item.productName", ConditionOperators.IN, [
+				CustomStickerFamily.PRODUCT_WALL,
+			] );
 	}
 }

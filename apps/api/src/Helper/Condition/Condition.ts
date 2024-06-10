@@ -26,8 +26,7 @@ export class Condition implements ConditionTestableInterface {
 		if (data[this.columnName] == undefined) {
 			if (this.operator != ConditionOperators.IS_EMPTY &&
 				this.operator != ConditionOperators.NOT_IN &&
-				this.operator != ConditionOperators.NOT_EQUAL &&
-				this.operator != ConditionOperators.NOT_IDENTICAL) {
+				this.operator != ConditionOperators.NOT_EQUAL) {
 				throw new ConditionTestDataKeyNotFoundException("Couldn't perform test because test data doesn't contain conditioned key: " + this.columnName);
 			}
 		}

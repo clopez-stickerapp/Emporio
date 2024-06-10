@@ -1,8 +1,6 @@
 export enum ConditionOperators {
-	EQUAL = "==",
-	IDENTICAL = "===",
-	NOT_EQUAL = "!=",
-	NOT_IDENTICAL = "!==",
+	EQUAL = "===",
+	NOT_EQUAL = "!==",
 	LESS_THAN = "<",
 	GREATER_THAN = ">",
 	LESS_THAN_OR_EQUAL = "<=",

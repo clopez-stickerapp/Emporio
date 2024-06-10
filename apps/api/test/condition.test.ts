@@ -38,9 +38,6 @@ describe("Test functions", () => {
 
 			condition = new Condition("height", ConditionOperators.NOT_EQUAL, 25);
 			expect(condition.test(attributes)).toBe(true);
-
-			condition = new Condition("height", ConditionOperators.NOT_IDENTICAL, 25);
-			expect(condition.test(attributes)).toBe(true);
 		});
 	});
 });
@@ -58,18 +55,6 @@ describe("Test operators", () => {
 		});
 	});
 
-	describe("Test '===' operator", () => {
-		test("with valid attributes", () => {
-			condition = new Condition("material", ConditionOperators.IDENTICAL, "white");
-			expect(condition.test(attributes)).toBe(true);
-		});
-
-		test("with invalid attributes", () => {
-			condition = new Condition("material", ConditionOperators.IDENTICAL, "clear");
-			expect(condition.test(attributes)).toBe(false);
-		});
-	});
-
 	describe("Test '!=' operator", () => {
 		test("with valid attributes", () => {
 			condition = new Condition("material", ConditionOperators.NOT_EQUAL, "clear");
@@ -78,18 +63,6 @@ describe("Test operators", () => {
 
 		test("with invalid attributes", () => {
 			condition = new Condition("material", ConditionOperators.NOT_EQUAL, "white");
-			expect(condition.test(attributes)).toBe(false);
-		});
-	});
-
-	describe("Test '!==' operator", () => {
-		test("with valid attributes", () => {
-			condition = new Condition("material", ConditionOperators.NOT_IDENTICAL, "clear");
-			expect(condition.test(attributes)).toBe(true);
-		});
-
-		test("with invalid attributes", () => {
-			condition = new Condition("material", ConditionOperators.NOT_IDENTICAL, "white");
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});

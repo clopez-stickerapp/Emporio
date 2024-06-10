@@ -14,9 +14,11 @@ import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
 export class ProductAttrFilter {
 	private attributeName: string;
 	protected filters: ProductAttrFilteredValues[] = [];
+	public mode: ProductAttrFilterMode;
 
-	public constructor( attrAlias: string, public mode: ProductAttrFilterMode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS ) {
+	public constructor( attrAlias: string, mode: ProductAttrFilterMode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS ) {
 		this.attributeName = attrAlias;
+		this.mode = mode;
 	}
 
 	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {

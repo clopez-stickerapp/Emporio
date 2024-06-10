@@ -17,22 +17,8 @@ declare module 'fastify' {
 }
 
 async function buildServer() {
-	const logDir = path.join('/var/log/emporio/'); //TODO: make this configurable
-	const logFile = path.join(logDir, 'api.log');
-
-	let hasFileAccess = true;
-	try{
-		fs.accessSync(logDir, fs.constants.F_OK);
-	} catch (e) {
-		hasFileAccess = false;
-	}
-
-
 	const server = fastify({
-		logger: {
-			level: process.env.LOG_LEVEL || 'info',
-			file: fs.existsSync(logDir) && hasFileAccess ? logFile : undefined,
-		}
+		logger: getLoggerOptions(),
 	});
 
 	const service = new StickerAppProductService();
@@ -114,6 +100,28 @@ async function buildServer() {
 	server.swagger();
 
 	return server;
+}
+
+function getLoggerOptions() {
+	const logDir = path.join('/var/log/emporio/'); //TODO: make this configurable
+	const logFile = path.join(logDir, 'api.log');
+
+	let hasFileAccess = true;
+	try{
+		fs.accessSync(logDir, fs.constants.W_OK);
+	} catch (e) {
+		hasFileAccess = false;
+	}
+
+	// If the log directory exists and the process has access to it, use the file logger
+	let useFileLogger = fs.existsSync(logDir) && hasFileAccess;
+
+	if(useFileLogger) {
+		return { level: process.env.LOG_LEVEL || 'info', file: logFile };
+	} else {
+		console.log('Unable to write to log file, using console logger');
+		return {};
+	}
 }
 
 export default buildServer;

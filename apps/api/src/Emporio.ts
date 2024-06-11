@@ -66,7 +66,7 @@ export class Emporio {
 
 		const minUnits = productFamily.getMinimumUnits(productItem);
 
-		if(units < minUnits) {
+		if(units < minUnits && productItem.getProductName() !== CustomStickerFamily.PRODUCT_LIBRARY_DESIGN) {
 			units = minUnits;
 		}		
 

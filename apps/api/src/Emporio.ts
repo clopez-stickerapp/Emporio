@@ -19,6 +19,7 @@ import { ProductAttr } from "./Commerce/Core/Product/Attribute/ProductAttr";
 import { ProductItemConditionablesMap } from "./Commerce/Core/Product/Helper/ProductItemConditionablesMap";
 import { ProductItemConditionableParam } from "./Commerce/Core/Product/Condition/ProductItemConditionableParam";
 import { StickerAppProductLegacySKUService } from "./Commerce/Product/SKU/StickerAppProductLegacySKUService";
+import { CustomStickerFamily } from "./Commerce/Product/Family/CustomStickerFamily";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -68,9 +69,13 @@ export class Emporio {
 
 		if(units < minUnits && productItem.getProductName() !== CustomStickerFamily.PRODUCT_LIBRARY_DESIGN) {
 			units = minUnits;
-		}		
+		}
 
-		let price = await productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency) ?? { total: 0, currency: currency };
+		let price = await productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency);
+
+		if (!price) {
+			throw new Error("Price provider not found for product family: " + productItem.getProductFamilyName());
+		}
 
 		if (!incVAT) {
 			const vat = getVatPercentage(lang);

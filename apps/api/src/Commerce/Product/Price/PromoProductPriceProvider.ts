@@ -13,86 +13,86 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 
 	private stickerPackPrices: Record<string, Record<string, number>> = {
 		[PromoProductFamily.PRODUCT_SAMPLE_STICKER_PACK]: {
-			USD: 2,
-			SEK: 19,
-			DKK: 19,
-			GBP: 2,
-			NOK: 19,
-			EUR: 2,
+			USD: 200,
+			SEK: 1900,
+			DKK: 1900,
+			GBP: 200,
+			NOK: 1900,
+			EUR: 200,
 			JPY: 250,
-			PLN: 8
+			PLN: 800
 		},
 		[PromoProductFamily.PRODUCT_MONSTER_PACK]: {
-			USD: 15,
-			SEK: 139,
-			DKK: 99,
-			GBP: 13,
-			NOK: 139,
-			EUR: 13,
+			USD: 1500,
+			SEK: 13900,
+			DKK: 9900,
+			GBP: 1300,
+			NOK: 13900,
+			EUR: 1300,
 			JPY: 1700,
-			PLN: 60
+			PLN: 6000
 		},
 		[PromoProductFamily.PRODUCT_CREEPY_HEAD_PACK]: {
-			USD: 19,
-			SEK: 210,
-			DKK: 150,
-			GBP: 21,
-			NOK: 210,
-			EUR: 21,
+			USD: 1900,
+			SEK: 21000,
+			DKK: 15000,
+			GBP: 2100,
+			NOK: 21000,
+			EUR: 2100,
 			JPY: 2600,
-			PLN: 95
+			PLN: 9500
 		},
 		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2021]: {
-			USD: 19,
-			SEK: 210,
-			DKK: 150,
-			GBP: 21,
-			NOK: 210,
-			EUR: 21,
+			USD: 1900,
+			SEK: 21000,
+			DKK: 15000,
+			GBP: 2100,
+			NOK: 21000,
+			EUR: 2100,
 			JPY: 2600,
-			PLN: 95
+			PLN: 9500
 		},
 		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2022]: {
-			USD: 19,
-			SEK: 210,
-			DKK: 150,
-			GBP: 21,
-			NOK: 210,
-			EUR: 21,
+			USD: 1900,
+			SEK: 21000,
+			DKK: 15000,
+			GBP: 2100,
+			NOK: 21000,
+			EUR: 2100,
 			JPY: 2600,
-			PLN: 95
+			PLN: 9500
 		},
 		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2023]: {
-			USD: 19,
-			SEK: 210,
-			DKK: 150,
-			GBP: 21,
-			NOK: 210,
-			EUR: 21,
+			USD: 1900,
+			SEK: 21000,
+			DKK: 15000,
+			GBP: 2100,
+			NOK: 21000,
+			EUR: 2100,
 			JPY: 2600,
-			PLN: 95
+			PLN: 9500
 		},
 		[PromoProductFamily.PRODUCT_SLAP_PACK]: {
-			USD: 15,
-			SEK: 150,
-			DKK: 150,
-			GBP: 15,
-			NOK: 150,
-			EUR: 15,
+			USD: 1500,
+			SEK: 15000,
+			DKK: 15000,
+			GBP: 1500,
+			NOK: 15000,
+			EUR: 1500,
 			JPY: 1500,
-			PLN: 64
+			PLN: 6400
 		}
 	};
 
 	private stickerFreebiePrices: Record<string, number> = {
-		SEK: 150,
-		USD: 15,
-		EUR: 15,
-		NOK: 150,
-		DKK: 150,
-		GBP: 15,
+		SEK: 15000,
+		USD: 1500,
+		EUR: 1500,
+		NOK: 15000,
+		DKK: 15000,
+		GBP: 1500,
 		JPY: 1500,
-		PLN: 64
+		PLN: 6400
 	};
 
 	public constructor() {
@@ -102,7 +102,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price>{
 		let price: number | null = null;
 
-		if (productItem.getAttribute(SheetTypeAttribute.ALIAS) === SheetTypeAttribute.STICKER_PACK) {
+		if (productItem.getProductName() in this.stickerPackPrices) {
 			price = this.getStickerPackPrice(productItem.getProductName(), currency);
 		} else {
 			switch (productItem.getProductName()) {

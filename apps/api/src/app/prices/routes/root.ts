@@ -24,7 +24,7 @@ export default async function (fastify: FastifyInstance) {
 		const priceDTO = await emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
 
 		const maxDecimals = item.getProductName() == CustomStickerFamily.PRODUCT_LIBRARY_DESIGN ? 2 : 0;
-		const unitPriceFormatted = formatCurrency(priceDTO.unitPrice, {currency: priceDTO.price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true});
+		const unitPriceFormatted = formatCurrency(priceDTO.unitPrice, {currency: priceDTO.price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true, maxDecimals});
 
 		return {
 			"price": formatPrice(priceDTO.price, request.query.lang, maxDecimals),

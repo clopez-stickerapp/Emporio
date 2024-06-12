@@ -33,7 +33,7 @@ export class ProductItemValidator
 		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
 		const product = productFamily.getProduct( item.getProductName() );
 		
-		if ( !item.getUnits() ) 
+		if ( productFamily.calculateUnits( item ) <= 0 )
 		{
 			throw new ProductItemInvalidException( "Item units can't be zero." );
 		}

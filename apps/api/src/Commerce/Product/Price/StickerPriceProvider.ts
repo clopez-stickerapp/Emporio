@@ -7,6 +7,7 @@ import { RateProviderType } from "../../Core/Price/RateProvider";
 import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
 import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
+import { AuthorMarginRateProvider } from "./AuthorMarginRateProvider";
 
 export class StickerPriceProvider extends RateBasedProductPriceProvider {
 	static readonly NAME = "sticker_rate_lists";
@@ -193,7 +194,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.conditions.addCondition("item.attributes.feature", ConditionOperators.IN, "backpaper_print");
 		this.addRateProvider(rl_backprint);
 
-		// this.addRateProvider( new AuthorMarginRateProvider($figureModel) );
+		this.addRateProvider( new AuthorMarginRateProvider() );
 
 		/** 
 		 * STS ONLY 

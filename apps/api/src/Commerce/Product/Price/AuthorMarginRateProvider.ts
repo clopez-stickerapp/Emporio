@@ -1,9 +1,8 @@
-import { fetchPriceMarginPercentage } from "../../../Atlas";
 import { ConditionOperators } from "../../../Helper/Condition/ConditionOperators";
 import { Rate, RateType } from "../../Core/Price/Rate";
 import { RateProvider, RateProviderType } from "../../Core/Price/RateProvider";
 import { ProductItem } from "../../Core/Product/Item/ProductItem";
-import { FigureAttribute } from "../Attribute/FigureAttribute";
+import { PriceMarginPercentageAttribute } from "../Attribute/PriceMarginPercentageAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 
 export class AuthorMarginRateProvider extends RateProvider{
@@ -17,11 +16,11 @@ export class AuthorMarginRateProvider extends RateProvider{
 	}
 
 	public async getRate(productItem: ProductItem, units: number): Promise<Rate> {
-		let figureId = productItem.getAttribute(FigureAttribute.ALIAS) as number;
+		let priceMarginPercentage = productItem.getAttribute<number>( PriceMarginPercentageAttribute.ALIAS );
 
-		let priceMarginPercentage = await fetchPriceMarginPercentage(figureId);
-		
-		if(priceMarginPercentage > AuthorMarginRateProvider.PRICE_MARGIN_LIMIT){
+		if ( priceMarginPercentage === undefined ) {
+			throw new Error( "Can't find price margin" );
+		} else if ( priceMarginPercentage > AuthorMarginRateProvider.PRICE_MARGIN_LIMIT ) {
 			priceMarginPercentage = AuthorMarginRateProvider.PRICE_MARGIN_LIMIT;
 		}
 

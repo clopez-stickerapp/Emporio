@@ -3,7 +3,7 @@ import buildServer from './build-server';
 export const options = {};
 
 export default async function app() {
-	const port = Number(process.env.API_PORT ?? '5000');
+	const port = Number(process.env.API_PORT ?? '5012');
 	const host = process.env.API_HOST ?? '0.0.0.0';
 
 	process.on('unhandledRejection', (e) => {

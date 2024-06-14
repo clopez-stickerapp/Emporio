@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import * as TypeHelper from "$/Helper/TypeHelper";
+import * as TypeHelper from "$/helpers/TypeHelper";
 
 export const getItemWithProductionSettingsSchema = {
 	operationId: 'getItemWithProductionSettings',

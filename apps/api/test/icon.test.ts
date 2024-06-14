@@ -1,6 +1,6 @@
+import { ProductAttrIcon } from "$/product/attribute/Icon/ProductAttrIcon";
+import { ProductAttrIconCollection } from "$/product/attribute/Icon/ProductAttrIconCollection";
 import { beforeEach, describe, expect, test } from "vitest";
-import { ProductAttrIconCollection } from "../src/Commerce/Core/Product/Attribute/Icon/ProductAttrIconCollection";
-import { ProductAttrIcon } from "../src/Commerce/Core/Product/Attribute/Icon/ProductAttrIcon";
 
 let icon: ProductAttrIcon;
 let collection: ProductAttrIconCollection;

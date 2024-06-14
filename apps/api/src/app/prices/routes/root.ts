@@ -1,11 +1,11 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { formatPrice } from '$/Commerce/Core/Price/Price';
-import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
-import { formatCurrency } from '$/Commerce/Core/Currency/Currency';
-import { getLocale } from '$/Commerce/Core/Localization/Locale';
 import { getPriceListSchema, getPricesSchema } from '../schema';
-import { CustomStickerFamily } from '$/Commerce/Product/Family/CustomStickerFamily';
+import { CustomStickerFamily } from '$/configuration/Family/CustomStickerFamily';
+import { formatCurrency } from '$/currency/Currency';
+import { getLocale } from '$/localization/Locale';
+import { formatPrice } from '$/prices/Price';
+import { ProductItem } from '$/product/ProductItem';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();

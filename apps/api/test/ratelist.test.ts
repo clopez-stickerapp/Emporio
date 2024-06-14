@@ -1,7 +1,7 @@
+import { Rate } from "$/prices/Rate";
+import { RateList } from "$/prices/RateList";
+import { ProductItem } from "$/product/ProductItem";
 import { describe, expect, test } from "vitest";
-import { RateList } from "../src/Commerce/Core/Price/RateList";
-import { Rate } from "../src/Commerce/Core/Price/Rate";
-import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
 
 let rateList: RateList;
 let rate: Rate;

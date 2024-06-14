@@ -8,7 +8,7 @@ import { BadRequestError, NotFoundError } from './app/utils';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { Emporio } from './Emporio';
-import { StickerAppProductService } from './Commerce/Product/StickerAppProductService';
+import { StickerAppProductService } from './configuration/StickerAppProductService';
 
 declare module 'fastify' {
 	interface FastifyInstance {

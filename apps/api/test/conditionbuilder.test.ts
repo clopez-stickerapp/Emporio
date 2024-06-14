@@ -1,8 +1,8 @@
+import { ConditionBuilder } from "$/conditions/ConditionBuilder";
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { Attributes } from "$/product/attribute/Attributes";
 import { beforeEach, describe, expect, test } from "vitest";
-import { ConditionBuilder } from "../src/Helper/Condition/ConditionBuilder";
-import { ConditionRelations } from "../src/Helper/Condition/ConditionRelations";
-import { Attributes } from "../src/Helper/Condition/Attributes";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 let conditionbuilder: ConditionBuilder;
 let attributes: Attributes;

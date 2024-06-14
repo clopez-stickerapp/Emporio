@@ -1,5 +1,5 @@
-import { ProductAttrConstraint } from "../../../src/Commerce/Core/Product/Attribute/Constraint/ProductAttrConstraint";
-import { ConditionOperators } from "../../../src/Helper/Condition/ConditionOperators";
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { CuisineAttribute } from "../Attributes/CuisineAttribute";
 import { PortionAttribute } from "../Attributes/PortionAttribute";
 

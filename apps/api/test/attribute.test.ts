@@ -1,8 +1,7 @@
-import { describe, expect, test } from 'vitest'
-import { ProductAttr } from '../src/Commerce/Core/Product/Attribute/ProductAttr';
-import { ProductAttrValueType } from '../src/Commerce/Core/Product/Attribute/ProductAttrValueType'
-import { ProductAttrValueInvalidException } from '../src/Commerce/Core/Exception/ProductAttrValueInvalidException';
-import { ProductAttrValue } from '../src/Commerce/Core/Product/Attribute/ProductAttrValue';
+import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
+import { ProductAttr } from "$/product/attribute/ProductAttr";
+import { ProductAttrValue } from "$/product/attribute/ProductAttrValue";
+import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
 let productAttr: ProductAttr;
 

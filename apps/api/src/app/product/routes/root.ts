@@ -1,6 +1,5 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { ProductItem } from '$/Commerce/Core/Product/Item/ProductItem';
 import { 
 	getAttributeMapSchema, 
 	getAttributesSchema, 
@@ -16,6 +15,7 @@ import {
 	isAttributeAvailableSchema, 
 	isAttributeRequiredSchema
 } from '../schema';
+import { ProductItem } from '$/product/ProductItem';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();

@@ -1,12 +1,12 @@
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { Currencies } from "$/currency/Currency";
+import { calculateBreakdownSum } from "$/prices/Price";
+import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
+import { Rate } from "$/prices/Rate";
+import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPriceProvider";
+import { RateProvider } from "$/prices/RateProvider";
+import { ProductItem } from "$/product/ProductItem";
 import { beforeEach, describe, expect, test } from "vitest";
-import { ProductPriceProvider } from "../src/Commerce/Core/Price/ProductPriceProvider";
-import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
-import { Currencies } from "../src/Commerce/Core/Currency/Currency";
-import { calculateBreakdownSum } from "../src/Commerce/Core/Price/Price";
-import { RateBasedProductPriceProvider } from "../src/Commerce/Core/Price/RateBasedProductPriceProvider";
-import { RateProvider } from "../src/Commerce/Core/Price/RateProvider";
-import { Rate } from "../src/Commerce/Core/Price/Rate";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 describe("calculateBreakdownSum", () => {
 	test("should be able to calculate the sum of a breakdown", () => {

@@ -1,8 +1,8 @@
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { Rate } from "$/prices/Rate";
+import { RateProvider, RateProviderType } from "$/prices/RateProvider";
+import { ProductItem } from "$/product/ProductItem";
 import { describe, expect, test } from "vitest";
-import { RateProviderType, RateProvider } from "../src/Commerce/Core/Price/RateProvider";
-import { Rate } from "../src/Commerce/Core/Price/Rate";
-import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 class ProviderTest extends RateProvider {
 	public async getRate(productItem: ProductItem): Promise<Rate> {
 		return new Rate(productItem.getAttribute("test-attribute") as number * 2);

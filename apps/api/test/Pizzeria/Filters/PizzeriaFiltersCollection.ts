@@ -1,4 +1,4 @@
-import { ProductAttrFilterCollection } from "../../../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilterCollection";
+import { ProductAttrFilterCollection } from "$/product/attribute/Filter/ProductAttrFilterCollection";
 import { CrustFilter } from "./CrustFilter";
 
 export class PizzeriaFilterCollection extends ProductAttrFilterCollection {

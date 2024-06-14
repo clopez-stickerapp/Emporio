@@ -1,5 +1,5 @@
-import { ProductAttr } from "../../../src/Commerce/Core/Product/Attribute/ProductAttr";
-import { ProductAttrValueType } from "../../../src/Commerce/Core/Product/Attribute/ProductAttrValueType";
+import { ProductAttr } from "$/product/attribute/ProductAttr";
+import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
 export class SauceBaseAttribute extends ProductAttr {
 	public static readonly NAME = 'sauce_base';

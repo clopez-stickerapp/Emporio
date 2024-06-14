@@ -1,7 +1,7 @@
-import { ProductItem } from "$/Commerce/Core/Product/Item/ProductItem";
-import { QuantityAttribute } from "$/Commerce/Product/Attribute/QuantityAttribute";
-import { ProductFamily } from "../../src/Commerce/Core/Product/ProductFamily";
-import { ProductService } from "../../src/Commerce/Core/ProductService";
+import { QuantityAttribute } from "$/configuration/Attribute/QuantityAttribute";
+import { ProductItem } from "$/product/ProductItem";
+import { ProductFamily } from "$/product/ProductFamily";
+import { ProductService } from "../../src/product/ProductService";
 import { CrustAttribute } from "./Attributes/CrustAttribute";
 import { CuisineAttribute } from "./Attributes/CuisineAttribute";
 import { IngredientAttribute } from "./Attributes/IngredientAttribute";

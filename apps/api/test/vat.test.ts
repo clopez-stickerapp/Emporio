@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { excludeVAT, getVatPercentage, isEuCountry, isEuropeanCountry, isExport } from "../src/Commerce/Tax/Vat";
+import { excludeVAT, getVatPercentage, isEuCountry, isEuropeanCountry, isExport } from "../src/tax/Vat";
 
 describe("Test isExport", ()=>{
 	test("with EU country", ()=>{

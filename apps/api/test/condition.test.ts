@@ -1,8 +1,8 @@
+import { Condition } from "$/conditions/Condition";
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
+import { Attributes } from "$/product/attribute/Attributes";
 import { beforeEach, describe, expect, test } from "vitest";
-import { Condition } from "../src/Helper/Condition/Condition";
-import { ConditionTestDataKeyNotFoundException } from "../src/Helper/Condition/Exception/ConditionTestDataKeyNotFoundException";
-import { Attributes } from "../src/Helper/Condition/Attributes";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
 
 let condition: Condition;
 let attributes: Attributes;

@@ -1,25 +1,25 @@
-import { Static, Type } from "@sinclair/typebox";
-import { getCurrency } from "./Commerce/Core/Localization/Locale";
-import { FormattedPrice, Price, excludeVATFromPrice, toMajorUnits } from "./Commerce/Core/Price/Price";
-import { ProductItem } from "./Commerce/Core/Product/Item/ProductItem";
-import { ProductService } from "./Commerce/Core/ProductService";
-import { StickerAppProductService } from "./Commerce/Product/StickerAppProductService";
-import { getVatPercentage } from "./Commerce/Tax/Vat";
-import { ProductItemBuilder } from "./Commerce/Core/Product/Helper/ProductItemBuilder";
-import { ProductItemValidator } from "./Commerce/Core/Product/Helper/ProductItemValidator";
-import { ProductionHelper } from "./Commerce/Core/Product/Helper/ProductionHelper";
-import { FeatureHelper } from "./Commerce/Core/Product/Helper/FeatureHelper";
-import { ProductAttrComputerExtended } from "./Commerce/Core/Product/Helper/ProductAttrComputerExtended";
-import { ProductAttrMap, TProductAttrMap } from "./Commerce/Core/Product/Helper/ProductAttrMap";
-import { SizeHelper } from "./Commerce/Core/Product/Helper/SizeHelper";
-import { AttributeValueSingle } from "./Helper/Condition/AttributeValue";
-import { FixedQuantityHelper } from "./Commerce/Core/Product/Helper/FixedQuantityHelper";
-import { ProductFamily } from "./Commerce/Core/Product/ProductFamily";
-import { ProductAttr } from "./Commerce/Core/Product/Attribute/ProductAttr";
-import { ProductItemConditionablesMap } from "./Commerce/Core/Product/Helper/ProductItemConditionablesMap";
-import { ProductItemConditionableParam } from "./Commerce/Core/Product/Condition/ProductItemConditionableParam";
-import { StickerAppProductLegacySKUService } from "./Commerce/Product/SKU/StickerAppProductLegacySKUService";
-import { CustomStickerFamily } from "./Commerce/Product/Family/CustomStickerFamily";
+import { Type, Static } from "@sinclair/typebox";
+import { CustomStickerFamily } from "./configuration/Family/CustomStickerFamily";
+import { StickerAppProductLegacySKUService } from "./configuration/SKU/StickerAppProductLegacySKUService";
+import { StickerAppProductService } from "./configuration/StickerAppProductService";
+import { getCurrency } from "./localization/Locale";
+import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
+import { ProductAttr } from "./product/attribute/ProductAttr";
+import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
+import { FeatureHelper } from "./product/helpers/FeatureHelper";
+import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
+import { ProductAttrComputerExtended } from "./product/helpers/ProductAttrComputerExtended";
+import { TProductAttrMap, ProductAttrMap } from "./product/helpers/ProductAttrMap";
+import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
+import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
+import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
+import { ProductionHelper } from "./product/helpers/ProductionHelper";
+import { SizeHelper } from "./product/helpers/SizeHelper";
+import { ProductItem } from "./product/ProductItem";
+import { ProductFamily } from "./product/ProductFamily";
+import { ProductService } from "./product/ProductService";
+import { getVatPercentage } from "./tax/Vat";
+import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -109,7 +109,7 @@ export class Emporio {
 		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
 		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
 
-		const prices = await Promise.all(steps.map(async step => {
+		const prices = await Promise.all(steps.map(async (step: number) => {
 			return await this.calculatePrice(productItem, step, lang, inclVat);
 		}));
 

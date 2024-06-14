@@ -1,7 +1,7 @@
-import { FormattedPrice } from "$/Commerce/Core/Price/Price";
 import { Type } from "@sinclair/typebox";
-import * as TypeHelper from "$/Helper/TypeHelper"
+import * as TypeHelper from "$/helpers/TypeHelper"
 import { FormattedPriceList } from "$/Emporio";
+import { FormattedPrice } from "$/prices/Price";
 
 const querySchema = Type.Object({
 	attributes: TypeHelper.AttributesString(),

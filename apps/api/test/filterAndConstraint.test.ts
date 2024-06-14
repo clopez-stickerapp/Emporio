@@ -1,11 +1,11 @@
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrConstraintCollection } from "$/product/attribute/Constraint/ProductAttrConstraintCollection";
+import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
+import { ProductAttrFilterCollection } from "$/product/attribute/Filter/ProductAttrFilterCollection";
+import { ProductAttrFilteredValues } from "$/product/attribute/Filter/ProductAttrFilteredValues";
+import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
 import { beforeEach, describe, expect, test } from "vitest";
-import { ProductAttrFilterCollection } from "../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilterCollection";
-import { ProductAttrFilter } from "../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilter";
-import { ProductAttrConstraint } from "../src/Commerce/Core/Product/Attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrConstraintCollection } from "../src/Commerce/Core/Product/Attribute/Constraint/ProductAttrConstraintCollection";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
-import { ProductConditionBuilder } from "../src/Commerce/Core/Product/Condition/ProductConditionBuilder";
-import { ProductAttrFilteredValues } from "../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilteredValues";
 
 describe( 'Test filter', () => {
 	let filterCollection: ProductAttrFilterCollection;

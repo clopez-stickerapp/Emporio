@@ -1,5 +1,5 @@
+import { getConversionRates, Currencies, getDefaultDecimals, CurrencyConverter, formatCurrency, getMinorSymbol, convertToMajorUnits } from "$/currency/Currency";
 import { describe, expect, test } from "vitest";
-import { Currencies, CurrencyConverter, convertToMajorUnits, formatCurrency, getConversionRates, getDefaultDecimals, getMinorSymbol } from "../src/Commerce/Core/Currency/Currency";
 
 describe("Test Currencies", () => {
 	test("check if they all have conversion rates", () => {

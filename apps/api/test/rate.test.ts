@@ -1,5 +1,5 @@
+import { Rate, RateType } from "$/prices/Rate";
 import { describe, expect, test } from "vitest";
-import { Rate, RateType } from "../src/Commerce/Core/Price/Rate";
 
 let rate: Rate;
 

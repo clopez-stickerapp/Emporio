@@ -1,14 +1,13 @@
-import { describe, expect, test } from "vitest";
-import { ProductAttrComputerExtended } from "../src/Commerce/Core/Product/Helper/ProductAttrComputerExtended";
-import { ProductItemBuilder } from "../src/Commerce/Core/Product/Helper/ProductItemBuilder";
+import { ProductAttrComputerExtended } from "$/product/helpers/ProductAttrComputerExtended";
+import { ProductItemBuilder } from "$/product/helpers/ProductItemBuilder";
+import { CrustAttribute } from "./Pizzeria/Attributes/CrustAttribute";
+import { CuisineAttribute } from "./Pizzeria/Attributes/CuisineAttribute";
 import { IngredientAttribute } from "./Pizzeria/Attributes/IngredientAttribute";
+import { PortionAttribute } from "./Pizzeria/Attributes/PortionAttribute";
+import { SauceBaseAttribute } from "./Pizzeria/Attributes/SauceBaseAttribute";
+import { ToppingAttribute } from "./Pizzeria/Attributes/ToppingAttribute";
 import { PizzeriaFamily } from "./Pizzeria/PizzeriaFamily";
 import { PizzeriaService } from "./Pizzeria/PizzeriaService";
-import { SauceBaseAttribute } from "./Pizzeria/Attributes/SauceBaseAttribute";
-import { CuisineAttribute } from "./Pizzeria/Attributes/CuisineAttribute";
-import { PortionAttribute } from "./Pizzeria/Attributes/PortionAttribute";
-import { CrustAttribute } from "./Pizzeria/Attributes/CrustAttribute";
-import { ToppingAttribute } from "./Pizzeria/Attributes/ToppingAttribute";
 
 const service     = new PizzeriaService();
 const computer    = new ProductAttrComputerExtended( service );

@@ -1,8 +1,8 @@
+import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
+import { QuantityList } from "$/prices/QuantityList";
+import { ProductItem } from "$/product/ProductItem";
 import { beforeEach, describe, expect, test } from "vitest";
-import { QuantityList } from "../src/Commerce/Core/Price/QuantityList";
-import { ProductItem } from "../src/Commerce/Core/Product/Item/ProductItem";
-import { ConditionOperators } from "../src/Helper/Condition/ConditionOperators";
-import { ProductQuantityListCollection } from "../src/Commerce/Core/Price/ProductQuantityListCollection";
 
 let quantityList: QuantityList;
 

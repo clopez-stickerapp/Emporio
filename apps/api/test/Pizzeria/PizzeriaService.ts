@@ -1,4 +1,4 @@
-import { ProductService } from "../../src/Commerce/Core/ProductService";
+import { ProductService } from "../../src/product/ProductService";
 import { CrustAttribute } from "./Attributes/CrustAttribute";
 import { CuisineAttribute } from "./Attributes/CuisineAttribute";
 import { IngredientAttribute } from "./Attributes/IngredientAttribute";

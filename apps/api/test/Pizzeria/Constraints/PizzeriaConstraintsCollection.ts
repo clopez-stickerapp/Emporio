@@ -1,4 +1,4 @@
-import { ProductAttrConstraintCollection } from "../../../src/Commerce/Core/Product/Attribute/Constraint/ProductAttrConstraintCollection";
+import { ProductAttrConstraintCollection } from "$/product/attribute/Constraint/ProductAttrConstraintCollection";
 import { CrustConstraint } from "./CrustConstraint";
 import { CuisineConstraint } from "./CuisineConstraint";
 import { PortionConstraint } from "./PortionConstraint";

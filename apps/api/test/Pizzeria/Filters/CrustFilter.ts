@@ -1,4 +1,4 @@
-import { ProductAttrFilter } from "../../../src/Commerce/Core/Product/Attribute/Filter/ProductAttrFilter";
+import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { CrustAttribute } from "../Attributes/CrustAttribute";
 
 export class CrustFilter extends ProductAttrFilter {

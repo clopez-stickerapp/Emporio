@@ -15,4 +15,4 @@ jobs:
     secrets: inherit
     with:
       service: .
-      path: docker/Dockerfile
+      path: docker/

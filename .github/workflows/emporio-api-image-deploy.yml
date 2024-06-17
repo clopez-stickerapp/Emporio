@@ -11,8 +11,8 @@ on:
 jobs:
   emporio-api-build-push-docker-image:
     name: Emporio api build and push docker image
-    uses: ./.github/workflows/emporio-api-image-deploy.yml
+    uses: ./.github/workflows/emporio-build-docker.yml
     secrets: inherit
     with:
       service: .
-      path: docker/api.Dockerfile
+      docker-file: docker/api.Dockerfile

@@ -1,3 +1,3 @@
 services:
   emporio-api:
-    image: #fill in image name
+    image: stickerapp/emporio-api:b60c6e5a83

@@ -6,6 +6,7 @@ services:
     image: emporio-api
     container_name: emporio-api
     restart: unless-stopped
+    user: ${UID}:${GID}
     ports:
       - '5012:5012'
     environment:

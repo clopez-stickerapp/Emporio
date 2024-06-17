@@ -100,8 +100,8 @@ jobs:
       - name: Update docker
         run: |
           cd $DIR_SOURCE/
-          docker compose build && docker compose up -d
-          # docker compose -f docker-compose.yml -f docker-compose-prod.yml pull && docker compose -f docker-compose.yml -f docker-compose-prod.yml up -d
+          # docker compose build && docker compose up -d
+          docker compose -f docker-compose.yml -f docker-compose-prod.yml pull && docker compose -f docker-compose.yml -f docker-compose-prod.yml up -d
   notify-result:
     name: Notify result
     runs-on: ubuntu-latest

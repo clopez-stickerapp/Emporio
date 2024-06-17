@@ -14,5 +14,5 @@ jobs:
     uses: ./.github/workflows/emporio-build-docker.yml
     secrets: inherit
     with:
-      service: .
+      service: emporio-api
       docker-file: docker/api.Dockerfile

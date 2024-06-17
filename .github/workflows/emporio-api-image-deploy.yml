@@ -15,4 +15,4 @@ jobs:
     secrets: inherit
     with:
       service: emporio-api
-      docker-file: docker/api.Dockerfile
+      path: docker/api.Dockerfile

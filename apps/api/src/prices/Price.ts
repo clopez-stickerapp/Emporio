@@ -1,4 +1,4 @@
-import { Currencies, formatCurrency } from "$/currency/Currency";
+import { Currencies, convertToMajorUnits, formatCurrency } from "$/currency/Currency";
 import { getLocale } from "$/localization/Locale";
 import { excludeVAT } from "$/tax/Vat";
 import { Static, Type } from "@sinclair/typebox";
@@ -38,11 +38,11 @@ export function excludeVATFromPrice(price: Price, vatPercentage: number): Price 
 
 export function toMajorUnits(price: Price): Price {
 	//convert to major units
-	let total = price.total / 100;
+	let total = convertToMajorUnits(price.total, price.currency);
 	let breakdown: Record<string, number> = {};
 
 	for (let [key, value] of Object.entries(price.breakdown ?? {})) {
-		breakdown[key] = value / 100;
+		breakdown[key] = convertToMajorUnits(value, price.currency);
 	}
 
 	return{

@@ -1,9 +1,12 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { Currencies } from "$/currency/Currency";
+import { Price, bundlePrice } from "$/prices/Price";
 import { Rate } from "$/prices/Rate";
 import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPriceProvider";
 import { RateList } from "$/prices/RateList";
 import { RateProviderType } from "$/prices/RateProvider";
+import { ProductItem } from "$/product/ProductItem";
 import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
 import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
@@ -271,5 +274,17 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE])
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL);
 		this.addRateProvider(rl_arlon_transfer);
+	}
+
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
+		let price = await super.calculatePrice(productItem, units, currency);
+
+		return bundlePrice(price, {
+			baseName: "price_base",
+			separate: {
+				// Setting this to the static readonly property seems to break it
+				"rl_backprint": "price_backprint",
+			}
+		});
 	}
 }

@@ -73,3 +73,27 @@ export function formatPrice(price: Price, lang: string, maxDecimals: number): Fo
 
 	return result;
 }
+
+export function bundlePrice(price: Price, options: { baseName: string, separate: { [key:string]: string } }): Price {
+	// For every item in the breakdown that is not in separate, sum it up to the base
+	// The base price and everything separate are the only things that should be in the breakdown
+
+	let breakdown: Record<string, number> = {};
+	let base = 0;
+
+	for (let [key, value] of Object.entries(price.breakdown ?? {})) {
+		if (options.separate[key]) {
+			breakdown[options.separate[key]] = value;
+		} else {
+			base += value;
+		}
+	}
+
+	breakdown[options.baseName] = base;
+
+	return {
+		total: price.total,
+		breakdown,
+		currency: price.currency
+	}
+}

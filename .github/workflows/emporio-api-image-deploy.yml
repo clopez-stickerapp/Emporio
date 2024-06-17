@@ -14,5 +14,5 @@ jobs:
     uses: stickerapp-org/stickerapp/.github/workflows/build-push-docker-image.yml@main
     secrets: inherit
     with:
-      service: emporio-api
-      path: docker/api.Dockerfile
+      service: .
+      path: docker/Dockerfile

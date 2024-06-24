@@ -126,7 +126,8 @@ export class LaminateFilter extends ProductAttrFilter {
 
 		this.createFilter( [
 			LaminateAttribute.GLOSSY_THIN_NO_UV,
-			LaminateAttribute.UNCOATED
+			LaminateAttribute.UNCOATED,
+			LaminateAttribute.SATIN_MATTE
 		] )
 			.conditionBuilder
 			// The complexity of this filter needs to be lower than the one below

@@ -73,9 +73,9 @@ export class SizeHelper
 	 */
 	public extractMeassuresFromString( sizeString: string ): { width: number, height: number }
 	{
-		const [ width, height ] = sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g ) as string[];
+		const [ width, height ] = ( sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g )?.map( Number ) ?? [] ).slice( -2 );
 
-		return { width: parseFloat( width ), height: parseFloat( height ) };
+		return { width, height };
 	}
 
 	/**

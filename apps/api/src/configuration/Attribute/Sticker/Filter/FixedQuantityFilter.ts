@@ -2,26 +2,26 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { FixedQuantityAttribute } from "../../FixedQuantityAttribute";
-import { ResellerAttribute } from "../../ResellerAttribute";
-import { LaminateAttribute } from "../LaminateAttribute";
+import { FixedQuantityAttribute } from "../../../attributes/FixedQuantityAttribute";
+import { ResellerValues } from "../../../attributes/ResellerAttribute";
+import { LaminateValues } from "../../../attributes/LaminateAttribute";
 
 export class FixedQuantityFilter extends ProductAttrFilter {
 	public constructor() {
-		super( FixedQuantityAttribute.ALIAS );
+		super( FixedQuantityAttribute.getName() );
 
 		this.createFilter( [
 			true
 		] )
 			.conditionBuilder
 			.addCondition( "item.attributes.reseller", ConditionOperators.NOT_IN, [ 
-				ResellerAttribute.VALUE_STICKERSTHATSTICK, 
-				ResellerAttribute.VALUE_STICKIT 
+				ResellerValues.STICKERSTHATSTICK, 
+				ResellerValues.STICKIT 
 			] )
 			.addSubGroup( ConditionRelations.OR )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.laminate", ConditionOperators.IN, [
-				LaminateAttribute.EPOXY
+				LaminateValues.EPOXY
 			] );
 	}
 }

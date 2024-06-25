@@ -1,7 +1,7 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
-export const FeatureAttributeValues = {
+export const ProductFeatures = {
 	BACKPAPER_PRINT: "backpaper_print",
 	HANGTAGGING: "hangtagging",
 	TRANSFER_TAPE: "transfer_tape",
@@ -12,9 +12,11 @@ export const FeatureAttributeValues = {
 	PERFORATION: "perforation",
 };
 
+export const ProductFeaturesOOS: string[] = [];
+
 export const FeatureAttribute = new ProductAttr({
 	name: "feature",
 	type: ProductAttrValueType.STRING,
 	multivalue: true,
-	values: Object.values( FeatureAttributeValues ),
+	values: Object.values( ProductFeatures ),
 });

@@ -6,6 +6,8 @@ export const InkValues = {
 	INVISIBLE_INK: "invisible_ink"
 };
 
+export const InkOOS: string[] = [InkValues.PINK_INK, InkValues.INVISIBLE_INK];
+
 export const InkAttribute = new ProductAttr({
 	name: "ink",
 	type: ProductAttrValueType.STRING,

@@ -3,10 +3,10 @@ import { ProductItem } from "../ProductItem";
 import { FeatureHelper } from "./FeatureHelper";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { ProductItemHelper } from "./ProductItemHelper";
-import { CutDirectionAttribute } from "$/configuration/Attribute/Sticker/CutDirectionAttribute";
-import { DeliveryAttribute } from "$/configuration/Attribute/Sticker/DeliveryAttribute";
-import { ProductionLineAttribute } from "$/configuration/Attribute/Sticker/ProductionLineAttribute";
-import { WhiteLayerAttribute } from "$/configuration/Attribute/Sticker/WhiteLayerAttribute";
+import { ProductionLineAttribute, ProductionLines } from "$/configuration/attributes/ProductionLineAttribute";
+import { CutDirectionAttribute, CutDirectionAttributeValues } from "$/configuration/attributes/CutDirectionAttribute";
+import { DeliveryAttribute, DeliveryTypes } from "$/configuration/attributes/DeliveryAttribute";
+import { WhiteLayerAttribute, WhiteLayerValues } from "$/configuration/attributes/WhiteLayerAttribute";
 
 export class ProductionHelper
 {
@@ -27,24 +27,24 @@ export class ProductionHelper
      */
     public unsetSettingsAutomatically(): void
     {
-        if ( !this.isRecommended( ProductionLineAttribute.ALIAS ) )
+        if ( !this.isRecommended( ProductionLineAttribute.getName() ) )
         {
-            this.item.removeAttribute( ProductionLineAttribute.ALIAS );
+            this.item.removeAttribute( ProductionLineAttribute.getName() );
         }
 
-        if ( !this.isRecommended( DeliveryAttribute.ALIAS ) )
+        if ( !this.isRecommended( DeliveryAttribute.getName() ) )
         {
-            this.item.removeAttribute( DeliveryAttribute.ALIAS );
+            this.item.removeAttribute( DeliveryAttribute.getName() );
         }
 
-        if ( !this.isRecommended( WhiteLayerAttribute.ALIAS ) )
+        if ( !this.isRecommended( WhiteLayerAttribute.getName() ) )
         {
-            this.item.removeAttribute( WhiteLayerAttribute.ALIAS );
+            this.item.removeAttribute( WhiteLayerAttribute.getName() );
         }
 
-        if ( !this.isRecommended( CutDirectionAttribute.ALIAS ) )
+        if ( !this.isRecommended( CutDirectionAttribute.getName() ) )
         {
-            this.item.removeAttribute( CutDirectionAttribute.ALIAS );
+            this.item.removeAttribute( CutDirectionAttribute.getName() );
         }
     }
 
@@ -55,7 +55,7 @@ export class ProductionHelper
      */
     public setSettingsAutomatically(): void
     {
-		if ( !this.itemHelper.getProductionLine() && this.attrComputer.isSupported( ProductionLineAttribute.ALIAS ) )
+		if ( !this.itemHelper.getProductionLine() && this.attrComputer.isSupported( ProductionLineAttribute.getName() ) )
         {
 			const productionLine = this.detectSuitableProductionLine();
 
@@ -65,7 +65,7 @@ export class ProductionHelper
 			}
         }
 
-        if ( !this.itemHelper.getDelivery() && this.attrComputer.isSupported( DeliveryAttribute.ALIAS ) )
+        if ( !this.itemHelper.getDelivery() && this.attrComputer.isSupported( DeliveryAttribute.getName() ) )
         {
 			const delivery = this.detectSuitableDelivery();
 
@@ -75,7 +75,7 @@ export class ProductionHelper
 			}
         }
 
-        if ( !this.itemHelper.getWhiteLayer() && this.attrComputer.isSupported( WhiteLayerAttribute.ALIAS ) )
+        if ( !this.itemHelper.getWhiteLayer() && this.attrComputer.isSupported( WhiteLayerAttribute.getName() ) )
         {
 			const whiteLayerSetting = this.detectSuitableWhiteLayerSetting();
 
@@ -86,10 +86,10 @@ export class ProductionHelper
         }
         else if ( this.itemHelper.getWhiteLayer() && !this.featureHelper.doesSupportEffectLayer() )
         {
-            this.item.removeAttribute( WhiteLayerAttribute.ALIAS );
+            this.item.removeAttribute( WhiteLayerAttribute.getName() );
         }
 
-        if ( !this.itemHelper.getCutDirection() && this.attrComputer.isSupported( CutDirectionAttribute.ALIAS ) )
+        if ( !this.itemHelper.getCutDirection() && this.attrComputer.isSupported( CutDirectionAttribute.getName() ) )
         {
 			const cutDirection = this.detectSuitableCutDirection();
 
@@ -102,30 +102,30 @@ export class ProductionHelper
 
     public detectSuitableProductionLine(): string | null
     {
-		if ( this.attrComputer.isAvailable( ProductionLineAttribute.ALIAS, ProductionLineAttribute.LASER ) )
+		if ( this.attrComputer.isAvailable( ProductionLineAttribute.getName(), ProductionLines.LASER ) )
 		{
-			return ProductionLineAttribute.LASER;
+			return ProductionLines.LASER;
 		}
 
-		return this.attrComputer.getDefaultValue( ProductionLineAttribute.ALIAS );
+		return this.attrComputer.getDefaultValue( ProductionLineAttribute.getName() );
     }
 
     public detectSuitableDelivery(): string | null
     {
 		// TODO: Should probably check the product for the recommended value first.
-		if ( this.attrComputer.isAvailable( DeliveryAttribute.ALIAS, DeliveryAttribute.DELIVERY_SINGLE ) )
+		if ( this.attrComputer.isAvailable( DeliveryAttribute.getName(), DeliveryTypes.SINGLE ) )
 		{
-			return DeliveryAttribute.DELIVERY_SINGLE;
+			return DeliveryTypes.SINGLE;
 		}
 
-		return this.attrComputer.getDefaultValue( DeliveryAttribute.ALIAS );
+		return this.attrComputer.getDefaultValue( DeliveryAttribute.getName() );
     }
 
     public detectSuitableWhiteLayerSetting(): string | null
     {
-		if ( this.featureHelper.doesSupportEffectLayer() && this.attrComputer.isAvailable( WhiteLayerAttribute.ALIAS, WhiteLayerAttribute.ALPHA ) )
+		if ( this.featureHelper.doesSupportEffectLayer() && this.attrComputer.isAvailable( WhiteLayerAttribute.getName(), WhiteLayerValues.ALPHA ) )
 		{
-			return WhiteLayerAttribute.ALPHA;
+			return WhiteLayerValues.ALPHA;
 		}
 
 		return null;
@@ -133,12 +133,12 @@ export class ProductionHelper
 
     public detectSuitableCutDirection(): string | null
     {
-		if ( this.attrComputer.isAvailable( CutDirectionAttribute.ALIAS, CutDirectionAttribute.AUTO ) )
+		if ( this.attrComputer.isAvailable( CutDirectionAttribute.getName(), CutDirectionAttributeValues.AUTO ) )
 		{
-			return CutDirectionAttribute.AUTO;
+			return CutDirectionAttributeValues.AUTO;
 		}
 
-		return this.attrComputer.getDefaultValue( CutDirectionAttribute.ALIAS );
+		return this.attrComputer.getDefaultValue( CutDirectionAttribute.getName() );
     }
 
 	// TODO: Move to ProductAttrComputer?

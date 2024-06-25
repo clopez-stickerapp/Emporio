@@ -2,16 +2,16 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { MaterialAttribute } from "../MaterialAttribute";
-import { MaxSizeAttribute } from "../MaxSizeAttribute";
-import { ProductionLineAttribute } from "../ProductionLineAttribute";
+import { MaterialValues } from "../../../attributes/MaterialAttribute";
+import { MaxSizes } from "../../../attributes/MaxSizeAttribute";
+import { ProductionLineAttribute, ProductionLines } from "../../../attributes/ProductionLineAttribute";
 
 export class ProductionLineFilter extends ProductAttrFilter {
 	public constructor() {
-		super( ProductionLineAttribute.ALIAS );
+		super( ProductionLineAttribute.getName() );
 
 		this.createFilter( [ 
-			ProductionLineAttribute.LASER 
+			ProductionLines.LASER 
 		] )
 			.conditionBuilder
             .setBaseComplexityScore( 120 )
@@ -24,30 +24,30 @@ export class ProductionLineFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [ 
-			ProductionLineAttribute.LASER 
+			ProductionLines.LASER 
 		] )
 			.conditionBuilder
 			.addCondition("item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.WHITE,
-				MaterialAttribute.WHITE_REMOVABLE,
-				MaterialAttribute.CLEAR
+				MaterialValues.WHITE,
+				MaterialValues.WHITE_REMOVABLE,
+				MaterialValues.CLEAR
 			] )
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_LIBRARY_DESIGN )
-			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_ONE_SIDE_LASER )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_ONE_SIDE_LASER )
+			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.ONE_SIDE_LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.ONE_SIDE_LASER )
 			.addSubGroup( ConditionRelations.OR )
-			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER );
+			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.LASER );
 
 		this.createFilter( [ 
-			ProductionLineAttribute.DIGITAL 
+			ProductionLines.DIGITAL 
 		], ConditionRelations.OR )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_TRANSFER_DECAL
 			] )
 			.addSubGroup( ConditionRelations.AND )
-			.addCondition( "item.attributes.width_mm", ConditionOperators.GREATER_THAN, MaxSizeAttribute.MAX_SIZE_LASER )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.GREATER_THAN, MaxSizeAttribute.MAX_SIZE_LASER );
+			.addCondition( "item.attributes.width_mm", ConditionOperators.GREATER_THAN, MaxSizes.LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.GREATER_THAN, MaxSizes.LASER );
 	}
 }

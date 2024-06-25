@@ -13,7 +13,7 @@ import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
 
 export class ProductFamily {
-	protected productService: ProductService;
+	// protected productService: ProductService;
 	protected name: string;
 	protected attrConstraintCollectionName: string | undefined;
 	protected attrFilterCollectionName: string | undefined;
@@ -31,6 +31,8 @@ export class ProductFamily {
 
 	public constructor(config: FamilyConfig){
 		this.name = config.name;
+
+		this.minimumUnitsValue = new ProductDynamicValue(0.1215);
 	}
 
 	public getName(): string {
@@ -42,8 +44,11 @@ export class ProductFamily {
 			throw new Error("Product already exists: " + productName);
 		}
 
+		// TODO: change
+		let sku = productName;
+
 		const product = new Product(this, productName, sku);
-		this.productService.registerProductSku(sku);
+		// this.productService.registerProductSku(sku);
 		this.products[productName] = product;
 
 		return product;
@@ -125,67 +130,67 @@ export class ProductFamily {
 		throw new Error("Alias is not supported by product family: " + name + " (" + this.getName() + ")");
 	}
 
-	public getProductService(): ProductService {
-		return this.productService;
-	}
+	// public getProductService(): ProductService {
+	// 	return this.productService;
+	// }
 
-	public setProductService(productService: ProductService): void {
-		this.productService = productService;
-	}
+	// public setProductService(productService: ProductService): void {
+	// 	this.productService = productService;
+	// }
 
 	public relateConstraintCollection(collectionName: string): void {
 		this.attrConstraintCollectionName = collectionName;
 	}
 
-	public getConstraintsCollection(): ProductAttrConstraintCollection | null {
-		return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
-	}
+	// public getConstraintsCollection(): ProductAttrConstraintCollection | null {
+	// 	return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
+	// }
 
 	public relateFilterCollection(collectionName: string): void {
 		this.attrFilterCollectionName = collectionName;
 	}
 
-	public getFilterCollection(): ProductAttrFilterCollection | null {
-		return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
-	}
+	// public getFilterCollection(): ProductAttrFilterCollection | null {
+	// 	return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
+	// }
 
 	public relateIconCollection(collectionName: string): void {
 		this.attrIconCollectionName = collectionName;
 	}
 
-	public getIconsCollection(): ProductAttrIconCollection | null {
-		return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
-	}
+	// public getIconsCollection(): ProductAttrIconCollection | null {
+	// 	return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
+	// }
 
 	public relateStockCollection(collectionName: string): void {
 		this.attrStockCollectionName = collectionName;
 	}
 
-	public getStockCollection(): ProductAttrStockCollection | null {
-		return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
-	}
+	// public getStockCollection(): ProductAttrStockCollection | null {
+	// 	return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
+	// }
 
 	public relateProductPriceProvider(collectionName: string): void {
 		this.priceProviderName = collectionName;
 	}
 
-	public getProductPriceProvider(): ProductPriceProvider | null {
-		return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
-	}
+	// public getProductPriceProvider(): ProductPriceProvider | null {
+	// 	return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
+	// }
 
 	public relateProductQuantityListCollection(collectionName: string): void {
 		this.productQuantityListCollectionName = collectionName;
 	}
 
-	public getProductQuantityListCollection(): ProductQuantityListCollection | null {
-		return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
-	}
+	// public getProductQuantityListCollection(): ProductQuantityListCollection | null {
+	// 	return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
+	// }
 
-	public validateUnits(productItem: ProductItem): void{
-		productItem.setUnits(this.calculateUnits(productItem));
-	}
+	// public validateUnits(productItem: ProductItem): void{
+	// 	productItem.setUnits(this.calculateUnits(productItem));
+	// }
 
-	public abstract calculateUnits(productItem: ProductItem): number;
+	// public abstract calculateUnits(productItem: ProductItem): number;
 
 	public getMinimumQuantity(productItem: ProductItem): number {
 		return 1;

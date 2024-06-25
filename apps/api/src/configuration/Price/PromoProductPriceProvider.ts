@@ -4,7 +4,7 @@ import { ProductServiceException } from "$/product/exceptions/ProductServiceExce
 import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { ProductItem } from "$/product/ProductItem";
-import { FigureAttribute } from "../Attribute/FigureAttribute";
+import { FigureAttribute } from "../attributes/FigureAttribute";
 import { PromoProductFamily } from "../Family/PromoProductFamily";
 
 export class PromoProductPriceProvider extends ProductPriceProvider {
@@ -114,7 +114,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 					break;
 
 				case PromoProductFamily.PRODUCT_GIFTCARD:
-					const giftcardId = productItem.getAttribute(FigureAttribute.ALIAS) as number;
+					const giftcardId = productItem.getAttribute(FigureAttribute.getName()) as number;
 
 					const [giftcardSetPrice, giftcardHasDiscount, giftcardDiscount] = await fetchGiftcardData(giftcardId);
 

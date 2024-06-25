@@ -1,4 +1,4 @@
-import { FixedQuantityAttribute } from "$/configuration/Attribute/FixedQuantityAttribute";
+import { FixedQuantityAttribute } from "$/configuration/attributes/FixedQuantityAttribute";
 import { ProductItem } from "../ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 
@@ -12,14 +12,14 @@ export class FixedQuantityHelper
 	{
 		let fixedQuantity: boolean | null = null;
 
-		if ( this.productItem.hasAttribute( FixedQuantityAttribute.ALIAS ) )
+		if ( this.productItem.hasAttribute( FixedQuantityAttribute.getName() ) )
 		{
-			fixedQuantity = this.productItem.getAttribute<boolean>( FixedQuantityAttribute.ALIAS ) ?? null;
+			fixedQuantity = this.productItem.getAttribute<boolean>( FixedQuantityAttribute.getName() ) ?? null;
 		}
 
 		if ( fixedQuantity === null )
 		{
-			fixedQuantity = this.attrComputer.isInFilteredValues( FixedQuantityAttribute.ALIAS, true );
+			fixedQuantity = this.attrComputer.isInFilteredValues( FixedQuantityAttribute.getName(), true );
 		}
 
 		this.fixedQuantity = fixedQuantity;

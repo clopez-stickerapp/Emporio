@@ -7,8 +7,8 @@ import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPricePro
 import { RateList } from "$/prices/RateList";
 import { RateProviderType } from "$/prices/RateProvider";
 import { ProductItem } from "$/product/ProductItem";
-import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
-import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 import { AuthorMarginRateProvider } from "./AuthorMarginRateProvider";
 
@@ -71,7 +71,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addSubGroup(ConditionRelations.AND)
 			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL)
 			.addSubGroup(ConditionRelations.OR)
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE, MaterialAttribute.WHITE_BACKSCORE, MaterialAttribute.BUBBLE_FREE, MaterialAttribute.SATIN_MATTE])
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE, MaterialValues.WHITE_BACKSCORE, MaterialValues.BUBBLE_FREE, MaterialValues.SATIN_MATTE])
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR);
 		this.addRateProvider(rl_white);
 
@@ -87,9 +87,9 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(5320), 30)
 			.addRate(new Rate(5035), 50)
 			.addRate(new Rate(4505), 100)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.HOLOGRAPHIC, MaterialAttribute.GLITTER, MaterialAttribute.PRISMATIC,
-			MaterialAttribute.BRUSHED_ALLOY, MaterialAttribute.WARRANTY, MaterialAttribute.FROSTED, MaterialAttribute.PIXIE_DUST])
-			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateAttribute.EPOXY);
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.HOLOGRAPHIC, MaterialValues.GLITTER, MaterialValues.PRISMATIC,
+			MaterialValues.BRUSHED_ALLOY, MaterialValues.WARRANTY, MaterialValues.FROSTED, MaterialValues.PIXIE_DUST])
+			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateValues.EPOXY);
 		this.addRateProvider(rl_shiny);
 
 		let rl_thick = new RateList(StickerPriceProvider.RATELIST_THICK, new Rate(32450));
@@ -106,11 +106,11 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(7225), 100)
 			.conditions
 			.addSubGroup(ConditionRelations.OR)
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.GITD, MaterialAttribute.METALLIC_GOLD, MaterialAttribute.METALLIC_SILVER, MaterialAttribute.COLORED_VINYL])
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.GITD, MaterialValues.METALLIC_GOLD, MaterialValues.METALLIC_SILVER, MaterialValues.COLORED_VINYL])
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL)
 			.addSubGroup(ConditionRelations.AND)
-			.addCondition("item.attributes.laminate", ConditionOperators.EQUAL, LaminateAttribute.GLOSSY_UV_12_MIL_HEAVY_DUTY)
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_HI_TACK]);
+			.addCondition("item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY)
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_HI_TACK]);
 		this.addRateProvider(rl_thick);
 
 		let rl_clear = new RateList(StickerPriceProvider.RATELIST_CLEAR, new Rate(25080));
@@ -125,7 +125,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(3325), 30)
 			.addRate(new Rate(3040), 50)
 			.addRate(new Rate(2720), 100)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.CLEAR, MaterialAttribute.CLEAR_BACKSCORE]);
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.CLEAR, MaterialValues.CLEAR_BACKSCORE]);
 		this.addRateProvider(rl_clear);
 
 		let rl_mirror = new RateList(StickerPriceProvider.RATELIST_MIRROR, new Rate(26000));
@@ -140,8 +140,8 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(4750), 30)
 			.addRate(new Rate(4465), 50)
 			.addRate(new Rate(3995), 100)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.MIRROR])
-			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateAttribute.EPOXY);
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.MIRROR])
+			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateValues.EPOXY);
 		this.addRateProvider(rl_mirror);
 
 		let rl_kraft = new RateList(StickerPriceProvider.RATELIST_KRAFT, new Rate(20900));
@@ -156,7 +156,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(3325), 30)
 			.addRate(new Rate(3040), 50)
 			.addRate(new Rate(2720), 100)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.KRAFT_PAPER, MaterialAttribute.WHITE_REMOVABLE])
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.KRAFT_PAPER, MaterialValues.WHITE_REMOVABLE])
 			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_FLOOR);
 		this.addRateProvider(rl_kraft);
 
@@ -167,7 +167,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(8424), 3)
 			.addRate(new Rate(7650), 5)
 			.addRate(new Rate(7038), 7)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_WALL]);
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_WALL]);
 		this.addRateProvider(rl_wall);
 
 		let rl_epoxy = new RateList(StickerPriceProvider.RATELIST_EPOXY, new Rate(54120));
@@ -182,7 +182,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(31926), 7)
 			.addRate(new Rate(30600), 8)
 			.addRate(new Rate(29376), 9)
-			.conditions.addCondition("item.attributes.laminate", ConditionOperators.IN, [LaminateAttribute.EPOXY]);
+			.conditions.addCondition("item.attributes.laminate", ConditionOperators.IN, [LaminateValues.EPOXY]);
 		this.addRateProvider(rl_epoxy);
 
 		let rl_labels_on_sheets = new RateList(StickerPriceProvider.RATELIST_LABELS_ON_SHEET);
@@ -213,7 +213,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(1600), 250)
 			.addRate(new Rate(1500), 500)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_THIN, MaterialAttribute.WHITE_PAPER]);
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_THIN, MaterialValues.WHITE_PAPER]);
 		this.addRateProvider(rl_thin);
 
 		let rl_reflective = new RateList(StickerPriceProvider.RATELIST_REFLECTIVE, new Rate(16900));
@@ -227,7 +227,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(9500), 30)
 			.addRate(new Rate(8500), 40)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.REFLECTIVE, MaterialAttribute.FLUORESCENT, MaterialAttribute.MAGNETIC, MaterialAttribute.HEAT_TRANSFER]);
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.REFLECTIVE, MaterialValues.FLUORESCENT, MaterialValues.MAGNETIC, MaterialValues.HEAT_TRANSFER]);
 		this.addRateProvider(rl_reflective);
 
 		let rl_coverall = new RateList(StickerPriceProvider.RATELIST_COVERALL, new Rate(25000));
@@ -241,7 +241,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(7000), 20)
 			.addRate(new Rate(6200), 50)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_COVERALL]);
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_COVERALL]);
 		this.addRateProvider(rl_coverall);
 
 		// Glossy + sandy hi-tack
@@ -259,19 +259,19 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(3600), 100)
 			.addRate(new Rate(3000), 250)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_HI_TACK])
-			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateAttribute.GLOSSY_UV_12_MIL_HEAVY_DUTY);
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_HI_TACK])
+			.addCondition("item.attributes.laminate", ConditionOperators.NOT_EQUAL, LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY);
 		this.addRateProvider(rl_sts_hi_tack);
 
 		let rl_bubble_free = new RateList(StickerPriceProvider.RATELIST_BUBBLE_FREE, new Rate(15, true, 0));
 		rl_bubble_free.setType(RateProviderType.ADDON)
-			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.BUBBLE_FREE]);
+			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.BUBBLE_FREE]);
 		this.addRateProvider(rl_bubble_free);
 
 		let rl_arlon_transfer = new RateList(StickerPriceProvider.RATELIST_ARLON_TRANSFER, new Rate(20, true, 0));
 		rl_arlon_transfer.setType(RateProviderType.ADDON)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE])
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE])
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL);
 		this.addRateProvider(rl_arlon_transfer);
 	}

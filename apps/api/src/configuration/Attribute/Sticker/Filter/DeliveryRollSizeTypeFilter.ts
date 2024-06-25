@@ -1,21 +1,21 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { DeliveryRollSizeTypes, DeliveryRollSizeTypesAttribute } from "$/configuration/attributes/DeliveryRollSizeTypeAttribute";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { DeliveryRollSizeTypeAttribute } from "../../DeliveryRollSizeTypeAttribute";
-import { DeliveryAttribute } from "../DeliveryAttribute";
+import { DeliveryTypes } from "../../../attributes/DeliveryAttribute";
 
 export class DeliveryRollSizeTypeFilter extends ProductAttrFilter {
 	public constructor() {
-		super( DeliveryRollSizeTypeAttribute.ALIAS );
+		super( DeliveryRollSizeTypesAttribute.getName() );
 		
 		this.createFilter( [ 
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_SMALL,
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_MEDIUM,
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_LARGE,
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_XLARGE,
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_XXLARGE,
-			DeliveryRollSizeTypeAttribute.ROLL_SIZE_MAX,
+			DeliveryRollSizeTypes.SMALL,
+			DeliveryRollSizeTypes.MEDIUM,
+			DeliveryRollSizeTypes.LARGE,
+			DeliveryRollSizeTypes.XLARGE,
+			DeliveryRollSizeTypes.XXLARGE,
+			DeliveryRollSizeTypes.MAX,
 		] )
 			.conditionBuilder
-			.addCondition( "item.attributes.delivery", ConditionOperators.EQUAL, DeliveryAttribute.DELIVERY_ROLL );	
+			.addCondition( "item.attributes.delivery", ConditionOperators.EQUAL, DeliveryTypes.ROLL );	
 	}
 }

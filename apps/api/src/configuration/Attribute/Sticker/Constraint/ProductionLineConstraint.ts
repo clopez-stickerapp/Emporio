@@ -1,31 +1,31 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { FeatureAttribute } from "../FeatureAttribute";
-import { MaxSizeAttribute } from "../MaxSizeAttribute";
-import { ProductionLineAttribute } from "../ProductionLineAttribute";
+import { ProductFeatures } from "../../../attributes/FeatureAttribute";
+import { MaxSizeAttribute, MaxSizes } from "../../../attributes/MaxSizeAttribute";
+import { DigitalLaminates, DigitalMaterials, LaserLaminates, LaserMaterials, ProductionLineAttribute, ProductionLines } from "../../../attributes/ProductionLineAttribute";
 
 export class ProductionLineConstraint extends ProductAttrConstraint {
 	public constructor() {
-		super( ProductionLineAttribute.ALIAS );
+		super( ProductionLineAttribute.getName() );
 
-		this.createConditionsFor( ProductionLineAttribute.DIGITAL )
-			.addCondition( "item.attributes.material", ConditionOperators.IN, ProductionLineAttribute.DIGITAL_MATERIALS )
-			.addCondition( "item.attributes.laminate", ConditionOperators.IN, ProductionLineAttribute.DIGITAL_LAMINATES )
+		this.createConditionsFor( ProductionLines.DIGITAL )
+			.addCondition( "item.attributes.material", ConditionOperators.IN, DigitalMaterials )
+			.addCondition( "item.attributes.laminate", ConditionOperators.IN, DigitalLaminates )
 			.addCondition( "item.attributes.feature", ConditionOperators.NOT_IN, [
-				FeatureAttribute.BACKPAPER_PRINT
+				ProductFeatures.BACKPAPER_PRINT
 			] );
 
-		this.createConditionsFor( ProductionLineAttribute.LASER )
-			.addCondition( "item.attributes.material", ConditionOperators.IN, ProductionLineAttribute.LASER_MATERIALS )
-			.addCondition( "item.attributes.laminate", ConditionOperators.IN, ProductionLineAttribute.LASER_LAMINATES )
-			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_ONE_SIDE_LASER )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_ONE_SIDE_LASER )
+		this.createConditionsFor( ProductionLines.LASER )
+			.addCondition( "item.attributes.material", ConditionOperators.IN, LaserMaterials )
+			.addCondition( "item.attributes.laminate", ConditionOperators.IN, LaserLaminates )
+			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.ONE_SIDE_LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.ONE_SIDE_LASER )
 			.addSubGroup( ConditionRelations.OR )
-			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER );
+			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizes.LASER );
 		
-		this.createConditionsFor( ProductionLineAttribute.SPECIAL )
+		this.createConditionsFor( ProductionLines.SPECIAL )
 			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, "special" );
 	}
 }

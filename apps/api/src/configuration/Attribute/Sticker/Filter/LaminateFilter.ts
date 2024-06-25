@@ -2,14 +2,14 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerAttribute } from "../../ResellerAttribute";
-import { InkAttribute } from "../InkAttribute";
-import { LaminateAttribute } from "../LaminateAttribute";
-import { MaterialAttribute } from "../MaterialAttribute";
+import { ResellerValues } from "../../../attributes/ResellerAttribute";
+import { InkValues } from "../../../attributes/InkAttribute";
+import { LaminateAttribute, LaminateValues } from "../../../attributes/LaminateAttribute";
+import { MaterialValues } from "../../../attributes/MaterialAttribute";
 
 export class LaminateFilter extends ProductAttrFilter {
 	public constructor() {
-		super( LaminateAttribute.ALIAS );
+		super( LaminateAttribute.getName() );
 
 		this.addStickerappFilters();
 		this.addSTSFilters();
@@ -17,76 +17,76 @@ export class LaminateFilter extends ProductAttrFilter {
 		
 	private addStickerappFilters() {
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV
+			LaminateValues.GLOSSY_UV
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.GLITTER,
-				MaterialAttribute.BRUSHED_ALLOY,
-				MaterialAttribute.PRISMATIC,
-				MaterialAttribute.GITD,
-				MaterialAttribute.PIXIE_DUST,
+				MaterialValues.GLITTER,
+				MaterialValues.BRUSHED_ALLOY,
+				MaterialValues.PRISMATIC,
+				MaterialValues.GITD,
+				MaterialValues.PIXIE_DUST,
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV,
-			LaminateAttribute.SOFT_TOUCH,
-			LaminateAttribute.CRACKED_ICE
+			LaminateValues.GLOSSY_UV,
+			LaminateValues.SOFT_TOUCH,
+			LaminateValues.CRACKED_ICE
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.WHITE,
-				MaterialAttribute.CLEAR
+				MaterialValues.WHITE,
+				MaterialValues.CLEAR
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV,
-			LaminateAttribute.SATIN_MATTE,
-			LaminateAttribute.CRACKED_ICE
+			LaminateValues.GLOSSY_UV,
+			LaminateValues.SATIN_MATTE,
+			LaminateValues.CRACKED_ICE
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.HOLOGRAPHIC
+				MaterialValues.HOLOGRAPHIC
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV,
-			LaminateAttribute.SOFT_TOUCH
+			LaminateValues.GLOSSY_UV,
+			LaminateValues.SOFT_TOUCH
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.MIRROR,
-				MaterialAttribute.WHITE_REMOVABLE
+				MaterialValues.MIRROR,
+				MaterialValues.WHITE_REMOVABLE
 			] );
 
 		const inkFilter = this.createFilter( [
-			LaminateAttribute.GLOSSY_NO_UV,
-			LaminateAttribute.UNCOATED,
+			LaminateValues.GLOSSY_NO_UV,
+			LaminateValues.UNCOATED,
 		], ConditionRelations.OR );
 
 		inkFilter.conditionBuilder.setBaseComplexityScore( 100 );
 
 		inkFilter.conditionBuilder
 			.addCondition( "item.attributes.ink", ConditionOperators.IN, [
-				InkAttribute.INVISIBLE_INK,
-				InkAttribute.PINK_INK,
+				InkValues.INVISIBLE_INK,
+				InkValues.PINK_INK,
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV_12_MIL_HEAVY_DUTY
+			LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY
 		] )
 			.conditionBuilder
 			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.WHITE_HI_TACK
+				MaterialValues.WHITE_HI_TACK
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.UNCOATED
+			LaminateValues.UNCOATED
 		], ConditionRelations.OR )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -94,29 +94,29 @@ export class LaminateFilter extends ProductAttrFilter {
 				CustomStickerFamily.PRODUCT_WALL
 			] )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.KRAFT_PAPER,
-				MaterialAttribute.SATIN_MATTE,
-				MaterialAttribute.COLORED_VINYL,
-				MaterialAttribute.WHITE_WALL
+				MaterialValues.KRAFT_PAPER,
+				MaterialValues.SATIN_MATTE,
+				MaterialValues.COLORED_VINYL,
+				MaterialValues.WHITE_WALL
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.SANDY
+			LaminateValues.SANDY
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 1000 )
 			.addSubGroup( ConditionRelations.OR )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.SKIN );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.SKIN );
 
 		this.createFilter( [
-			LaminateAttribute.EPOXY
+			LaminateValues.EPOXY
 		] )
 			.conditionBuilder
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_3D_DOME );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_THIN_NO_UV
+			LaminateValues.GLOSSY_THIN_NO_UV
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 1000 )
@@ -125,9 +125,9 @@ export class LaminateFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_THIN_NO_UV,
-			LaminateAttribute.UNCOATED,
-			LaminateAttribute.SATIN_MATTE
+			LaminateValues.GLOSSY_THIN_NO_UV,
+			LaminateValues.UNCOATED,
+			LaminateValues.SATIN_MATTE
 		] )
 			.conditionBuilder
 			// The complexity of this filter needs to be lower than the one below
@@ -138,27 +138,27 @@ export class LaminateFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			LaminateAttribute.UNCOATED,
+			LaminateValues.UNCOATED,
 		] )
 			.conditionBuilder
 			// The complexity of this filter needs to be higher than the one above
 			// To ensure that kraft_thin doesn't get the glossy option
 			.setBaseComplexityScore( 1001 )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.KRAFT_THIN)
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.KRAFT_THIN)
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_LABELS_ON_ROLL
 			] );
 
 
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV
+			LaminateValues.GLOSSY_UV
 		], ConditionRelations.OR )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.COLORED_VINYL )
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.COLORED_VINYL )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_SHEET_LEGACY );
 
 		this.createFilter( [
-			LaminateAttribute.UNCOATED
+			LaminateValues.UNCOATED
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 1000 )
@@ -167,19 +167,19 @@ export class LaminateFilter extends ProductAttrFilter {
 
 	private addSTSFilters() {
 		this.createFilter( [
-			LaminateAttribute.GLOSSY_UV_12_MIL_HEAVY_DUTY,
-			LaminateAttribute.GLOSSY_UV,
-			LaminateAttribute.SANDY
+			LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY,
+			LaminateValues.GLOSSY_UV,
+			LaminateValues.SANDY
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 120 )
 			.addCondition( "item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_3D_DOME )
 			.addCondition( "item.attributes.reseller", ConditionOperators.IN, [ 
-				ResellerAttribute.VALUE_STICKERSTHATSTICK, 
-				ResellerAttribute.VALUE_STICKIT 
+				ResellerValues.STICKERSTHATSTICK, 
+				ResellerValues.STICKIT 
 			] )
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.WHITE_HI_TACK
+				MaterialValues.WHITE_HI_TACK
 			] );
 	}
 }

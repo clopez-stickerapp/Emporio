@@ -2,30 +2,30 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerAttribute } from "../../ResellerAttribute";
-import { MaterialAttribute } from "../MaterialAttribute";
-import { MinSizeAttribute } from "../MinSizeAttribute";
+import { ResellerValues } from "../../../attributes/ResellerAttribute";
+import { MaterialValues } from "../../../attributes/MaterialAttribute";
+import { MinSizeAttribute, MinSizes } from "../../../attributes/MinSizeAttribute";
 
 export class MinSizeFilter extends ProductAttrFilter {
 	public constructor() {
-		super( MinSizeAttribute.ALIAS );
+		super( MinSizeAttribute.getName() );
 
 		this.createFilter( [
-			MinSizeAttribute.MIN_SIZE_DEFAULT
+			MinSizes.DEFAULT
 		] );
 
 		this.createFilter( [
-			MinSizeAttribute.MIN_SIZE_SPECIAL_STS
+			MinSizes.SPECIAL_STS
 		] )
 			.conditionBuilder
-			.addCondition( "item.attributes.reseller", ConditionOperators.EQUAL, ResellerAttribute.VALUE_STICKERSTHATSTICK );
+			.addCondition( "item.attributes.reseller", ConditionOperators.EQUAL, ResellerValues.STICKERSTHATSTICK );
 
 		this.createFilter( [
-			MinSizeAttribute.MIN_SIZE_BIGGER
+			MinSizes.BIGGER
 		], ConditionRelations.OR )
 			.conditionBuilder
 			.addCondition( "item.attributes.material", ConditionOperators.IN, [
-				MaterialAttribute.WHITE_WALL,
+				MaterialValues.WHITE_WALL,
 			] )
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_WALL,
@@ -33,7 +33,7 @@ export class MinSizeFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [ 
-			MinSizeAttribute.MIN_SIZE_SHEET_CUSTOMIZABLE
+			MinSizes.SHEET_CUSTOMIZABLE
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -42,7 +42,7 @@ export class MinSizeFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MinSizeAttribute.MIN_SIZE_SHEET_LEGACY
+			MinSizes.SHEET_LEGACY
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -50,7 +50,7 @@ export class MinSizeFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MinSizeAttribute.MIN_SIZE_STICKER_ON_SHEET
+			MinSizes.STICKER_ON_SHEET
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [

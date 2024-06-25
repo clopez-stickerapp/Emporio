@@ -1,14 +1,13 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
-import { SkinProductFamily } from "$/configuration/Family/SkinProductFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerAttribute } from "../../ResellerAttribute";
-import { MaterialAttribute } from "../MaterialAttribute";
+import { ResellerValues } from "../../../attributes/ResellerAttribute";
+import { MaterialAttribute, MaterialValues, MaterialsLabelsOnRollValues } from "../../../attributes/MaterialAttribute";
 
 export class MaterialFilter extends ProductAttrFilter {
 	public constructor() {
-		super( MaterialAttribute.ALIAS );
+		super( MaterialAttribute.getName() );
 
 		this.addStickerappFilters();
 		this.addSTSFilters();
@@ -16,18 +15,18 @@ export class MaterialFilter extends ProductAttrFilter {
 
 	private addStickerappFilters() {
 		this.createFilter( [
-			MaterialAttribute.WHITE,
-			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.GLITTER,
-			MaterialAttribute.CLEAR,
-			MaterialAttribute.MIRROR,
-			MaterialAttribute.PRISMATIC,
-			MaterialAttribute.BRUSHED_ALLOY,
-			MaterialAttribute.WHITE_HI_TACK,
-			MaterialAttribute.KRAFT_PAPER,
-			MaterialAttribute.WHITE_REMOVABLE,
-			MaterialAttribute.PIXIE_DUST,
-			MaterialAttribute.GITD,
+			MaterialValues.WHITE,
+			MaterialValues.HOLOGRAPHIC,
+			MaterialValues.GLITTER,
+			MaterialValues.CLEAR,
+			MaterialValues.MIRROR,
+			MaterialValues.PRISMATIC,
+			MaterialValues.BRUSHED_ALLOY,
+			MaterialValues.WHITE_HI_TACK,
+			MaterialValues.KRAFT_PAPER,
+			MaterialValues.WHITE_REMOVABLE,
+			MaterialValues.PIXIE_DUST,
+			MaterialValues.GITD,
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -37,18 +36,18 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE,
-			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.CLEAR,
-			MaterialAttribute.GLITTER,
-			MaterialAttribute.MIRROR,
-			MaterialAttribute.PIXIE_DUST,
-			MaterialAttribute.PRISMATIC,
-			MaterialAttribute.BRUSHED_ALLOY,
-			MaterialAttribute.KRAFT_PAPER,
-			MaterialAttribute.WHITE_HI_TACK,
-			MaterialAttribute.GITD,
-			MaterialAttribute.WHITE_REMOVABLE,
+			MaterialValues.WHITE,
+			MaterialValues.HOLOGRAPHIC,
+			MaterialValues.CLEAR,
+			MaterialValues.GLITTER,
+			MaterialValues.MIRROR,
+			MaterialValues.PIXIE_DUST,
+			MaterialValues.PRISMATIC,
+			MaterialValues.BRUSHED_ALLOY,
+			MaterialValues.KRAFT_PAPER,
+			MaterialValues.WHITE_HI_TACK,
+			MaterialValues.GITD,
+			MaterialValues.WHITE_REMOVABLE,
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -57,17 +56,17 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE,
-			MaterialAttribute.WHITE_REMOVABLE,
-			MaterialAttribute.CLEAR,
-			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.MIRROR,
-			MaterialAttribute.GLITTER,
-			MaterialAttribute.BRUSHED_ALLOY,
-			MaterialAttribute.GITD,
-			MaterialAttribute.PRISMATIC,
-			MaterialAttribute.KRAFT_PAPER,
-			MaterialAttribute.PIXIE_DUST
+			MaterialValues.WHITE,
+			MaterialValues.WHITE_REMOVABLE,
+			MaterialValues.CLEAR,
+			MaterialValues.HOLOGRAPHIC,
+			MaterialValues.MIRROR,
+			MaterialValues.GLITTER,
+			MaterialValues.BRUSHED_ALLOY,
+			MaterialValues.GITD,
+			MaterialValues.PRISMATIC,
+			MaterialValues.KRAFT_PAPER,
+			MaterialValues.PIXIE_DUST
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -75,11 +74,11 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE_STURDY,
+			MaterialValues.WHITE_STURDY,
 			// TODO: Will be released after Magnus template fix.
-			// MaterialAttribute.HOLOGRAPHIC,
-			// MaterialAttribute.MIRROR,
-			// MaterialAttribute.BRUSHED_ALLOY,
+			// MaterialValues.HOLOGRAPHIC,
+			// MaterialValues.MIRROR,
+			// MaterialValues.BRUSHED_ALLOY,
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -87,7 +86,7 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.CLEAR
+			MaterialValues.CLEAR
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -95,7 +94,7 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE_HI_TACK
+			MaterialValues.WHITE_HI_TACK
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -103,7 +102,7 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE_REMOVABLE
+			MaterialValues.WHITE_REMOVABLE
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -111,7 +110,7 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE_WALL
+			MaterialValues.WHITE_WALL
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -119,42 +118,30 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.WHITE
+			MaterialValues.WHITE
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_FLOOR
 			] );
 
-		const skinFilter = this.createFilter( [
-			MaterialAttribute.SKIN
-		], ConditionRelations.OR );
-
-		skinFilter.conditionBuilder
-			.addCondition( "item.productName", ConditionOperators.IN, [
-				CustomStickerFamily.PRODUCT_LAPTOP_SKIN
-			] )
-			.addCondition( "item.productFamilyName", ConditionOperators.IN, [
-				SkinProductFamily.NAME
-			] );
-
 		this.createFilter( [
-			MaterialAttribute.WHITE,
-			MaterialAttribute.CLEAR
+			MaterialValues.WHITE,
+			MaterialValues.CLEAR
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_LABELS_ON_SHEET
 			] );
 
-		this.createFilter( MaterialAttribute.MATERIALS_LABELS_ON_ROLL )
+		this.createFilter( MaterialsLabelsOnRollValues )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_LABELS_ON_ROLL
 			] );
 
 		this.createFilter( [
-				MaterialAttribute.CLEAR
+				MaterialValues.CLEAR
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -162,13 +149,13 @@ export class MaterialFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [
-			MaterialAttribute.COLORED_VINYL,
-			MaterialAttribute.WHITE,
-			MaterialAttribute.FROSTED,
-			MaterialAttribute.WHITE_HI_TACK,
-			MaterialAttribute.METALLIC_GOLD,
-			MaterialAttribute.METALLIC_SILVER,
-			MaterialAttribute.BUBBLE_FREE
+			MaterialValues.COLORED_VINYL,
+			MaterialValues.WHITE,
+			MaterialValues.FROSTED,
+			MaterialValues.WHITE_HI_TACK,
+			MaterialValues.METALLIC_GOLD,
+			MaterialValues.METALLIC_SILVER,
+			MaterialValues.BUBBLE_FREE
 		] )
 		.conditionBuilder
 		.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL );
@@ -176,25 +163,25 @@ export class MaterialFilter extends ProductAttrFilter {
 
 	private addSTSFilters() {
 		this.createFilter( [
-			MaterialAttribute.WHITE,
-			MaterialAttribute.HOLOGRAPHIC,
-			MaterialAttribute.GLITTER,
-			MaterialAttribute.CLEAR,
-			MaterialAttribute.MIRROR,
-			MaterialAttribute.PRISMATIC,
-			MaterialAttribute.BRUSHED_ALLOY,
-			MaterialAttribute.WHITE_HI_TACK,
-			MaterialAttribute.KRAFT_PAPER,
-			MaterialAttribute.WHITE_REMOVABLE,
-			MaterialAttribute.WHITE_WALL,
-			MaterialAttribute.GITD,
-			MaterialAttribute.REFLECTIVE,
+			MaterialValues.WHITE,
+			MaterialValues.HOLOGRAPHIC,
+			MaterialValues.GLITTER,
+			MaterialValues.CLEAR,
+			MaterialValues.MIRROR,
+			MaterialValues.PRISMATIC,
+			MaterialValues.BRUSHED_ALLOY,
+			MaterialValues.WHITE_HI_TACK,
+			MaterialValues.KRAFT_PAPER,
+			MaterialValues.WHITE_REMOVABLE,
+			MaterialValues.WHITE_WALL,
+			MaterialValues.GITD,
+			MaterialValues.REFLECTIVE,
 		] )
 			.conditionBuilder
 			.setBaseComplexityScore( 120 )
 			.addCondition( "item.attributes.reseller", ConditionOperators.IN, [ 
-				ResellerAttribute.VALUE_STICKERSTHATSTICK, 
-				ResellerAttribute.VALUE_STICKIT 
+				ResellerValues.STICKERSTHATSTICK, 
+				ResellerValues.STICKIT 
 			] )
 			.addCondition( "item.productName", ConditionOperators.IN, [
 				CustomStickerFamily.PRODUCT_DIE_CUT, 

@@ -1,22 +1,22 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { InkAttribute } from "../InkAttribute";
-import { LaminateAttribute } from "../LaminateAttribute";
+import { InkAttribute, InkValues } from "../../../attributes/InkAttribute";
+import { LaminateValues } from "../../../attributes/LaminateAttribute";
 
 export class InkFilter extends ProductAttrFilter {
     public constructor() {
-        super( InkAttribute.ALIAS );
+        super( InkAttribute.getName() );
 
         this.createFilter( [] );
 
         this.createFilter( [
-            InkAttribute.INVISIBLE_INK,
-            InkAttribute.PINK_INK
+            InkValues.INVISIBLE_INK,
+            InkValues.PINK_INK
 		] )
 			.conditionBuilder
 			.addCondition( "item.attributes.laminate", ConditionOperators.IN, [
-				LaminateAttribute.GLOSSY_NO_UV,
-				LaminateAttribute.UNCOATED
+				LaminateValues.GLOSSY_NO_UV,
+				LaminateValues.UNCOATED
 			] );
     }
 }

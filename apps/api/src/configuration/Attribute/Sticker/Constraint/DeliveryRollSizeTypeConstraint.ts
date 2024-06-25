@@ -1,31 +1,31 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { DeliveryRollSizeTypeAttribute } from "../../DeliveryRollSizeTypeAttribute";
-import { DeliveryRollTopEdgeMarginAttribute } from "../../DeliveryRollTopEdgeMarginAttribute";
-import { CutDirectionAttribute } from "../CutDirectionAttribute";
+import { DeliveryRollSizeTypes, DeliveryRollSizeTypesAttribute } from "../../../attributes/DeliveryRollSizeTypeAttribute";
+import { DeliveryRollTopEdgeMarginDefault } from "../../../attributes/DeliveryRollTopEdgeMarginAttribute";
+import { CutDirectionAttributeValues } from "../../../attributes/CutDirectionAttribute";
 
 export class DeliveryRollSizeTypeConstraint extends ProductAttrConstraint {
 	public constructor() {
-		super( DeliveryRollSizeTypeAttribute.ALIAS );
+		super( DeliveryRollSizeTypesAttribute.getName() );
 
-		for ( const size of DeliveryRollSizeTypeAttribute.getSizes() ) {
+		for ( const size of Object.values( DeliveryRollSizeTypes) ) {
 			const conditions = this.createConditionsFor( size );
 			
-			const maxSize = size - ( 2 * DeliveryRollTopEdgeMarginAttribute.DEFAULT_VALUE );
+			const maxSize = size - ( 2 * DeliveryRollTopEdgeMarginDefault );
 			
 			conditions.addSubGroup( ConditionRelations.OR )
 				.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, maxSize )
 				.addCondition( "item.attributes.cut_direction", ConditionOperators.IN, [
-					CutDirectionAttribute.TOP_FIRST,
-					CutDirectionAttribute.BOTTOM_FIRST,
+					CutDirectionAttributeValues.TOP_FIRST,
+					CutDirectionAttributeValues.BOTTOM_FIRST,
 				] );
 			
 			conditions.addSubGroup( ConditionRelations.OR )
 				.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, maxSize )
 				.addCondition( "item.attributes.cut_direction", ConditionOperators.IN, [
-					CutDirectionAttribute.LEFT_FIRST,
-					CutDirectionAttribute.RIGHT_FIRST,
+					CutDirectionAttributeValues.LEFT_FIRST,
+					CutDirectionAttributeValues.RIGHT_FIRST,
 				] );
 		}
 	}

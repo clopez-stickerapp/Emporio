@@ -3,7 +3,7 @@ import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { LaminateValues } from "./LaminateAttribute";
 import { MaterialValues } from "./MaterialAttribute";
 
-export const ProductionLineValues = {
+export const ProductionLines = {
 	LASER: "laser",
 	DIGITAL: "digital",
 	SPECIAL: "special",
@@ -82,5 +82,5 @@ export const LaserLaminates = [
 export const ProductionLineAttribute = new ProductAttr({
 	name: "production_line",
 	type: ProductAttrValueType.STRING,
-	values: Object.values( ProductionLineValues ),
+	values: Object.values( ProductionLines ),
 });

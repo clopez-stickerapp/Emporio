@@ -2,7 +2,7 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate, RateType } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
 import { ProductItem } from "$/product/ProductItem";
-import { PriceMarginPercentageAttribute } from "../Attribute/PriceMarginPercentageAttribute";
+import { PriceMarginPercentageAttribute } from "../attributes/PriceMarginPercentageAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 
 export class AuthorMarginRateProvider extends RateProvider{
@@ -16,7 +16,7 @@ export class AuthorMarginRateProvider extends RateProvider{
 	}
 
 	public async getRate(productItem: ProductItem, units: number): Promise<Rate> {
-		let priceMarginPercentage = productItem.getAttribute<number>( PriceMarginPercentageAttribute.ALIAS );
+		let priceMarginPercentage = productItem.getAttribute<number>( PriceMarginPercentageAttribute.getName() );
 
 		if ( priceMarginPercentage === undefined ) {
 			throw new Error( "Can't find price margin" );

@@ -2,13 +2,13 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { LaminateAttribute } from "../LaminateAttribute";
-import { MaterialAttribute } from "../MaterialAttribute";
-import { SizeAttribute } from "../SizeAttribute";
+import { LaminateValues } from "../../../attributes/LaminateAttribute";
+import { MaterialValues } from "../../../attributes/MaterialAttribute";
+import { SizeAttribute } from "../../../attributes/SizeAttribute";
 
 export class SizeFilter extends ProductAttrFilter {
 	public constructor() {
-		super( SizeAttribute.ALIAS );
+		super( SizeAttribute.getName() );
 
 		this.createDefaultSizeOptions();
 		this.createLegacySheetSizeOptions();
@@ -75,7 +75,7 @@ export class SizeFilter extends ProductAttrFilter {
 			"7.7x3.8 cm"
 		] )
 			.conditionBuilder
-			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateAttribute.EPOXY );
+			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.EPOXY );
 			
 		// Imperial units
 		const imperialEpoxyFilter = this.createFilter( [
@@ -86,7 +86,7 @@ export class SizeFilter extends ProductAttrFilter {
 		] );
 		
 		imperialEpoxyFilter.conditionBuilder
-			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateAttribute.EPOXY )
+			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.EPOXY )
 			.addCondition( "item.attributes.imperial_units", ConditionOperators.EQUAL, true );
 	}
 
@@ -102,7 +102,7 @@ export class SizeFilter extends ProductAttrFilter {
 		] )
 			.conditionBuilder
 			.addSubGroup( ConditionRelations.OR )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_WALL )
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE_WALL )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_WALL )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR );
 
@@ -118,7 +118,7 @@ export class SizeFilter extends ProductAttrFilter {
 
 		imperial.conditionBuilder
 			.addSubGroup( ConditionRelations.OR )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_WALL )
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE_WALL )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_WALL )
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR );
 		

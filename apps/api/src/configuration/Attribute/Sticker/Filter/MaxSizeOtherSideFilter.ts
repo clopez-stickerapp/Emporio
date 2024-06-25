@@ -1,14 +1,14 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { MaxSizeOtherSideAttribute } from "../MaxSizeOtherSideAttribute";
+import { MaxSizeOtherSideAttribute, MaxSizeOtherSideValues } from "../../../attributes/MaxSizeOtherSideAttribute";
 
 export class MaxSizeOtherSideFilter extends ProductAttrFilter {
 	public constructor() {
-		super( MaxSizeOtherSideAttribute.ALIAS );
+		super( MaxSizeOtherSideAttribute.getName() );
 
 		this.createFilter( [ 
-			MaxSizeOtherSideAttribute.MAX_SIZE_OTHER_SIDE_ROLL 
+			MaxSizeOtherSideValues.ROLL 
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [
@@ -16,7 +16,7 @@ export class MaxSizeOtherSideFilter extends ProductAttrFilter {
 			] );
 
 		this.createFilter( [ 
-			MaxSizeOtherSideAttribute.MAX_SIZE_OTHER_SIDE_WALL
+			MaxSizeOtherSideValues.WALL
 		] )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.IN, [

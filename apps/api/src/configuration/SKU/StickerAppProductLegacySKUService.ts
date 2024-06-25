@@ -1,8 +1,8 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductItem } from "$/product/ProductItem";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
-import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
-import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 
 export class StickerAppProductLegacySKUService {
@@ -13,56 +13,56 @@ export class StickerAppProductLegacySKUService {
 
 		this.skuValue.addConditionedValue( 101 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.HOLOGRAPHIC );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.HOLOGRAPHIC );
 
 		this.skuValue.addConditionedValue( 102 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE );
 
 		this.skuValue.addConditionedValue( 103 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_HI_TACK );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE_HI_TACK );
 
 		this.skuValue.addConditionedValue( 104 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.MIRROR );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.MIRROR );
 
 		this.skuValue.addConditionedValue( 105 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.KRAFT_PAPER );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.KRAFT_PAPER );
 
 		this.skuValue.addConditionedValue( 106 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.BRUSHED_ALLOY );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.BRUSHED_ALLOY );
 
 		this.skuValue.addConditionedValue( 107 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.PRISMATIC );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.PRISMATIC );
 
 		this.skuValue.addConditionedValue( 108 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.CLEAR );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.CLEAR );
 
 		this.skuValue.addConditionedValue( 109 )
 			.conditionBuilder
-			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateAttribute.SOFT_TOUCH );
+			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.SOFT_TOUCH );
 
 		this.skuValue.addConditionedValue( 110 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.GLITTER );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.GLITTER );
 
 		this.skuValue.addConditionedValue( 112 )
 			.conditionBuilder
-			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateAttribute.EPOXY )
+			.addCondition( "item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.EPOXY )
 			.setBaseComplexityScore( 1000 )
 
 		this.skuValue.addConditionedValue( 113 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_REMOVABLE );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE_REMOVABLE );
 
 		this.skuValue.addConditionedValue( 114 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_WALL );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE_WALL );
 
 		this.skuValue.addConditionedValue( 115 )
 			.conditionBuilder
@@ -71,20 +71,20 @@ export class StickerAppProductLegacySKUService {
 		this.skuValue.addConditionedValue( 116 )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE );
 
 		this.skuValue.addConditionedValue( 117 )
 			.conditionBuilder
 			.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET )
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.CLEAR );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.CLEAR );
 
 		this.skuValue.addConditionedValue( 124 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.GITD );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.GITD );
 
 		this.skuValue.addConditionedValue( 127 )
 			.conditionBuilder
-			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.PIXIE_DUST );
+			.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.PIXIE_DUST );
 	}
 
 	public getSKU( productItem: ProductItem ): number {

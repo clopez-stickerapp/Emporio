@@ -24,10 +24,12 @@ const getAttributes = ( withProduction: boolean = false ) => {
 const service = new StickerAppProductService();
 
 export const ProductFamily = () => Type.String( { 
+	minLength: 1,
 	examples: service.getProductFamilies().map( family => family.getName() ),
 } );
 
-export const ProductName = () => Type.String( { 
+export const ProductName = () => Type.String( {
+	minLength: 1,
 	examples: service.getProductFamilies().map( family => Object.keys( family.getProducts() ) ).flat()
 } );
 

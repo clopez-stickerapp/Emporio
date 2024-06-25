@@ -8,7 +8,7 @@ import { BadRequestError, NotFoundError } from './app/utils';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { Emporio } from './Emporio';
-import { StickerAppProductService } from './configuration/StickerAppProductService';
+import { services } from './configuration/ServiceLoader';
 
 declare module 'fastify' {
 	interface FastifyInstance {
@@ -21,7 +21,7 @@ async function buildServer() {
 		logger: getLoggerOptions(),
 	});
 
-	const service = new StickerAppProductService();
+	const service = services['stickerapp'];
 	server.decorate("emporio", new Emporio(service));
 
 	await server.register(swagger, {

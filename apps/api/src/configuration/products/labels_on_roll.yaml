@@ -1,0 +1,7 @@
+name: labels_on_roll
+sku: LORSDR-108
+attributes:
+  sheet_type: single
+  delivery: roll
+#   cut_direction: right_first
+  

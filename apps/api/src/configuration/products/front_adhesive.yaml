@@ -1,0 +1,9 @@
+name: front_adhesive
+sku: FASC-108
+attributes:
+  sheet_type: single
+  material: clear
+  laminate: glossy_uv
+  white_layer: manually
+#   note: "Front Adhesive"
+  

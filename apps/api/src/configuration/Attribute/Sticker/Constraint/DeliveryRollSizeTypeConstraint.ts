@@ -1,13 +1,13 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { DeliveryRollSizeTypes, DeliveryRollSizeTypesAttribute } from "../../../attributes/DeliveryRollSizeTypeAttribute";
+import { DeliveryRollSizeTypes, DeliveryRollSizeTypeAttribute } from "../../../attributes/DeliveryRollSizeTypeAttribute";
 import { DeliveryRollTopEdgeMarginDefault } from "../../../attributes/DeliveryRollTopEdgeMarginAttribute";
 import { CutDirectionAttributeValues } from "../../../attributes/CutDirectionAttribute";
 
 export class DeliveryRollSizeTypeConstraint extends ProductAttrConstraint {
 	public constructor() {
-		super( DeliveryRollSizeTypesAttribute.getName() );
+		super( DeliveryRollSizeTypeAttribute.getName() );
 
 		for ( const size of Object.values( DeliveryRollSizeTypes) ) {
 			const conditions = this.createConditionsFor( size );

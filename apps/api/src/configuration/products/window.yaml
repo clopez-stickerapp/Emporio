@@ -1,0 +1,5 @@
+name: window
+sku: WS-108
+attributes:
+  sheet_type: single
+  

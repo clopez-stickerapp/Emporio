@@ -11,7 +11,7 @@ export const DeliveryRollSizeTypes = {
 	MAX: 280,
 }
 
-export const DeliveryRollSizeTypesAttribute = new ProductAttr({
+export const DeliveryRollSizeTypeAttribute = new ProductAttr({
 	name: "delivery_roll_size_type",
 	type: ProductAttrValueType.INT,
 	dynamicvalue: true,

@@ -1,0 +1,10 @@
+name: sheet_legacy
+sku: SLSTS-108
+attributes:
+  sheet_name:
+    - sheet
+    - template
+    - sticker
+  sheet_type: sheet
+  delivery: single
+  

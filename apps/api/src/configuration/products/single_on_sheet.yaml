@@ -1,0 +1,6 @@
+name: single_on_sheet
+sku: HSOS-80085
+attributes:
+  sheet_type: single
+  delivery: sheet
+  

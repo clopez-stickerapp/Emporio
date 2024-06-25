@@ -1,7 +1,6 @@
 import { Type, Static } from "@sinclair/typebox";
 import { CustomStickerFamily } from "./configuration/Family/CustomStickerFamily";
 import { StickerAppProductLegacySKUService } from "./configuration/SKU/StickerAppProductLegacySKUService";
-import { StickerAppProductService } from "./configuration/StickerAppProductService";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
 import { ProductAttr } from "./product/attribute/ProductAttr";
@@ -48,7 +47,7 @@ export class Emporio {
 	protected computer: ProductAttrComputerExtended;
 	protected stickerAppLegacySKU: StickerAppProductLegacySKUService;
 
-	public constructor(service: ProductService = new StickerAppProductService()) {
+	public constructor(service: ProductService) {
 		this.productService = service;
 		this.builder = new ProductItemBuilder( service );
 		this.validator = new ProductItemValidator( service );

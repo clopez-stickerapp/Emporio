@@ -2,16 +2,15 @@ import { readFolder, readYaml, removeExtension } from "$/helpers/FileSystem";
 import { ProductFamily } from "$/product/ProductFamily";
 import { ProductService } from "$/product/ProductService";
 import { NamedConfig } from "$data/NamedConfig";
-import { AttributeConfig } from "./interface/AttributeConfig";
 import { FamilyConfig } from "./interface/FamilyConfig";
 import { ProductConfig } from "./interface/ProductConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
+import { allAttributes } from "./attributes/attributes";
 
 const servicePathFolder = "config/services";
 const familyConfigFolder = "config/families";
 const productConfigFolder = "config/products";
-const attributeConfigFolder = "config/attributes";
 
 class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
@@ -19,7 +18,6 @@ class ServiceLoader {
 	protected familyConfigs: Record<string, FamilyConfig> = {};
 	protected families: Record<string, ProductFamily> = {};
 	protected productConfigs: Record<string, ProductConfig> = {};
-	protected attributeConfigs: Record<string, AttributeConfig> = {};
 	protected attributes: Record<string, ProductAttr> = {};
 
 	public constructor() {
@@ -37,8 +35,6 @@ class ServiceLoader {
 		this.familyConfigs = this.readConfigs<FamilyConfig>(familyConfigFolder);
 		// Load all product configs
 		this.productConfigs = this.readConfigs<ProductConfig>(productConfigFolder);
-		// Load all attribute configs
-		this.attributeConfigs = this.readConfigs<AttributeConfig>(attributeConfigFolder);
 	}
 
 	protected loadServices(): void {
@@ -49,7 +45,7 @@ class ServiceLoader {
 		this.families = this.instantiateFromConfig<FamilyConfig, ProductFamily>(this.familyConfigs, (config) => new ProductFamily(config));
 
 		// Instantiate all attributes
-		this.attributes = this.instantiateFromConfig<AttributeConfig, ProductAttr>(this.attributeConfigs, (config) => new ProductAttr(config))
+		this.attributes = Object.fromEntries(allAttributes.map((attribute) => [ attribute.getName(), attribute ]));
 	}
 
 	protected registerAttributes(): void {

@@ -1,9 +1,0 @@
-name: laminate
-type: string
-values:
-  - glossy_uv
-  - glossy_no_uv
-  - matte
-  - uncoated
-  - sandy
-  - cracked_ice

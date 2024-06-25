@@ -2,7 +2,6 @@ import { AttributeConfig } from "$/configuration/interface/AttributeConfig";
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
 import { isEmpty } from "../../../Util";
 import { AttributeValue, AttributeValueSingle } from "./AttributeValue";
-import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 
 export class ProductAttr {
@@ -10,7 +9,7 @@ export class ProductAttr {
 	protected valueType: ProductAttrValueType;
 	protected multiValue: boolean;
 	protected dynamicValue: boolean = false;
-	protected values: ProductAttrValue[] = [];
+	protected values: AttributeValueSingle[] = [];
 
 	public constructor( config: AttributeConfig ) {
 		this.name = config.name;
@@ -35,15 +34,13 @@ export class ProductAttr {
 	 * @see ProductAttrValueTypes
 	 *
 	 */
-	public addAttrValue( value: AttributeValueSingle ): ProductAttrValue {
+	public addAttrValue( value: AttributeValueSingle ): void {
 		this.testValueType( value, true );
-		const productAttrValue = new ProductAttrValue( value, this );
-		this.values.push( productAttrValue );
-		return productAttrValue;
+		this.values.push( value );
 	}
 
-	public getAttrValue( value: AttributeValueSingle ): ProductAttrValue | null {
-		return this.values.find( attrValue => attrValue.getValue() === value ) ?? null;
+	public getAttrValue( value: AttributeValueSingle ): AttributeValueSingle | null {
+		return this.values.find( attrValue => attrValue === value ) ?? null;
 	}
 
 	public canBe( value: AttributeValue, skipMultiValue: boolean = false ): boolean {
@@ -116,7 +113,11 @@ export class ProductAttr {
 		return result;
 	}
 
-	public getValues(): ProductAttrValue[] {
+	public getName(): string {
+		return this.name;
+	}
+
+	public getValues(): AttributeValueSingle[] {
 		return this.values;
 	}
 

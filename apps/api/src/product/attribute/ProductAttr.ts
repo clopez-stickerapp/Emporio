@@ -1,3 +1,4 @@
+import { AttributeConfig } from "$/configuration/interface/AttributeConfig";
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
 import { isEmpty } from "../../../Util";
 import { AttributeValue, AttributeValueSingle } from "./AttributeValue";
@@ -5,19 +6,26 @@ import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 
 export class ProductAttr {
+	protected name: string;
 	protected valueType: ProductAttrValueType;
 	protected multiValue: boolean;
 	protected dynamicValue: boolean = false;
 	protected values: ProductAttrValue[] = [];
 
-	public constructor( valueType: ProductAttrValueType, multiValue: boolean = false, dynamicValue: boolean = false ) {
-		if ( multiValue && valueType === "boolean" ) {
-			throw new Error( "Cannot make a multivalue attribute with boolean type." );
+	public constructor( config: AttributeConfig ) {
+		this.name = config.name;
+		this.valueType = config.type;
+		this.multiValue = config.multivalue || false;
+		this.dynamicValue = config.dynamicvalue || false;
+		this.values = config.values || [];
+
+		if( this.multiValue && this.valueType === ProductAttrValueType.BOOL ){
+			throw new Error("Can't make a multivalue attribute with boolean type.");
 		}
-		
-		this.valueType = valueType;
-		this.multiValue = multiValue;
-		this.dynamicValue = dynamicValue;
+
+		// for (const value of this.values) {
+		// 	testValueType(value, this.valueType);
+		// }
 	}
 
 	/**

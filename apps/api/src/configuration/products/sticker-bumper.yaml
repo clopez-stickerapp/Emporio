@@ -1,0 +1,11 @@
+name: sticker-bumper
+overrides:
+  general:
+    material:
+      - white
+      - clear
+      - holographic
+      - mirror
+      - brushed_metal
+    laminate:
+      - glossy_uv

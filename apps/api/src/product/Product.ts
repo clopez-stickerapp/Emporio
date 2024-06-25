@@ -9,7 +9,6 @@ import { AttributeValue, AttributeValueSingle } from "./attribute/AttributeValue
 import { Attributes } from "./attribute/Attributes";
 
 export class Product {
-	protected productService: ProductService;
 	protected productFamily: ProductFamily;
 	protected name: string;
 	protected attrMap: Record<string, AttributeValue> = {};
@@ -20,7 +19,6 @@ export class Product {
 
 	public constructor(productFamily: ProductFamily, name: string, sku: string) {
 		this.productFamily = productFamily;
-		this.productService = productFamily.getProductService();
 		this.name = name;
 		this.conditions = new ConditionBuilder();
 		this.inStock = true;
@@ -48,8 +46,7 @@ export class Product {
 	}
 
 	public canAttrBe(attrName: string, attrValue: ConditionValue): boolean {
-		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
-		let attr = this.productService.retrieveAttribute(attrUID);
+		let attr = this.productFamily.getAttribute(attrName);
 
 		try{
 			attr.canBe(attrValue);
@@ -84,8 +81,7 @@ export class Product {
 	}
 
 	public withAttrValue(attrName: string, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
-		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
-		let attr = this.productService.retrieveAttribute(attrUID);
+		let attr = this.productFamily.getAttribute(attrName);
 
 		this.attrMap[attrName] = value;
 
@@ -140,10 +136,6 @@ export class Product {
 
 	public getName(): string {
 		return this.name;
-	}
-
-	public getProductService(): ProductService {
-		return this.productService;
 	}
 
 	public getProductFamily(): ProductFamily {

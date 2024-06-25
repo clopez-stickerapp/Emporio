@@ -10,11 +10,19 @@ import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
 import { AttributeValueSingle, AttributeValueMulti } from "./attribute/AttributeValue";
+import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
 	protected productFamilies: Record<string, ProductFamily> = {};
 	protected productSkus: string[] = [];
+
+	public constructor(config: ServiceConfig) {
+		// this.name = config.name;
+		// this.families = config.families ?? [];
+		// this.attributes = config.attributes ?? [];
+		// this.pricingModels = config.pricing_models ?? [];
+	}
 
 	/**
 	 * Constraints are used to tell the product service which attributes can not be combined.
@@ -122,12 +130,12 @@ export class ProductService {
 		return this.attrStockCollections[collectionName];
 	}
 
-	public registerAttribute(attr: ProductAttr): void {
-		if (this.attributes[attr.getUID()]) {
+	public registerAttribute(name: string, attr: ProductAttr): void {
+		if (this.attributes[name]) {
 			throw new Error("Attribute already exists with UID " + attr.getUID());
 		}
 
-		this.attributes[attr.getUID()] = attr;
+		this.attributes[name] = attr;
 	}
 
 	public retrieveAttribute(attrUID: string): ProductAttr {
@@ -138,12 +146,12 @@ export class ProductService {
 		return this.attributes[attrUID];
 	}
 
-	public registerProductFamily(productFamily: ProductFamily): void {
-		if (this.productFamilies[productFamily.getName()]) {
-			throw new Error("Product family already exists with name " + productFamily.getName());
+	public registerProductFamily(name: string, instance: ProductFamily): void {
+		if (this.productFamilies[name]) {
+			throw new Error("Product family already exists with name " + instance.getName());
 		}
 
-		this.productFamilies[productFamily.getName()] = productFamily;
+		this.productFamilies[name] = instance;
 	}
 
 	public retrieveProductFamily(productFamilyName: string): ProductFamily {
@@ -221,12 +229,12 @@ export class ProductService {
 
 	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
 	{
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
+		const attribute = product.getProductFamily().getAttribute( attrAlias );
 		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
 
 		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) 
 		{
-			for ( const attrValue of this.retrieveAttribute( attrUID ).getValues() ) 
+			for ( const attrValue of attribute.getValues() ) 
 			{
 				if ( !attrValues.includes( attrValue.getValue() ) ) 
 				{
@@ -241,8 +249,8 @@ export class ProductService {
 	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
 	{
 		const attrValues: AttributeValueMulti = [];
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
-		const attr = product.getProductService().retrieveAttribute( attrUID );
+		const attribute = product.getProductFamily().getAttribute( attrAlias );
+
 		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
 
 		if ( !Array.isArray( withAttrValues ) ) 
@@ -252,13 +260,13 @@ export class ProductService {
 
 		for ( const attrRawValue of withAttrValues ) 
 		{
-			if ( attr.isDynamicValue() ) 
+			if ( attribute.isDynamicValue() ) 
 			{
 				attrValues.push( attrRawValue );
 			} 
 			else 
 			{
-				const attrValue = this.retrieveAttribute( attrUID ).getAttrValue( attrRawValue );
+				const attrValue = attribute.getAttrValue( attrRawValue );
 				
 				if ( attrValue ) 
 				{

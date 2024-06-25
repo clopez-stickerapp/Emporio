@@ -8,8 +8,11 @@ import { Product } from "./Product";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
+import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
+import { ProductSettings } from "$/configuration/interface/ProductSettings";
+import { ProductAttr } from "./attribute/ProductAttr";
 
-export abstract class ProductFamily {
+export class ProductFamily {
 	protected productService: ProductService;
 	protected name: string;
 	protected attrConstraintCollectionName: string | undefined;
@@ -21,22 +24,20 @@ export abstract class ProductFamily {
 	protected priceProviderName: string | undefined;
 	protected productQuantityListCollectionName: string | undefined;
 
-	public minimumUnitsValue: ProductDynamicValue;
+	protected minimumUnitsValue: ProductDynamicValue;
 	protected products: Record<string, Product> = {};
-	protected requiredAttrs: Record<string, string> = {};
-	protected supportedAttrs: Record<string, string> = {};
+	protected requiredAttrs: Record<string, ProductAttr> = {};
+	protected supportedAttrs: Record<string, ProductAttr> = {};
 
-	public constructor(name: string, defaultMinimumUnitsValue: number, productService: ProductService) {
-		this.name = name;
-		this.minimumUnitsValue = new ProductDynamicValue(defaultMinimumUnitsValue);
-		this.productService = productService;
+	public constructor(config: FamilyConfig){
+		this.name = config.name;
 	}
 
 	public getName(): string {
 		return this.name;
 	}
 
-	public addProduct(productName: string, sku: string){
+	public addProduct(productName: string, config: ProductSettings = {}): Product {
 		if (this.products[productName]) {
 			throw new Error("Product already exists: " + productName);
 		}
@@ -64,19 +65,19 @@ export abstract class ProductFamily {
 		return this.products;
 	}
 
-	public requireAttr(attributeClassRef: string, alias: string): void {
-		if (this.requiredAttrs[alias]) {
+	public requireAttr(name: string, instance: ProductAttr): void {
+		if (this.requiredAttrs[name]) {
 			throw new Error("Attribute alias already required.");
 		}
 
-		if (this.supportedAttrs[alias]) {
+		if (this.supportedAttrs[name]) {
 			throw new Error("Attribute alias already supported.");
 		}
 
-		this.requiredAttrs[alias] = attributeClassRef;
+		this.requiredAttrs[name] = instance;
 	}
 
-	public getRequiredAttrs(): Record<string, string> {
+	public getRequiredAttrs(): Record<string, ProductAttr> {
 		return this.requiredAttrs;
 	}
 
@@ -84,19 +85,19 @@ export abstract class ProductFamily {
 		return this.requiredAttrs[alias] !== undefined;
 	}
 
-	public supportAttr(attributeClassRef: string, alias: string): void {
-		if (this.requiredAttrs[alias]) {
+	public supportAttr(name: string, instance: ProductAttr): void {
+		if (this.requiredAttrs[name]) {
 			throw new Error("Attribute alias already required.");
 		}
 
-		if (this.supportedAttrs[alias]) {
+		if (this.supportedAttrs[name]) {
 			throw new Error("Attribute alias already supported.");
 		}
 
-		this.supportedAttrs[alias] = attributeClassRef;
+		this.supportedAttrs[name] = instance;
 	}
 
-	public getSupportedAttrs(): Record<string, string> {
+	public getSupportedAttrs(): Record<string, ProductAttr> {
 		return this.supportedAttrs;
 	}
 
@@ -108,20 +109,20 @@ export abstract class ProductFamily {
 		return this.supportedAttrs[alias] !== undefined;
 	}
 
-	public getAttributes(): Record<string, string> {
+	public getAttributes(): Record<string, ProductAttr> {
 		return {...this.supportedAttrs, ...this.requiredAttrs};
 	}
 
-	public findAttrUIDByAlias(alias: string): string {
-		if (this.requiredAttrs[alias]) {
-			return this.requiredAttrs[alias];
+	public getAttribute(name: string): ProductAttr {
+		if (this.requiredAttrs[name]) {
+			return this.requiredAttrs[name];
 		}
 
-		if (this.supportedAttrs[alias]) {
-			return this.supportedAttrs[alias];
+		if (this.supportedAttrs[name]) {
+			return this.supportedAttrs[name];
 		}
 
-		throw new Error("Alias is not supported by product family: " + alias + " (" + this.getName() + ")");
+		throw new Error("Alias is not supported by product family: " + name + " (" + this.getName() + ")");
 	}
 
 	public getProductService(): ProductService {

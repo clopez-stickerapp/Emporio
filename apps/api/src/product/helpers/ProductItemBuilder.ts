@@ -23,9 +23,8 @@ export class ProductItemBuilder
 		
 		this.attrComputer.prepare( item, useFilters );
 
-		for ( const [ attrName, attrUID ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
+		for ( const [ attrName, attr ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
 		{
-			const attr = this.ps.retrieveAttribute( attrUID );
 			let attrValue = product.getAttrValue( attrName );
 
 			if ( !attrValue ) 
@@ -50,8 +49,7 @@ export class ProductItemBuilder
 
 		for ( let [ attrName, attrValue ] of Object.entries( product.getAttrMap() ) ) 
 		{
-			const attrUID = productFamily.findAttrUIDByAlias( attrName );
-			const attr = this.ps.retrieveAttribute( attrUID );
+			const attr = productFamily.getAttribute( attrName );
 
 			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
 			{

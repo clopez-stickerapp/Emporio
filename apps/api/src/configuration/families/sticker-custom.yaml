@@ -1,0 +1,77 @@
+name: sticker-custom
+products:
+  - sticker-bumper
+rules:
+  attributes:
+    required:
+      - type
+      - material
+      - laminate
+      - width_mm
+      - height_mm
+  production:
+    web:
+      - direction
+    delivery:
+      - type
+      - padding_mm
+      - padding_outside_mm
+      - width_mm
+      - height_mm
+settings:
+  general:
+    pricing_model: default
+    cutline:
+      - contour
+      - square
+      - circle
+      - rounded
+    material:
+      - white
+      - clear
+      - holographic
+      - mirror
+      - brushed_metal
+    laminate:
+      - glossy_uv
+      - glossy_no_uv
+      - matte
+      - uncoated
+  wizard:
+    size:
+      - 3x1
+      - 4x2
+      - 5x3
+      - 6x4
+      - custom
+    quantity:
+      - 1
+      - 5
+      - 10
+      - 25
+      - 50
+      - 100
+      - 250
+      - custom
+  editor:
+    tools:
+      - upload
+      - cutline
+      - material
+      - laminate
+      - effect
+      - text
+      - background
+      - clipart
+      - note
+      - size (width + height)
+      - quantity
+      - summary
+      - backpaper
+  template: |
+    {{name}}
+    {{material}} / {{laminate}}
+    {{width_mm}} x {{height_mm}} mm
+
+
+

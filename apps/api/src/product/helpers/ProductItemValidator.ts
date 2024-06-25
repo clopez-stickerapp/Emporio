@@ -68,8 +68,7 @@ export class ProductItemValidator
 				continue;
 			}
 
-			const attrUID = productFamily.findAttrUIDByAlias( attrName );
-			const attr = this.ps.retrieveAttribute( attrUID );
+			const attr = productFamily.getAttribute( attrName );
 
 			if ( attr.canBe( value ) )
 			{

@@ -1,0 +1,9 @@
+name: material
+type: string
+values:
+  - white
+  - clear
+  - holographic
+  - mirror
+  - brushed_metal
+  - prismatic

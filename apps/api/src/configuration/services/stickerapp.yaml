@@ -1,0 +1,12 @@
+name: stickerapp
+families:
+  - sticker-custom
+attributes:
+  - type
+  - material
+  - laminate
+  - width_mm
+  - height_mm
+pricing_models:
+  - default
+  - custom

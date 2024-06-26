@@ -1,0 +1,21 @@
+name: SheetNameFilter
+rules:
+  - keys:
+      - contour
+      - rectangle
+      - round
+      - rounded
+    conditions:
+
+  - keys:
+      - round
+      - rounded
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: reseller
+            operator: ===
+            value: stickerapp
+          - attribute: laminate
+            operator: ===
+            value: epoxy

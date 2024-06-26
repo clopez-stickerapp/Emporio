@@ -1,0 +1,14 @@
+name: DeliveryRollSizeTypeFilter
+rules:
+  - keys:
+      - 35
+      - 70
+      - 93
+      - 140
+      - 280
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: delivery
+            operator: ===
+            value: roll

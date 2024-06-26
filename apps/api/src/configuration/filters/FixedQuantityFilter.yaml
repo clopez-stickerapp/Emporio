@@ -1,0 +1,21 @@
+name: FixedQuantityFilter
+rules:
+  - keys:
+      - true
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: reseller
+            operator: not_in
+            value:
+              - stickersthatstick
+              - stickit
+          - relationMode: or
+            conditions: 
+              - attribute: productName
+                operator: ===
+                value: 3d_dome
+              - attribute: laminate
+                operator: in
+                value:
+                  - epoxy

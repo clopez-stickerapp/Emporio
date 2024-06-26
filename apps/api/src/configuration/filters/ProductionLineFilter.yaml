@@ -1,0 +1,63 @@
+name: ProductionLineFilter
+rules:
+  - keys:
+      - laser
+    conditions:
+      - relationMode: and
+        baseComplexityScore: 120
+        conditions:
+          - attribute: productName
+            operator: in
+            value:
+              - sheet
+              - sheet_kiss_cut
+              - window
+              - labels_on_roll
+              - labels_on_sheet
+
+  - keys:
+      - laser
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: material
+            operator: in
+            value:
+              - white
+              - white_removable
+              - clear
+          - attribute: productName
+            operator: !==
+            value: library_design
+          - attribute: width_mm
+            operator: <=
+            value: 800
+          - attribute: height_mm
+            operator: <=
+            value: 800
+          - relationMode: or
+            conditions:
+              - attribute: width_mm
+                operator: <=
+                value: 275
+              - attribute: height_mm
+                operator: <=
+                value: 275
+
+  - keys:
+      - digital
+    conditions:
+      - relationMode: or
+        conditions:
+          - attribute: productName
+            operator: in
+            value:
+              - transfer_decal
+          - relationMode: and
+            conditions:
+              - attribute: width_mm
+                operator: ">"
+                value: 275
+              - attribute: height_mm
+                operator: ">"
+                value: 275

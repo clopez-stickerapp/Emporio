@@ -1,0 +1,23 @@
+name: DeliveryFilter
+rules:
+  - keys:
+      - sheet
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: productName
+            operator: in
+            value:
+              - transfer_decal
+              - 3d_dome
+
+  - keys:
+      - single
+    conditions:
+      - relationMode: and
+        conditions:  
+          - attribute: productName
+            operator: in
+            value:
+              - sheet
+              - sheet_kiss_cut

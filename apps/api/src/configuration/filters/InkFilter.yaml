@@ -1,0 +1,14 @@
+name: InkFilter
+rules:
+  - keys:
+  - keys:
+      - invisible_ink
+      - pink_ink
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: laminate
+            operator: in
+            value:
+              - glossy_no_uv
+              - uncoated

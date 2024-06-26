@@ -15,7 +15,7 @@ import { services } from "$/configuration/ServiceLoader";
 import { StickerSquareMeterMinimumUnitValues } from "$/configuration/minUnits/StickerSquareMeterMinimumUnitValues";
 
 export class ProductFamily {
-	protected productService: ProductService = services["stickerapp"]; // Todo
+	// protected productService: ProductService = services["stickerapp"]; // Todo
 	protected name: string;
 	protected attrConstraintCollectionName: string;
 	protected attrFilterCollectionName: string;
@@ -137,11 +137,13 @@ export class ProductFamily {
 	}
 
 	public getProductService(): ProductService {
-		return this.productService;
+		throw new Error("Not implemented.");
+		// return this.productService;
 	}
 
 	public setProductService(productService: ProductService): void {
-		this.productService = productService;
+		throw new Error("Not implemented.");
+		// this.productService = productService;
 	}
 
 	public getConstraintsCollection(): ProductAttrConstraintCollection | null {

@@ -3,6 +3,6 @@ import { ConditionConfig } from "./ConditionConfig";
 
 export interface ConditionBuilderConfig{
 	relationMode: ConditionRelations;
-	conditions: ConditionConfig[];
+	conditions: (ConditionConfig|ConditionBuilderConfig)[];
 	baseComplexityScore: number;
 };

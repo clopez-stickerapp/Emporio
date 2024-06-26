@@ -6,13 +6,13 @@ import { NamedConfig } from "$data/NamedConfig";
 import { allAttributes } from "./attributes/attributes";
 import { RuleConfig } from "./interface/RuleConfig";
 import { FamilyConfig } from "./interface/FamilyConfig";
-import { FilterConfig } from "./interface/FilterConfig";
 import { MinUnitsConfig } from "./interface/MinUnitsConfig";
 import { PriceProviderConfig } from "./interface/PriceProviderConfig";
 import { ProductConfig } from "./interface/ProductConfig";
 import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -35,6 +35,7 @@ class ServiceLoader {
 	protected constraintConfigs: Record<string, RuleConfig> = {};
 	protected constraints: Record<string, ProductAttrConstraint> = {};
 	protected filterConfigs: Record<string, RuleConfig> = {};
+	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
 	protected minUnitsConfigs: Record<string, MinUnitsConfig> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
@@ -69,7 +70,7 @@ class ServiceLoader {
 
 		// Load filters
 		// console.debug("Loading filter configs...");
-		// this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
+		this.filterConfigs = this.readConfigs<RuleConfig>(filterPathFolder);
 
 		// Load icons
 		// console.debug("Loading icon configs...");
@@ -106,6 +107,12 @@ class ServiceLoader {
 		// Instantiate all constraints
 		console.debug("Instantiating constraint instances...");
 		this.constraints = this.instantiateFromConfig<RuleConfig, ProductAttrConstraint>(this.constraintConfigs, (config) => new ProductAttrConstraint(config));
+
+		// Instantiate all filters
+		console.debug("Instantiating filter instances...");
+		this.filters = this.instantiateFromConfig<RuleConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
+
+		// console.dir(this.filters["SizeFilter"], { depth: null });
 	}
 
 	protected registerAttributes(): void {

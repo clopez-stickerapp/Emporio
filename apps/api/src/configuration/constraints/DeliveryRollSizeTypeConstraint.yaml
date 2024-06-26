@@ -3,174 +3,188 @@ rules:
   - keys:
       - MIN
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 30
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 30
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 30
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 30
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - SMALL
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 33
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 33
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 33
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 33
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - MEDIUM
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 54
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 54
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 54
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 54
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - LARGE
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 68
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 68
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 68
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 68
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - XLARGE
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 91
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 91
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 91
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 91
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - XXLARGE
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 138
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 138
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 138
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 138
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
       - MAX
     conditions:
-    - relationMode: OR
+      relationMode: OR
       conditions:
-        - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 278
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.TOP_FIRST}"
-            - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: height_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 278
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.TOP_FIRST}"
+                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
 
-    - relationMode: OR
-      conditions:
-        - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
-          value: 278
-        - attribute: cut_direction
-          operator: IN
-          value:
-            - "{CutDirectionAttributeValues.LEFT_FIRST}"
-            - "{CutDirectionAttributeValues.RIGHT_FIRST}"
+        - relationMode: OR
+          conditions:
+            - attribute: width_mm
+              operator: LESS_THAN_OR_EQUAL
+              value: 278
+            - attribute: cut_direction
+              operator: IN
+              value:
+                - "{CutDirectionAttributeValues.LEFT_FIRST}"
+                - "{CutDirectionAttributeValues.RIGHT_FIRST}"

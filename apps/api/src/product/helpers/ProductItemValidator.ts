@@ -49,7 +49,7 @@ export class ProductItemValidator
 			throw new ProductItemInvalidException( "Attributes doesn't match product recipe." );
 		}
 
-		const stockMap = product.getProductFamily().getStockCollection()?.getAllOutOfStock() ?? {};
+		const stockMap = this.ps.retrieveAttrStockCollection( productFamily.getStockCollectionName() )?.getAllOutOfStock() ?? {};
 
 		for ( let [ attrName, value ] of Object.entries( item.getAttributes() ) ) 
 		{
@@ -89,7 +89,7 @@ export class ProductItemValidator
 				{
 					const productAttrValue = attr.getAttrValue( attrValue );
 
-					if ( productAttrValue && productFamily.getConstraintsCollection()?.test( attrName, productAttrValue, item ) === false ) 
+					if ( productAttrValue && this.ps.retrieveAttrConstraintCollection( productFamily.getConstraintsCollectionName() )?.test( attrName, productAttrValue, item ) === false )
 					{
 						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
 					}

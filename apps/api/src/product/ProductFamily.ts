@@ -1,21 +1,12 @@
-import { ProductService } from "./ProductService";
-import { ProductAttrConstraintCollection } from "./attribute/Constraint/ProductAttrConstraintCollection";
-import { ProductAttrFilterCollection } from "./attribute/Filter/ProductAttrFilterCollection";
-import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
-import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
-import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
 import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { services } from "$/configuration/ServiceLoader";
 import { StickerSquareMeterMinimumUnitValues } from "$/configuration/minUnits/StickerSquareMeterMinimumUnitValues";
 
 export class ProductFamily {
-	// protected productService: ProductService = services["stickerapp"]; // Todo
 	protected name: string;
 	protected attrConstraintCollectionName: string;
 	protected attrFilterCollectionName: string;
@@ -136,38 +127,28 @@ export class ProductFamily {
 		throw new Error("Alias is not supported by product family: " + name + " (" + this.getName() + ")");
 	}
 
-	public getProductService(): ProductService {
-		throw new Error("Not implemented.");
-		// return this.productService;
+	public getConstraintsCollectionName(): string {
+		return this.attrConstraintCollectionName;
 	}
 
-	public setProductService(productService: ProductService): void {
-		throw new Error("Not implemented.");
-		// this.productService = productService;
+	public getFilterCollectionName(): string {
+		return this.attrFilterCollectionName;
 	}
 
-	public getConstraintsCollection(): ProductAttrConstraintCollection | null {
-		return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
+	public getIconsCollectionName(): string {
+		return this.attrIconCollectionName;
 	}
 
-	public getFilterCollection(): ProductAttrFilterCollection | null {
-		return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
+	public getStockCollectionName(): string {
+		return this.attrStockCollectionName;
 	}
 
-	public getIconsCollection(): ProductAttrIconCollection | null {
-		return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
+	public getPriceProviderName(): string {
+		return this.priceProviderName;
 	}
 
-	public getStockCollection(): ProductAttrStockCollection | null {
-		return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
-	}
-
-	public getProductPriceProvider(): ProductPriceProvider | null {
-		return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
-	}
-
-	public getProductQuantityListCollection(): ProductQuantityListCollection | null {
-		return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
+	public getQuantityCollectionName(): string {
+		return this.productQuantityListCollectionName;
 	}
 
 	public validateUnits(productItem: ProductItem): void{

@@ -41,9 +41,9 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.product.getProductFamily().getConstraintsCollection();
-		const iconsCollection       = this.product.getProductFamily().getIconsCollection();
-		const outOfStockAttrValues  = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
+		const constraintsCollection = this.ps.retrieveAttrConstraintCollection( this.product.getProductFamily().getConstraintsCollectionName());
+		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.product.getProductFamily().getIconsCollectionName());
+		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.product.getProductFamily().getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
 		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
@@ -65,7 +65,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.product.getProductFamily().getFilterCollection()?.getFilterFor( attrName );
+		const filter = this.ps.retrieveAttrFilterCollection( this.product.getProductFamily().getFilterCollectionName())?.getFilterFor( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;

@@ -70,7 +70,7 @@ export class Emporio {
 			units = minUnits;
 		}
 
-		let price = await productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency);
+		let price = await this.productService.retrievePriceProvider(productFamily.getPriceProviderName()).calculatePrice(productItem, units, currency);
 
 		if (!price) {
 			throw new Error("Price provider not found for product family: " + productItem.getProductFamilyName());
@@ -106,7 +106,7 @@ export class Emporio {
 	public async getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): Promise<PriceList> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
-		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
+		const steps = this.productService.retrieveQuantityListCollection(productFamily.getQuantityCollectionName()).getQuantityStepsFor(productItem, minQuantity) ?? [];
 
 		const prices = await Promise.all(steps.map(async (step: number) => {
 			return await this.calculatePrice(productItem, step, lang, inclVat);

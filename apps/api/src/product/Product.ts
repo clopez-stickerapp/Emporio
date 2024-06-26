@@ -116,23 +116,24 @@ export class Product {
 		return this;
 	}
 
-	public setStock(): void {
-		for (let [key, value] of Object.entries(this.attrMap)) {
-			if (!Array.isArray(value)) {
-				value = [value];
-			}
-			if (!this.isAttrInStock(key, value)) {
-				this.inStock = false;
-				break;
-			}
-		}
-	}
+	// TODO: what to do with this?
+	// public setStock(): void {
+	// 	for (let [key, value] of Object.entries(this.attrMap)) {
+	// 		if (!Array.isArray(value)) {
+	// 			value = [value];
+	// 		}
+	// 		if (!this.isAttrInStock(key, value)) {
+	// 			this.inStock = false;
+	// 			break;
+	// 		}
+	// 	}
+	// }
 
-	public isAttrInStock(attrName: string, attrValue: AttributeValueSingle[]): boolean {
-		let stockCollection = this.productFamily.getStockCollection();
-		let outOfStockForAttr = stockCollection?.getOutOfStockFor(attrName)?.getOutOfStock() ?? [];
-		return attrValue.filter((value) => outOfStockForAttr.includes(value.toString())).length === 0;
-	}
+	// public isAttrInStock(attrName: string, attrValue: AttributeValueSingle[]): boolean {
+	// 	let stockCollection = this.productFamily.getStockCollection();
+	// 	let outOfStockForAttr = stockCollection?.getOutOfStockFor(attrName)?.getOutOfStock() ?? [];
+	// 	return attrValue.filter((value) => outOfStockForAttr.includes(value.toString())).length === 0;
+	// }
 
 	public getName(): string {
 		return this.name;

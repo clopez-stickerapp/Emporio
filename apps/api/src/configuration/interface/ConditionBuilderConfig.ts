@@ -2,7 +2,7 @@ import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ConditionConfig } from "./ConditionConfig";
 
 export interface ConditionBuilderConfig{
-	relationMode: ConditionRelations;
+	relationMode?: ConditionRelations;
 	baseComplexityScore?: number;
 	conditions: (ConditionConfig|ConditionBuilderConfig)[];
 };

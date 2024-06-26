@@ -1,3 +1,5 @@
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
+import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
 import { Attributes } from "$/product/attribute/Attributes";
 import { Condition } from "./Condition";
 import { ConditionOperators } from "./ConditionOperators";
@@ -14,8 +16,18 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	protected conditions: Conditions = {};
 	protected baseComplexityScore: number = 0;
 
-	public constructor(relationMode: string = ConditionRelations.AND) {
-		this.relationMode = relationMode;
+	public constructor(config: ConditionBuilderConfig = {conditions: []}) {
+		this.relationMode = config.relationMode ?? ConditionRelations.AND;
+		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
+
+		for (const condition of config.conditions) {
+			// Check if condition is a ConditionBuilderConfig or ConditionConfig
+			if ((condition as ConditionBuilderConfig).relationMode !== undefined) {
+				this.conditions[`${condition}`] = new ConditionBuilder( condition as ConditionBuilderConfig );
+			} else {
+				this.conditions[`${condition}`] = new Condition( condition as ConditionConfig );
+			}
+		}
 	}
 
 	public calculateComplexityScore(): number {
@@ -42,18 +54,19 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	}
 
 	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
-		if (!alias) {
-			alias = `subgroup_${this.count()}`;
-		}
+		throw new Error("Adding subGroups this way is no longer supported.");
+		// if (!alias) {
+		// 	alias = `subgroup_${this.count()}`;
+		// }
 
-		if (this.conditions[alias] !== undefined) {
-			throw new ConditionSubGroupAlreadyExistsException(`Sub group already exists with alias: ${alias}`);
-		}
+		// if (this.conditions[alias] !== undefined) {
+		// 	throw new ConditionSubGroupAlreadyExistsException(`Sub group already exists with alias: ${alias}`);
+		// }
 
-		const subGroup = new ConditionBuilder(mode);
-		this.conditions[alias] = subGroup;
+		// const subGroup = new ConditionBuilder(mode);
+		// this.conditions[alias] = subGroup;
 
-		return subGroup;
+		// return subGroup;
 	}
 
 	/**
@@ -78,13 +91,14 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	}
 
 	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
-		const condition = new Condition(columnName, operator, conditionValue);
+		throw new Error("Adding conditions in this way is no longer supported.");
+		// const condition = new Condition(columnName, operator, conditionValue);
 
-		if (!this.hasCondition(condition)) {
-			this.conditions[`${condition}`] = condition;
-		}
+		// if (!this.hasCondition(condition)) {
+		// 	this.conditions[`${condition}`] = condition;
+		// }
 
-		return this;
+		// return this;
 	}
 
 	public hasCondition(condition: Condition): boolean {

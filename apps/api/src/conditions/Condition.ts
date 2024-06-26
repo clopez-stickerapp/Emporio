@@ -5,16 +5,17 @@ import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 import { ConditionTestFailedException } from "./exceptions/ConditionTestFailedException";
+import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
 
 export class Condition implements ConditionTestableInterface {
 	public columnName: string;
 	public operator: ConditionOperators;
 	public conditionValue: ConditionValue|null;
 
-	public constructor(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null) {
-		this.columnName = columnName;
-		this.operator = operator;
-		this.conditionValue = conditionValue;
+	public constructor(config: ConditionConfig) {
+		this.columnName = config.attribute;
+		this.operator = config.operator;
+		this.conditionValue = config.value ?? null;
 	}
 
 	/**

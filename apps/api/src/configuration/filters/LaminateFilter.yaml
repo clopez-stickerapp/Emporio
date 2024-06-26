@@ -1,4 +1,4 @@
-name: LaminateFIlter
+name: LaminateFilter
 rules:
   - keys:
       - glossy_uv
@@ -6,7 +6,7 @@ rules:
       - relationMode: and
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: material
             operator: in
@@ -25,7 +25,7 @@ rules:
       - relationMode: and
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: material
             operator: in
@@ -41,7 +41,7 @@ rules:
       - relationMode: and
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: material
             operator: in
@@ -55,7 +55,7 @@ rules:
       - relationMode: and
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: material
             operator: in
@@ -82,7 +82,7 @@ rules:
       - relationMode: and
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: material
             operator: in
@@ -200,7 +200,7 @@ rules:
         baseComplexityScore: 120
         conditions:
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: 3d_dome
           - attribute: reseller
             operator: in

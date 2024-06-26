@@ -20,22 +20,22 @@ rules:
                   - sheet
                   - sheet_kiss_cut
 
-    - keys:
-        - sheet_legacy
-      conditions:
-        - relationMode: and
-          conditions:
-            - attribute: productName
-              operator: in
-              value:
-                - sheet_legacy
+  - keys:
+      - sheet_legacy
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: productName
+            operator: in
+            value:
+              - sheet_legacy
 
-    - keys:
-        - roll
-      conditions:
-        - relationMode: and
-          conditions:
-            - attribute: productName
-              operator: in
-              value:
-                - labels_on_roll
+  - keys:
+      - roll
+    conditions:
+      - relationMode: and
+        conditions:
+          - attribute: productName
+            operator: in
+            value:
+              - labels_on_roll

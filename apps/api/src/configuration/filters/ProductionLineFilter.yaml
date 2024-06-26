@@ -27,7 +27,7 @@ rules:
               - white_removable
               - clear
           - attribute: productName
-            operator: !==
+            operator: "!=="
             value: library_design
           - attribute: width_mm
             operator: <=

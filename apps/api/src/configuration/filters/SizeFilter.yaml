@@ -2,26 +2,26 @@ name: SizeFilter
 rules:
   - keys:
       - 5x3 cm
-			- 5x5 cm
-			- 8x5 cm
-			- 8x8 cm
-			- 10x7 cm
-			- 10x10 cm
-			- 12x5 cm
-			- 13x7 cm
-			- 15x10 cm
+      - 5x5 cm
+      - 8x5 cm
+      - 8x8 cm
+      - 10x7 cm
+      - 10x10 cm
+      - 12x5 cm
+      - 13x7 cm
+      - 15x10 cm
     conditions:
 
   - keys:
       - 2" x 1"
-			- 2" x 2"
-			- 3" x 2"
-			- 3" x 3"
-			- 4" x 3"
-			- 4" x 4"
-			- 5" x 2"
-			- 5" x 3"
-			- 8" x 4"
+      - 2" x 2"
+      - 3" x 2"
+      - 3" x 3"
+      - 4" x 3"
+      - 4" x 4"
+      - 5" x 2"
+      - 5" x 3"
+      - 8" x 4"
     conditions:
       - relationMode: and
         conditions:
@@ -52,9 +52,9 @@ rules:
 
   - keys:
       - 2.5x2.5 cm
-			- 3.8x3.8 cm
-			- 5.1x2.5 cm
-			- 7.7x3.8 cm
+      - 3.8x3.8 cm
+      - 5.1x2.5 cm
+      - 7.7x3.8 cm
     conditions:
       - relationMode: and
         conditions:
@@ -128,8 +128,8 @@ rules:
 
   - keys:
       - US half letter <br> 8.5" x 5.5",
-			- A5 paper <br> 5.8" x 8.3",
-			- Thank you card <br> 5.1" x 6.4"
+      - A5 paper <br> 5.8" x 8.3",
+      - Thank you card <br> 5.1" x 6.4"
     conditions:
       - relationMode: and
         conditions:

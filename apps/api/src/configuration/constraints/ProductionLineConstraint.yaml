@@ -1,0 +1,50 @@
+name: ProductionLineConstraint
+rules:
+  - keys:
+      - DIGITAL
+    conditions:
+      - attribute: material
+        operator: IN
+        value: "{DigitalMaterials}"
+      - attribute: laminate
+        operator: IN
+        value: "{DigitalLaminates}"
+      - attribute: feature
+        operator: NOT_IN
+        value:
+          - "{ProductFeatures.BACKPAPER_PRINT}"
+
+  - keys:
+      - LASER
+    conditions:
+      - relationMode: AND
+        baseComplexityScore: 2
+        conditions:
+          - attribute: material
+            operator: IN
+            value: "{LaserMaterials}"
+          - attribute: laminate
+            operator: IN
+            value: "{LaserLaminates}"
+          - attribute: width_mm
+            operator: LESS_THAN_OR_EQUAL
+            value: "{MaxSizes.ONE_SIDE_LASER}"
+          - attribute: height_mm
+            operator: LESS_THAN_OR_EQUAL
+            value: "{MaxSizes.ONE_SIDE_LASER}"
+          - relationMode: OR
+            baseComplexityScore: 1
+            conditions:
+              - attribute: width_mm
+                operator: LESS_THAN_OR_EQUAL
+                value: "{MaxSizes.LASER}"
+              - attribute: height_mm
+                operator: LESS_THAN_OR_EQUAL
+                value: "{MaxSizes.LASER}"
+
+  - keys:
+      - SPECIAL
+    conditions:
+      - attribute: material
+        operator: EQUAL
+        value: "{special}"

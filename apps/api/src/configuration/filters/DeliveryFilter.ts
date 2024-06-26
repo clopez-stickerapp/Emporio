@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { DeliveryAttribute, DeliveryTypes } from "../../../attributes/DeliveryAttribute";
+import { DeliveryAttribute, DeliveryTypes } from "../attributes/DeliveryAttribute";
 
 export class DeliveryFilter extends ProductAttrFilter {
 	public constructor() {

@@ -1,9 +1,9 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { ProductFeatures } from "../../../attributes/FeatureAttribute";
-import { MaxSizeAttribute, MaxSizes } from "../../../attributes/MaxSizeAttribute";
-import { DigitalLaminates, DigitalMaterials, LaserLaminates, LaserMaterials, ProductionLineAttribute, ProductionLines } from "../../../attributes/ProductionLineAttribute";
+import { ProductFeatures } from "../attributes/FeatureAttribute";
+import { MaxSizeAttribute, MaxSizes } from "../attributes/MaxSizeAttribute";
+import { DigitalLaminates, DigitalMaterials, LaserLaminates, LaserMaterials, ProductionLineAttribute, ProductionLines } from "../attributes/ProductionLineAttribute";
 
 export class ProductionLineConstraint extends ProductAttrConstraint {
 	public constructor() {

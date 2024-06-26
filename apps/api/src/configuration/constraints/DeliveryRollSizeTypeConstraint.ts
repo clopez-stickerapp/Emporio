@@ -1,9 +1,9 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { DeliveryRollSizeTypes, DeliveryRollSizeTypeAttribute } from "../../../attributes/DeliveryRollSizeTypeAttribute";
-import { DeliveryRollTopEdgeMarginDefault } from "../../../attributes/DeliveryRollTopEdgeMarginAttribute";
-import { CutDirectionAttributeValues } from "../../../attributes/CutDirectionAttribute";
+import { DeliveryRollSizeTypes, DeliveryRollSizeTypeAttribute } from "../attributes/DeliveryRollSizeTypeAttribute";
+import { DeliveryRollTopEdgeMarginDefault } from "../attributes/DeliveryRollTopEdgeMarginAttribute";
+import { CutDirectionAttributeValues } from "../attributes/CutDirectionAttribute";
 
 export class DeliveryRollSizeTypeConstraint extends ProductAttrConstraint {
 	public constructor() {

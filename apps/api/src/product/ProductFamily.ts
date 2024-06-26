@@ -15,14 +15,14 @@ import { ProductAttr } from "./attribute/ProductAttr";
 export class ProductFamily {
 	// protected productService: ProductService;
 	protected name: string;
-	protected attrConstraintCollectionName: string | undefined;
-	protected attrFilterCollectionName: string | undefined;
-	protected attrOutOfStockCollectionName: string | undefined;
-	protected attrIconCollectionName: string | undefined;
-	protected attrStockCollectionName: string | undefined;
-	protected productItemProcessorCollectionName: string | undefined;
-	protected priceProviderName: string | undefined;
-	protected productQuantityListCollectionName: string | undefined;
+	protected attrConstraintCollectionName: string;
+	protected attrFilterCollectionName: string;
+	// protected attrOutOfStockCollectionName: string;
+	// protected attrIconCollectionName: string;
+	// protected attrStockCollectionName: string;
+	// protected productItemProcessorCollectionName: string;
+	protected priceProviderName: string;
+	protected productQuantityListCollectionName: string;
 
 	protected minimumUnitsValue: ProductDynamicValue;
 	protected products: Record<string, Product> = {};
@@ -31,8 +31,11 @@ export class ProductFamily {
 
 	public constructor(config: FamilyConfig){
 		this.name = config.name;
-
-		this.minimumUnitsValue = new ProductDynamicValue(0.1215);
+		this.attrConstraintCollectionName = config.rules.collections.constraint;
+		this.attrFilterCollectionName = config.rules.collections.filter;
+		this.minimumUnitsValue = config.rules.collections.min_units;
+		this.priceProviderName = config.rules.collections.price_provider;
+		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
 	}
 
 	public getName(): string {
@@ -138,49 +141,25 @@ export class ProductFamily {
 	// 	this.productService = productService;
 	// }
 
-	public relateConstraintCollection(collectionName: string): void {
-		this.attrConstraintCollectionName = collectionName;
-	}
-
 	// public getConstraintsCollection(): ProductAttrConstraintCollection | null {
 	// 	return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
 	// }
-
-	public relateFilterCollection(collectionName: string): void {
-		this.attrFilterCollectionName = collectionName;
-	}
 
 	// public getFilterCollection(): ProductAttrFilterCollection | null {
 	// 	return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
 	// }
 
-	public relateIconCollection(collectionName: string): void {
-		this.attrIconCollectionName = collectionName;
-	}
-
 	// public getIconsCollection(): ProductAttrIconCollection | null {
 	// 	return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
 	// }
-
-	public relateStockCollection(collectionName: string): void {
-		this.attrStockCollectionName = collectionName;
-	}
 
 	// public getStockCollection(): ProductAttrStockCollection | null {
 	// 	return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
 	// }
 
-	public relateProductPriceProvider(collectionName: string): void {
-		this.priceProviderName = collectionName;
-	}
-
 	// public getProductPriceProvider(): ProductPriceProvider | null {
 	// 	return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
 	// }
-
-	public relateProductQuantityListCollection(collectionName: string): void {
-		this.productQuantityListCollectionName = collectionName;
-	}
 
 	// public getProductQuantityListCollection(): ProductQuantityListCollection | null {
 	// 	return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;

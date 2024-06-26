@@ -1,10 +1,10 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { FeatureAttribute, ProductFeatures } from "../../../attributes/FeatureAttribute";
-import { LaminateValues } from "../../../attributes/LaminateAttribute";
-import { MaterialValues } from "../../../attributes/MaterialAttribute";
-import { LaserMaterials, ProductionLines } from "../../../attributes/ProductionLineAttribute";
+import { FeatureAttribute, ProductFeatures } from "../attributes/FeatureAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
+import { LaserMaterials, ProductionLines } from "../attributes/ProductionLineAttribute";
 
 export class FeatureConstraint extends ProductAttrConstraint {
 	public static readonly EFFECT_LAYER_MATERIALS = [

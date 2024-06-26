@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { MaterialAttribute, MaterialsLabelsOnRollValues } from "../../../attributes/MaterialAttribute";
+import { MaterialAttribute, MaterialsLabelsOnRollValues } from "../attributes/MaterialAttribute";
 
 export class MaterialConstraint extends ProductAttrConstraint {
 	public constructor() {

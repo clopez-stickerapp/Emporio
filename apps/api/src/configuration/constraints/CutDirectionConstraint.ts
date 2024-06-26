@@ -2,8 +2,8 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { CutDirectionAttribute, CutDirectionAttributeValues } from "../../../attributes/CutDirectionAttribute";
-import { MaxSizeOtherSideValues } from "../../../attributes/MaxSizeOtherSideAttribute";
+import { CutDirectionAttribute, CutDirectionAttributeValues } from "../attributes/CutDirectionAttribute";
+import { MaxSizeOtherSideValues } from "../attributes/MaxSizeOtherSideAttribute";
 
 export class CutDirectionConstraint extends ProductAttrConstraint {
 	public constructor() {

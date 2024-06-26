@@ -1,0 +1,9 @@
+name: ColorSupportedConstraint
+rules:
+  - keys:
+      - true
+    conditions:
+      - attribute: material
+        operator: IN
+        value:
+          - "{MaterialValues.COLORED_VINYL}"

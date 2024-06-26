@@ -1,0 +1,12 @@
+name: MaterialConstraint
+rules:
+  - keys:
+      - WHITE_THIN
+      - CLEAR_THIN
+      - KRAFT_THIN
+      - SILVER_THIN
+    conditions:
+      - attribute: productName
+        operator: IN
+        value:
+          - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"

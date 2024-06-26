@@ -1,0 +1,34 @@
+name: FeatureConstraint
+rules:
+  - keys:
+      - HANGTAGGING
+    conditions:
+      - attribute: laminate
+        operator: NOT_IN
+        value:
+          - "{LaminateValues.EPOXY}"
+
+  - keys:
+      - BACKPAPER_PRINT
+    conditions:
+      - relationMode: OR
+        conditions:
+          - attribute: material
+            operator: IN
+            value:
+              - "{LaserMaterials}"
+
+  - keys:
+      - EFFECT_LAYER
+    conditions:
+      - attribute: material
+        operator: IN
+        value:
+          - "{FeatureConstraint.EFFECT_LAYER_MATERIALS}"
+
+  - keys:
+      - TRANSFER_TAPE
+    conditions:
+      - attribute: production_line
+        operator: EQUAL
+        value: "{ProductionLines.DIGITAL}"

@@ -1,16 +1,27 @@
 import { readFolder, readYaml, removeExtension } from "$/helpers/FileSystem";
 import { ProductFamily } from "$/product/ProductFamily";
 import { ProductService } from "$/product/ProductService";
-import { NamedConfig } from "$data/NamedConfig";
-import { FamilyConfig } from "./interface/FamilyConfig";
-import { ProductConfig } from "./interface/ProductConfig";
-import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
+import { NamedConfig } from "$data/NamedConfig";
 import { allAttributes } from "./attributes/attributes";
+import { RuleConfig } from "./interface/RuleConfig";
+import { FamilyConfig } from "./interface/FamilyConfig";
+import { FilterConfig } from "./interface/FilterConfig";
+import { MinUnitsConfig } from "./interface/MinUnitsConfig";
+import { PriceProviderConfig } from "./interface/PriceProviderConfig";
+import { ProductConfig } from "./interface/ProductConfig";
+import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
+import { ServiceConfig } from "./interface/ServiceConfig";
 
 const servicePathFolder = "config/services";
 const familyConfigFolder = "config/families";
 const productConfigFolder = "config/products";
+const constraintPathFolder = "config/constraints";
+const filterPathFolder = "config/filters";
+// const iconPathFolder = "config/icons";
+const minUnitPathFolder = "config/min-units";
+const pricePathFolder = "config/price-providers";
+const quantityPathFolder = "config/quantity-providers";
 
 class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
@@ -20,24 +31,44 @@ class ServiceLoader {
 	protected productConfigs: Record<string, ProductConfig> = {};
 	protected attributes: Record<string, ProductAttr> = {};
 
+	protected constraintConfigs: Record<string, NamedConfig> = {};
+	protected filterConfigs: Record<string, NamedConfig> = {};
+	// protected iconConfigs: Record<string, NamedConfig> = {};
+	protected minUnitsConfigs: Record<string, NamedConfig> = {};
+	protected priceProviderConfigs: Record<string, NamedConfig> = {};
+	protected quantityProviderConfigs: Record<string, NamedConfig> = {};
+
 	public constructor() {
-		this.loadConfigs();
-		this.loadServices();
+		this.load();
+		this.instantiate();
 		this.registerAttributes();
 		this.registerFamilies();
 		this.registerProducts();
 	}
 
-	protected loadConfigs(): void {
+	protected load(): void {
 		// Load all service configs
 		this.serviceConfigs = this.readConfigs<ServiceConfig>(servicePathFolder);
 		// Load all family configs
 		this.familyConfigs = this.readConfigs<FamilyConfig>(familyConfigFolder);
 		// Load all product configs
 		this.productConfigs = this.readConfigs<ProductConfig>(productConfigFolder);
+
+		// Load constraints
+		this.constraintConfigs = this.readConfigs<RuleConfig>(constraintPathFolder);
+		// Load filters
+		this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
+		// Load icons
+		// this.iconConfigs = this.readConfigs<IconConfig>(iconPathFolder);
+		// Load min units
+		this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
+		// Load price providers
+		this.priceProviderConfigs = this.readConfigs<PriceProviderConfig>(pricePathFolder);
+		// Load quantity providers
+		this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
 	}
 
-	protected loadServices(): void {
+	protected instantiate(): void {
 		// Instantiate all services
 		this.services = this.instantiateFromConfig<ServiceConfig, ProductService>(this.serviceConfigs, (config) => new ProductService(config));
 
@@ -68,7 +99,7 @@ class ServiceLoader {
 
 				// Require all attributes for all families		
 				const familyConfig = this.familyConfigs[family];
-				for(const attribute of familyConfig.rules?.attributes?.required?? []) {
+				for(const attribute of familyConfig.rules.attributes?.required?? []) {
 					const attributeInstance = service.retrieveAttribute(attribute);
 					familyInstance.requireAttr(attribute, attributeInstance);
 				}

@@ -1,8 +1,8 @@
 import { ProductAttrIcon } from "$/product/attribute/Icon/ProductAttrIcon";
 import { ProductAttrIconCollection } from "$/product/attribute/Icon/ProductAttrIconCollection";
 import { ProductService } from "$/product/ProductService";
-import { MaterialAttribute, MaterialValues } from "../../../attributes/MaterialAttribute";
-import { StickerSheetNameAttribute, StickerSheetNameValues } from "../../../attributes/StickerSheetNameAttribute";
+import { MaterialAttribute, MaterialValues } from "./attributes/MaterialAttribute";
+import { StickerSheetNameAttribute, StickerSheetNameValues } from "./attributes/StickerSheetNameAttribute";
 
 export class StickerAttributeIconCollection extends ProductAttrIconCollection {
 	public static readonly NAME = "icons";

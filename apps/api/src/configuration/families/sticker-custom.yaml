@@ -67,10 +67,14 @@ rules:
       - delivery_roll_size_mm
       - delivery_roll_top_edge_margin
       - delivery_roll_item_margin
-  template: |
-    {{name}}
-    {{material}} / {{laminate}}
-    {{width_mm}} x {{height_mm}} mm
-
-
-
+  collections:
+    constraint: sticker_production
+    filter: sticker_wizard_filters
+    # icon: icons
+    min_units: sticker_rate_lists
+    price_provider: sticker_quantity_lists
+    quantity_provider: sticker_wizard_stock
+template: |
+  {{name}}
+  {{material}} / {{laminate}}
+  {{width_mm}} x {{height_mm}} mm

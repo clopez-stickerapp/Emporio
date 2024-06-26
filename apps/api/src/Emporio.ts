@@ -1,6 +1,5 @@
 import { Type, Static } from "@sinclair/typebox";
 import { CustomStickerFamily } from "./configuration/Family/CustomStickerFamily";
-import { StickerAppProductLegacySKUService } from "./configuration/SKU/StickerAppProductLegacySKUService";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
 import { ProductAttr } from "./product/attribute/ProductAttr";
@@ -19,6 +18,7 @@ import { ProductFamily } from "./product/ProductFamily";
 import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
 import { AttributeValueSingle } from "./product/attribute/AttributeValue";
+import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
 
 export const PriceDTO = Type.Object({
 	price: Price,

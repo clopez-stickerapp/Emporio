@@ -12,6 +12,7 @@ import { PriceProviderConfig } from "./interface/PriceProviderConfig";
 import { ProductConfig } from "./interface/ProductConfig";
 import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
+import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -31,12 +32,13 @@ class ServiceLoader {
 	protected productConfigs: Record<string, ProductConfig> = {};
 	protected attributes: Record<string, ProductAttr> = {};
 
-	protected constraintConfigs: Record<string, NamedConfig> = {};
-	protected filterConfigs: Record<string, NamedConfig> = {};
+	protected constraintConfigs: Record<string, RuleConfig> = {};
+	protected constraints: Record<string, ProductAttrConstraint> = {};
+	protected filterConfigs: Record<string, RuleConfig> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
-	protected minUnitsConfigs: Record<string, NamedConfig> = {};
-	protected priceProviderConfigs: Record<string, NamedConfig> = {};
-	protected quantityProviderConfigs: Record<string, NamedConfig> = {};
+	protected minUnitsConfigs: Record<string, MinUnitsConfig> = {};
+	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
+	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
 
 	public constructor() {
 		this.load();
@@ -47,39 +49,68 @@ class ServiceLoader {
 	}
 
 	protected load(): void {
+		console.debug("Loading services...");
+
 		// Load all service configs
+		console.debug("Loading service configs...");
 		this.serviceConfigs = this.readConfigs<ServiceConfig>(servicePathFolder);
+
 		// Load all family configs
+		console.debug("Loading family configs...");
 		this.familyConfigs = this.readConfigs<FamilyConfig>(familyConfigFolder);
+
 		// Load all product configs
+		console.debug("Loading product configs...");
 		this.productConfigs = this.readConfigs<ProductConfig>(productConfigFolder);
 
 		// Load constraints
+		console.debug("Loading constraint configs...");
 		this.constraintConfigs = this.readConfigs<RuleConfig>(constraintPathFolder);
+
 		// Load filters
-		this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
+		// console.debug("Loading filter configs...");
+		// this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
+
 		// Load icons
+		// console.debug("Loading icon configs...");
 		// this.iconConfigs = this.readConfigs<IconConfig>(iconPathFolder);
+
 		// Load min units
-		this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
+		// console.debug("Loading min units configs...");
+		// this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
+
 		// Load price providers
-		this.priceProviderConfigs = this.readConfigs<PriceProviderConfig>(pricePathFolder);
+		// console.debug("Loading price provider configs...");
+		// this.priceProviderConfigs = this.readConfigs<PriceProviderConfig>(pricePathFolder);
+
 		// Load quantity providers
-		this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
+		// console.debug("Loading quantity provider configs...");
+		// this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
 	}
 
 	protected instantiate(): void {
+		console.debug("Instantiating services...");
+
 		// Instantiate all services
+		console.debug("Instantiating service instances...");
 		this.services = this.instantiateFromConfig<ServiceConfig, ProductService>(this.serviceConfigs, (config) => new ProductService(config));
 
 		// Instantiate all families
+		console.debug("Instantiating family instances...");
 		this.families = this.instantiateFromConfig<FamilyConfig, ProductFamily>(this.familyConfigs, (config) => new ProductFamily(config));
 
 		// Instantiate all attributes
+		console.debug("Instantiating attribute instances...");
 		this.attributes = Object.fromEntries(allAttributes.map((attribute) => [ attribute.getName(), attribute ]));
+
+		// Instantiate all constraints
+		console.debug("Instantiating constraint instances...");
+		this.constraints = this.instantiateFromConfig<RuleConfig, ProductAttrConstraint>(this.constraintConfigs, (config) => new ProductAttrConstraint(config));
 	}
 
 	protected registerAttributes(): void {
+		console.debug("Registering attributes...");
+
 		// Register all attributes to services
 		for(const [name, attribute] of Object.entries(this.attributes)) {
 			for(const service of Object.values(this.services)) {
@@ -94,12 +125,14 @@ class ServiceLoader {
 			const service = this.services[name];
 
 			for(const family of serviceConfig.families?? []) {
+				console.debug(`Registering family '${family}' for service '${name}'...`);
 				const familyInstance = this.families[family];
 				this.services[name].registerProductFamily(family, familyInstance);
 
 				// Require all attributes for all families		
 				const familyConfig = this.familyConfigs[family];
 				for(const attribute of familyConfig.rules.attributes?.required?? []) {
+					console.debug(`Requiring attribute '${attribute}' for family '${family}'...`);
 					const attributeInstance = service.retrieveAttribute(attribute);
 					familyInstance.requireAttr(attribute, attributeInstance);
 				}
@@ -108,9 +141,12 @@ class ServiceLoader {
 	}
 
 	protected registerProducts(): void {
+		console.debug("Registering products...");
+
 		// Register all products to families
 		for(const [name, familyConfig] of Object.entries(this.familyConfigs)) {
 			for(const product of familyConfig.products) {
+				console.debug(`Registering product '${product}' for family '${name}'...`);
 				this.families[name].addProduct(product, this.productConfigs[product].overrides);
 			}
 		}

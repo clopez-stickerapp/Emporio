@@ -1,11 +1,15 @@
 import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { RuleConfig } from "$/configuration/interface/RuleConfig";
 import { ProductConditionBuilder } from "../../condition/ProductConditionBuilder";
 import { AttributeValueSingle } from "../AttributeValue";
 
 export class ProductAttrConstraint {
+	protected attributeName: string;
 	public constraints: Record<string, ProductConditionBuilder> = {};
 
-	public constructor( private attributeName: string ) {}
+	public constructor( config: RuleConfig ) {
+		this.attributeName = config.name;
+	}
 
 	public createConditionsFor( attributeValue: AttributeValueSingle, relationMode: string = ConditionRelations.AND ): ProductConditionBuilder {
 		attributeValue = attributeValue.toString();

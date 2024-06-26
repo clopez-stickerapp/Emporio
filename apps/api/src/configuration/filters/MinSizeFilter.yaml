@@ -2,7 +2,7 @@ name: MinSizeFilter
 rules:
   - keys:
       - 25
-    conditions:
+    conditions: []
   
   - keys:
       - 6

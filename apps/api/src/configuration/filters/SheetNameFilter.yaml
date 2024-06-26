@@ -5,7 +5,7 @@ rules:
       - rectangle
       - round
       - rounded
-    conditions:
+    conditions: []
 
   - keys:
       - round

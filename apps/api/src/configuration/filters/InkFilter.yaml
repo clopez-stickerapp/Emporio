@@ -1,6 +1,7 @@
 name: InkFilter
 rules:
-  - keys:
+  - keys: []
+    conditions: []
   - keys:
       - invisible_ink
       - pink_ink

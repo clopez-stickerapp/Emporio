@@ -10,7 +10,7 @@ rules:
       - 12x5 cm
       - 13x7 cm
       - 15x10 cm
-    conditions:
+    conditions: []
 
   - keys:
       - 2" x 1"

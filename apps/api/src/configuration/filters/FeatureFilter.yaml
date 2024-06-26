@@ -7,7 +7,7 @@ rules:
       - pack_set_amount
       - perforation
       - variable_data
-    conditions:
+    conditions: []
     
   - keys:
     - backpaper_print

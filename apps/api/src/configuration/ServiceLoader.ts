@@ -69,7 +69,7 @@ class ServiceLoader {
 		this.constraintConfigs = this.readConfigs<RuleConfig>(constraintPathFolder);
 
 		// Load filters
-		// console.debug("Loading filter configs...");
+		console.debug("Loading filter configs...");
 		this.filterConfigs = this.readConfigs<RuleConfig>(filterPathFolder);
 
 		// Load icons

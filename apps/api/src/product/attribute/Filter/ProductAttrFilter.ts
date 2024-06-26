@@ -1,4 +1,5 @@
 import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { RuleConfig } from "$/configuration/interface/RuleConfig";
 import { AttributeValueMulti } from "../AttributeValue";
 import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
 import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
@@ -16,9 +17,10 @@ export class ProductAttrFilter {
 	protected filters: ProductAttrFilteredValues[] = [];
 	public mode: ProductAttrFilterMode;
 
-	public constructor( attrAlias: string, mode: ProductAttrFilterMode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS ) {
-		this.attributeName = attrAlias;
-		this.mode = mode;
+	public constructor( config: RuleConfig ) {
+		this.attributeName = config.name;
+		// TODO: Add mode to config
+		this.mode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS;
 	}
 
 	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {

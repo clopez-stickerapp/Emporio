@@ -3,7 +3,7 @@ rules:
   - keys:
       - MIN
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -28,7 +28,7 @@ rules:
   - keys:
       - SMALL
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -53,7 +53,7 @@ rules:
   - keys:
       - MEDIUM
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -78,7 +78,7 @@ rules:
   - keys:
       - LARGE
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -103,7 +103,7 @@ rules:
   - keys:
       - XLARGE
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -128,7 +128,7 @@ rules:
   - keys:
       - XXLARGE
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL
@@ -153,7 +153,7 @@ rules:
   - keys:
       - MAX
     conditions:
-      relationMode: OR
+    - relationMode: OR
       conditions:
         - attribute: height_mm
           operator: LESS_THAN_OR_EQUAL

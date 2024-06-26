@@ -8,7 +8,7 @@ export class ProductAttrFilteredValues {
 
 	public constructor( values: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ) {
 		this.values = values;
-		this.conditionBuilder = new ProductConditionBuilder( conditionRelationMode );
+		this.conditionBuilder = new ProductConditionBuilder( {conditions:[], relationMode: conditionRelationMode} );
 	}
 
 	public getValues(): AttributeValueMulti {

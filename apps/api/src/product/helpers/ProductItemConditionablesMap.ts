@@ -5,7 +5,7 @@ import { ProductFamily } from "../ProductFamily";
 export class ProductItemConditionablesMap {
 	public map: Record<string, ProductItemConditionableParam> = {};
 
-	public constructor(ps: ProductService, productFamily: ProductFamily) {
+	public constructor(productFamily: ProductFamily) {
 		const productNameConditionable = new ProductItemConditionableParam("item.productName", "Product name", false, false, "string");
 		for (const product of Object.values(productFamily.getProducts())) {
 			productNameConditionable.values.push(product.getName());
@@ -14,11 +14,10 @@ export class ProductItemConditionablesMap {
 		const unitConditionable = new ProductItemConditionableParam("item.units", "Units", true, false, "float");
 		this.map['item.units'] = unitConditionable;
 		const attrs = [...Object.entries(productFamily.getRequiredAttrs()), ...Object.entries(productFamily.getSupportedAttrs())];
-		for (const [alias, productAttrClassRef] of attrs) {
-			const productAttr = ps.retrieveAttribute(productAttrClassRef);
+		for (const [alias, productAttr] of attrs) {
 			const values: string[] = [];
 			for (const attrValue of productAttr.getValues()) {
-				values.push(attrValue.getValue().toString());
+				values.push(attrValue.toString());
 			}
 			const productAttrConditionable = new ProductItemConditionableParam(`item.attributes.${alias}`, alias, productAttr.isDynamicValue(), productAttr.isMultiValue(), productAttr.getValueType(), values);
 			this.map[`item.attributes.${alias}`] = productAttrConditionable;

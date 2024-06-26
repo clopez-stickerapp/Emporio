@@ -3,6 +3,7 @@ import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode
 import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { Product } from "../Product";
 import { AttributeValueMulti } from "../attribute/AttributeValue";
+import { ProductAttr } from "../attribute/ProductAttr";
 
 export type TProductAttrMapValue = {
 	alias: string,
@@ -29,12 +30,12 @@ export class ProductAttrMap {
 	protected map: TProductAttrMap = {};
 
 	public constructor( protected ps: ProductService, protected product: Product ) {
-		for ( const [ attrAlias, attrUID ] of Object.entries( product.getProductFamily().getAttributes() ) ) {
-			this.run( attrUID, attrAlias );
+		for ( const [ attrName, attr ] of Object.entries( product.getProductFamily().getAttributes() ) ) {
+			this.run( attrName, attr );
 		}
 	}
 
-	protected run( attrUID: string, attrAlias: string ): void {
+	protected run( attrName: string, attr: ProductAttr ): void {
 		// TODO: Implement "does attr:value allow attributeName to be attrValue"
 		// Currently only does the other way around, see sticker wizard logic
 		
@@ -42,17 +43,16 @@ export class ProductAttrMap {
 
 		const constraintsCollection = this.product.getProductFamily().getConstraintsCollection();
 		const iconsCollection       = this.product.getProductFamily().getIconsCollection();
-		const outOfStockAttrValues  = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrAlias )?.getOutOfStock() ?? [];
-		const attr                  = this.ps.retrieveAttribute( attrUID );
-		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrAlias );
+		const outOfStockAttrValues  = this.product.getProductFamily().getStockCollection()?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
+		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
 
 		for ( const attrValue of attrValueOptions ) {
-			const conditionsBuilder = constraintsCollection?.findConditionsFor( attrAlias, attrValue ) ?? null;
+			const conditionsBuilder = constraintsCollection?.findConditionsFor( attrName, attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
-				const iconBuilder = iconsCollection?.findIconFor( attrAlias, attrValue ) ?? null;
+				const iconBuilder = iconsCollection?.findIconFor( attrName, attrValue ) ?? null;
 	
 				if ( iconBuilder ) {
 					icons[ attrValue ] = iconBuilder;
@@ -65,7 +65,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.product.getProductFamily().getFilterCollection()?.getFilterFor( attrAlias );
+		const filter = this.product.getProductFamily().getFilterCollection()?.getFilterFor( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;
@@ -78,12 +78,12 @@ export class ProductAttrMap {
 
 		// TODO: Double check all filter values that they are correct value types (especially for booleans and ints), if not throw error
 
-		this.map[ attrAlias ] = {
-			"alias" 				: attrAlias,
+		this.map[ attrName ] = {
+			"alias" 				: attrName,
 			"isDynamicValue" 		: attr.isDynamicValue(),
 			"isMultiValue" 			: attr.isMultiValue(),
 			"valueType" 			: attr.getValueType(),
-			"isRequired" 			: attrAlias in this.product.getProductFamily().getRequiredAttrs(),
+			"isRequired" 			: attrName in this.product.getProductFamily().getRequiredAttrs(),
 			"valuesAndConstraints" 	: attrValues,
 			"icons" 				: icons,
 			"filters" 				: filters,

@@ -2,9 +2,9 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerValues } from "../../../attributes/ResellerAttribute";
-import { MaterialValues } from "../../../attributes/MaterialAttribute";
-import { MinSizeAttribute, MinSizes } from "../../../attributes/MinSizeAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
+import { MinSizeAttribute, MinSizes } from "../attributes/MinSizeAttribute";
+import { ResellerValues } from "../attributes/ResellerAttribute";
 
 export class MinSizeFilter extends ProductAttrFilter {
 	public constructor() {

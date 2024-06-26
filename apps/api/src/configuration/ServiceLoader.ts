@@ -13,15 +13,15 @@ import { ProductConfig } from "./interface/ProductConfig";
 import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
 
-const servicePathFolder = "config/services";
-const familyConfigFolder = "config/families";
-const productConfigFolder = "config/products";
-const constraintPathFolder = "config/constraints";
-const filterPathFolder = "config/filters";
-// const iconPathFolder = "config/icons";
-const minUnitPathFolder = "config/min-units";
-const pricePathFolder = "config/price-providers";
-const quantityPathFolder = "config/quantity-providers";
+const servicePathFolder = "src/configuration/services";
+const familyConfigFolder = "src/configuration/families";
+const productConfigFolder = "src/configuration/products";
+const constraintPathFolder = "src/configuration/constraints";
+const filterPathFolder = "src/configuration/filters";
+// const iconPathFolder = "src/configuration/icons";
+const minUnitPathFolder = "src/configuration/min-units";
+const pricePathFolder = "src/configuration/price-providers";
+const quantityPathFolder = "src/configuration/quantity-providers";
 
 class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};

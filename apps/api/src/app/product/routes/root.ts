@@ -140,7 +140,7 @@ export default async function ( fastify: FastifyInstance ) {
 		for ( const attribute of attrs ) {
 			attributes[ attribute.getUID() ] = {
 				'name': attribute.getUID(),
-				'values': attribute.getValues().map( value => value.getValue() ),
+				'values': attribute.getValues(),
 				'dynamic': attribute.isDynamicValue(),
 				'multi': attribute.isMultiValue(),
 				'type': attribute.getValueType(),

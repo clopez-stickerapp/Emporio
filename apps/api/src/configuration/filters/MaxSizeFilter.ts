@@ -2,8 +2,8 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { MaterialAttribute, MaterialValues } from "../../../attributes/MaterialAttribute";
-import { MaxSizeAttribute, MaxSizes } from "../../../attributes/MaxSizeAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
+import { MaxSizeAttribute, MaxSizes } from "../attributes/MaxSizeAttribute";
 
 export class MaxSizeFilter extends ProductAttrFilter {
 	public constructor() {

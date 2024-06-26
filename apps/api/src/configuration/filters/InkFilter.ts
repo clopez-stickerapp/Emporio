@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { InkAttribute, InkValues } from "../../../attributes/InkAttribute";
-import { LaminateValues } from "../../../attributes/LaminateAttribute";
+import { InkAttribute, InkValues } from "../attributes/InkAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
 
 export class InkFilter extends ProductAttrFilter {
     public constructor() {

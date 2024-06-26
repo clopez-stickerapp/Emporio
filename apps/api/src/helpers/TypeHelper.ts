@@ -1,4 +1,4 @@
-import { StickerAppProductService } from "$/configuration/StickerAppProductService";
+import { services } from "$/configuration/ServiceLoader";
 import { Type } from "@sinclair/typebox";
 
 const attributesExample = {
@@ -21,7 +21,7 @@ const getAttributes = ( withProduction: boolean = false ) => {
 	} : attributesExample;
 }
 
-const service = new StickerAppProductService();
+const service = services["stickerapp"]; //Todo: should we do it like this?
 
 export const ProductFamily = () => Type.String( { 
 	examples: service.getProductFamilies().map( family => family.getName() ),

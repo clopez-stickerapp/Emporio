@@ -131,7 +131,7 @@ export class Emporio {
 
 	public getConditionableMap( productFamilyName: string ): Record<string, ProductItemConditionableParam> {
 		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
-		const conditionableMap = new ProductItemConditionablesMap( this.productService, productFamily );
+		const conditionableMap = new ProductItemConditionablesMap( productFamily );
 		return conditionableMap.map;
 	}
 

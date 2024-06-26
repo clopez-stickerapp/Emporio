@@ -1,9 +1,9 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductItem } from "$/product/ProductItem";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
-import { LaminateValues } from "../attributes/LaminateAttribute";
-import { MaterialValues } from "../attributes/MaterialAttribute";
-import { CustomStickerFamily } from "../Family/CustomStickerFamily";
+import { CustomStickerFamily } from "./Family/CustomStickerFamily";
+import { LaminateValues } from "./attributes/LaminateAttribute";
+import { MaterialValues } from "./attributes/MaterialAttribute";
 
 export class StickerAppProductLegacySKUService {
 	protected skuValue: ProductDynamicValue;

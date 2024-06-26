@@ -11,16 +11,18 @@ import { ProductQuantityListCollection } from "$/prices/ProductQuantityListColle
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
 import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
+import { services } from "$/configuration/ServiceLoader";
+import { StickerSquareMeterMinimumUnitValues } from "$/configuration/minUnits/StickerSquareMeterMinimumUnitValues";
 
 export class ProductFamily {
-	// protected productService: ProductService;
+	protected productService: ProductService = services["stickerapp"]; // Todo
 	protected name: string;
 	protected attrConstraintCollectionName: string;
 	protected attrFilterCollectionName: string;
-	// protected attrOutOfStockCollectionName: string;
-	// protected attrIconCollectionName: string;
-	// protected attrStockCollectionName: string;
-	// protected productItemProcessorCollectionName: string;
+	protected attrOutOfStockCollectionName: string = ""; // Todo
+	protected attrIconCollectionName: string = ""; // Todo
+	protected attrStockCollectionName: string = ""; // Todo
+	protected productItemProcessorCollectionName: string = ""; // Todo
 	protected priceProviderName: string;
 	protected productQuantityListCollectionName: string;
 
@@ -33,7 +35,8 @@ export class ProductFamily {
 		this.name = config.name;
 		this.attrConstraintCollectionName = config.rules.collections.constraint;
 		this.attrFilterCollectionName = config.rules.collections.filter;
-		this.minimumUnitsValue = config.rules.collections.min_units;
+		// this.minimumUnitsValue = config.rules.collections.min_units;
+		this.minimumUnitsValue = new StickerSquareMeterMinimumUnitValues(); // Todo
 		this.priceProviderName = config.rules.collections.price_provider;
 		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
 	}
@@ -133,43 +136,45 @@ export class ProductFamily {
 		throw new Error("Alias is not supported by product family: " + name + " (" + this.getName() + ")");
 	}
 
-	// public getProductService(): ProductService {
-	// 	return this.productService;
-	// }
+	public getProductService(): ProductService {
+		return this.productService;
+	}
 
-	// public setProductService(productService: ProductService): void {
-	// 	this.productService = productService;
-	// }
+	public setProductService(productService: ProductService): void {
+		this.productService = productService;
+	}
 
-	// public getConstraintsCollection(): ProductAttrConstraintCollection | null {
-	// 	return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
-	// }
+	public getConstraintsCollection(): ProductAttrConstraintCollection | null {
+		return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
+	}
 
-	// public getFilterCollection(): ProductAttrFilterCollection | null {
-	// 	return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
-	// }
+	public getFilterCollection(): ProductAttrFilterCollection | null {
+		return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
+	}
 
-	// public getIconsCollection(): ProductAttrIconCollection | null {
-	// 	return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
-	// }
+	public getIconsCollection(): ProductAttrIconCollection | null {
+		return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
+	}
 
-	// public getStockCollection(): ProductAttrStockCollection | null {
-	// 	return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
-	// }
+	public getStockCollection(): ProductAttrStockCollection | null {
+		return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
+	}
 
-	// public getProductPriceProvider(): ProductPriceProvider | null {
-	// 	return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
-	// }
+	public getProductPriceProvider(): ProductPriceProvider | null {
+		return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
+	}
 
-	// public getProductQuantityListCollection(): ProductQuantityListCollection | null {
-	// 	return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
-	// }
+	public getProductQuantityListCollection(): ProductQuantityListCollection | null {
+		return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
+	}
 
-	// public validateUnits(productItem: ProductItem): void{
-	// 	productItem.setUnits(this.calculateUnits(productItem));
-	// }
+	public validateUnits(productItem: ProductItem): void{
+		productItem.setUnits(this.calculateUnits(productItem));
+	}
 
-	// public abstract calculateUnits(productItem: ProductItem): number;
+	public calculateUnits(productItem: ProductItem): number {
+		throw new Error("Not implemented.");
+	}
 
 	public getMinimumQuantity(productItem: ProductItem): number {
 		return 1;

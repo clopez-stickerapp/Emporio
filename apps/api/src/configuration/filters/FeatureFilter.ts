@@ -3,10 +3,10 @@ import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { ProductAttrFilterMode } from "$/product/attribute/Filter/ProductAttrFilterMode";
-import { FeatureAttribute, ProductFeatures } from "../../../attributes/FeatureAttribute";
-import { LaminateAttribute, LaminateValues } from "../../../attributes/LaminateAttribute";
-import { MaterialAttribute, MaterialValues } from "../../../attributes/MaterialAttribute";
-import { MaxSizeAttribute, MaxSizes } from "../../../attributes/MaxSizeAttribute";
+import { FeatureAttribute, ProductFeatures } from "../attributes/FeatureAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
+import { MaterialValues } from "../attributes/MaterialAttribute";
+import { MaxSizes } from "../attributes/MaxSizeAttribute";
 
 export class FeatureFilter extends ProductAttrFilter {
 	public constructor() {

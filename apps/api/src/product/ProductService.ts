@@ -202,15 +202,6 @@ export class ProductService {
 		return Array.from(Object.values(this.productFamilies));
 	}
 
-	public findAttributeValue(attributeUID: string, attributeValue: AttributeValueSingle): ProductAttrValue | null {
-		throw new Error("I don't think this function is needed.")
-		if (this.attributes[attributeUID]) {
-			return this.attributes[attributeUID].getAttrValue(attributeValue);
-		}
-
-		return null;
-	}
-
 	public findProduct(productFamilyName: string, productName: string): Product{
 		if (this.productFamilies[productFamilyName]) {
 			return this.productFamilies[productFamilyName].getProduct(productName);
@@ -236,9 +227,9 @@ export class ProductService {
 		{
 			for ( const attrValue of attribute.getValues() ) 
 			{
-				if ( !attrValues.includes( attrValue.getValue() ) ) 
+				if ( !attrValues.includes( attrValue ) ) 
 				{
-					attrValues.push( attrValue.getValue() );
+					attrValues.push( attrValue );
 				}
 			}
 		}
@@ -270,7 +261,7 @@ export class ProductService {
 				
 				if ( attrValue ) 
 				{
-					attrValues.push( attrValue.getValue() );
+					attrValues.push( attrValue );
 				}
 			}
 		}

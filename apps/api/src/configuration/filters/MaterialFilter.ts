@@ -1,9 +1,8 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
-import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { CustomStickerFamily } from "$/configuration/Family/CustomStickerFamily";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerValues } from "../../../attributes/ResellerAttribute";
-import { MaterialAttribute, MaterialValues, MaterialsLabelsOnRollValues } from "../../../attributes/MaterialAttribute";
+import { MaterialAttribute, MaterialValues, MaterialsLabelsOnRollValues } from "../attributes/MaterialAttribute";
+import { ResellerValues } from "../attributes/ResellerAttribute";
 
 export class MaterialFilter extends ProductAttrFilter {
 	public constructor() {

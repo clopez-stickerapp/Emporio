@@ -1,8 +1,8 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ResellerValues } from "../../../attributes/ResellerAttribute";
-import { LaminateValues } from "../../../attributes/LaminateAttribute";
-import { StickerSheetNameAttribute, StickerSheetNameValues } from "../../../attributes/StickerSheetNameAttribute";
+import { LaminateValues } from "../attributes/LaminateAttribute";
+import { ResellerValues } from "../attributes/ResellerAttribute";
+import { StickerSheetNameAttribute, StickerSheetNameValues } from "../attributes/StickerSheetNameAttribute";
 
 export class SheetNameFilter extends ProductAttrFilter {
 	public constructor() {

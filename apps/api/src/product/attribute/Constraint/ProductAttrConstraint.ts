@@ -9,17 +9,26 @@ export class ProductAttrConstraint {
 
 	public constructor( config: RuleConfig ) {
 		this.attributeName = config.name;
+
+		for ( const rule of config.rules ) {
+			for ( const key of rule.keys ) {
+
+				console.debug( `Creating constraints for ${ this.attributeName } - ${ key }` );
+				this.constraints[ key ] = new ProductConditionBuilder( rule.conditions );
+			}
+		}
 	}
 
 	public createConditionsFor( attributeValue: AttributeValueSingle, relationMode: string = ConditionRelations.AND ): ProductConditionBuilder {
-		attributeValue = attributeValue.toString();
+		throw new Error( "Creating conditions like this is no longer supported." );
+		// attributeValue = attributeValue.toString();
 
-		if ( attributeValue in this.constraints ) {
-			// TODO: Custom exception
-			throw new Error( `Constraints already created for ${ attributeValue }` );
-		}
+		// if ( attributeValue in this.constraints ) {
+		// 	// TODO: Custom exception
+		// 	throw new Error( `Constraints already created for ${ attributeValue }` );
+		// }
 
-		return this.constraints[ attributeValue ] = new ProductConditionBuilder( relationMode );
+		// return this.constraints[ attributeValue ] = new ProductConditionBuilder( relationMode );
 	}
 
 	public getConditionsFor( attributeValue: AttributeValueSingle ): ProductConditionBuilder | null {

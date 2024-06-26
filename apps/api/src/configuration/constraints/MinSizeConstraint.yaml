@@ -3,8 +3,10 @@ rules:
   - keys:
       - BIGGER
     conditions:
-      - attribute: productName
-        operator: IN
-        value:
-          - "{CustomStickerFamily.PRODUCT_WALL}"
-          - "{CustomStickerFamily.PRODUCT_FLOOR}"
+      relationMode: AND
+      conditions:
+        - attribute: productName
+          operator: IN
+          value:
+            - "{CustomStickerFamily.PRODUCT_WALL}"
+            - "{CustomStickerFamily.PRODUCT_FLOOR}"

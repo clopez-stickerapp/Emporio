@@ -6,7 +6,9 @@ rules:
       - KRAFT_THIN
       - SILVER_THIN
     conditions:
-      - attribute: productName
-        operator: IN
-        value:
-          - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
+      relationMode: AND
+      conditions:
+        - attribute: productName
+          operator: IN
+          value:
+            - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"

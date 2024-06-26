@@ -3,35 +3,37 @@ rules:
   - keys:
       - AUTO
     conditions:
-      - attribute: productName
-        operator: NOT_IN
-        value:
-          - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
+      relationMode: AND
+      conditions:
+        - attribute: productName
+          operator: NOT_IN
+          value:
+            - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
 
   - keys:
       - TOP_FIRST
       - BOTTOM_FIRST
     conditions:
-      - relationMode: OR
-        conditions:
-          - attribute: width_mm
-            operator: LESS_THAN_OR_EQUAL
-            value: "{MaxSizeOtherSideValues.ROLL}"
-          - attribute: productName
-            operator: NOT_IN
-            value:
-              - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
+      relationMode: OR
+      conditions:
+        - attribute: width_mm
+          operator: LESS_THAN_OR_EQUAL
+          value: "{MaxSizeOtherSideValues.ROLL}"
+        - attribute: productName
+          operator: NOT_IN
+          value:
+            - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
 
   - keys:
       - LEFT_FIRST
       - RIGHT_FIRST
     conditions:
-      - relationMode: OR
-        conditions:
-          - attribute: height_mm
-            operator: LESS_THAN_OR_EQUAL
-            value: "{MaxSizeOtherSideValues.ROLL}"
-          - attribute: productName
-            operator: NOT_IN
-            value:
-              - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
+      relationMode: OR
+      conditions:
+        - attribute: height_mm
+          operator: LESS_THAN_OR_EQUAL
+          value: "{MaxSizeOtherSideValues.ROLL}"
+        - attribute: productName
+          operator: NOT_IN
+          value:
+            - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"

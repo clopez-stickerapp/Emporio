@@ -3,7 +3,9 @@ rules:
   - keys:
       - true
     conditions:
-      - attribute: material
-        operator: IN
-        value:
-          - "{MaterialValues.COLORED_VINYL}"
+      relationMode: AND
+      conditions:
+        - attribute: material
+          operator: IN
+          value:
+            - "{MaterialValues.COLORED_VINYL}"

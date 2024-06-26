@@ -7,13 +7,11 @@ import { ConditionRelations } from "./ConditionRelations";
 import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { Conditions } from "./Conditions";
-import { ConditionSubGroupAlreadyExistsException } from "./exceptions/ConditionSubGroupAlreadyExistsException";
-import { ConditionSubGroupNotFoundException } from "./exceptions/ConditionSubGroupNotFoundException";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 
 export class ConditionBuilder implements ConditionTestableInterface {
 	public relationMode: string;
-	protected conditions: Conditions = {};
+	protected conditions: Conditions = [];
 	protected baseComplexityScore: number = 0;
 
 	public constructor(config: ConditionBuilderConfig = {conditions: []}) {
@@ -23,9 +21,9 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		for (const condition of config.conditions) {
 			// Check if condition is a ConditionBuilderConfig or ConditionConfig
 			if ((condition as ConditionBuilderConfig).relationMode !== undefined) {
-				this.conditions[`${condition}`] = new ConditionBuilder( condition as ConditionBuilderConfig );
+				this.conditions.push(new ConditionBuilder( condition as ConditionBuilderConfig ));
 			} else {
-				this.conditions[`${condition}`] = new Condition( condition as ConditionConfig );
+				this.conditions.push(new Condition( condition as ConditionConfig ));
 			}
 		}
 	}
@@ -53,56 +51,14 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.keys(this.conditions).length;
 	}
 
+	/** @deprecated */
 	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
 		throw new Error("Adding subGroups this way is no longer supported.");
-		// if (!alias) {
-		// 	alias = `subgroup_${this.count()}`;
-		// }
-
-		// if (this.conditions[alias] !== undefined) {
-		// 	throw new ConditionSubGroupAlreadyExistsException(`Sub group already exists with alias: ${alias}`);
-		// }
-
-		// const subGroup = new ConditionBuilder(mode);
-		// this.conditions[alias] = subGroup;
-
-		// return subGroup;
 	}
 
-	/**
-	 * @throws ConditionSubGroupNotFoundException
-	 */
-	public getSubGroup(alias: string): ConditionBuilder {
-		if (this.conditions[alias] === undefined) {
-			throw new ConditionSubGroupNotFoundException(`Sub group doesn't exists with alias: ${alias}`);
-		}
-
-		const subGroup = this.conditions[alias];
-
-		if (!(subGroup instanceof ConditionBuilder)) {
-			throw new Error(`${alias} is not a subgroup!`);	//this wasn't there before
-		}
-
-		return subGroup;
-	}
-
-	public removeSubGroup(alias: string): void {
-		delete this.conditions[alias];
-	}
-
+	/** @deprecated */
 	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
 		throw new Error("Adding conditions in this way is no longer supported.");
-		// const condition = new Condition(columnName, operator, conditionValue);
-
-		// if (!this.hasCondition(condition)) {
-		// 	this.conditions[`${condition}`] = condition;
-		// }
-
-		// return this;
-	}
-
-	public hasCondition(condition: Condition): boolean {
-		return this.conditions[`${condition}`] !== undefined;
 	}
 
 	public test(data: Attributes): boolean {

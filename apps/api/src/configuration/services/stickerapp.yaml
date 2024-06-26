@@ -1,12 +1,12 @@
 name: stickerapp
 pricing_models:
   - default
-  - promo
-  - fee
+#   - promo
+#   - fee
 families:
   - sticker-custom
-  - promo
-  - fee
+#   - promo
+#   - fee
 attributes:
   - sheet_type
   - sheet_name

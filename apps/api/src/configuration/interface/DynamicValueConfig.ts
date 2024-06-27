@@ -1,5 +1,5 @@
 import { RuleConfig } from "./RuleConfig";
 
-export interface MinUnitsConfig extends RuleConfig<number>{
+export interface DynamicValueConfig extends RuleConfig<number>{
 	defaultValue: number;
 };

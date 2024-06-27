@@ -6,7 +6,6 @@ import { NamedConfig } from "$data/NamedConfig";
 import { allAttributes } from "./attributes/attributes";
 import { RuleConfig } from "./interface/RuleConfig";
 import { FamilyConfig } from "./interface/FamilyConfig";
-import { MinUnitsConfig } from "./interface/MinUnitsConfig";
 import { PriceProviderConfig } from "./interface/PriceProviderConfig";
 import { ProductConfig } from "./interface/ProductConfig";
 import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
@@ -14,6 +13,7 @@ import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
+import { DynamicValueConfig } from "./interface/DynamicValueConfig";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -38,7 +38,7 @@ class ServiceLoader {
 	protected filterConfigs: Record<string, RuleConfig> = {};
 	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
-	protected minUnitsConfigs: Record<string, MinUnitsConfig> = {};
+	protected DynamicValueConfigs: Record<string, DynamicValueConfig> = {};
 	protected minUnits: Record<string, ProductDynamicValue> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
@@ -80,7 +80,7 @@ class ServiceLoader {
 
 		// Load min units
 		console.debug("Loading min units configs...");
-		this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
+		this.DynamicValueConfigs = this.readConfigs<DynamicValueConfig>(minUnitPathFolder);
 
 		// Load price providers
 		// console.debug("Loading price provider configs...");
@@ -118,7 +118,7 @@ class ServiceLoader {
 
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
-		this.minUnits = this.instantiateFromConfig<MinUnitsConfig, ProductDynamicValue>(this.minUnitsConfigs, (config) => new ProductDynamicValue(config));
+		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, ProductDynamicValue>(this.DynamicValueConfigs, (config) => new ProductDynamicValue(config));
 	}
 
 	protected registerAttributes(): void {

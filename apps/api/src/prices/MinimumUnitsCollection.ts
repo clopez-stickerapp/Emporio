@@ -1,10 +1,10 @@
-import { MinUnitsConfig } from "$/configuration/interface/MinUnitsConfig";
+import { DynamicValueConfig } from "$/configuration/interface/DynamicValueConfig";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 
 export class MinimumUnitsCollection extends ProductDynamicValue{
 	protected collectionName: string;
 
-	public constructor( config: MinUnitsConfig ) {
+	public constructor( config: DynamicValueConfig ) {
 		super( config );
 
 		this.collectionName = config.name;

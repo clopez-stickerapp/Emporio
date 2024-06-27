@@ -21,12 +21,17 @@ export class ProductAttrFilter {
 		this.attributeName = config.name;
 		// TODO: Add mode to config
 		this.mode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS;
+
+		for ( const rule of config.rules ) {
+			this.filters.push( new ProductAttrFilteredValues( rule.keys, rule.conditions ) );
+		}
 	}
 
 	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {
-		let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
-		this.filters.push( filter );
-		return filter;
+		throw new Error("Create filters this way is no longer supported.");
+		// let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
+		// this.filters.push( filter );
+		// return filter;
 	}
 
 	public getAllFilters(): ProductAttrFilteredValues[] {

@@ -14,6 +14,9 @@ import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAtt
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 import { DynamicValueConfig } from "./interface/DynamicValueConfig";
+import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
+import { StickerPriceProvider } from "./price-providers/StickerPriceProvider";
+import { PromoProductPriceProvider } from "./price-providers/PromoProductPriceProvider";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -41,6 +44,7 @@ class ServiceLoader {
 	protected DynamicValueConfigs: Record<string, DynamicValueConfig> = {};
 	protected minUnits: Record<string, ProductDynamicValue> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
+	protected priceProviders: Record<string, ProductPriceProvider> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
 
 	public constructor() {
@@ -49,6 +53,7 @@ class ServiceLoader {
 		this.registerAttributes();
 		this.registerFamilies();
 		this.registerProducts();
+		// this.registerConstraints();
 	}
 
 	protected load(): void {
@@ -119,6 +124,12 @@ class ServiceLoader {
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
 		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, ProductDynamicValue>(this.DynamicValueConfigs, (config) => new ProductDynamicValue(config));
+
+		// Instantiate all price providers
+		console.debug("Instantiating price provider instances...");
+		// this.priceProviders = this.instantiateFromConfig<PriceProviderConfig, PriceProvider>(this.priceProviderConfigs, (config) => new PriceProvider(config));
+		this.priceProviders[StickerPriceProvider.NAME] = new StickerPriceProvider();
+		this.priceProviders[PromoProductPriceProvider.NAME] = new PromoProductPriceProvider();
 	}
 
 	protected registerAttributes(): void {

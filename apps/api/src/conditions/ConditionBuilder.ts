@@ -52,13 +52,17 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	}
 
 	/** @deprecated */
-	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
-		throw new Error("Adding subGroups this way is no longer supported.");
+	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND): ConditionBuilder {
+		const subGroup = new ConditionBuilder({relationMode: mode, conditions: []});
+		this.conditions.push(subGroup);
+		return subGroup;
 	}
 
 	/** @deprecated */
 	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
-		throw new Error("Adding conditions in this way is no longer supported.");
+		const condition = new Condition({attribute: columnName, operator, value: conditionValue ?? undefined});
+		this.conditions.push(condition);
+		return this;
 	}
 
 	public test(data: Attributes): boolean {

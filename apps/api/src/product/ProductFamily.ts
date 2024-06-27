@@ -44,7 +44,7 @@ export class ProductFamily {
 			throw new Error("Product already exists: " + config.name);
 		}
 
-		const product = new Product(this, config);
+		const product = new Product(this.getName(), config);
 		this.products[config.name] = product;
 
 		return product;
@@ -160,6 +160,14 @@ export class ProductFamily {
 
 	public getMinimumQuantity(productItem: ProductItem): number {
 		return 1;
+	}
+
+	public canHaveAttr(attrName: string): boolean {
+		if(this.getRequiredAttrs()[attrName] || this.getSupportedAttrs()[attrName]){
+			return true;
+		}
+
+		return false;
 	}
 
 	public getOutOfStockProducts(): string[] {

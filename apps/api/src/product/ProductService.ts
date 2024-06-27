@@ -234,7 +234,7 @@ export class ProductService {
 
 	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
 	{
-		const attribute = product.getProductFamily().getAttribute( attrAlias );
+		const attribute = this.retrieveProductFamily( product.getProductFamilyName()).getAttribute( attrAlias );
 		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
 
 		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) 
@@ -254,7 +254,7 @@ export class ProductService {
 	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
 	{
 		const attrValues: AttributeValueMulti = [];
-		const attribute = product.getProductFamily().getAttribute( attrAlias );
+		const attribute = this.retrieveProductFamily( product.getProductFamilyName()).getAttribute( attrAlias );
 
 		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
 

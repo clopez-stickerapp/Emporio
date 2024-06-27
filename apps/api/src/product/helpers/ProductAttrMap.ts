@@ -30,7 +30,7 @@ export class ProductAttrMap {
 	protected map: TProductAttrMap = {};
 
 	public constructor( protected ps: ProductService, protected product: Product ) {
-		for ( const [ attrName, attr ] of Object.entries( product.getProductFamily().getAttributes() ) ) {
+		for ( const [ attrName, attr ] of Object.entries( this.ps.retrieveProductFamily( product.getProductFamilyName()).getAttributes() ) ) {
 			this.run( attrName, attr );
 		}
 	}
@@ -41,9 +41,9 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.ps.retrieveAttrConstraintCollection( this.product.getProductFamily().getConstraintsCollectionName());
-		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.product.getProductFamily().getIconsCollectionName());
-		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.product.getProductFamily().getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
+		const constraintsCollection = this.ps.retrieveAttrConstraintCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getConstraintsCollectionName());
+		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getIconsCollectionName());
+		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
 		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
@@ -65,7 +65,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.ps.retrieveAttrFilterCollection( this.product.getProductFamily().getFilterCollectionName())?.getFilterFor( attrName );
+		const filter = this.ps.retrieveAttrFilterCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName())?.getFilterFor( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;
@@ -83,7 +83,7 @@ export class ProductAttrMap {
 			"isDynamicValue" 		: attr.isDynamicValue(),
 			"isMultiValue" 			: attr.isMultiValue(),
 			"valueType" 			: attr.getValueType(),
-			"isRequired" 			: attrName in this.product.getProductFamily().getRequiredAttrs(),
+			"isRequired" 			: attrName in this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getRequiredAttrs(),
 			"valuesAndConstraints" 	: attrValues,
 			"icons" 				: icons,
 			"filters" 				: filters,

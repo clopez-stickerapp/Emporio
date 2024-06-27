@@ -1,15 +1,13 @@
-import { ProductFamily } from "./ProductFamily";
-import { Condition } from "$/conditions/Condition";
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionValue } from "$/conditions/ConditionValue";
-import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
 import { AttributeValue } from "./attribute/AttributeValue";
 import { Attributes } from "./attribute/Attributes";
 import { ProductConfig } from "$/configuration/interface/ProductConfig";
+import { ProductAttr } from "./attribute/ProductAttr";
 
 export class Product {
-	protected productFamily: ProductFamily;
+	protected productFamilyName: string;
 	protected name: string;
 	protected attrMap: Record<string, AttributeValue> = {};
 	protected attrStrictMatches: string[] = [];
@@ -17,8 +15,8 @@ export class Product {
 	protected inStock: boolean = true;
 	protected sku: string;
 
-	public constructor(productFamily: ProductFamily, config: ProductConfig) {
-		this.productFamily = productFamily;
+	public constructor(productFamilyName: string, config: ProductConfig) {
+		this.productFamilyName = productFamilyName;
 		this.name = config.name;
 		this.conditions = new ConditionBuilder();
 		this.inStock = true;
@@ -45,43 +43,12 @@ export class Product {
 		return this.conditions.test(attributes);
 	}
 
-	public canAttrBe(attrName: string, attrValue: ConditionValue): boolean {
-		let attr = this.productFamily.getAttribute(attrName);
-
-		try{
-			attr.canBe(attrValue);
-		} catch (e) {
-			if(e instanceof ProductAttrValueInvalidException){
-				return false;
-			} else {
-				throw e;
-			}
-		}
-
-		// this.conditions doesn't contain any Condition builders, that's why we can cast it to Condition[]
-		for (let condition of Object.values(this.conditions.getConditions()) as Condition[]) {
-			if(condition.columnName === attrName && !condition.test({[attrName]: attrValue})){
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public canHaveAttr(attrName: string): boolean {
-		if(this.productFamily.getRequiredAttrs()[attrName] || this.productFamily.getSupportedAttrs()[attrName]){
-			return true;
-		}
-
-		return false;
-	}
-
 	public getAttrValue(attrName: string): AttributeValue | undefined {
 		return this.attrMap[attrName];
 	}
 
-	public withAttrValue(attrName: string, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
-		let attr = this.productFamily.getAttribute(attrName);
+	public withAttrValue(attr: ProductAttr, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
+		let attrName = attr.getName();
 
 		this.attrMap[attrName] = value;
 
@@ -139,8 +106,8 @@ export class Product {
 		return this.name;
 	}
 
-	public getProductFamily(): ProductFamily {
-		return this.productFamily;
+	public getProductFamilyName(): string {
+		return this.productFamilyName;
 	}
 
 	public getAttrMap(): Record<string, AttributeValue> {

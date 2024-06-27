@@ -58,7 +58,7 @@ export class ProductItemValidator
 				value = value.filter( v => !isEmpty( v ) );
 			}
 
-			if ( !product.canHaveAttr( attrName ) )
+			if ( !productFamily.canHaveAttr( attrName ) )
 			{
 				if ( !allowUnsupportedAttributeAliases )
 				{

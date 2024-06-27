@@ -1,12 +1,12 @@
-import { ProductService } from "./ProductService";
 import { ProductFamily } from "./ProductFamily";
 import { Condition } from "$/conditions/Condition";
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionValue } from "$/conditions/ConditionValue";
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
-import { AttributeValue, AttributeValueSingle } from "./attribute/AttributeValue";
+import { AttributeValue } from "./attribute/AttributeValue";
 import { Attributes } from "./attribute/Attributes";
+import { ProductConfig } from "$/configuration/interface/ProductConfig";
 
 export class Product {
 	protected productFamily: ProductFamily;
@@ -17,12 +17,12 @@ export class Product {
 	protected inStock: boolean = true;
 	protected sku: string;
 
-	public constructor(productFamily: ProductFamily, name: string, sku: string) {
+	public constructor(productFamily: ProductFamily, config: ProductConfig) {
 		this.productFamily = productFamily;
-		this.name = name;
+		this.name = config.name;
 		this.conditions = new ConditionBuilder();
 		this.inStock = true;
-		this.sku = sku;
+		this.sku = config.sku;
 	}
 
 	// Instead of making this.conditions public like in other classes, we use this method to add conditions

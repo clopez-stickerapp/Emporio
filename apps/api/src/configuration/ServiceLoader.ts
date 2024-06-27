@@ -180,7 +180,7 @@ class ServiceLoader {
 		for(const [name, familyConfig] of Object.entries(this.familyConfigs)) {
 			for(const product of familyConfig.products) {
 				console.debug(`Registering product '${product}' for family '${name}'...`);
-				this.families[name].addProduct(product, this.productConfigs[product].overrides);
+				this.families[name].addProduct(this.productConfigs[product]);
 			}
 		}
 	}

@@ -16,7 +16,6 @@ import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
 	protected productFamilies: Record<string, ProductFamily> = {};
-	protected productSkus: string[] = [];
 
 	public constructor(config: ServiceConfig) {
 		// this.name = config.name;
@@ -231,14 +230,6 @@ export class ProductService {
 		} else {
 			throw new Error("Product family not found with name " + productFamilyName);
 		}
-	}
-
-	public registerProductSku(sku: string): void {
-		if (this.productSkus.includes(sku)) {
-			throw new Error("SKU " + sku + " already exists. SKU value must be unique per product");
-		}
-
-		this.productSkus.push(sku);
 	}
 
 	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti

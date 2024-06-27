@@ -1,10 +1,10 @@
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
-import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
 import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
 import { UnitType } from "./unit-type/UnitType";
+import { ProductConfig } from "$/configuration/interface/ProductConfig";
 
 export class ProductFamily {
 	protected name: string;
@@ -39,17 +39,13 @@ export class ProductFamily {
 		return this.name;
 	}
 
-	public addProduct(productName: string, config: ProductSettings = {}): Product {
-		if (this.products[productName]) {
-			throw new Error("Product already exists: " + productName);
+	public addProduct(config: ProductConfig): Product {
+		if (this.products[config.name]) {
+			throw new Error("Product already exists: " + config.name);
 		}
 
-		// TODO: change
-		let sku = productName;
-
-		const product = new Product(this, productName, sku);
-		// this.productService.registerProductSku(sku);
-		this.products[productName] = product;
+		const product = new Product(this, config);
+		this.products[config.name] = product;
 
 		return product;
 	}

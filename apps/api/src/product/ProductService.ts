@@ -4,12 +4,11 @@ import { ProductAttrConstraintCollection } from "./attribute/Constraint/ProductA
 import { ProductAttrFilterCollection } from "./attribute/Filter/ProductAttrFilterCollection";
 import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductAttrValue } from "./attribute/ProductAttrValue";
 import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
-import { AttributeValueSingle, AttributeValueMulti } from "./attribute/AttributeValue";
+import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";

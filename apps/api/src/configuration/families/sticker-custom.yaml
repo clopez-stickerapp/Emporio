@@ -1,4 +1,5 @@
 name: sticker-custom
+unitType: square_meter
 products:
   - die_cut
   - single_on_sheet

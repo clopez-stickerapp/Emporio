@@ -3,6 +3,8 @@ import { Product } from "./Product";
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
 import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
+import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
+import { UnitType } from "./unit-type/UnitType";
 
 export class ProductFamily {
 	protected name: string;
@@ -16,6 +18,8 @@ export class ProductFamily {
 	protected priceProviderName: string;
 	protected productQuantityListCollectionName: string;
 
+	protected unitType: UnitType;
+
 	protected products: Record<string, Product> = {};
 	protected requiredAttrs: Record<string, ProductAttr> = {};
 	protected supportedAttrs: Record<string, ProductAttr> = {};
@@ -27,6 +31,8 @@ export class ProductFamily {
 		this.minimumUnitsCollectionName = config.rules.collections.min_units;
 		this.priceProviderName = config.rules.collections.price_provider;
 		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
+
+		this.unitType = AllUnitTypes[config.unitType as UnitTypeNames];
 	}
 
 	public getName(): string {
@@ -153,7 +159,7 @@ export class ProductFamily {
 	}
 
 	public calculateUnits(productItem: ProductItem): number {
-		throw new Error("Not implemented.");
+		return this.unitType.calculateUnits(productItem);
 	}
 
 	public getMinimumQuantity(productItem: ProductItem): number {

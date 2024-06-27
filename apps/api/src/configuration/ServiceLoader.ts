@@ -127,7 +127,7 @@ class ServiceLoader {
 
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
-		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, ProductDynamicValue>(this.DynamicValueConfigs, (config) => new ProductDynamicValue(config));
+		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(this.DynamicValueConfigs, (config) => new MinimumUnitsCollection(config));
 
 		// Instantiate all price providers
 		console.debug("Instantiating price provider instances...");

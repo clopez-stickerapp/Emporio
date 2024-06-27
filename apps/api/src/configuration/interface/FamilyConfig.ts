@@ -3,6 +3,7 @@ import { ProductSettings } from "./ProductSettings";
 
 export interface FamilyConfig extends NamedConfig {
 	products: string[];
+	unitType: string;
 	rules: {
 		attributes?: {
 			required?: string[];

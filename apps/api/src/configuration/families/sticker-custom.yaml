@@ -71,9 +71,9 @@ rules:
     constraint: sticker_production
     filter: sticker_wizard_filters
     # icon: icons
-    min_units: sticker_rate_lists
-    price_provider: sticker_quantity_lists
-    quantity_provider: sticker_wizard_stock
+    min_units: StickerSquareMeterMinimumUnitValues
+    price_provider: sticker_rate_lists
+    quantity_provider: sticker_quantity_lists
 template: |
   {{name}}
   {{material}} / {{laminate}}

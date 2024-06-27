@@ -17,6 +17,9 @@ import { DynamicValueConfig } from "./interface/DynamicValueConfig";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { StickerPriceProvider } from "./price-providers/StickerPriceProvider";
 import { PromoProductPriceProvider } from "./price-providers/PromoProductPriceProvider";
+import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
+import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
+import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -46,6 +49,7 @@ class ServiceLoader {
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
+	protected quantityProviders: Record<string, ProductQuantityListCollection> = {};
 
 	public constructor() {
 		this.load();
@@ -53,7 +57,9 @@ class ServiceLoader {
 		this.registerAttributes();
 		this.registerFamilies();
 		this.registerProducts();
-		// this.registerConstraints();
+		this.registerMinUnits();
+		this.registerPriceProviders();
+		this.registerQuantityLists();
 	}
 
 	protected load(): void {
@@ -128,6 +134,11 @@ class ServiceLoader {
 		// this.priceProviders = this.instantiateFromConfig<PriceProviderConfig, PriceProvider>(this.priceProviderConfigs, (config) => new PriceProvider(config));
 		this.priceProviders[StickerPriceProvider.NAME] = new StickerPriceProvider();
 		this.priceProviders[PromoProductPriceProvider.NAME] = new PromoProductPriceProvider();
+
+		// Instantiate all quantity providers
+		console.debug("Instantiating quantity provider instances...");
+		// this.quantityProviders = this.instantiateFromConfig<QuantityProviderConfig, QuantityProvider>(this.quantityProviderConfigs, (config) => new QuantityProvider(config));
+		this.quantityProviders["sticker_quantity_lists"] = new StickerQuantityListCollection();
 	}
 
 	protected registerAttributes(): void {
@@ -172,6 +183,21 @@ class ServiceLoader {
 				this.families[name].addProduct(product, this.productConfigs[product].overrides);
 			}
 		}
+	}
+
+	protected registerMinUnits(): void {
+		console.debug("Registering min units...");
+		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["StickerSquareMeterMinimumUnitValues"] as MinimumUnitsCollection);
+	}
+
+	protected registerPriceProviders(): void {
+		console.debug("Registering price providers...");
+		this.services["stickerapp"].registerPriceProvider(this.priceProviders[StickerPriceProvider.NAME]);
+	}
+
+	protected registerQuantityLists(): void {
+		console.debug("Registering quantity lists...");
+		this.services["stickerapp"].registerQuantityListCollection(this.quantityProviders["sticker_quantity_lists"]);
 	}
 
 	protected readConfigs<T extends NamedConfig>(folder: string): Record<string, T> {

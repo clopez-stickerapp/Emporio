@@ -2,10 +2,10 @@ import { ProductItem } from "$/product/ProductItem";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 
 export class StickerAppProductLegacySKUService {
-	protected skuValue: ProductDynamicValue;
+	// protected skuValue: ProductDynamicValue;
 
 	public constructor() {
-		this.skuValue = new ProductDynamicValue( 0 );
+		// this.skuValue = new ProductDynamicValue( 0 );
 
 		// this.skuValue.addConditionedValue( 101 )
 		// 	.conditionBuilder
@@ -84,6 +84,7 @@ export class StickerAppProductLegacySKUService {
 	}
 
 	public getSKU( productItem: ProductItem ): number {
-		return this.skuValue.getValue( productItem );
+		throw new Error( "Method not implemented." );
+		// return this.skuValue.getValue( productItem );
 	}
 }

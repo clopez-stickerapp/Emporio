@@ -1,9 +1,9 @@
 import { NamedConfig } from "$data/NamedConfig";
 import { ConditionBuilderConfig } from "./ConditionBuilderConfig";
 
-export interface RuleConfig extends NamedConfig{
+export interface RuleConfig<T = string[]> extends NamedConfig{
 	rules: { 
-		keys: string[];
+		keys: T;
 		conditions: ConditionBuilderConfig;
 	}[];
 };

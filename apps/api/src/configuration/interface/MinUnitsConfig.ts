@@ -1,3 +1,5 @@
-import { NamedConfig } from "$data/NamedConfig";
+import { RuleConfig } from "./RuleConfig";
 
-export interface MinUnitsConfig extends NamedConfig{};
+export interface MinUnitsConfig extends RuleConfig<number>{
+	defaultValue: number;
+};

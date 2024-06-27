@@ -13,6 +13,7 @@ import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
+import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -38,6 +39,7 @@ class ServiceLoader {
 	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
 	protected minUnitsConfigs: Record<string, MinUnitsConfig> = {};
+	protected minUnits: Record<string, ProductDynamicValue> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
 
@@ -77,8 +79,8 @@ class ServiceLoader {
 		// this.iconConfigs = this.readConfigs<IconConfig>(iconPathFolder);
 
 		// Load min units
-		// console.debug("Loading min units configs...");
-		// this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
+		console.debug("Loading min units configs...");
+		this.minUnitsConfigs = this.readConfigs<MinUnitsConfig>(minUnitPathFolder);
 
 		// Load price providers
 		// console.debug("Loading price provider configs...");
@@ -113,6 +115,10 @@ class ServiceLoader {
 		this.filters = this.instantiateFromConfig<RuleConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
 
 		// console.dir(this.filters["SizeFilter"], { depth: null });
+
+		// Instantiate all min units
+		console.debug("Instantiating min units instances...");
+		this.minUnits = this.instantiateFromConfig<MinUnitsConfig, ProductDynamicValue>(this.minUnitsConfigs, (config) => new ProductDynamicValue(config));
 	}
 
 	protected registerAttributes(): void {

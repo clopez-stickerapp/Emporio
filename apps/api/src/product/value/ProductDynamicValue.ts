@@ -1,4 +1,5 @@
 import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
+import { MinUnitsConfig } from "$/configuration/interface/MinUnitsConfig";
 import { ProductItem } from "../ProductItem";
 import { ProductConditionedValue } from "./ProductConditionedValue";
 
@@ -6,15 +7,13 @@ export class ProductDynamicValue {
 	public defaultValue: number;
 	public conditionedValues: ProductConditionedValue[] = [];
 
-	public constructor(defaultValue: number) {
-		this.defaultValue = defaultValue;
-	}
+	public constructor( config: MinUnitsConfig ) {
+		this.defaultValue = config.defaultValue;
 
-	public addConditionedValue(value: number): ProductConditionedValue {
-		let conditionedValue = new ProductConditionedValue(value);
-		this.conditionedValues.push(conditionedValue);
-
-		return conditionedValue;
+		for (let rule of config.rules) {
+			console.debug("Adding conditioned value: ", rule.keys);
+			this.conditionedValues.push( new ProductConditionedValue(rule.keys, rule.conditions) );
+		}
 	}
 
 	public getValue(productItem: ProductItem): number {

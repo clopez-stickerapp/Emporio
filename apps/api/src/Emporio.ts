@@ -64,7 +64,7 @@ export class Emporio {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const currency = getCurrency(lang);
 
-		const minUnits = productFamily.getMinimumUnits(productItem);
+		const minUnits = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName()).getValue(productItem);
 
 		if(units < minUnits && productItem.getProductName() !== CustomStickerFamily.PRODUCT_LIBRARY_DESIGN) {
 			units = minUnits;

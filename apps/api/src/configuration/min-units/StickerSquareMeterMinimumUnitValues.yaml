@@ -1,0 +1,79 @@
+name: StickerSquareMeterMinimumUnitValues
+defaultValue: 0.1407
+rules:
+  - keys: 0.77
+    conditions:
+      baseComplexityScore: 120
+      conditions:
+        - attribute: reseller
+          operator: IN
+          value: [STICKERSTHATSTICK]
+  - keys: 1.8
+    conditions:
+      baseComplexityScore: 120
+      conditions:
+        - attribute: reseller
+          operator: IN
+          value: [STICKIT]
+  - keys: 5
+    conditions:
+      baseComplexityScore: 120
+      relationMode: AND
+      conditions:
+        - attribute: reseller
+          operator: IN
+          value: [STICKERSTHATSTICK, STICKIT]
+        - attribute: material
+          operator: EQUAL
+          value: WHITE_THIN
+  - keys: 0.1090
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: material
+          operator: IN
+          value: [HOLOGRAPHIC, GLITTER, MIRROR, PRISMATIC, PIXIE_DUST]
+  - keys: 0.1360
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: material
+          operator: IN
+          value: [WHITE_HI_TACK]
+  - keys: 0.1635
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: material
+          operator: IN
+          value: [GITD]
+  - keys: 0.1440
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: material
+          operator: IN
+          value: [CLEAR]
+        - attribute: productName
+          operator: NOT_EQUAL
+          value: PRODUCT_LABELS_ON_SHEET
+  - keys: 0.35
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: material
+          operator: IN
+          value: [WHITE_WALL]
+  - keys: 0.058
+    conditions:
+      conditions:
+        - attribute: laminate
+          operator: EQUAL
+          value: EPOXY
+  - keys: 0.06
+    conditions:
+      baseComplexityScore: 10
+      conditions:
+        - attribute: productName
+          operator: EQUAL
+          value: PRODUCT_SHEET_LEGACY

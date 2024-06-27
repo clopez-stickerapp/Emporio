@@ -1,15 +1,14 @@
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
-import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
 import { ProductSettings } from "$/configuration/interface/ProductSettings";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { StickerSquareMeterMinimumUnitValues } from "$/configuration/minUnits/StickerSquareMeterMinimumUnitValues";
 
 export class ProductFamily {
 	protected name: string;
 	protected attrConstraintCollectionName: string;
 	protected attrFilterCollectionName: string;
+	protected minimumUnitsCollectionName: string;
 	protected attrOutOfStockCollectionName: string = ""; // Todo
 	protected attrIconCollectionName: string = ""; // Todo
 	protected attrStockCollectionName: string = ""; // Todo
@@ -17,7 +16,6 @@ export class ProductFamily {
 	protected priceProviderName: string;
 	protected productQuantityListCollectionName: string;
 
-	protected minimumUnitsValue: ProductDynamicValue;
 	protected products: Record<string, Product> = {};
 	protected requiredAttrs: Record<string, ProductAttr> = {};
 	protected supportedAttrs: Record<string, ProductAttr> = {};
@@ -26,8 +24,7 @@ export class ProductFamily {
 		this.name = config.name;
 		this.attrConstraintCollectionName = config.rules.collections.constraint;
 		this.attrFilterCollectionName = config.rules.collections.filter;
-		// this.minimumUnitsValue = config.rules.collections.min_units;
-		this.minimumUnitsValue = new StickerSquareMeterMinimumUnitValues(); // Todo
+		this.minimumUnitsCollectionName = config.rules.collections.min_units;
 		this.priceProviderName = config.rules.collections.price_provider;
 		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
 	}
@@ -49,10 +46,6 @@ export class ProductFamily {
 		this.products[productName] = product;
 
 		return product;
-	}
-
-	public getMinimumUnits(productItem: ProductItem): number {
-		return this.minimumUnitsValue.getValue(productItem);
 	}
 
 	public getProduct(productName: string): Product {
@@ -133,6 +126,10 @@ export class ProductFamily {
 
 	public getFilterCollectionName(): string {
 		return this.attrFilterCollectionName;
+	}
+
+	public getMinimumUnitsCollectionName(): string {
+		return this.minimumUnitsCollectionName;
 	}
 
 	public getIconsCollectionName(): string {

@@ -11,6 +11,8 @@ import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
 import { AttributeValueSingle, AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
+import { ProductDynamicValue } from "./value/ProductDynamicValue";
+import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -65,6 +67,12 @@ export class ProductService {
 	 * For instance: calculate the price for a product based on the quantity and the material.
 	 */
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
+
+	/**
+	 * Minimum units are used to tell the product service which are the minimum units 
+	 * for a product. No less than the minimum units can be ordered.
+	 */
+	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
 	public registerAttrFilterCollection(collection: ProductAttrFilterCollection): void {
 		if (this.attrFilterCollections[collection.getCollectionName()]) {
@@ -128,6 +136,22 @@ export class ProductService {
 		}
 
 		return this.attrStockCollections[collectionName];
+	}
+
+	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
+		if (this.minimumUnitsCollections[collection.getCollectionName()]) {
+			throw new Error("Minimum units collection already exists with name " + collection.getCollectionName());
+		}
+
+		this.minimumUnitsCollections[collection.getCollectionName()] = collection;
+	}
+
+	public retrieveMinimumUnitsCollection(collectionName: string): ProductDynamicValue {
+		if (!this.minimumUnitsCollections[collectionName]) {
+			throw new Error("Minimum units collection not found with name " + collectionName);
+		}
+
+		return this.minimumUnitsCollections[collectionName];
 	}
 
 	public registerAttribute(name: string, attr: ProductAttr): void {

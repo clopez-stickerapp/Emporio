@@ -62,7 +62,7 @@ export class ProductItemBuilder
 			}
 		}
 
-		item.setUnits( productFamily.getMinimumUnits( item ) );
+		item.setUnits( this.ps.retrieveMinimumUnitsCollection( productFamily.getMinimumUnitsCollectionName() ).getValue( item ) );
 
 		return item;
 	}

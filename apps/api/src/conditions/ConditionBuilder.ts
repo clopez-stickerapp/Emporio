@@ -19,12 +19,7 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
 
 		for (const condition of config.conditions) {
-			// Check if condition is a ConditionBuilderConfig or ConditionConfig
-			if ((condition as ConditionBuilderConfig).relationMode !== undefined) {
-				this.conditions.push(new ConditionBuilder( condition as ConditionBuilderConfig ));
-			} else {
-				this.conditions.push(new Condition( condition as ConditionConfig ));
-			}
+			this.conditions.push( "conditions" in condition ? new ConditionBuilder( condition ) : new Condition( condition ) );
 		}
 	}
 

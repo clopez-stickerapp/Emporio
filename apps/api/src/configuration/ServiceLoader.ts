@@ -119,8 +119,6 @@ class ServiceLoader {
 		console.debug("Instantiating filter instances...");
 		this.filters = this.instantiateFromConfig<RuleConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
 
-		// console.dir(this.filters["SizeFilter"], { depth: null });
-
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
 		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, ProductDynamicValue>(this.DynamicValueConfigs, (config) => new ProductDynamicValue(config));

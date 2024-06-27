@@ -14,14 +14,14 @@ rules:
       - pixie_dust
       - gitd
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - sheet_legacy
-              - sheet
-              - sheet_kiss_cut
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - sheet_legacy
+            - sheet
+            - sheet_kiss_cut
 
   - keys:
       - white
@@ -37,13 +37,13 @@ rules:
       - gitd
       - white_removable
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - die_cut
-              - single_on_sheet
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - die_cut
+            - single_on_sheet
 
   - keys:
       - white
@@ -58,83 +58,83 @@ rules:
       - kraft_paper
       - pixie_dust
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - hang_tag
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - hang_tag
 
   - keys:
       - white_sturdy
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - 3d_dome
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - 3d_dome
 
   - keys:
       - clear
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - front_adhesive
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - front_adhesive
 
   - keys:
       - white_hi_tack
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - heavy_duty
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - heavy_duty
 
   - keys:
       - white_removable
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - removable
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - removable
 
   - keys:
       - white_wall
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - wall
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - wall
 
   - keys:
       - white
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - floor
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - floor
 
   - keys:
       - white
       - clear
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - labels_on_sheet
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - labels_on_sheet
 
   - keys:
       - white_thin
@@ -142,22 +142,22 @@ rules:
       - kraft_thin  
       - silver_thin
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - labels_on_roll
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - labels_on_roll
 
   - keys:
       - clear
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - window
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - window
 
   - keys:
       - colored_vinyl
@@ -168,11 +168,11 @@ rules:
       - metallic_silver
       - bubble_free
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: ===
-            value: transfer_decal
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: ===
+          value: transfer_decal
 
   - keys:
       - white
@@ -189,16 +189,16 @@ rules:
       - gitd
       - reflective
     conditions:
-      - relationMode: and
-        baseComplexityScore: 120
-        conditions:
-          - attribute: reseller
-            operator: in
-            value:
-              - stickersthatstick
-              - stickit
-          - attribute: productName
-            operator: in
-            value:
-              - die_cut
-              - single_on_sheet
+      relationMode: and
+      baseComplexityScore: 120
+      conditions:
+        - attribute: reseller
+          operator: in
+          value:
+            - stickersthatstick
+            - stickit
+        - attribute: productName
+          operator: in
+          value:
+            - die_cut
+            - single_on_sheet

@@ -3,39 +3,39 @@ rules:
   - keys:
       - laser
     conditions:
-      - relationMode: and
-        conditions:
-          - relationMode: or
-            conditions:
-              - attribute: material
-                operator: in
-                value:
-                  - clear
-                  - mirror
-                  - brushed_alloy
-                  - white_removable
-              - attribute: productName
-                operator: in
-                value:
-                  - sheet
-                  - sheet_kiss_cut
+      relationMode: and
+      conditions:
+        - relationMode: or
+          conditions:
+            - attribute: material
+              operator: in
+              value:
+                - clear
+                - mirror
+                - brushed_alloy
+                - white_removable
+            - attribute: productName
+              operator: in
+              value:
+                - sheet
+                - sheet_kiss_cut
 
   - keys:
       - sheet_legacy
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - sheet_legacy
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - sheet_legacy
 
   - keys:
       - roll
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - labels_on_roll
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - labels_on_roll

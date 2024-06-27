@@ -7,58 +7,61 @@ rules:
       - pack_set_amount
       - perforation
       - variable_data
-    conditions: []
+    conditions:
+      conditions: []
     
   - keys:
-    - backpaper_print
+      - backpaper_print
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: material
-            operator: in
-            value:
-              - white
-              - holographic,
-              - mirror
-              - clear
-              - pixie_dust
-          - attribute: laminate
-            operator: in
-            value:
-              - glossy_uv
-              - soft_touch,
-              - satin_matte
-          - attribute: productName
-            operator: not_in
-            value:
-              - library_design
-      - relationMode: and
-        conditions:
-          - attribute: width_mm
-            operator: <=
-            value: 270
-          - attribute: height_mm
-            operator: <=
-            value: 270
+      relationMode: and
+      conditions:
+        - relationMode: and
+          conditions:
+            - attribute: material
+              operator: in
+              value:
+                - white
+                - holographic,
+                - mirror
+                - clear
+                - pixie_dust
+            - attribute: laminate
+              operator: in
+              value:
+                - glossy_uv
+                - soft_touch,
+                - satin_matte
+            - attribute: productName
+              operator: not_in
+              value:
+                - library_design
+        - relationMode: and
+          conditions:
+            - attribute: width_mm
+              operator: <=
+              value: 270
+            - attribute: height_mm
+              operator: <=
+              value: 270
 
   - keys:
-    - backpaper_print
+      - backpaper_print
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: material
-            operator: is_empty
-          - attribute: laminate
-            operator: is_empty
+      relationMode: and
+      conditions:
+        - attribute: material
+          operator: is_empty
+        - attribute: laminate
+          operator: is_empty
 
   - keys:
-    - transfer_tape
+      - transfer_tape
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: delivery_sheet_width
-            operator: <=
-            value: 1130
-          - attribute: delivery_sheet_height
-            operator: <=
-            value: 1130
+      relationMode: and
+      conditions:
+        - attribute: delivery_sheet_width
+          operator: <=
+          value: 1130
+        - attribute: delivery_sheet_height
+          operator: <=
+          value: 1130

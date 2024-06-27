@@ -7,8 +7,8 @@ rules:
       - 140
       - 280
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: delivery
-            operator: ===
-            value: roll
+      relationMode: and
+      conditions:
+        - attribute: delivery
+          operator: ===
+          value: roll

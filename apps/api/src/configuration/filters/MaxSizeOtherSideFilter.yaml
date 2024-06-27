@@ -3,19 +3,19 @@ rules:
   - keys:
       - 275
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - labels_on_roll
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - labels_on_roll
 
   - keys:
       - 1100
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - wall
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - wall

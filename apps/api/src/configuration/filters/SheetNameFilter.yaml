@@ -5,17 +5,18 @@ rules:
       - rectangle
       - round
       - rounded
-    conditions: []
+    conditions:
+      conditions: []
 
   - keys:
       - round
       - rounded
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: reseller
-            operator: ===
-            value: stickerapp
-          - attribute: laminate
-            operator: ===
-            value: epoxy
+      relationMode: and
+      conditions:
+        - attribute: reseller
+          operator: ===
+          value: stickerapp
+        - attribute: laminate
+          operator: ===
+          value: epoxy

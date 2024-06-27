@@ -2,60 +2,61 @@ name: MinSizeFilter
 rules:
   - keys:
       - 25
-    conditions: []
+    conditions:
+      conditions: []
   
   - keys:
       - 6
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: reseller
-            operator: ===
-            value: stickersthatstick
+      relationMode: and
+      conditions:
+        - attribute: reseller
+          operator: ===
+          value: stickersthatstick
 
   - keys:
       - 150
     conditions:
-      - relationMode: or
-        conditions:
-          - attribute: material
-            operator: in
-            value:
-              - white_wall
-          - attribute: productName
-            operator: in
-            value:
-              - wall
-              - floor
+      relationMode: or
+      conditions:
+        - attribute: material
+          operator: in
+          value:
+            - white_wall
+        - attribute: productName
+          operator: in
+          value:
+            - wall
+            - floor
 
   - keys:
       - 50
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - sheet
-              - sheet_kiss_cut
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - sheet
+            - sheet_kiss_cut
 
   - keys:
       - 200
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - sheet_legacy
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - sheet_legacy
 
   - keys:
       - 10
     conditions:
-      - relationMode: and
-        conditions:
-          - attribute: productName
-            operator: in
-            value:
-              - labels_on_sheet
-              - single_on_sheet
+      relationMode: and
+      conditions:
+        - attribute: productName
+          operator: in
+          value:
+            - labels_on_sheet
+            - single_on_sheet

@@ -1,7 +1,5 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
-import { ProductAttrConstraintCollection } from "./attribute/Constraint/ProductAttrConstraintCollection";
-import { ProductAttrFilterCollection } from "./attribute/Filter/ProductAttrFilterCollection";
 import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
 import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
@@ -12,6 +10,9 @@ import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
+import { RuleCollection } from "./RuleCollection";
+import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -30,7 +31,7 @@ export class ProductService {
 	 *
 	 * For instance: Laser materials are impossible to produce a sticker larger than 28cm.
 	 */
-	protected attrConstraintCollections: Record<string, ProductAttrConstraintCollection> = {};
+	protected attrConstraintCollections: Record<string, RuleCollection<ProductAttrConstraint>> = {};
 
 	/**
 	 * Filters are used to limit what attribute values are available / visible.
@@ -38,7 +39,7 @@ export class ProductService {
 	 *
 	 * We can then choose to ignore filters for admin / QT users.
 	 */
-	protected attrFilterCollections: Record<string, ProductAttrFilterCollection> = {};
+	protected attrFilterCollections: Record<string, RuleCollection<ProductAttrFilter>> = {};
 
 	/**
 	 * Icons are used to show icons in the wizard for attributes.
@@ -72,7 +73,7 @@ export class ProductService {
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
-	public registerAttrFilterCollection(collection: ProductAttrFilterCollection): void {
+	public registerAttrFilterCollection(collection: RuleCollection<ProductAttrFilter>): void {
 		if (this.attrFilterCollections[collection.getCollectionName()]) {
 			throw new Error("Filter collection already exists with name " + collection.getCollectionName());
 		}
@@ -80,7 +81,7 @@ export class ProductService {
 		this.attrFilterCollections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrFilterCollection(collectionName: string): ProductAttrFilterCollection {
+	public retrieveAttrFilterCollection(collectionName: string): RuleCollection<ProductAttrFilter> {
 		if (!this.attrFilterCollections[collectionName]) {
 			throw new Error("Filter collection not found with name " + collectionName);
 		}
@@ -104,7 +105,7 @@ export class ProductService {
 		return this.attrIconCollections[collectionName];
 	}
 
-	public registerAttrConstraintCollection(collection: ProductAttrConstraintCollection): void {
+	public registerAttrConstraintCollection(collection: RuleCollection<ProductAttrConstraint>): void {
 		if (this.attrConstraintCollections[collection.getCollectionName()]) {
 			throw new Error("Constraint collection already exists with name " + collection.getCollectionName());
 		}
@@ -112,7 +113,7 @@ export class ProductService {
 		this.attrConstraintCollections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrConstraintCollection(collectionName: string): ProductAttrConstraintCollection {
+	public retrieveAttrConstraintCollection(collectionName: string): RuleCollection<ProductAttrConstraint> {
 		if (!this.attrConstraintCollections[collectionName]) {
 			throw new Error("Constraint collection not found with name " + collectionName);
 		}

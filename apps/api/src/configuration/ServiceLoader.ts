@@ -20,6 +20,7 @@ import { PromoProductPriceProvider } from "./price-providers/PromoProductPricePr
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
+import { RuleCollection } from "$/product/RuleCollection";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -60,6 +61,8 @@ class ServiceLoader {
 		this.registerMinUnits();
 		this.registerPriceProviders();
 		this.registerQuantityLists();
+		this.registerConstraints();
+		this.registerFilters();
 	}
 
 	protected load(): void {
@@ -198,6 +201,36 @@ class ServiceLoader {
 	protected registerQuantityLists(): void {
 		console.debug("Registering quantity lists...");
 		this.services["stickerapp"].registerQuantityListCollection(this.quantityProviders["sticker_quantity_lists"]);
+	}
+
+	protected registerConstraints(): void {
+		console.debug( "Registering constraints..." );
+		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
+			for ( const familyName of serviceConfig.families ?? [] ) {
+				const collectionName = this.familyConfigs[ familyName ].rules.collections.constraint;
+				const collection = new RuleCollection<ProductAttrConstraint>( collectionName );
+				for ( const constraint of Object.values( this.constraints ) ) {
+					console.debug( `Registering constraint '${ constraint.getAttributeName() }' for family '${ familyName }'...` );
+					collection.addRule( constraint );
+				}
+				this.services[ serviceName ].registerAttrConstraintCollection( collection );
+			}
+		}
+	}
+
+	protected registerFilters(): void {
+		console.debug( "Registering filters..." );
+		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
+			for ( const familyName of serviceConfig.families ?? [] ) {
+				const collectionName = this.familyConfigs[ familyName ].rules.collections.filter;
+				const collection = new RuleCollection<ProductAttrFilter>( collectionName );
+				for ( const filter of Object.values( this.filters ) ) {
+					console.debug( `Registering filter '${ filter.getAttributeName() }' for family '${ familyName }'...` );
+					collection.addRule( filter );
+				}
+				this.services[ serviceName ].registerAttrFilterCollection( collection );
+			}
+		}
 	}
 
 	protected readConfigs<T extends NamedConfig>(folder: string): Record<string, T> {

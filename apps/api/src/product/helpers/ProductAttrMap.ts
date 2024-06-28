@@ -49,7 +49,7 @@ export class ProductAttrMap {
 		let icons: Record<string, string> = {};
 
 		for ( const attrValue of attrValueOptions ) {
-			const conditionsBuilder = constraintsCollection?.findConditionsFor( attrName, attrValue ) ?? null;
+			const conditionsBuilder = constraintsCollection.getRule( attrName )?.getConditionsFor( attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
 				const iconBuilder = iconsCollection?.findIconFor( attrName, attrValue ) ?? null;
@@ -65,7 +65,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.ps.retrieveAttrFilterCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName())?.getFilterFor( attrName );
+		const filter = this.ps.retrieveAttrFilterCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName()).getRule( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;

@@ -10,9 +10,9 @@ import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { RuleCollection } from "./RuleCollection";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
+import { Collection } from "./Collection";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -31,7 +31,7 @@ export class ProductService {
 	 *
 	 * For instance: Laser materials are impossible to produce a sticker larger than 28cm.
 	 */
-	protected attrConstraintCollections: Record<string, RuleCollection<ProductAttrConstraint>> = {};
+	protected attrConstraintCollections: Record<string, Collection<ProductAttrConstraint>> = {};
 
 	/**
 	 * Filters are used to limit what attribute values are available / visible.
@@ -39,7 +39,7 @@ export class ProductService {
 	 *
 	 * We can then choose to ignore filters for admin / QT users.
 	 */
-	protected attrFilterCollections: Record<string, RuleCollection<ProductAttrFilter>> = {};
+	protected attrFilterCollections: Record<string, Collection<ProductAttrFilter>> = {};
 
 	/**
 	 * Icons are used to show icons in the wizard for attributes.
@@ -73,7 +73,7 @@ export class ProductService {
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
-	public registerAttrFilterCollection(collection: RuleCollection<ProductAttrFilter>): void {
+	public registerAttrFilterCollection(collection: Collection<ProductAttrFilter>): void {
 		if (this.attrFilterCollections[collection.getCollectionName()]) {
 			throw new Error("Filter collection already exists with name " + collection.getCollectionName());
 		}
@@ -81,7 +81,7 @@ export class ProductService {
 		this.attrFilterCollections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrFilterCollection(collectionName: string): RuleCollection<ProductAttrFilter> {
+	public retrieveAttrFilterCollection(collectionName: string): Collection<ProductAttrFilter> {
 		if (!this.attrFilterCollections[collectionName]) {
 			throw new Error("Filter collection not found with name " + collectionName);
 		}
@@ -105,7 +105,7 @@ export class ProductService {
 		return this.attrIconCollections[collectionName];
 	}
 
-	public registerAttrConstraintCollection(collection: RuleCollection<ProductAttrConstraint>): void {
+	public registerAttrConstraintCollection(collection: Collection<ProductAttrConstraint>): void {
 		if (this.attrConstraintCollections[collection.getCollectionName()]) {
 			throw new Error("Constraint collection already exists with name " + collection.getCollectionName());
 		}
@@ -113,7 +113,7 @@ export class ProductService {
 		this.attrConstraintCollections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrConstraintCollection(collectionName: string): RuleCollection<ProductAttrConstraint> {
+	public retrieveAttrConstraintCollection(collectionName: string): Collection<ProductAttrConstraint> {
 		if (!this.attrConstraintCollections[collectionName]) {
 			throw new Error("Constraint collection not found with name " + collectionName);
 		}

@@ -20,7 +20,7 @@ import { PromoProductPriceProvider } from "./price-providers/PromoProductPricePr
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
-import { RuleCollection } from "$/product/RuleCollection";
+import { Collection } from "$/product/Collection";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -208,10 +208,10 @@ class ServiceLoader {
 		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
 			for ( const familyName of serviceConfig.families ?? [] ) {
 				const collectionName = this.familyConfigs[ familyName ].rules.collections.constraint;
-				const collection = new RuleCollection<ProductAttrConstraint>( collectionName );
+				const collection = new Collection<ProductAttrConstraint>( collectionName );
 				for ( const constraint of Object.values( this.constraints ) ) {
 					console.debug( `Registering constraint '${ constraint.getAttributeName() }' for family '${ familyName }'...` );
-					collection.addRule( constraint );
+					collection.add( constraint );
 				}
 				this.services[ serviceName ].registerAttrConstraintCollection( collection );
 			}
@@ -223,10 +223,10 @@ class ServiceLoader {
 		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
 			for ( const familyName of serviceConfig.families ?? [] ) {
 				const collectionName = this.familyConfigs[ familyName ].rules.collections.filter;
-				const collection = new RuleCollection<ProductAttrFilter>( collectionName );
+				const collection = new Collection<ProductAttrFilter>( collectionName );
 				for ( const filter of Object.values( this.filters ) ) {
 					console.debug( `Registering filter '${ filter.getAttributeName() }' for family '${ familyName }'...` );
-					collection.addRule( filter );
+					collection.add( filter );
 				}
 				this.services[ serviceName ].registerAttrFilterCollection( collection );
 			}

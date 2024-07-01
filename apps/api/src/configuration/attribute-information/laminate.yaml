@@ -1,6 +1,4 @@
 name: laminate
 attributes:
   cracked_ice:
-    icon:
-      wizard: "https://www.test.com"
     available: false

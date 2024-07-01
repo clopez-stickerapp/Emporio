@@ -1,0 +1,10 @@
+name: material
+attributes:
+  warranty:
+    icon: 
+      wizard: "https://www.test.com"
+    available: false
+  clear_backscore:
+    icon: 
+      wizard: "https://www.test.com"
+    available: false

@@ -117,7 +117,17 @@ function getLoggerOptions() {
 	let useFileLogger = fs.existsSync(logDir) && hasFileAccess;
 
 	if(useFileLogger) {
-		return { level: process.env.LOG_LEVEL || 'info', file: logFile };
+		return { 
+			level: process.env.LOG_LEVEL || 'info', 
+			formatters: {
+				// This formatter makes the level output show as "info", rather than
+				// the level number as specified in https://github.com/pinojs/pino/blob/main/docs/api.md#levels
+				level: (label: string) => {
+					return { level: label }
+				}
+			},	
+			file: logFile 
+		};
 	} else {
 		console.log('Unable to write to log file, using console logger');
 		return {};

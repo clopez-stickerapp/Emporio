@@ -14,12 +14,12 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	protected conditions: Conditions = [];
 	protected baseComplexityScore: number = 0;
 
-	public constructor(config: ConditionBuilderConfig = {conditions: []}) {
+	public constructor(config: ConditionBuilderConfig = {}, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v){
 		this.relationMode = config.relationMode ?? ConditionRelations.AND;
 		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
 
-		for (const condition of config.conditions) {
-			this.conditions.push( "conditions" in condition ? new ConditionBuilder( condition ) : new Condition( condition ) );
+		for (const condition of config.conditions ?? []) {
+			this.conditions.push( "operator" in condition ? new Condition( condition, resolve ) : new ConditionBuilder( condition ) );
 		}
 	}
 
@@ -47,8 +47,8 @@ export class ConditionBuilder implements ConditionTestableInterface {
 	}
 
 	/** @deprecated */
-	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND): ConditionBuilder {
-		const subGroup = new ConditionBuilder({relationMode: mode, conditions: []});
+	public addSubGroup(relationMode: ConditionRelations = ConditionRelations.AND): ConditionBuilder {
+		const subGroup = new ConditionBuilder({relationMode});
 		this.conditions.push(subGroup);
 		return subGroup;
 	}

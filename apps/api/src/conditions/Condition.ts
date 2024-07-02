@@ -12,10 +12,10 @@ export class Condition implements ConditionTestableInterface {
 	public operator: ConditionOperators;
 	public conditionValue: ConditionValue|null;
 
-	public constructor(config: ConditionConfig) {
+	public constructor(config: ConditionConfig, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v) {
 		this.columnName = config.attribute;
 		this.operator = config.operator;
-		this.conditionValue = config.value ?? null;
+		this.conditionValue = resolve( config.value ?? null );
 	}
 
 	/**

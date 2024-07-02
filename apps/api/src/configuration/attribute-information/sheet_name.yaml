@@ -1,38 +1,38 @@
 name: sheet_name
-attributes:
+values:
   path:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_contourcut.svg"
     available: true
   rect:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_square.svg"
     available: true
   circle:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_circle.svg"
     available: true
   rounded:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_round-corners.svg"
     available: true
   sheet:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_stickers-sheets.svg"
     available: true
   template:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_on-sheet.svg"
     available: true
   sticker:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_kiss-cut.svg"
     available: true
   sticker_individual:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_wiz-placeholder.png"
     available: true
   manual:
-    icon:
+    images:
       wizard: "https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_wiz-placeholder.png"
     available: true

@@ -1,6 +1,6 @@
 name: sticker_assets
 values:
-  - InkAsset
-  - LaminateAsset
-  - MaterialAsset
-  - SheetNameAsset
+  - ink
+  - laminate
+  - material
+  - sheet_name

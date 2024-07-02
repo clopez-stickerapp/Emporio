@@ -34,7 +34,7 @@ const filterPathFolder = "src/configuration/filters";
 const minUnitPathFolder = "src/configuration/min-units";
 const pricePathFolder = "src/configuration/price-providers";
 const quantityPathFolder = "src/configuration/quantity-providers";
-const collectionPathFilterFolder = "src/configuration/collections";
+const collectionPathFolder = "src/configuration/collections";
 const assetPathFolder = "src/configuration/assets";
 
 class ServiceLoader {
@@ -118,7 +118,7 @@ class ServiceLoader {
 
 		// Load collections
 		// console.debug("Loading collection configs...");
-		this.collectionConfigs = this.readConfigs<CollectionConfig>(collectionPathFilterFolder);
+		this.collectionConfigs = this.readConfigs<CollectionConfig>(collectionPathFolder);
 	}
 
 	protected instantiate(): void {

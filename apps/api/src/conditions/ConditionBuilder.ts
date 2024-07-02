@@ -19,7 +19,7 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
 
 		for (const condition of config.conditions ?? []) {
-			this.conditions.push( "operator" in condition ? new Condition( condition, resolve ) : new ConditionBuilder( condition ) );
+			this.conditions.push( "operator" in condition ? new Condition( condition, resolve ) : new ConditionBuilder( condition, resolve ) );
 		}
 	}
 

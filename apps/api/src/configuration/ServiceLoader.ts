@@ -151,7 +151,7 @@ class ServiceLoader {
 		// this.quantityProviders = this.instantiateFromConfig<QuantityProviderConfig, QuantityProvider>(this.quantityProviderConfigs, (config) => new QuantityProvider(config));
 		this.quantityProviders["sticker_quantity_lists"] = new StickerQuantityListCollection();
 
-		this.rules = {...this.rules, ...this.filters};
+		this.rules = {...this.constraints, ...this.filters};
 		// Instantiate all collections
 		console.debug("Instantiating collection instances...");
 		this.collections = this.instantiateFromConfig<CollectionConfig, Collection<any>>(this.collectionConfigs, (config) => new Collection(config));

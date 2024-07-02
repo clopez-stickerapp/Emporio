@@ -1,0 +1,8 @@
+name: sticker_production
+values:
+  - FeatureConstraint
+  - MaterialConstraint
+  - ProductionLineConstraint
+  - ColorSupportedConstraint
+  - CutDirectionConstraint
+  - DeliveryRollSizeTypeConstraint

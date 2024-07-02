@@ -4,6 +4,8 @@ import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { Product } from "../Product";
 import { AttributeValueMulti } from "../attribute/AttributeValue";
 import { ProductAttr } from "../attribute/ProductAttr";
+import { ProductAttrFilter } from "../attribute/Filter/ProductAttrFilter";
+import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 
 export type TProductAttrMapValue = {
 	alias: string,
@@ -41,7 +43,7 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.ps.retrieveAttrConstraintCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getConstraintsCollectionName());
+		const constraintsCollection = this.ps.retrieveCollection<ProductAttrConstraint>( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getConstraintsCollectionName());
 		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getIconsCollectionName());
 		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
 		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
@@ -65,7 +67,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.ps.retrieveAttrFilterCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName()).get( attrName );
+		const filter = this.ps.retrieveCollection<ProductAttrFilter>( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName()).get( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;

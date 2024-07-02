@@ -6,6 +6,7 @@ import { ProductAttrValueNotSupportedException } from "$/product/exceptions/Prod
 import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInvalidException";
 import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItemOutOfStockException";
 import { isEmpty } from "../../../Util";
+import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 
 export class ProductItemValidator 
 {
@@ -89,7 +90,7 @@ export class ProductItemValidator
 				{
 					const productAttrValue = attr.getAttrValue( attrValue );
 
-					if ( productAttrValue && this.ps.retrieveAttrConstraintCollection( productFamily.getConstraintsCollectionName() ).get( attrName )?.getConditionsFor( productAttrValue )?.testOnItem( item ) === false )
+					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( productFamily.getConstraintsCollectionName() ).get( attrName )?.getConditionsFor( productAttrValue )?.testOnItem( item ) === false )
 					{
 						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
 					}

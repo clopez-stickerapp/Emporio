@@ -1,6 +1,10 @@
 import { CollectionConfig } from "$/configuration/interface/CollectionConfig";
 
-export class Collection<T extends { getAttributeName(): string }> {
+export type CollectionItem = { 
+	getAttributeName(): string 
+};
+
+export class Collection<T extends CollectionItem> {
 	protected name: string;
 	protected values: Record<string, T> = {};
 

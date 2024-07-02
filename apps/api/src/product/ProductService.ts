@@ -12,7 +12,7 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
-import { Collection } from "./Collection";
+import { Collection, CollectionItem } from "./Collection";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -83,28 +83,12 @@ export class ProductService {
 		this.collections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveCollection(collectionName: string): Collection<any> {
+	public retrieveCollection<T extends CollectionItem>(collectionName: string): Collection<T> {
 		if (!this.collections[collectionName]) {
 			throw new Error("Collection not found with name " + collectionName);
 		}
 
 		return this.collections[collectionName];	
-	}
-
-	public registerAttrFilterCollection(collection: Collection<ProductAttrFilter>): void {
-		if (this.attrFilterCollections[collection.getCollectionName()]) {
-			throw new Error("Filter collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrFilterCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrFilterCollection(collectionName: string): Collection<ProductAttrFilter> {
-		if (!this.attrFilterCollections[collectionName]) {
-			throw new Error("Filter collection not found with name " + collectionName);
-		}
-
-		return this.attrFilterCollections[collectionName];
 	}
 
 	public registerAttrIconCollection(collection: ProductAttrIconCollection): void {
@@ -121,22 +105,6 @@ export class ProductService {
 		}
 
 		return this.attrIconCollections[collectionName];
-	}
-
-	public registerAttrConstraintCollection(collection: Collection<ProductAttrConstraint>): void {
-		if (this.attrConstraintCollections[collection.getCollectionName()]) {
-			throw new Error("Constraint collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrConstraintCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrConstraintCollection(collectionName: string): Collection<ProductAttrConstraint> {
-		if (!this.attrConstraintCollections[collectionName]) {
-			throw new Error("Constraint collection not found with name " + collectionName);
-		}
-
-		return this.attrConstraintCollections[collectionName];
 	}
 
 	public registerAttrStockCollection(collection: ProductAttrStockCollection): void {

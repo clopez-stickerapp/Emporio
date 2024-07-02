@@ -1,8 +1,6 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
-import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
@@ -10,8 +8,6 @@ import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
 import { Collection, CollectionItem } from "./Collection";
 
 export class ProductService {
@@ -26,34 +22,9 @@ export class ProductService {
 	}
 
 	/**
-	 * Constraints are used to tell the product service which attributes can not be combined.
-	 * In other words here we set rules for what is simply not possible to do.
-	 *
-	 * For instance: Laser materials are impossible to produce a sticker larger than 28cm.
+	 * Collections are used to store a set of values, such as filters and constraints.
 	 */
-	protected attrConstraintCollections: Record<string, Collection<ProductAttrConstraint>> = {};
-
-	/**
-	 * Filters are used to limit what attribute values are available / visible.
-	 * For instance: only show a set of materials if a specific product is selected.
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrFilterCollections: Record<string, Collection<ProductAttrFilter>> = {};
-
-	/**
-	 * Icons are used to show icons in the wizard for attributes.
-	 * For instance: show a material icon for the material attribute.
-	 */
-	protected attrIconCollections: Record<string, ProductAttrIconCollection> = {};
-
-	/**
-	 * Stock keeps track of which attribute values are available to filter on
-	 * An product with no valid attribute values should be out of stock
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrStockCollections: Record<string, ProductAttrStockCollection> = {};
+	protected collections: Record<string, Collection<any>> = {};
 
 	/**
 	 * Quantity lists are used to tell the product service which quantity lists are available.
@@ -72,8 +43,6 @@ export class ProductService {
 	 * for a product. No less than the minimum units can be ordered.
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
-
-	protected collections: Record<string, Collection<any>> = {};
 
 	public registerCollection(collection: Collection<any>): void {
 		if (this.collections[collection.getCollectionName()]) {

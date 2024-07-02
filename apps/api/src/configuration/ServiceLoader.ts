@@ -22,6 +22,8 @@ import { StickerQuantityListCollection } from "./quantity-providers/StickerQuant
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { Collection } from "$/product/Collection";
 import { CollectionConfig } from "./interface/CollectionConfig";
+import { ProductAttrAsset } from "$/product/attribute/Information/ProductAttrAsset";
+import { AssetConfig } from "./interface/AssetConfig";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -33,6 +35,7 @@ const minUnitPathFolder = "src/configuration/min-units";
 const pricePathFolder = "src/configuration/price-providers";
 const quantityPathFolder = "src/configuration/quantity-providers";
 const collectionPathFilterFolder = "src/configuration/collections";
+const assetPathFolder = "src/configuration/assets";
 
 class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
@@ -55,7 +58,8 @@ class ServiceLoader {
 	protected quantityProviders: Record<string, ProductQuantityListCollection> = {};
 	protected collectionConfigs: Record<string, CollectionConfig> = {};
 	protected collections: Record<string, Collection<any>> = {};
-	protected rules: Record<string, any> = {};
+	protected assetConfigs: Record<string, AssetConfig> = {};
+	protected assets: Record<string, ProductAttrAsset> = {};
 
 	public constructor() {
 		this.load();
@@ -91,6 +95,10 @@ class ServiceLoader {
 		// Load filters
 		console.debug("Loading filter configs...");
 		this.filterConfigs = this.readConfigs<RuleConfig>(filterPathFolder);
+
+		// Load assets
+		console.debug("Loading asset configs...");
+		this.assetConfigs = this.readConfigs<AssetConfig>(assetPathFolder);
 
 		// Load icons
 		// console.debug("Loading icon configs...");
@@ -136,6 +144,10 @@ class ServiceLoader {
 		console.debug("Instantiating filter instances...");
 		this.filters = this.instantiateFromConfig<RuleConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
 
+		// Instantiate all assets
+		console.debug("Instantiating asset instances...");
+		this.assets = this.instantiateFromConfig<AssetConfig, ProductAttrAsset>(this.assetConfigs, (config) => new ProductAttrAsset(config));
+
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
 		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(this.DynamicValueConfigs, (config) => new MinimumUnitsCollection(config));
@@ -151,7 +163,6 @@ class ServiceLoader {
 		// this.quantityProviders = this.instantiateFromConfig<QuantityProviderConfig, QuantityProvider>(this.quantityProviderConfigs, (config) => new QuantityProvider(config));
 		this.quantityProviders["sticker_quantity_lists"] = new StickerQuantityListCollection();
 
-		this.rules = {...this.constraints, ...this.filters};
 		// Instantiate all collections
 		console.debug("Instantiating collection instances...");
 		this.collections = this.instantiateFromConfig<CollectionConfig, Collection<any>>(this.collectionConfigs, (config) => new Collection(config));
@@ -218,9 +229,11 @@ class ServiceLoader {
 
 	protected registerCollections(): void {
 		console.debug( "Registering collections..." );
+		const collectionValues = { ...this.constraints, ...this.filters, ...this.assets };
+
 		for ( const config of Object.values( this.collectionConfigs ) ) {
 			for ( const value of config.values ) {
-				this.collections[ config.name ].add( this.rules[ value ] );
+				this.collections[ config.name ].add( collectionValues[ value ] );
 			}
 		}
 

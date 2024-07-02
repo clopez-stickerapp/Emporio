@@ -10,6 +10,7 @@ families:
 collections:
   - sticker_wizard_filters
   - sticker_production
+  - sticker_assets
 attributes:
   - sheet_type
   - sheet_name

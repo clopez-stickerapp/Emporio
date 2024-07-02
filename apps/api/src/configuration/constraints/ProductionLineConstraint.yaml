@@ -51,4 +51,4 @@ rules:
       conditions:
         - attribute: material
           operator: EQUAL
-          value: "{special}"
+          value: "{ProductionLines.SPECIAL}"

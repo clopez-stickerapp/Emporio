@@ -8,7 +8,7 @@ rules:
         - attribute: productName
           operator: NOT_IN
           value:
-            - '{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}'
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
 
   - keys:
       - TOP_FIRST
@@ -22,7 +22,7 @@ rules:
         - attribute: productName
           operator: NOT_IN
           value:
-            - '{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}'
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
 
   - keys:
       - LEFT_FIRST
@@ -36,4 +36,4 @@ rules:
         - attribute: productName
           operator: NOT_IN
           value:
-            - '{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}'
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'

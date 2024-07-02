@@ -7,9 +7,9 @@ import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPricePro
 import { RateList } from "$/prices/RateList";
 import { RateProviderType } from "$/prices/RateProvider";
 import { ProductItem } from "$/product/ProductItem";
+import { ProductNames } from "$data/ConditionValueResolver";
 import { LaminateValues } from "../attributes/LaminateAttribute";
 import { MaterialValues } from "../attributes/MaterialAttribute";
-import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 import { AuthorMarginRateProvider } from "./AuthorMarginRateProvider";
 
 export class StickerPriceProvider extends RateBasedProductPriceProvider {
@@ -69,10 +69,10 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(2720), 100)
 			.conditions
 			.addSubGroup(ConditionRelations.AND)
-			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL)
+			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, ProductNames.PRODUCT_TRANSFER_DECAL)
 			.addSubGroup(ConditionRelations.OR)
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE, MaterialValues.WHITE_BACKSCORE, MaterialValues.BUBBLE_FREE, MaterialValues.SATIN_MATTE])
-			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR);
+			.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_FLOOR);
 		this.addRateProvider(rl_white);
 
 		let rl_shiny = new RateList(StickerPriceProvider.RATELIST_SHINY, new Rate(26000));
@@ -107,7 +107,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.conditions
 			.addSubGroup(ConditionRelations.OR)
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.GITD, MaterialValues.METALLIC_GOLD, MaterialValues.METALLIC_SILVER, MaterialValues.COLORED_VINYL])
-			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL)
+			.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_TRANSFER_DECAL)
 			.addSubGroup(ConditionRelations.AND)
 			.addCondition("item.attributes.laminate", ConditionOperators.EQUAL, LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY)
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE_HI_TACK]);
@@ -157,7 +157,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(3040), 50)
 			.addRate(new Rate(2720), 100)
 			.conditions.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.KRAFT_PAPER, MaterialValues.WHITE_REMOVABLE])
-			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_FLOOR);
+			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, ProductNames.PRODUCT_FLOOR);
 		this.addRateProvider(rl_kraft);
 
 		let rl_wall = new RateList(StickerPriceProvider.RATELIST_WALL, new Rate(19580));
@@ -189,7 +189,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 		rl_labels_on_sheets.addRate(new Rate(-20, true), 1)
 			.addRate(new Rate(-30, true), 20)
 			.addRate(new Rate(-31.25, true), 100)
-			.conditions.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET);
+			.conditions.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LABELS_ON_SHEET);
 		this.addRateProvider(rl_labels_on_sheets);
 
 		let rl_backprint = new RateList(StickerPriceProvider.RATELIST_BACKPRINT, new Rate(25, true, 1100));
@@ -272,7 +272,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 		rl_arlon_transfer.setType(RateProviderType.ADDON)
 			.conditions
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialValues.WHITE])
-			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL);
+			.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_TRANSFER_DECAL);
 		this.addRateProvider(rl_arlon_transfer);
 	}
 

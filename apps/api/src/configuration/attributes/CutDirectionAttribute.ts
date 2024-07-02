@@ -1,12 +1,12 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
-export enum CutDirectionAttributeValues {
-	AUTO = "auto",
-	BOTTOM_FIRST = "bottom_first",
-	TOP_FIRST = "top_first",
-	LEFT_FIRST = "left_first",
-	RIGHT_FIRST = "right_first"
+export const CutDirectionAttributeValues = {
+	AUTO: "auto",
+	BOTTOM_FIRST: "bottom_first",
+	TOP_FIRST: "top_first",
+	LEFT_FIRST: "left_first",
+	RIGHT_FIRST: "right_first"
 }
 
 export const CutDirectionAttribute = new ProductAttr({

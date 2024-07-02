@@ -28,7 +28,7 @@ rules:
           - attribute: material
             operator: IN
             value:
-              - "{FeatureConstraint.EFFECT_LAYER_MATERIALS}"
+              - "{EffectLayerMaterials}"
 
   - keys:
       - TRANSFER_TAPE

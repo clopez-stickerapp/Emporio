@@ -1,5 +1,6 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { MaterialValues } from "./MaterialAttribute";
 
 export const ProductFeatures = {
 	BACKPAPER_PRINT: "backpaper_print",
@@ -11,6 +12,23 @@ export const ProductFeatures = {
 	PACK_SET_AMOUNT: "pack_set_amount",
 	PERFORATION: "perforation",
 };
+
+export const EffectLayerMaterials = [
+	MaterialValues.PRISMATIC,
+	MaterialValues.BRUSHED_ALLOY,
+	MaterialValues.GLITTER,
+	MaterialValues.MIRROR,
+	MaterialValues.SILVER_THIN,
+	MaterialValues.HOLOGRAPHIC,
+	MaterialValues.KRAFT_PAPER,
+	MaterialValues.KRAFT_THIN,
+	MaterialValues.REFLECTIVE,
+	MaterialValues.PIXIE_DUST,
+	MaterialValues.GITD,
+	MaterialValues.CLEAR,
+	MaterialValues.CLEAR_THIN,
+	MaterialValues.CLEAR_BACKSCORE,
+]
 
 export const ProductFeaturesOOS: string[] = [];
 

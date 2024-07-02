@@ -2,8 +2,8 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate, RateType } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
 import { ProductItem } from "$/product/ProductItem";
+import { ProductNames } from "$data/ConditionValueResolver";
 import { PriceMarginPercentageAttribute } from "../attributes/PriceMarginPercentageAttribute";
-import { CustomStickerFamily } from "../Family/CustomStickerFamily";
 
 export class AuthorMarginRateProvider extends RateProvider{
 	static readonly NAME = "rate_author_margin";
@@ -12,7 +12,7 @@ export class AuthorMarginRateProvider extends RateProvider{
 	public constructor(){
 		super(AuthorMarginRateProvider.NAME);
 		this.setType(RateProviderType.ADDON);
-		this.conditions.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LIBRARY_DESIGN);
+		this.conditions.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LIBRARY_DESIGN);
 	}
 
 	public async getRate(productItem: ProductItem, units: number): Promise<Rate> {

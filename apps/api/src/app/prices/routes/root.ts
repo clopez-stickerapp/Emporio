@@ -1,11 +1,11 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
 import { getPriceListSchema, getPricesSchema } from '../schema';
-import { CustomStickerFamily } from '$/configuration/Family/CustomStickerFamily';
 import { formatCurrency } from '$/currency/Currency';
 import { getLocale } from '$/localization/Locale';
 import { formatPrice } from '$/prices/Price';
 import { ProductItem } from '$/product/ProductItem';
+import { ProductNames } from '$data/ConditionValueResolver';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -23,7 +23,7 @@ export default async function (fastify: FastifyInstance) {
 
 		const priceDTO = await emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
 
-		const maxDecimals = item.getProductName() == CustomStickerFamily.PRODUCT_LIBRARY_DESIGN ? 2 : 0;
+		const maxDecimals = item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN ? 2 : 0;
 		const unitPriceFormatted = formatCurrency(priceDTO.unitPrice, {currency: priceDTO.price.currency, locale: getLocale(request.query.lang), minorIfBelowOne: true, maxDecimals});
 
 		return {
@@ -45,7 +45,7 @@ export default async function (fastify: FastifyInstance) {
 
 		let prices = await emporio.getPriceList(item, request.query.lang, request.query.incVat)
 
-		const maxDecimals = item.getProductName() == CustomStickerFamily.PRODUCT_LIBRARY_DESIGN ? 2 : 0;
+		const maxDecimals = item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN ? 2 : 0;
 
 		//for each price step in prices, format the price
 		let formattedPrices = prices.map(priceStep => {

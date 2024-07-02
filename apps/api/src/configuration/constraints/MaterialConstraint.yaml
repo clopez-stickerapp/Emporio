@@ -11,4 +11,4 @@ rules:
         - attribute: productName
           operator: IN
           value:
-            - "{CustomStickerFamily.PRODUCT_LABELS_ON_ROLL}"
+            - "{ProductNames.PRODUCT_LABELS_ON_ROLL}"

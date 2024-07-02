@@ -62,16 +62,16 @@ export class StickerAppProductLegacySKUService {
 
 		// this.skuValue.addConditionedValue( 115 )
 		// 	.conditionBuilder
-		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR );
+		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_FLOOR );
 
 		// this.skuValue.addConditionedValue( 116 )
 		// 	.conditionBuilder
-		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET )
+		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LABELS_ON_SHEET )
 		// 	.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.WHITE );
 
 		// this.skuValue.addConditionedValue( 117 )
 		// 	.conditionBuilder
-		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET )
+		// 	.addCondition( "item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LABELS_ON_SHEET )
 		// 	.addCondition( "item.attributes.material", ConditionOperators.EQUAL, MaterialValues.CLEAR );
 
 		// this.skuValue.addConditionedValue( 124 )

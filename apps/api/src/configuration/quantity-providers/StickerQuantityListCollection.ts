@@ -3,7 +3,7 @@ import { ProductQuantityListCollection } from "$/prices/ProductQuantityListColle
 import { QuantityList } from "$/prices/QuantityList";
 import { ResellerValues } from "../attributes/ResellerAttribute";
 import { LaminateValues } from "../attributes/LaminateAttribute";
-import { CustomStickerFamily } from "../Family/CustomStickerFamily";
+import { ProductNames } from "$data/ConditionValueResolver";
 
 
 export class StickerQuantityListCollection extends ProductQuantityListCollection{
@@ -35,12 +35,12 @@ export class StickerQuantityListCollection extends ProductQuantityListCollection
 			1, 3, 5, 10, 20, 40, 50, 60, 70, 80, 90, 100, 400, 1000
 		])).conditions
 		.addCondition("item.attributes.reseller", ConditionOperators.NOT_IN, [ResellerValues.STICKIT])
-		.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_SHEET_LEGACY);
+		.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_SHEET_LEGACY);
 
 		this.addConditionedQuantityList( new QuantityList("individual_stickers", [
 			1, 5, 10, 15, 25, 35, 45, 50, 65, 75, 100
 		])).conditions
-		.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LIBRARY_DESIGN);
+		.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LIBRARY_DESIGN);
 
 		this.addConditionedQuantityList( new QuantityList("epoxy 25x25", [
 			80, 200, 300, 500, 1100, 2200, 3500, 4000, 5500

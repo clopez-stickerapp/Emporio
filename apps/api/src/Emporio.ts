@@ -1,5 +1,4 @@
 import { Type, Static } from "@sinclair/typebox";
-import { CustomStickerFamily } from "./configuration/Family/CustomStickerFamily";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
 import { ProductAttr } from "./product/attribute/ProductAttr";
@@ -19,6 +18,7 @@ import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
 import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
+import { ProductNames } from "$data/ConditionValueResolver";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -66,7 +66,7 @@ export class Emporio {
 
 		const minUnits = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName()).getValue(productItem);
 
-		if(units < minUnits && productItem.getProductName() !== CustomStickerFamily.PRODUCT_LIBRARY_DESIGN) {
+		if(units < minUnits && productItem.getProductName() !== ProductNames.PRODUCT_LIBRARY_DESIGN) {
 			units = minUnits;
 		}
 

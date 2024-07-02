@@ -7,6 +7,8 @@ families:
   - sticker-custom
 #   - promo
 #   - fee
+collections:
+  - sticker_wizard_filters
 attributes:
   - sheet_type
   - sheet_name

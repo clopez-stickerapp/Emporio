@@ -73,6 +73,24 @@ export class ProductService {
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
+	protected collections: Record<string, Collection<any>> = {};
+
+	public registerCollection(collection: Collection<any>): void {
+		if (this.collections[collection.getCollectionName()]) {
+			throw new Error("Collection already exists with name " + collection.getCollectionName());
+		}
+
+		this.collections[collection.getCollectionName()] = collection;
+	}
+
+	public retrieveCollection(collectionName: string): Collection<any> {
+		if (!this.collections[collectionName]) {
+			throw new Error("Collection not found with name " + collectionName);
+		}
+
+		return this.collections[collectionName];	
+	}
+
 	public registerAttrFilterCollection(collection: Collection<ProductAttrFilter>): void {
 		if (this.attrFilterCollections[collection.getCollectionName()]) {
 			throw new Error("Filter collection already exists with name " + collection.getCollectionName());

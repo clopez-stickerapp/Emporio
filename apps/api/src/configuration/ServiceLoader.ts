@@ -1,4 +1,4 @@
-import { readFolder, readYaml, removeExtension } from "$/helpers/FileSystem";
+import { readFolder, readYaml, extractFileName } from "$/helpers/FileSystem";
 import { ProductFamily } from "$/product/ProductFamily";
 import { ProductService } from "$/product/ProductService";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
@@ -21,6 +21,7 @@ import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { Collection } from "$/product/Collection";
+import { CollectionConfig } from "./interface/CollectionConfig";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -31,6 +32,7 @@ const filterPathFolder = "src/configuration/filters";
 const minUnitPathFolder = "src/configuration/min-units";
 const pricePathFolder = "src/configuration/price-providers";
 const quantityPathFolder = "src/configuration/quantity-providers";
+const collectionPathFilterFolder = "src/configuration/collections";
 
 class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
@@ -51,6 +53,9 @@ class ServiceLoader {
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
 	protected quantityProviders: Record<string, ProductQuantityListCollection> = {};
+	protected collectionConfigs: Record<string, CollectionConfig> = {};
+	protected collections: Record<string, Collection<any>> = {};
+	protected rules: Record<string, any> = {};
 
 	public constructor() {
 		this.load();
@@ -61,8 +66,7 @@ class ServiceLoader {
 		this.registerMinUnits();
 		this.registerPriceProviders();
 		this.registerQuantityLists();
-		this.registerConstraints();
-		this.registerFilters();
+		this.registerCollections();
 	}
 
 	protected load(): void {
@@ -103,6 +107,10 @@ class ServiceLoader {
 		// Load quantity providers
 		// console.debug("Loading quantity provider configs...");
 		// this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
+
+		// Load collections
+		// console.debug("Loading collection configs...");
+		this.collectionConfigs = this.readConfigs<CollectionConfig>(collectionPathFilterFolder);
 	}
 
 	protected instantiate(): void {
@@ -142,6 +150,11 @@ class ServiceLoader {
 		console.debug("Instantiating quantity provider instances...");
 		// this.quantityProviders = this.instantiateFromConfig<QuantityProviderConfig, QuantityProvider>(this.quantityProviderConfigs, (config) => new QuantityProvider(config));
 		this.quantityProviders["sticker_quantity_lists"] = new StickerQuantityListCollection();
+
+		this.rules = {...this.rules, ...this.filters};
+		// Instantiate all collections
+		console.debug("Instantiating collection instances...");
+		this.collections = this.instantiateFromConfig<CollectionConfig, Collection<any>>(this.collectionConfigs, (config) => new Collection(config));
 	}
 
 	protected registerAttributes(): void {
@@ -203,32 +216,18 @@ class ServiceLoader {
 		this.services["stickerapp"].registerQuantityListCollection(this.quantityProviders["sticker_quantity_lists"]);
 	}
 
-	protected registerConstraints(): void {
-		console.debug( "Registering constraints..." );
-		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
-			for ( const familyName of serviceConfig.families ?? [] ) {
-				const collectionName = this.familyConfigs[ familyName ].rules.collections.constraint;
-				const collection = new Collection<ProductAttrConstraint>( collectionName );
-				for ( const constraint of Object.values( this.constraints ) ) {
-					console.debug( `Registering constraint '${ constraint.getAttributeName() }' for family '${ familyName }'...` );
-					collection.add( constraint );
-				}
-				this.services[ serviceName ].registerAttrConstraintCollection( collection );
+	protected registerCollections(): void {
+		console.debug( "Registering collections..." );
+		for ( const config of Object.values( this.collectionConfigs ) ) {
+			for ( const value of config.values ) {
+				this.collections[ config.name ].add( this.rules[ value ] );
 			}
 		}
-	}
 
-	protected registerFilters(): void {
-		console.debug( "Registering filters..." );
 		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
-			for ( const familyName of serviceConfig.families ?? [] ) {
-				const collectionName = this.familyConfigs[ familyName ].rules.collections.filter;
-				const collection = new Collection<ProductAttrFilter>( collectionName );
-				for ( const filter of Object.values( this.filters ) ) {
-					console.debug( `Registering filter '${ filter.getAttributeName() }' for family '${ familyName }'...` );
-					collection.add( filter );
-				}
-				this.services[ serviceName ].registerAttrFilterCollection( collection );
+			for (const collection of serviceConfig.collections ) {
+				console.debug( `Registering collection '${ collection }' for service '${ serviceName }'...` );
+				this.services[ serviceName ].registerCollection( this.collections[ collection ] );
 			}
 		}
 	}
@@ -238,7 +237,7 @@ class ServiceLoader {
 	
 		for(const configPath of readFolder(folder)) {
 			const config = readYaml<T>(folder + "/" + configPath);
-			const configName = removeExtension(configPath);
+			const configName = extractFileName(configPath);
 	
 			// Check if config name matches file name
 			if(config.name !== configName){

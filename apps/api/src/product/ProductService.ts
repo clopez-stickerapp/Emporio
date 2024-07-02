@@ -91,38 +91,6 @@ export class ProductService {
 		return this.collections[collectionName];	
 	}
 
-	public registerAttrIconCollection(collection: ProductAttrIconCollection): void {
-		if (this.attrIconCollections[collection.getCollectionName()]) {
-			throw new Error("Icon collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrIconCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrIconCollection(collectionName: string): ProductAttrIconCollection {
-		if (!this.attrIconCollections[collectionName]) {
-			throw new Error("Icon collection not found with name " + collectionName);
-		}
-
-		return this.attrIconCollections[collectionName];
-	}
-
-	public registerAttrStockCollection(collection: ProductAttrStockCollection): void {
-		if (this.attrStockCollections[collection.getCollectionName()]) {
-			throw new Error("Stock collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrStockCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrStockCollection(collectionName: string): ProductAttrStockCollection {
-		if (!this.attrStockCollections[collectionName]) {
-			throw new Error("Stock collection not found with name " + collectionName);
-		}
-
-		return this.attrStockCollections[collectionName];
-	}
-
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
 		if (this.minimumUnitsCollections[collection.getCollectionName()]) {
 			throw new Error("Minimum units collection already exists with name " + collection.getCollectionName());

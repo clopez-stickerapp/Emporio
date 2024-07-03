@@ -87,7 +87,7 @@ export class ProductAttrMap {
 			"isDynamicValue" 		: attr.isDynamicValue(),
 			"isMultiValue" 			: attr.isMultiValue(),
 			"valueType" 			: attr.getValueType(),
-			"isRequired" 			: attrName in this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getRequiredAttrs(),
+			"isRequired" 			: family.isRequired( attrName ),
 			"valuesAndConstraints" 	: attrValues,
 			"icons" 				: icons,
 			"filters" 				: filters,

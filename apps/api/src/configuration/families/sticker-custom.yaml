@@ -75,6 +75,7 @@ rules:
     min_units: StickerSquareMeterMinimumUnitValues
     price_provider: sticker_rate_lists
     quantity_provider: sticker_quantity_lists
+    asset: sticker_assets
 template: |
   {{name}}
   {{material}} / {{laminate}}

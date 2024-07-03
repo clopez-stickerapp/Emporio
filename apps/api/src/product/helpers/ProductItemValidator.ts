@@ -7,6 +7,7 @@ import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInv
 import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItemOutOfStockException";
 import { isEmpty } from "../../../Util";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrAsset } from "../attribute/Information/ProductAttrAsset";
 
 export class ProductItemValidator 
 {
@@ -50,7 +51,7 @@ export class ProductItemValidator
 			throw new ProductItemInvalidException( "Attributes doesn't match product recipe." );
 		}
 
-		const stockMap = this.ps.retrieveAttrStockCollection( productFamily.getStockCollectionName() )?.getAllOutOfStock() ?? {};
+		const assets = this.ps.retrieveCollection<ProductAttrAsset>( productFamily.getAssetCollectionName() ).getAll();
 
 		for ( let [ attrName, value ] of Object.entries( item.getAttributes() ) ) 
 		{
@@ -96,13 +97,13 @@ export class ProductItemValidator
 					}
 				}
 
-				if ( attrName in stockMap ) 
+				if ( attrName in assets ) 
 				{
-					const outOfStock = stockMap[ attrName ];
+					const asset = assets[ attrName ];
 
 					for ( const attrValue of attrValues ) 
 					{
-						if ( outOfStock.isOutOfStock( attrValue ) ) 
+						if ( !asset.isAvailable( attrValue ) ) 
 						{
 							throw new ProductItemOutOfStockException( `${ attrName } "${ attrValue }" is out of stock` );
 						}

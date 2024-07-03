@@ -6,6 +6,7 @@ import { AttributeValueMulti } from "../attribute/AttributeValue";
 import { ProductAttr } from "../attribute/ProductAttr";
 import { ProductAttrFilter } from "../attribute/Filter/ProductAttrFilter";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrAsset } from "../attribute/Information/ProductAttrAsset";
 
 export type TProductAttrMapValue = {
 	alias: string,
@@ -40,12 +41,13 @@ export class ProductAttrMap {
 	protected run( attrName: string, attr: ProductAttr ): void {
 		// TODO: Implement "does attr:value allow attributeName to be attrValue"
 		// Currently only does the other way around, see sticker wizard logic
+		const family = this.ps.retrieveProductFamily( this.product.getProductFamilyName() );
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.ps.retrieveCollection<ProductAttrConstraint>( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getConstraintsCollectionName());
-		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getIconsCollectionName());
-		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
+		const constraintsCollection = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() );
+		const filterCollection 		= this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() );
+		const assetCollection		= this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() );
 		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
@@ -54,7 +56,7 @@ export class ProductAttrMap {
 			const conditionsBuilder = constraintsCollection.get( attrName )?.getConditionsFor( attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
-				const iconBuilder = iconsCollection?.findIconFor( attrName, attrValue ) ?? null;
+				const iconBuilder = assetCollection.get( attrName )?.getWizardIcon( attrValue ) ?? null;
 	
 				if ( iconBuilder ) {
 					icons[ attrValue ] = iconBuilder;
@@ -67,7 +69,7 @@ export class ProductAttrMap {
 		let filters: ProductAttributeFilter[] = [];
 		let filterMode: ProductAttrFilterMode | null = null;
 
-		const filter = this.ps.retrieveCollection<ProductAttrFilter>( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName()).get( attrName );
+		const filter = filterCollection.get( attrName );
 
 		if ( filter ) {
 			filterMode = filter.mode;
@@ -90,7 +92,7 @@ export class ProductAttrMap {
 			"icons" 				: icons,
 			"filters" 				: filters,
 			"filterMode" 			: filterMode,
-			"outOfStockValues" 		: outOfStockAttrValues
+			"outOfStockValues" 		: assetCollection.get( attrName )?.getUnavailableValues() ?? []
 		};
 	}
 

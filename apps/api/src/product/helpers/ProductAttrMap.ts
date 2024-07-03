@@ -6,7 +6,7 @@ import { AttributeValueMulti } from "../attribute/AttributeValue";
 import { ProductAttr } from "../attribute/ProductAttr";
 import { ProductAttrFilter } from "../attribute/Filter/ProductAttrFilter";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrAsset } from "../attribute/Information/ProductAttrAsset";
+import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
 
 export type TProductAttrMapValue = {
 	alias: string,

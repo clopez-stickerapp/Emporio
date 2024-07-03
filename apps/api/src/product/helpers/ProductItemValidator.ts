@@ -7,7 +7,7 @@ import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInv
 import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItemOutOfStockException";
 import { isEmpty } from "../../../Util";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrAsset } from "../attribute/Information/ProductAttrAsset";
+import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
 
 export class ProductItemValidator 
 {

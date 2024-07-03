@@ -22,7 +22,7 @@ import { StickerQuantityListCollection } from "./quantity-providers/StickerQuant
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { Collection } from "$/product/Collection";
 import { CollectionConfig } from "./interface/CollectionConfig";
-import { ProductAttrAsset } from "$/product/attribute/Information/ProductAttrAsset";
+import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
 import { AssetConfig } from "./interface/AssetConfig";
 
 const servicePathFolder = "src/configuration/services";

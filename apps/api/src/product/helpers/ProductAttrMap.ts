@@ -45,18 +45,18 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() );
-		const filterCollection 		= this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() );
-		const assetCollection		= this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() );
-		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
+		const attrConstraint   = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() ).get( attrName );
+		const attrFilter 	   = this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() ).get( attrName );
+		const attrAsset		   = this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() ).get( attrName );
+		const attrValueOptions = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
 
 		for ( const attrValue of attrValueOptions ) {
-			const conditionsBuilder = constraintsCollection.get( attrName )?.getConditionsFor( attrValue ) ?? null;
+			const conditionsBuilder = attrConstraint?.getConditionsFor( attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
-				const iconBuilder = assetCollection.get( attrName )?.getWizardIcon( attrValue ) ?? null;
+				const iconBuilder = attrAsset?.getWizardIcon( attrValue ) ?? null;
 	
 				if ( iconBuilder ) {
 					icons[ attrValue ] = iconBuilder;
@@ -66,19 +66,11 @@ export class ProductAttrMap {
 			attrValues[ attrValue.toString() ] = conditionsBuilder ? `${ conditionsBuilder }` : null;
 		}
 
-		let filters: ProductAttributeFilter[] = [];
-		let filterMode: ProductAttrFilterMode | null = null;
-
-		const filter = filterCollection.get( attrName );
-
-		if ( filter ) {
-			filterMode = filter.mode;
-			filters = filter.getAllFilters().map( filteredValues => ( {
-				"values": filteredValues.getValues(),
-				"conditions": `${ filteredValues.conditionBuilder }`,
-				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
-			} ) );
-		}
+		const filters = attrFilter?.getFilters().map( filteredValues => ( {
+			"values": filteredValues.getValues(),
+			"conditions": `${ filteredValues.conditionBuilder }`,
+			"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
+		} ) ) ?? [];
 
 		// TODO: Double check all filter values that they are correct value types (especially for booleans and ints), if not throw error
 
@@ -91,8 +83,8 @@ export class ProductAttrMap {
 			"valuesAndConstraints" 	: attrValues,
 			"icons" 				: icons,
 			"filters" 				: filters,
-			"filterMode" 			: filterMode,
-			"outOfStockValues" 		: assetCollection.get( attrName )?.getUnavailableValues() ?? []
+			"filterMode" 			: attrFilter?.getMode() ?? null,
+			"outOfStockValues" 		: attrAsset?.getUnavailableValues() ?? []
 		};
 	}
 

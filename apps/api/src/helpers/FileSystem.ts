@@ -20,14 +20,30 @@ export function writeYaml<T>(filePath: string, data: T): void {
 	}
 }
 
-export function readFolder(folderPath: string): string[] {
+function isFolder( path: string ): boolean {
+	return fs.statSync(path).isDirectory();
+}
+
+export function readFolder(folderPath: string, subDirectory: string = ''): string[] {
 	try {
-		return fs.readdirSync(folderPath);
+		let contents = fs.readdirSync(folderPath);
+		let result: string[] = [];
+		for (const content of contents) {
+			const contentPath = `${folderPath}/${content}`;
+			// If it's a folder, read its contents
+			if (isFolder(contentPath)) {
+				const subContents = readFolder(contentPath, content + '/');
+				result = result.concat(subContents);
+			} else {
+				result.push(subDirectory + content);
+			}
+		}
+		return result;
 	} catch (error) {
 		throw new Error(`Error reading folder: ${error}`);
 	}
 }
 
-export function removeExtension(path: string): string {
-	return path.substring(0, path.lastIndexOf("."));
+export function extractFileName(path: string): string {
+	return path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
 }

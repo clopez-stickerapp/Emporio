@@ -11,12 +11,9 @@ export class ProductFamily {
 	protected attrConstraintCollectionName: string;
 	protected attrFilterCollectionName: string;
 	protected minimumUnitsCollectionName: string;
-	protected attrOutOfStockCollectionName: string = ""; // Todo
-	protected attrIconCollectionName: string = ""; // Todo
-	protected attrStockCollectionName: string = ""; // Todo
-	protected productItemProcessorCollectionName: string = ""; // Todo
 	protected priceProviderName: string;
 	protected productQuantityListCollectionName: string;
+	protected assetCollectionName: string;
 
 	protected unitType: UnitType;
 
@@ -31,6 +28,7 @@ export class ProductFamily {
 		this.minimumUnitsCollectionName = config.rules.collections.min_units;
 		this.priceProviderName = config.rules.collections.price_provider;
 		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
+		this.assetCollectionName = config.rules.collections.asset;
 
 		this.unitType = AllUnitTypes[config.unitType as UnitTypeNames];
 	}
@@ -134,12 +132,8 @@ export class ProductFamily {
 		return this.minimumUnitsCollectionName;
 	}
 
-	public getIconsCollectionName(): string {
-		return this.attrIconCollectionName;
-	}
-
-	public getStockCollectionName(): string {
-		return this.attrStockCollectionName;
+	public getAssetCollectionName(): string {
+		return this.assetCollectionName;
 	}
 
 	public getPriceProviderName(): string {

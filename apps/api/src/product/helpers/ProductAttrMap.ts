@@ -4,6 +4,9 @@ import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { Product } from "../Product";
 import { AttributeValueMulti } from "../attribute/AttributeValue";
 import { ProductAttr } from "../attribute/ProductAttr";
+import { ProductAttrFilter } from "../attribute/Filter/ProductAttrFilter";
+import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
 
 export type TProductAttrMapValue = {
 	alias: string,
@@ -38,21 +41,22 @@ export class ProductAttrMap {
 	protected run( attrName: string, attr: ProductAttr ): void {
 		// TODO: Implement "does attr:value allow attributeName to be attrValue"
 		// Currently only does the other way around, see sticker wizard logic
+		const family = this.ps.retrieveProductFamily( this.product.getProductFamilyName() );
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const constraintsCollection = this.ps.retrieveAttrConstraintCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getConstraintsCollectionName());
-		const iconsCollection	    = this.ps.retrieveAttrIconCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getIconsCollectionName());
-		const outOfStockAttrValues  = this.ps.retrieveAttrStockCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getStockCollectionName())?.getOutOfStockFor( attrName )?.getOutOfStock() ?? [];
-		const attrValueOptions      = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
+		const attrConstraint   = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() ).get( attrName );
+		const attrFilter 	   = this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() ).get( attrName );
+		const attrAsset		   = this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() ).get( attrName );
+		const attrValueOptions = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
 
 		for ( const attrValue of attrValueOptions ) {
-			const conditionsBuilder = constraintsCollection.get( attrName )?.getConditionsFor( attrValue ) ?? null;
+			const conditionsBuilder = attrConstraint?.getConditionsFor( attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
-				const iconBuilder = iconsCollection?.findIconFor( attrName, attrValue ) ?? null;
+				const iconBuilder = attrAsset?.getWizardIcon( attrValue ) ?? null;
 	
 				if ( iconBuilder ) {
 					icons[ attrValue ] = iconBuilder;
@@ -62,19 +66,11 @@ export class ProductAttrMap {
 			attrValues[ attrValue.toString() ] = conditionsBuilder ? `${ conditionsBuilder }` : null;
 		}
 
-		let filters: ProductAttributeFilter[] = [];
-		let filterMode: ProductAttrFilterMode | null = null;
-
-		const filter = this.ps.retrieveAttrFilterCollection( this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getFilterCollectionName()).get( attrName );
-
-		if ( filter ) {
-			filterMode = filter.mode;
-			filters = filter.getAllFilters().map( filteredValues => ( {
-				"values": filteredValues.getValues(),
-				"conditions": `${ filteredValues.conditionBuilder }`,
-				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
-			} ) );
-		}
+		const filters = attrFilter?.getFilters().map( filteredValues => ( {
+			"values": filteredValues.getValues(),
+			"conditions": `${ filteredValues.conditionBuilder }`,
+			"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
+		} ) ) ?? [];
 
 		// TODO: Double check all filter values that they are correct value types (especially for booleans and ints), if not throw error
 
@@ -83,12 +79,12 @@ export class ProductAttrMap {
 			"isDynamicValue" 		: attr.isDynamicValue(),
 			"isMultiValue" 			: attr.isMultiValue(),
 			"valueType" 			: attr.getValueType(),
-			"isRequired" 			: attrName in this.ps.retrieveProductFamily( this.product.getProductFamilyName()).getRequiredAttrs(),
+			"isRequired" 			: family.isRequired( attrName ),
 			"valuesAndConstraints" 	: attrValues,
 			"icons" 				: icons,
 			"filters" 				: filters,
-			"filterMode" 			: filterMode,
-			"outOfStockValues" 		: outOfStockAttrValues
+			"filterMode" 			: attrFilter?.getMode() ?? null,
+			"outOfStockValues" 		: attrAsset?.getUnavailableValues() ?? []
 		};
 	}
 

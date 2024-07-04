@@ -1,9 +1,15 @@
-export class Collection<T extends { getAttributeName(): string }> {
+import { CollectionConfig } from "$/configuration/interface/CollectionConfig";
+
+export type CollectionItem = { 
+	getAttributeName(): string 
+};
+
+export class Collection<T extends CollectionItem> {
 	protected name: string;
 	protected values: Record<string, T> = {};
 
-	public constructor( name: string ) {
-		this.name = name;
+	public constructor( config: CollectionConfig ) {
+		this.name = config.name;
 	}
 
 	public add( value: T ): T {

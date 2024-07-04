@@ -15,7 +15,7 @@ import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
 export class ProductAttrFilter {
 	private attributeName: string;
 	protected filters: ProductAttrFilteredValues[] = [];
-	public mode: ProductAttrFilterMode;
+	protected mode: ProductAttrFilterMode;
 
 	public constructor( config: RuleConfig ) {
 		this.attributeName = config.name;
@@ -34,8 +34,12 @@ export class ProductAttrFilter {
 		// return filter;
 	}
 
-	public getAllFilters(): ProductAttrFilteredValues[] {
+	public getFilters(): ProductAttrFilteredValues[] {
 		return this.filters;
+	}
+
+	public getMode(): ProductAttrFilterMode {
+		return this.mode;
 	}
 
 	public getAttributeName(): string {

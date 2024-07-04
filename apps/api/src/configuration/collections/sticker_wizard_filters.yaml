@@ -1,0 +1,16 @@
+name: sticker_wizard_filters
+values:
+  - LaminateFilter
+  - MaterialFilter
+  - SizeFilter
+  - MinSizeFilter
+  - MaxSizeFilter
+  - MaxSizeOtherSideFilter
+  - FixedSizeFilter
+  - FixedQuantityFilter
+  - SheetNameFilter
+  - ProductionLineFilter
+  - FeatureFilter
+  - DeliveryFilter
+  - InkFilter
+  - DeliveryRollSizeTypeFilter

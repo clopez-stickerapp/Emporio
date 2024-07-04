@@ -16,6 +16,7 @@ export interface FamilyConfig extends NamedConfig {
 			min_units: string;
 			price_provider: string;
 			quantity_provider: string;
+			asset: string;
 		}
 	template?: string;
 		// production?: {

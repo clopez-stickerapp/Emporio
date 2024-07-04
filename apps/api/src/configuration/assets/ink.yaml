@@ -1,5 +1,5 @@
 name: ink
-attributes:
+values:
   pink_ink:
     available: false
   invisible_ink:

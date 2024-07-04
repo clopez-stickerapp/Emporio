@@ -1,8 +1,6 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
-import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
@@ -10,9 +8,7 @@ import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
-import { Collection } from "./Collection";
+import { Collection, CollectionItem } from "./Collection";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -26,34 +22,9 @@ export class ProductService {
 	}
 
 	/**
-	 * Constraints are used to tell the product service which attributes can not be combined.
-	 * In other words here we set rules for what is simply not possible to do.
-	 *
-	 * For instance: Laser materials are impossible to produce a sticker larger than 28cm.
+	 * Collections are used to store a set of values, such as filters and constraints.
 	 */
-	protected attrConstraintCollections: Record<string, Collection<ProductAttrConstraint>> = {};
-
-	/**
-	 * Filters are used to limit what attribute values are available / visible.
-	 * For instance: only show a set of materials if a specific product is selected.
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrFilterCollections: Record<string, Collection<ProductAttrFilter>> = {};
-
-	/**
-	 * Icons are used to show icons in the wizard for attributes.
-	 * For instance: show a material icon for the material attribute.
-	 */
-	protected attrIconCollections: Record<string, ProductAttrIconCollection> = {};
-
-	/**
-	 * Stock keeps track of which attribute values are available to filter on
-	 * An product with no valid attribute values should be out of stock
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrStockCollections: Record<string, ProductAttrStockCollection> = {};
+	protected collections: Record<string, Collection<any>> = {};
 
 	/**
 	 * Quantity lists are used to tell the product service which quantity lists are available.
@@ -73,68 +44,20 @@ export class ProductService {
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
-	public registerAttrFilterCollection(collection: Collection<ProductAttrFilter>): void {
-		if (this.attrFilterCollections[collection.getCollectionName()]) {
-			throw new Error("Filter collection already exists with name " + collection.getCollectionName());
+	public registerCollection(collection: Collection<any>): void {
+		if (this.collections[collection.getCollectionName()]) {
+			throw new Error("Collection already exists with name " + collection.getCollectionName());
 		}
 
-		this.attrFilterCollections[collection.getCollectionName()] = collection;
+		this.collections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrFilterCollection(collectionName: string): Collection<ProductAttrFilter> {
-		if (!this.attrFilterCollections[collectionName]) {
-			throw new Error("Filter collection not found with name " + collectionName);
+	public retrieveCollection<T extends CollectionItem>(collectionName: string): Collection<T> {
+		if (!this.collections[collectionName]) {
+			throw new Error("Collection not found with name " + collectionName);
 		}
 
-		return this.attrFilterCollections[collectionName];
-	}
-
-	public registerAttrIconCollection(collection: ProductAttrIconCollection): void {
-		if (this.attrIconCollections[collection.getCollectionName()]) {
-			throw new Error("Icon collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrIconCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrIconCollection(collectionName: string): ProductAttrIconCollection {
-		if (!this.attrIconCollections[collectionName]) {
-			throw new Error("Icon collection not found with name " + collectionName);
-		}
-
-		return this.attrIconCollections[collectionName];
-	}
-
-	public registerAttrConstraintCollection(collection: Collection<ProductAttrConstraint>): void {
-		if (this.attrConstraintCollections[collection.getCollectionName()]) {
-			throw new Error("Constraint collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrConstraintCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrConstraintCollection(collectionName: string): Collection<ProductAttrConstraint> {
-		if (!this.attrConstraintCollections[collectionName]) {
-			throw new Error("Constraint collection not found with name " + collectionName);
-		}
-
-		return this.attrConstraintCollections[collectionName];
-	}
-
-	public registerAttrStockCollection(collection: ProductAttrStockCollection): void {
-		if (this.attrStockCollections[collection.getCollectionName()]) {
-			throw new Error("Stock collection already exists with name " + collection.getCollectionName());
-		}
-
-		this.attrStockCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrStockCollection(collectionName: string): ProductAttrStockCollection {
-		if (!this.attrStockCollections[collectionName]) {
-			throw new Error("Stock collection not found with name " + collectionName);
-		}
-
-		return this.attrStockCollections[collectionName];
+		return this.collections[collectionName];	
 	}
 
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {

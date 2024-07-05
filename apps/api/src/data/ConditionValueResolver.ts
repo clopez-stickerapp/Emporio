@@ -58,8 +58,6 @@ magicList = {
 export function resolve(value: ConditionValue | null): ConditionValue | null {
 	let result: ConditionValue | null = value;
 
-	// console.log("Resolving value:", value);
-
 	if (typeof value === "string" && value.charAt(0) === "{") {
 		result = resolveString(value);
 	} else if (Array.isArray(value) && value.length > 0) {
@@ -80,17 +78,12 @@ function resolveString(value: string): ConditionValue {
 		console.debug("Replacing magic value:", stripBrackets(value), "...")
 		return magicList[stripBrackets(value)];
 	} else {
-		console.trace("Magic value not found: " + stripBrackets(value));
-		// throw new Error("Magic list not found: " + stripBrackets(value));
+		throw new Error("Magic list not found: " + stripBrackets(value));
 	}
-
-	return value;
 }
 
 function resolveArray(value: string[]): ConditionValue {
 	const result: ConditionValue = [];
-
-	// console.log("Resolving array magic value:", value, "...");
 
 	for (const item of value) {
 		result.push(resolveString(item) as string);

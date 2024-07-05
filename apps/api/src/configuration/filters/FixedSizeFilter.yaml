@@ -1,4 +1,5 @@
 name: FixedSizeFilter
+mode: highest_score_wins
 rules:
   - keys: 
       - true

@@ -1,4 +1,5 @@
 name: DeliveryRollSizeTypeFilter
+mode: highest_score_wins
 rules:
   - keys:
       - 35

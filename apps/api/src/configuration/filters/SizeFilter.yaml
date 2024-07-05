@@ -1,4 +1,5 @@
 name: SizeFilter
+mode: highest_score_wins
 rules:
   - keys:
       - 5x3 cm

@@ -1,4 +1,5 @@
 name: DeliveryFilter
+mode: highest_score_wins
 rules:
   - keys:
       - sheet

@@ -1,4 +1,5 @@
 name: MinSizeFilter
+mode: highest_score_wins
 rules:
   - keys:
       - 25

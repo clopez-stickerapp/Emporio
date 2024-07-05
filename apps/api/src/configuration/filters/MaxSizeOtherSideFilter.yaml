@@ -1,4 +1,5 @@
 name: MaxSizeOtherSideFilter
+mode: highest_score_wins
 rules:
   - keys:
       - 275

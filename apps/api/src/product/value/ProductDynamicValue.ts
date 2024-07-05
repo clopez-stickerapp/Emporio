@@ -1,4 +1,5 @@
 import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { DynamicValueConfig } from "$/configuration/interface/DynamicValueConfig";
 import { ProductItem } from "../ProductItem";
 import { ProductConditionedValue } from "./ProductConditionedValue";
@@ -12,8 +13,15 @@ export class ProductDynamicValue {
 
 		for (let rule of config.rules) {
 			console.debug("Adding conditioned value: ", rule.keys);
-			this.conditionedValues.push( new ProductConditionedValue(rule.keys, rule.conditions) );
+			this.addConditionedValue(rule.keys, rule.conditions);
 		}
+	}
+
+	public addConditionedValue(value: number, config: ConditionBuilderConfig = {}): ProductConditionedValue {
+		let conditionedValue = new ProductConditionedValue(value, config);
+		this.conditionedValues.push(conditionedValue);
+
+		return conditionedValue;
 	}
 
 	public getValue(productItem: ProductItem): number {

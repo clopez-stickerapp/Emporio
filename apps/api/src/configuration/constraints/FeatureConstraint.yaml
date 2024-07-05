@@ -17,8 +17,7 @@ rules:
         conditions:
           - attribute: material
             operator: IN
-            value:
-              - "{LaserMaterials}"
+            value: "{LaserMaterials}"
 
   - keys:
       - EFFECT_LAYER
@@ -27,8 +26,7 @@ rules:
         conditions:
           - attribute: material
             operator: IN
-            value:
-              - "{EffectLayerMaterials}"
+            value: "{EffectLayerMaterials}"
 
   - keys:
       - TRANSFER_TAPE

@@ -23,14 +23,6 @@ export class Product {
 		this.sku = config.sku;
 	}
 
-	// Instead of making this.conditions public like in other classes, we use this method to add conditions
-	// This is because adding subgroups to conditions is not allowed in this class
-	public addCondition(attrName: string, operator: ConditionOperators, attrValue: ConditionValue|null = null): Product {
-		this.conditions.addCondition(attrName, operator, attrValue);
-
-		return this;
-	}
-
 	public isAttrRecommendedFor(attrName: string): boolean {
 		return this.attrMap[attrName] !== undefined;
 	}
@@ -48,34 +40,34 @@ export class Product {
 	}
 
 	public withAttrValue(attr: ProductAttr, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
-		let attrName = attr.getName();
+		let attribute = attr.getName();
 
-		this.attrMap[attrName] = value;
+		this.attrMap[attribute] = value;
 
 		if (required && strictMatchIfRequired) {
-			this.attrStrictMatches.push(attrName);
+			this.attrStrictMatches.push(attribute);
 		}
 
 		if (required) {
 			if (attr.isMultiValue()) {
 				if (strictMatchIfRequired) {
-					this.addCondition(attrName, ConditionOperators.EQUAL, value);
+					this.conditions.addCondition({attribute, operator: ConditionOperators.EQUAL, value});
 				}
 				else {
 					if (!Array.isArray(value)) {
 						value = [value.toString()];
 					}
 					for (let subValue of value) {
-						this.addCondition(attrName, ConditionOperators.IN, subValue);
+						this.conditions.addCondition({attribute, operator: ConditionOperators.IN, value: subValue});
 					}
 				}
 			}
 			else {
 				if (Array.isArray(value)) {
-					this.addCondition(attrName, ConditionOperators.IN, value);
+					this.conditions.addCondition({attribute, operator: ConditionOperators.IN, value});
 				}
 				else {
-					this.addCondition(attrName, ConditionOperators.EQUAL, value);
+					this.conditions.addCondition({attribute, operator: ConditionOperators.EQUAL, value});
 				}
 			}
 		}

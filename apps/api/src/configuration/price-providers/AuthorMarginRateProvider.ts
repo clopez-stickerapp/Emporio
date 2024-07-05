@@ -1,6 +1,8 @@
+import { Condition } from "$/conditions/Condition";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate, RateType } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
+import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
 import { ProductItem } from "$/product/ProductItem";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { PriceMarginPercentageAttribute } from "../attributes/PriceMarginPercentageAttribute";
@@ -12,7 +14,15 @@ export class AuthorMarginRateProvider extends RateProvider{
 	public constructor(){
 		super(AuthorMarginRateProvider.NAME);
 		this.setType(RateProviderType.ADDON);
-		this.conditions.addCondition("item.productName", ConditionOperators.EQUAL, ProductNames.PRODUCT_LIBRARY_DESIGN);
+		this.conditions = new ProductConditionBuilder({
+			conditions: [
+				{
+					attribute: "item.productName",
+					operator: ConditionOperators.EQUAL,
+					value: ProductNames.PRODUCT_LIBRARY_DESIGN
+				}
+			]
+		})
 	}
 
 	public async getRate(productItem: ProductItem, units: number): Promise<Rate> {

@@ -9,14 +9,25 @@ let attributes: Attributes;
 
 describe("Test 'AND' operator", () => {
 	beforeEach(() => {
-		conditionbuilder = new ConditionBuilder();
+		conditionbuilder = new ConditionBuilder({
+			conditions: [
+				{
+					attribute: "material",
+					operator: ConditionOperators.EQUAL,
+					value: "white"
+				},
+				{
+					attribute: "laminate",
+					operator: ConditionOperators.EQUAL,
+					value: "glossy_uv"
+				}
+			]
+		});
+
 		attributes = {
 			material: "white",
 			laminate: "glossy_uv"
 		}
-	
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
-		conditionbuilder.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
 	});
 
 	test("with correct attributes", () => {
@@ -37,14 +48,25 @@ describe("Test 'AND' operator", () => {
 
 describe("Test 'OR' operator", () => {
 	beforeEach(() => {
-		conditionbuilder = new ConditionBuilder();
+		conditionbuilder = new ConditionBuilder({
+			conditions: [
+				{
+					attribute: "material",
+					operator: ConditionOperators.EQUAL,
+					value: "white"
+				},
+				{
+					attribute: "laminate",
+					operator: ConditionOperators.EQUAL,
+					value: "glossy_uv"
+				}
+			]
+		});
+
 		attributes = {
 			material: "white",
 			laminate: "glossy_uv"
 		}
-	
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
-		conditionbuilder.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
 	});
 
 	test("with two correct attributes", () => {
@@ -79,59 +101,59 @@ describe("Test calculateComplexityScore", () => {
 	});
 
 	test("with one condition", () => {
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(10);
 	});
 
 	test("with two conditions", () => {
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
-		conditionbuilder.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		conditionbuilder.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(25);
 	});
 
 	test("with a subgroup", () => {
 		const subgroup = conditionbuilder.addSubGroup();
-		subgroup.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(125);
 	});
 
 	test("with a subgroup and a condition", () => {
 		const subgroup = conditionbuilder.addSubGroup();
-		subgroup.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(140);
 	});
 
 	test("with a subgroup, relationtype OR and a condition", () => {
 		const subgroup = conditionbuilder.addSubGroup();
-		subgroup.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 
 		conditionbuilder.relationMode = ConditionRelations.OR;
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(135);
 	});
 
 	test("with two subgroups", () => {
 		const subgroup1 = conditionbuilder.addSubGroup();
-		subgroup1.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup1.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup1.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup1.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		const subgroup2 = conditionbuilder.addSubGroup();
-		subgroup2.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup2.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup2.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup2.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(255);
 	});
 
 	test("with two subgroups and relationtype OR", () => {
 		const subgroup1 = conditionbuilder.addSubGroup();
-		subgroup1.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup1.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup1.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup1.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		const subgroup2 = conditionbuilder.addSubGroup();
-		subgroup2.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup2.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup2.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup2.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		
 		conditionbuilder.relationMode = ConditionRelations.OR;
 		expect(conditionbuilder.calculateComplexityScore()).toBe(250);
@@ -139,14 +161,14 @@ describe("Test calculateComplexityScore", () => {
 
 	test("with two subgroups and relationtype OR and a condition", () => {
 		const subgroup1 = conditionbuilder.addSubGroup();
-		subgroup1.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup1.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup1.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup1.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		const subgroup2 = conditionbuilder.addSubGroup();
-		subgroup2.addCondition("material", ConditionOperators.EQUAL, "white");
-		subgroup2.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		subgroup2.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		subgroup2.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 
 		conditionbuilder.relationMode = ConditionRelations.OR;
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
 		expect(conditionbuilder.calculateComplexityScore()).toBe(260);
 	});
 });
@@ -161,13 +183,13 @@ describe("Test count", () => {
 	});
 
 	test("with one condition", () => {
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
 		expect(conditionbuilder.count()).toBe(1);
 	});
 
 	test("with two conditions", () => {
-		conditionbuilder.addCondition("material", ConditionOperators.EQUAL, "white");
-		conditionbuilder.addCondition("laminate", ConditionOperators.EQUAL, "glossy_uv");
+		conditionbuilder.addCondition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white"});
+		conditionbuilder.addCondition({ attribute: "laminate", operator: ConditionOperators.EQUAL, value: "glossy_uv"});
 		expect(conditionbuilder.count()).toBe(2);
 	});
 });

@@ -19,7 +19,11 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
 
 		for (const condition of config.conditions ?? []) {
-			this.conditions.push( "operator" in condition ? new Condition( condition, resolve ) : new ConditionBuilder( condition, resolve ) );
+			if( "operator" in condition ){
+				this.addCondition( condition, resolve );
+			} else {
+				this.addSubGroup( condition, resolve );
+			}
 		}
 	}
 
@@ -46,17 +50,14 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.keys(this.conditions).length;
 	}
 
-	/** @deprecated */
-	public addSubGroup(relationMode: ConditionRelations = ConditionRelations.AND): ConditionBuilder {
-		const subGroup = new ConditionBuilder({relationMode});
+	public addSubGroup(config: ConditionBuilderConfig = {}, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v): ConditionBuilder {
+		const subGroup = new ConditionBuilder(config, resolve);
 		this.conditions.push(subGroup);
 		return subGroup;
 	}
 
-	/** @deprecated */
-	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
-		const condition = new Condition({attribute: columnName, operator, value: conditionValue ?? undefined});
-		this.conditions.push(condition);
+	public addCondition(condition: ConditionConfig, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v): ConditionBuilder {
+		this.conditions.push(new Condition(condition, resolve));
 		return this;
 	}
 

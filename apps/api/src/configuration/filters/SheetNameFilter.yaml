@@ -1,4 +1,5 @@
 name: SheetNameFilter
+mode: highest_score_wins
 rules:
   - keys:
       - contour

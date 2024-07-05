@@ -1,4 +1,5 @@
 name: FeatureFilter
+mode: merge_all_winners
 rules:
   - keys:
       - effect_layer

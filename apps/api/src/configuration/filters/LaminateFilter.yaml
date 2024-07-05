@@ -1,4 +1,5 @@
 name: LaminateFilter
+mode: highest_score_wins
 rules:
   - keys:
       - glossy_uv

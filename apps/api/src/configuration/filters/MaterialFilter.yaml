@@ -1,4 +1,5 @@
 name: MaterialFilter
+mode: highest_score_wins
 rules:
   - keys:
       - white

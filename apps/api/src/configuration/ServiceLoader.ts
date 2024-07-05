@@ -24,6 +24,7 @@ import { Collection } from "$/product/Collection";
 import { CollectionConfig } from "./interface/CollectionConfig";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
 import { AssetConfig } from "./interface/AssetConfig";
+import { FilterConfig } from "./interface/FilterConfig";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -47,7 +48,7 @@ class ServiceLoader {
 
 	protected constraintConfigs: Record<string, RuleConfig> = {};
 	protected constraints: Record<string, ProductAttrConstraint> = {};
-	protected filterConfigs: Record<string, RuleConfig> = {};
+	protected filterConfigs: Record<string, FilterConfig> = {};
 	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
 	protected DynamicValueConfigs: Record<string, DynamicValueConfig> = {};
@@ -94,7 +95,7 @@ class ServiceLoader {
 
 		// Load filters
 		console.debug("Loading filter configs...");
-		this.filterConfigs = this.readConfigs<RuleConfig>(filterPathFolder);
+		this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
 
 		// Load assets
 		console.debug("Loading asset configs...");
@@ -142,7 +143,7 @@ class ServiceLoader {
 
 		// Instantiate all filters
 		console.debug("Instantiating filter instances...");
-		this.filters = this.instantiateFromConfig<RuleConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
+		this.filters = this.instantiateFromConfig<FilterConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
 
 		// Instantiate all assets
 		console.debug("Instantiating asset instances...");

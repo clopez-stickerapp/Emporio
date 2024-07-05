@@ -1,5 +1,5 @@
 import { ConditionRelations } from "$/conditions/ConditionRelations";
-import { RuleConfig } from "$/configuration/interface/RuleConfig";
+import { FilterConfig } from "$/configuration/interface/FilterConfig";
 import { AttributeValueMulti } from "../AttributeValue";
 import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
 import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
@@ -17,10 +17,9 @@ export class ProductAttrFilter {
 	protected filters: ProductAttrFilteredValues[] = [];
 	protected mode: ProductAttrFilterMode;
 
-	public constructor( config: RuleConfig ) {
+	public constructor( config: FilterConfig ) {
 		this.attributeName = config.name;
-		// TODO: Add mode to config
-		this.mode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS;
+		this.mode = config.mode;
 
 		for ( const rule of config.rules ) {
 			this.filters.push( new ProductAttrFilteredValues( rule.keys, rule.conditions ) );

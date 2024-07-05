@@ -1,13 +1,12 @@
 import { isEmpty } from "../../Util";
 import { Attributes } from "$/product/attribute/Attributes";
 import { ConditionOperators } from "./ConditionOperators";
-import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 import { ConditionTestFailedException } from "./exceptions/ConditionTestFailedException";
 import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
 
-export class Condition implements ConditionTestableInterface {
+export class Condition {
 	public columnName: string;
 	public operator: ConditionOperators;
 	public conditionValue: ConditionValue|null;
@@ -91,13 +90,5 @@ export class Condition implements ConditionTestableInterface {
 			default:
 				return "\${" + this.columnName + "} " + this.operator + " " + valueToString;
 		}
-	}
-
-	toArray(): any[] {
-		throw new Error("Method not implemented.");
-	}
-
-	fromArray(data: any[]): void {
-		throw new Error("Method not implemented.");
 	}
 }

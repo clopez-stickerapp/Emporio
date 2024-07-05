@@ -2,14 +2,12 @@ import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuild
 import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
 import { Attributes } from "$/product/attribute/Attributes";
 import { Condition } from "./Condition";
-import { ConditionOperators } from "./ConditionOperators";
 import { ConditionRelations } from "./ConditionRelations";
-import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { Conditions } from "./Conditions";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 
-export class ConditionBuilder implements ConditionTestableInterface {
+export class ConditionBuilder {
 	public relationMode: string;
 	protected conditions: Conditions = [];
 	protected baseComplexityScore: number = 0;
@@ -119,12 +117,5 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.values( this.conditions ).map( condition => {
 			return condition instanceof ConditionBuilder ? `(${ condition })` : `${ condition }`;
         } ).join( ` ${ relation } ` );
-	}
-
-	public toArray(): any[] {
-		throw new Error("Method not implemented.");
-	}
-	public fromArray(data: any[]): void {
-		throw new Error("Method not implemented.");
 	}
 }

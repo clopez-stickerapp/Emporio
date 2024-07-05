@@ -18,25 +18,25 @@ beforeEach(() => {
 describe("Test functions", () => {
 	describe("Test constructor", () => {
 		test("should be able to be instanced", () => {
-			condition = new Condition("material", ConditionOperators.EQUAL, "white");
+			condition = new Condition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white" });
 			expect(condition).toBeInstanceOf(Condition);
 		});
 	});
 
 	describe("Test 'test' function", () => {
 		test("should throw an error if test data doesn't contain conditioned key", () => {
-			condition = new Condition("height", ConditionOperators.EQUAL, 25);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.EQUAL, value: 25 });
 			expect(() => condition.test(attributes)).toThrow(ConditionTestDataKeyNotFoundException);
 		});
 
 		test("should not throw an error for certain operators when the test data doesn't contain conditioned key", () => {
-			condition = new Condition("height", ConditionOperators.IS_EMPTY);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.IS_EMPTY });
 			expect(condition.test(attributes)).toBe(true);
 
-			condition = new Condition("height", ConditionOperators.NOT_IN, ["25", "26", "27"]);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.NOT_IN, value: ["25", "26", "27"] });
 			expect(condition.test(attributes)).toBe(true);
 
-			condition = new Condition("height", ConditionOperators.NOT_EQUAL, 25);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.NOT_EQUAL, value: 25 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 	});
@@ -45,160 +45,160 @@ describe("Test functions", () => {
 describe("Test operators", () => {
 	describe("Test '==' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("material", ConditionOperators.EQUAL, "white");
+			condition = new Condition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "white" });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("material", ConditionOperators.EQUAL, "clear");
+			condition = new Condition({ attribute: "material", operator: ConditionOperators.EQUAL, value: "clear" });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test '!=' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("material", ConditionOperators.NOT_EQUAL, "clear");
+			condition = new Condition({ attribute: "material", operator: ConditionOperators.NOT_EQUAL, value: "clear" });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("material", ConditionOperators.NOT_EQUAL, "white");
+			condition = new Condition({ attribute: "material", operator: ConditionOperators.NOT_EQUAL, value: "white" });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test '<' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN, 26);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN, value: 26 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN, 25);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN, value: 25 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN, 24);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN, value: 24 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test '>' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN, 24);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN, value: 24 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN, 25);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN, value: 25 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN, 26);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN, value: 26 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test '>=' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN_OR_EQUAL, 24);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN_OR_EQUAL, value: 24 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN_OR_EQUAL, 25);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN_OR_EQUAL, value: 25 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.GREATER_THAN_OR_EQUAL, 26);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.GREATER_THAN_OR_EQUAL, value: 26 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test '<=' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN_OR_EQUAL, 26);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN_OR_EQUAL, value: 26 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN_OR_EQUAL, 25);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN_OR_EQUAL, value: 25 });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("width", ConditionOperators.LESS_THAN_OR_EQUAL, 24);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.LESS_THAN_OR_EQUAL, value: 24 });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test 'IN' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.IN, "backpaper");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.IN, value: "backpaper" });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.IN, "hangtagging");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.IN, value: "hangtagging" });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.IN, "variable-data");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.IN, value: "variable-data" });
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test 'NOT IN' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.NOT_IN, "variable-data");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.NOT_IN, value: "variable-data" });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.NOT_IN, "manual-backscore");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.NOT_IN, value: "manual-backscore" })
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.NOT_IN, "backpaper");
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.NOT_IN, value: "backpaper" })
 			expect(condition.test(attributes)).toBe(false);
 		});
 	});
 
 	describe("Test 'IS_EMPTY' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.IS_EMPTY);
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.IS_EMPTY });
 			expect(condition.test(attributes)).toBe(false);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("laminate", ConditionOperators.IS_EMPTY);
+			condition = new Condition({ attribute: "laminate", operator: ConditionOperators.IS_EMPTY });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("height", ConditionOperators.IS_EMPTY);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.IS_EMPTY });
 			expect(condition.test(attributes)).toBe(true);
 		});
 	});
 
 	describe("Test 'IS_NOT_EMPTY' operator", () => {
 		test("with valid attributes", () => {
-			condition = new Condition("feature", ConditionOperators.IS_NOT_EMPTY);
+			condition = new Condition({ attribute: "feature", operator: ConditionOperators.IS_NOT_EMPTY });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with valid attributes", () => {
-			condition = new Condition("width", ConditionOperators.IS_NOT_EMPTY);
+			condition = new Condition({ attribute: "width", operator: ConditionOperators.IS_NOT_EMPTY });
 			expect(condition.test(attributes)).toBe(true);
 		});
 
 		test("with invalid attributes", () => {
-			condition = new Condition("height", ConditionOperators.IS_NOT_EMPTY);
+			condition = new Condition({ attribute: "height", operator: ConditionOperators.IS_NOT_EMPTY });
 			expect(() => condition.test(attributes)).toThrow(ConditionTestDataKeyNotFoundException);
 		});
 	});

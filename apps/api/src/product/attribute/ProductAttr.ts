@@ -22,9 +22,9 @@ export class ProductAttr {
 			throw new Error("Can't make a multivalue attribute with boolean type.");
 		}
 
-		// for (const value of this.values) {
-		// 	testValueType(value, this.valueType);
-		// }
+		for (const value of this.values) {
+			this.testValueType(value, true);
+		}
 	}
 
 	/**

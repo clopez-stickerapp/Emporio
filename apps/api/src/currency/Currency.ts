@@ -155,3 +155,10 @@ export type FormatCurrencyOptions = {
 export function convertToMajorUnits(amount: number, currency: Currencies): number {
 	return amount / (10 ** getDefaultDecimals(currency));
 }
+
+/**
+ * @deprecated Only for backwards compatibility for giftcard prices
+ */
+export function convertToMinorUnits(amount: number, currency: Currencies): number {
+	return amount * (10 ** getDefaultDecimals(currency));
+}

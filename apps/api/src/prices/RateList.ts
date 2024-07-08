@@ -24,7 +24,7 @@ export class RateList extends RateProvider{
 			 * Since rates are sorted in reverse order, the thresholds are in descending order
 			 * So the first threshold we go over is the one we want
 			 */
-			if(units >= rate.getUnitThreshold()){
+			if(units > rate.getUnitThreshold()){
 				return rate;
 			}
 		}

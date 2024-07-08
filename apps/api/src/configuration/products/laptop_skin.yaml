@@ -1,5 +1,6 @@
 name: laptop_skin
 sku: LSSSS-108
+available: true
 attributes:
   sheet_type: skin
   material: skin

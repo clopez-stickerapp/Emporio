@@ -1,5 +1,6 @@
 name: sheet
 sku: SRR-108
+available: true
 attributes:
   innercut_as_kisscut: yes
   sheet_name: rect

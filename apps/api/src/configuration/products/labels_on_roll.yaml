@@ -1,5 +1,6 @@
 name: labels_on_roll
 sku: LORSDR-108
+available: true
 attributes:
   sheet_type: single
   delivery: roll

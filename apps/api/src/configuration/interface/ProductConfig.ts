@@ -11,4 +11,6 @@ export interface ProductConfig extends NamedConfig{
 	// 	default?: string;
 	// };
 	overrides?: ProductSettings;
+	available: boolean;
+	status?: string;
 };

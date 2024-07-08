@@ -1,16 +1,16 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
-export class CuisineAttribute extends ProductAttr {
-	public static readonly NAME = 'cuisine';
+export const CuisineValues = {
+	SWEDISH: "swedish",
+	NEOPOLITAN: "neopolitan"
+};
 
-	public static readonly SWEDISH = 'swedish';
-	public static readonly NEOPOLITAN = 'neopolitan';
-	
-	public constructor() {
-		super( ProductAttrValueType.STRING );
-		
-		this.addAttrValue( CuisineAttribute.SWEDISH );
-		this.addAttrValue( CuisineAttribute.NEOPOLITAN );
-	}
-}
+export const CuisineAttribute = new ProductAttr( {
+	name: "cuisine",
+	type: ProductAttrValueType.STRING,
+	values: [
+		CuisineValues.SWEDISH,
+		CuisineValues.NEOPOLITAN
+	]
+} );

@@ -1,29 +1,29 @@
 import { ProductAttrComputerExtended } from "$/product/helpers/ProductAttrComputerExtended";
 import { ProductItemBuilder } from "$/product/helpers/ProductItemBuilder";
-import { CrustAttribute } from "./Pizzeria/Attributes/CrustAttribute";
-import { CuisineAttribute } from "./Pizzeria/Attributes/CuisineAttribute";
-import { IngredientAttribute } from "./Pizzeria/Attributes/IngredientAttribute";
-import { PortionAttribute } from "./Pizzeria/Attributes/PortionAttribute";
-import { SauceBaseAttribute } from "./Pizzeria/Attributes/SauceBaseAttribute";
-import { ToppingAttribute } from "./Pizzeria/Attributes/ToppingAttribute";
-import { PizzeriaFamily } from "./Pizzeria/PizzeriaFamily";
-import { PizzeriaService } from "./Pizzeria/PizzeriaService";
+import { CrustAttribute, CrustValues } from "./Pizzeria/Attributes/CrustAttribute";
+import { CuisineAttribute, CuisineValues } from "./Pizzeria/Attributes/CuisineAttribute";
+import { IngredientAttribute, IngredientValues } from "./Pizzeria/Attributes/IngredientAttribute";
+import { PortionAttribute, PortionValues } from "./Pizzeria/Attributes/PortionAttribute";
+import { SauceBaseAttribute, SauceBaseValues } from "./Pizzeria/Attributes/SauceBaseAttribute";
+import { ToppingAttribute, ToppingValues } from "./Pizzeria/Attributes/ToppingAttribute";
+import PizzeriaFamily from "./Pizzeria/PizzeriaFamily";
+import { PizzeriaProducts } from "./Pizzeria/PizzeriaProducts";
+import PizzeriaService from "./Pizzeria/PizzeriaService";
 
-const service     = new PizzeriaService();
-const computer    = new ProductAttrComputerExtended( service );
-const itemBuilder = new ProductItemBuilder( service );
-const item        = itemBuilder.createItem( PizzeriaFamily.NAME, PizzeriaFamily.HAWAII );
+const computer    = new ProductAttrComputerExtended( PizzeriaService );
+const itemBuilder = new ProductItemBuilder( PizzeriaService );
+const item        = itemBuilder.createItem( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
 
 computer.prepare( item );
 
 describe( 'Test Getting', () => {
 	describe( 'Default Value', () => {
 		test( 'When The Attribute Is A Multi Type', () => {
-			expect( computer.getDefaultValue( IngredientAttribute.NAME ) ).toEqual( [] );
+			expect( computer.getDefaultValue( IngredientAttribute.getName() ) ).toEqual( [] );
 		} );
 	
 		test( 'When The Attribute Is A Non-Multi Type', () => {
-			expect( computer.getDefaultValue( SauceBaseAttribute.NAME ) ).toBe( SauceBaseAttribute.TOMATO );
+			expect( computer.getDefaultValue( SauceBaseAttribute.getName() ) ).toBe( SauceBaseValues.TOMATO );
 		} );
 	
 		test( 'When The Attribute Does Not Exist', () => {
@@ -33,15 +33,15 @@ describe( 'Test Getting', () => {
 	
 	describe( 'All Values', () => {
 		test( 'When The Attribute Is A Multi Type', () => {
-			expect( computer.getAllValues( IngredientAttribute.NAME ) ).toEqual( [ 
-				IngredientAttribute.CHEESE, 
-				IngredientAttribute.HAM, 
-				IngredientAttribute.PINEAPPLE 
+			expect( computer.getAllValues( IngredientAttribute.getName() ) ).toEqual( [ 
+				IngredientValues.CHEESE, 
+				IngredientValues.HAM, 
+				IngredientValues.PINEAPPLE 
 			] );
 		} );
 	
 		test( 'When The Attribute Is A Non-Multi Type', () => {
-			expect( computer.getAllValues( SauceBaseAttribute.NAME ) ).toEqual( [ SauceBaseAttribute.TOMATO ] );
+			expect( computer.getAllValues( SauceBaseAttribute.getName() ) ).toEqual( [ SauceBaseValues.TOMATO ] );
 		} );
 	
 		test( 'When The Attribute Does Not Exist', () => {
@@ -51,21 +51,21 @@ describe( 'Test Getting', () => {
 	
 	describe( 'Highest Available Value', () => {
 		test( 'When The Attribute Is Of Type String', () => {
-			expect( computer.getHighestAvailableValue( IngredientAttribute.NAME ) ).toBe( null );
+			expect( computer.getHighestAvailableValue( IngredientAttribute.getName() ) ).toBe( null );
 		} );
 	
 		test( 'When The Attribute Is Of Type Int', () => {
-			expect( computer.getHighestAvailableValue( PortionAttribute.NAME ) ).toBe( PortionAttribute.FAMILY );
+			expect( computer.getHighestAvailableValue( PortionAttribute.getName() ) ).toBe( PortionValues.FAMILY );
 		} );
 	} );
 
 	describe( 'Lowest Available Value', () => {
 		test( 'When The Attribute Is Of Type String', () => {
-			expect( computer.getLowestAvailableValue( IngredientAttribute.NAME ) ).toBe( null );
+			expect( computer.getLowestAvailableValue( IngredientAttribute.getName() ) ).toBe( null );
 		} );
 	
 		test( 'When The Attribute Is Of Type Int And Has Constraint', () => {
-			expect( computer.getLowestAvailableValue( PortionAttribute.NAME ) ).toBe( PortionAttribute.NORMAL );
+			expect( computer.getLowestAvailableValue( PortionAttribute.getName() ) ).toBe( PortionValues.NORMAL );
 		} );
 	} );
 } );
@@ -73,31 +73,31 @@ describe( 'Test Getting', () => {
 describe( 'Test If The Attribute Value Is', () => {
 	describe( 'Available', () => {
 		test( 'When The Attribute Value Is Suggested', () => {
-			expect( computer.isAvailable( IngredientAttribute.NAME, IngredientAttribute.PINEAPPLE ) ).toBe( true );
+			expect( computer.isAvailable( IngredientAttribute.getName(), IngredientValues.PINEAPPLE ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isAvailable( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
+			expect( computer.isAvailable( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
 		} );
 	
 		test( 'When The Attribute Value Is Constrained', () => {
-			expect( computer.isAvailable( CuisineAttribute.NAME, CuisineAttribute.NEOPOLITAN ) ).toBe( false );
+			expect( computer.isAvailable( CuisineAttribute.getName(), CuisineValues.NEOPOLITAN ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute And/Or Value Does Not Exist', () => {
 			expect( computer.isAvailable( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isAvailable( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isAvailable( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+			expect( computer.isAvailable( IngredientAttribute.getName(), 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isAvailable( 'this_attr_does_not_exist', IngredientValues.CHEESE ) ).toBe( false );
 		} );
 	} );
 
 	describe( 'Supported', () => {
 		test( 'When The Attribute Is Required', () => {
-			expect( computer.isSupported( IngredientAttribute.NAME ) ).toBe( true );
+			expect( computer.isSupported( IngredientAttribute.getName() ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Is Supported', () => {
-			expect( computer.isSupported( CrustAttribute.NAME ) ).toBe( true );
+			expect( computer.isSupported( CrustAttribute.getName() ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Does Not Exist', () => {
@@ -107,11 +107,11 @@ describe( 'Test If The Attribute Value Is', () => {
 	
 	describe( 'Required', () => {
 		test( 'When The Attribute Is Required', () => {
-			expect( computer.isRequired( IngredientAttribute.NAME ) ).toBe( true );
+			expect( computer.isRequired( IngredientAttribute.getName() ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Is Supported', () => {
-			expect( computer.isRequired( CrustAttribute.NAME ) ).toBe( false );
+			expect( computer.isRequired( CrustAttribute.getName() ) ).toBe( false );
 		} );
 	
 		test( 'When The Attribute Does Not Exist', () => {
@@ -121,85 +121,85 @@ describe( 'Test If The Attribute Value Is', () => {
 	
 	describe( 'Constrained', () => {
 		test( 'When The Attribute Value Is In Filtered Values', () => {
-			expect( computer.isConstrained( CrustAttribute.NAME, CrustAttribute.THIN ) ).toBe( false );
+			expect( computer.isConstrained( CrustAttribute.getName(), CrustValues.THIN ) ).toBe( false );
 		} );
 	
 		test( 'When The Attribute Of A Constrained Value Has No Filtered Values', () => {
-			expect( computer.isConstrained( CuisineAttribute.NAME, CuisineAttribute.NEOPOLITAN ) ).toBe( true );
+			expect( computer.isConstrained( CuisineAttribute.getName(), CuisineValues.NEOPOLITAN ) ).toBe( true );
 		} );
 
 		test( 'When The Attribute Of A Constrained Value Has Filtered Values', () => {
-			expect( computer.isConstrained( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( true );
+			expect( computer.isConstrained( CrustAttribute.getName(), CrustValues.THICK ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is In Suggested Values', () => {
-			expect( computer.isConstrained( ToppingAttribute.NAME, ToppingAttribute.HAM ) ).toBe( false );
+			expect( computer.isConstrained( ToppingAttribute.getName(), ToppingValues.HAM ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isConstrained( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
+			expect( computer.isConstrained( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute And/Or Value Does Not Exist', () => {
 			expect( computer.isConstrained( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isConstrained( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isConstrained( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+			expect( computer.isConstrained( IngredientAttribute.getName(), 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isConstrained( 'this_attr_does_not_exist', IngredientValues.CHEESE ) ).toBe( false );
 		} );
 	} );
 	
 	describe( 'In Filtered Values', () => {
 		test( 'When The Attribute Value Is In Filtered Values', () => {
-			expect( computer.isInFilteredValues( CrustAttribute.NAME, CrustAttribute.THIN ) ).toBe( true );
+			expect( computer.isInFilteredValues( CrustAttribute.getName(), CrustValues.THIN ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Of A Constrained Value Has No Filtered Values', () => {
-			expect( computer.isInFilteredValues( CuisineAttribute.NAME, CuisineAttribute.NEOPOLITAN ) ).toBe( false );
+			expect( computer.isInFilteredValues( CuisineAttribute.getName(), CuisineValues.NEOPOLITAN ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute Of A Constrained Value Has Filtered Values', () => {
-			expect( computer.isInFilteredValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( true );
+			expect( computer.isInFilteredValues( CrustAttribute.getName(), CrustValues.THICK ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is In Suggested Values', () => {
-			expect( computer.isInFilteredValues( ToppingAttribute.NAME, ToppingAttribute.HAM ) ).toBe( false );
+			expect( computer.isInFilteredValues( ToppingAttribute.getName(), ToppingValues.HAM ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isInFilteredValues( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
+			expect( computer.isInFilteredValues( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute And/Or Value Does Not Exist', () => {
 			expect( computer.isInFilteredValues( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isInFilteredValues( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isInFilteredValues( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+			expect( computer.isInFilteredValues( IngredientAttribute.getName(), 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInFilteredValues( 'this_attr_does_not_exist', IngredientValues.CHEESE ) ).toBe( false );
 		} );
 	} );
 
 	describe( 'In Suggested Values', () => {
 		test( 'When The Attribute Value Is In Filtered Values', () => {
-			expect( computer.isInSuggestedValues( CrustAttribute.NAME, CrustAttribute.THIN ) ).toBe( true );
+			expect( computer.isInSuggestedValues( CrustAttribute.getName(), CrustValues.THIN ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Of A Constrained Value Has No Filtered Values', () => {
-			expect( computer.isInSuggestedValues( CuisineAttribute.NAME, CuisineAttribute.NEOPOLITAN ) ).toBe( true );
+			expect( computer.isInSuggestedValues( CuisineAttribute.getName(), CuisineValues.NEOPOLITAN ) ).toBe( true );
 		} );
 
 		test( 'When The Attribute Of A Constrained Value Has Filtered Values', () => {
-			expect( computer.isInSuggestedValues( CrustAttribute.NAME, CrustAttribute.THICK ) ).toBe( true );
+			expect( computer.isInSuggestedValues( CrustAttribute.getName(), CrustValues.THICK ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is In Suggested Values', () => {
-			expect( computer.isInSuggestedValues( ToppingAttribute.NAME, ToppingAttribute.HAM ) ).toBe( true );
+			expect( computer.isInSuggestedValues( ToppingAttribute.getName(), ToppingValues.HAM ) ).toBe( true );
 		} );
 
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isInSuggestedValues( IngredientAttribute.NAME, IngredientAttribute.GARLIC ) ).toBe( false );
+			expect( computer.isInSuggestedValues( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
 		} );
 
 		test( 'When The Attribute And/Or Value Does Not Exist', () => {
 			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isInSuggestedValues( IngredientAttribute.NAME, 'this_value_does_not_exist' ) ).toBe( false );
-			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', IngredientAttribute.CHEESE ) ).toBe( false );
+			expect( computer.isInSuggestedValues( IngredientAttribute.getName(), 'this_value_does_not_exist' ) ).toBe( false );
+			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', IngredientValues.CHEESE ) ).toBe( false );
 		} );
 	} );
 } );

@@ -1,15 +1,28 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
+import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { CuisineAttribute } from "../Attributes/CuisineAttribute";
-import { IngredientAttribute } from "../Attributes/IngredientAttribute";
+import { CuisineAttribute, CuisineValues } from "../Attributes/CuisineAttribute";
+import { IngredientAttribute, IngredientValues } from "../Attributes/IngredientAttribute";
 
-export class CuisineConstraint extends ProductAttrConstraint {
-	public constructor() {
-		super( CuisineAttribute.NAME );
-
-		this.createConditionsFor( CuisineAttribute.NEOPOLITAN )
-			.addCondition( "item.attributes.ingredient", ConditionOperators.NOT_IN, [
-				IngredientAttribute.PINEAPPLE
-			] );
-	}
-}
+export const CuisineConstraint = new ProductAttrConstraint( {
+	name: CuisineAttribute.getName(),
+	rules: [
+		{
+			keys: [ 
+				CuisineValues.NEOPOLITAN 
+			],
+			conditions: {
+				relationMode: ConditionRelations.AND,
+				conditions: [
+					{
+						attribute: IngredientAttribute.getName(),
+						operator: ConditionOperators.NOT_IN,
+						value: [
+							IngredientValues.PINEAPPLE
+						]
+					}
+				]
+			}
+		}
+	]
+} );

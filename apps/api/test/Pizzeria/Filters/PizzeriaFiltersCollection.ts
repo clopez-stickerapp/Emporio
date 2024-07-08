@@ -1,12 +1,12 @@
-import { ProductAttrFilterCollection } from "$/product/attribute/Filter/ProductAttrFilterCollection";
+import { Collection } from "$/product/Collection";
+import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { CrustFilter } from "./CrustFilter";
 
-export class PizzeriaFilterCollection extends ProductAttrFilterCollection {
-	public static readonly NAME = "pizzeria_filter";
+const PizzeriaFilterCollection = new Collection<ProductAttrFilter>( {
+	name: 'pizzeria_filter',
+	values: []
+} );
 
-	public constructor() {
-		super( PizzeriaFilterCollection.NAME );
+PizzeriaFilterCollection.add( CrustFilter );
 
-		this.addFilter( new CrustFilter() );
-	}
-}
+export default PizzeriaFilterCollection;

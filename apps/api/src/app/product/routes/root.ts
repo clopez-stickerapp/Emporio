@@ -124,7 +124,7 @@ export default async function ( fastify: FastifyInstance ) {
 					'name': product.getName(),
 					'attributes': product.getAttrMap(),
 					'sku': product.getSku(),
-					'inStock': product.isInStock()
+					'available': product.isAvailable()
 				}
 			}
 		}
@@ -161,6 +161,8 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/out-of-stock/:family', { schema: getOutOfStockSchema }, async function ( request ) {
-		return { outOfStock: emporio.getFamily( request.params.family ).getOutOfStockProducts() };
+		const products = emporio.getFamily( request.params.family ).getProducts();
+		const unavailableProducts = Object.values( products ).filter( product => !emporio.isProductAvailable( product.getProductFamilyName(), product.getName() ) );
+		return { outOfStock: unavailableProducts.map( product => product.getName() ) };
 	} )
 }

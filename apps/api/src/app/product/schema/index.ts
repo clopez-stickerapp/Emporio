@@ -175,7 +175,7 @@ export const getFamiliesSchema = {
 					name: Type.String(),
 					attributes: TypeHelper.Attributes(),
 					sku: Type.String(),
-					inStock: Type.Boolean()
+					available: Type.Boolean()
 				} ) ),
 			} ) )
 		} ),

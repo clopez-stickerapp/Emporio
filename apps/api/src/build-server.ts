@@ -106,6 +106,7 @@ async function buildServer() {
 function createErrorObject(error: FastifyError, request: FastifyRequest) {
 	return {
 		message: error.message,
+		hostname: request.hostname,
 		url: request.url,
 		query: parseQuery(request.query),
 	};

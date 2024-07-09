@@ -152,7 +152,7 @@ export class ProductionHelper
 		{
 			const product = this.ps.findProduct( this.item.getProductFamilyName(), this.item.getProductName() );
 			
-			return product.isAttrRecommendedFor( attributeName );
+			return product.isAttrRequired( attributeName );
 		}
 
 		return false;

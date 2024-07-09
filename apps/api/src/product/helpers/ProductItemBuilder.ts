@@ -47,7 +47,7 @@ export class ProductItemBuilder
 			}			
 		}
 
-		for ( let [ attrName, attrValue ] of Object.entries( product.getAttrMap() ) ) 
+		for ( let [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
 		{
 			const attr = productFamily.getAttribute( attrName );
 

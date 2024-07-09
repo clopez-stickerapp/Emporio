@@ -2,6 +2,6 @@ name: hang_tag
 sku: HTSH-108
 attributes:
   sheet_type: single
-#   note: "Hang Tag"
-  feature: hangtagging
+  feature: 
+    - hangtagging
   

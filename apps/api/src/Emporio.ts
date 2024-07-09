@@ -19,6 +19,7 @@ import { getVatPercentage } from "./tax/Vat";
 import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
 import { ProductNames } from "$data/ConditionValueResolver";
+import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -217,5 +218,26 @@ export class Emporio {
 
 	public getStickerAppLegacySKU( item: ProductItem ): number {
 		return this.stickerAppLegacySKU.getSKU( item );
-	} 
+	}
+
+	public isProductAvailable( productFamilyName: string, productName: string ): boolean {
+		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
+		const product = productFamily.getProduct( productName );
+
+		if ( !product.isAvailable() ) {
+			return false;
+		}
+
+		const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>( productFamily.getAssetCollectionName() );
+
+		for ( const [ attrName, attrValue ] of Object.entries( product.getAttrMap() ) ) {
+			const values = Array.isArray( attrValue ) ? attrValue : [ attrValue ];
+			const attrAsset = assetCollection.get( attrName );
+			if ( attrAsset && values.some( value => !attrAsset.isAvailable( value ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

@@ -12,14 +12,16 @@ export class Product {
 	protected attrMap: Record<string, AttributeValue> = {};
 	protected attrStrictMatches: string[] = [];
 	protected conditions: ConditionBuilder;
-	protected inStock: boolean = true;
+	protected available: boolean;
+	protected status?: string;
 	protected sku: string;
 
 	public constructor(productFamilyName: string, config: ProductConfig) {
 		this.productFamilyName = productFamilyName;
 		this.name = config.name;
 		this.conditions = new ConditionBuilder();
-		this.inStock = true;
+		this.status = config.status;
+		this.available = config.available;
 		this.sku = config.sku;
 	}
 
@@ -75,25 +77,6 @@ export class Product {
 		return this;
 	}
 
-	// TODO: what to do with this?
-	// public setStock(): void {
-	// 	for (let [key, value] of Object.entries(this.attrMap)) {
-	// 		if (!Array.isArray(value)) {
-	// 			value = [value];
-	// 		}
-	// 		if (!this.isAttrInStock(key, value)) {
-	// 			this.inStock = false;
-	// 			break;
-	// 		}
-	// 	}
-	// }
-
-	// public isAttrInStock(attrName: string, attrValue: AttributeValueSingle[]): boolean {
-	// 	let stockCollection = this.productFamily.getStockCollection();
-	// 	let outOfStockForAttr = stockCollection?.getOutOfStockFor(attrName)?.getOutOfStock() ?? [];
-	// 	return attrValue.filter((value) => outOfStockForAttr.includes(value.toString())).length === 0;
-	// }
-
 	public getName(): string {
 		return this.name;
 	}
@@ -106,8 +89,12 @@ export class Product {
 		return this.attrMap;
 	}
 
-	public isInStock(): boolean {
-		return this.inStock;
+	public isAvailable(): boolean {
+		return this.available;
+	}
+
+	public getStatus(): string | undefined {
+		return this.status;
 	}
 
 	public getSku(): string {

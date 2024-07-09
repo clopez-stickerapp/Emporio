@@ -1,5 +1,6 @@
 name: removable
 sku: RSWR-108
+available: true
 attributes:
   sheet_type: single
   material: white_removable

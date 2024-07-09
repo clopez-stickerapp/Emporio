@@ -1,5 +1,6 @@
 name: library_design
 sku: LDSDSI-108
+available: true
 attributes:
   sheet_type: single
   sheet_name: sticker_individual

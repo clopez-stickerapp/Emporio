@@ -163,15 +163,4 @@ export class ProductFamily {
 
 		return false;
 	}
-
-	public getOutOfStockProducts(): string[] {
-		const outOfStockProducts: string[] = [];
-		for (const product of Object.values(this.products)) {
-			if (product.isInStock() === false) {
-				outOfStockProducts.push(product.getName());
-			}
-		}
-
-		return outOfStockProducts;
-	}
 }

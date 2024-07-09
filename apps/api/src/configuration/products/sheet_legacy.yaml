@@ -1,5 +1,6 @@
 name: sheet_legacy
 sku: SLSTS-108
+available: true
 attributes:
   sheet_name:
     - sheet

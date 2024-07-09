@@ -1,5 +1,6 @@
 name: 3d_dome
 sku: 3DDSRDSE-108
+available: true
 attributes:
   sheet_type: single
   delivery: sheet

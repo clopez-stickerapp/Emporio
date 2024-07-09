@@ -72,6 +72,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addCondition("item.productName", ConditionOperators.NOT_EQUAL, CustomStickerFamily.PRODUCT_TRANSFER_DECAL)
 			.addSubGroup(ConditionRelations.OR)
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE, MaterialAttribute.WHITE_BACKSCORE, MaterialAttribute.BUBBLE_FREE, MaterialAttribute.SATIN_MATTE])
+			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_ROLL)
 			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_FLOOR);
 		this.addRateProvider(rl_white);
 

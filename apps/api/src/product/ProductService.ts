@@ -161,7 +161,7 @@ export class ProductService {
 		const attribute = this.retrieveProductFamily( product.getProductFamilyName()).getAttribute( attrAlias );
 		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
 
-		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) 
+		if ( !product.isAttrRequired( attrAlias ) ) 
 		{
 			for ( const attrValue of attribute.getValues() ) 
 			{
@@ -205,21 +205,5 @@ export class ProductService {
 		}
 
 		return attrValues;
-	}
-
-	public hasProductRecommendedValuesFor( productItem: ProductItem, attributeName: string ): boolean 
-	{
-		const productFamily = this.retrieveProductFamily( productItem.getProductFamilyName() );
-		
-		if ( productFamily.isRequired( attributeName ) ) 
-		{
-			return true;
-		} 
-		else if ( productFamily.isSupported( attributeName ) ) 
-		{
-			return this.findProduct( productItem.getProductFamilyName(), productItem.getProductName() ).isAttrRecommendedFor( attributeName );
-		}
-
-		return false;
 	}
 }

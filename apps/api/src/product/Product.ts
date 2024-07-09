@@ -9,8 +9,7 @@ import { ProductAttr } from "./attribute/ProductAttr";
 export class Product {
 	protected productFamilyName: string;
 	protected name: string;
-	protected attrMap: Record<string, AttributeValue> = {};
-	protected attrStrictMatches: string[] = [];
+	protected requiredAttrs: Record<string, AttributeValue> = {};
 	protected conditions: ConditionBuilder;
 	protected available: boolean;
 	protected status?: string;
@@ -25,12 +24,8 @@ export class Product {
 		this.sku = config.sku;
 	}
 
-	public isAttrRecommendedFor(attrName: string): boolean {
-		return this.attrMap[attrName] !== undefined;
-	}
-
-	public isAttrStrictlyRequiredFor(attrName: string): boolean {
-		return this.attrStrictMatches.includes(attrName);
+	public isAttrRequired(attrName: string): boolean {
+		return this.requiredAttrs[attrName] !== undefined;
 	}
 
 	public testAttributes(attributes: Attributes): boolean {
@@ -38,40 +33,22 @@ export class Product {
 	}
 
 	public getAttrValue(attrName: string): AttributeValue | undefined {
-		return this.attrMap[attrName];
+		return this.requiredAttrs[attrName];
 	}
 
-	public withAttrValue(attr: ProductAttr, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
+	public requireAttr(attr: ProductAttr, value: ConditionValue): Product {
 		let attribute = attr.getName();
 
-		this.attrMap[attribute] = value;
+		this.requiredAttrs[attribute] = value;
 
-		if (required && strictMatchIfRequired) {
-			this.attrStrictMatches.push(attribute);
-		}
-
-		if (required) {
-			if (attr.isMultiValue()) {
-				if (strictMatchIfRequired) {
-					this.conditions.addCondition({attribute, operator: ConditionOperators.EQUAL, value});
-				}
-				else {
-					if (!Array.isArray(value)) {
-						value = [value.toString()];
-					}
-					for (let subValue of value) {
-						this.conditions.addCondition({attribute, operator: ConditionOperators.IN, value: subValue});
-					}
-				}
+		if ( attr.isMultiValue() ) {
+			const values = Array.isArray( value ) ? value : [ value.toString() ];
+			for ( const subValue of values ) {
+				this.conditions.addCondition( { attribute, operator: ConditionOperators.IN, value: subValue } );
 			}
-			else {
-				if (Array.isArray(value)) {
-					this.conditions.addCondition({attribute, operator: ConditionOperators.IN, value});
-				}
-				else {
-					this.conditions.addCondition({attribute, operator: ConditionOperators.EQUAL, value});
-				}
-			}
+		} else {
+			const operator = Array.isArray( value ) ? ConditionOperators.IN : ConditionOperators.EQUAL;
+			this.conditions.addCondition( { attribute, operator, value } );
 		}
 
 		return this;
@@ -85,8 +62,8 @@ export class Product {
 		return this.productFamilyName;
 	}
 
-	public getAttrMap(): Record<string, AttributeValue> {
-		return this.attrMap;
+	public getRequiredAttrs(): Record<string, AttributeValue> {
+		return this.requiredAttrs;
 	}
 
 	public isAvailable(): boolean {

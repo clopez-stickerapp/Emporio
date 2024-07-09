@@ -122,7 +122,7 @@ export default async function ( fastify: FastifyInstance ) {
 			for ( const product of Object.values( family.getProducts() ) ) {
 				families[ family.getName() ].products[ product.getName() ] = {
 					'name': product.getName(),
-					'attributes': product.getAttrMap(),
+					'attributes': product.getRequiredAttrs(),
 					'sku': product.getSku(),
 					'available': product.isAvailable()
 				}

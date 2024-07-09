@@ -15,7 +15,7 @@ export const PortionConstraint = new ProductAttrConstraint( {
 				relationMode: ConditionRelations.AND,
 				conditions: [
 					{
-						attribute: CuisineAttribute.getName(),
+						attribute: 'item.attributes.' + CuisineAttribute.getName(),
 						operator: ConditionOperators.NOT_EQUAL,
 						value: CuisineValues.NEOPOLITAN
 					}
@@ -30,7 +30,7 @@ export const PortionConstraint = new ProductAttrConstraint( {
 				relationMode: ConditionRelations.AND,
 				conditions: [
 					{
-						attribute: 'item.attributes.'+CuisineAttribute.getName(),
+						attribute: 'item.attributes.' + CuisineAttribute.getName(),
 						operator: ConditionOperators.NOT_EQUAL,
 						value: CuisineValues.SWEDISH
 					}

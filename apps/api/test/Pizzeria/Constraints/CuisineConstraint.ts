@@ -15,7 +15,7 @@ export const CuisineConstraint = new ProductAttrConstraint( {
 				relationMode: ConditionRelations.AND,
 				conditions: [
 					{
-						attribute: IngredientAttribute.getName(),
+						attribute: 'item.attributes.' + IngredientAttribute.getName(),
 						operator: ConditionOperators.NOT_IN,
 						value: [
 							IngredientValues.PINEAPPLE

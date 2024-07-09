@@ -15,8 +15,8 @@ export const CrustConstraint = new ProductAttrConstraint( {
 				relationMode: ConditionRelations.AND,
 				conditions: [
 					{
-						attribute: 'productName',
-						operator: ConditionOperators.EQUAL,
+						attribute: 'item.productName',
+						operator: ConditionOperators.NOT_EQUAL,
 						value: PizzeriaProducts.HAWAII
 					}
 				]

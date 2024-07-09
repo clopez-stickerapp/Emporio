@@ -43,6 +43,12 @@ export class ProductFamily {
 		}
 
 		const product = new Product(this.getName(), config);
+
+		for ( const [ name, value ] of Object.entries( config.attributes ?? {} ) ) {
+			const productAttr = this.getAttribute( name );
+			product.requireAttr( productAttr, value );
+		}
+
 		this.products[config.name] = product;
 
 		return product;

@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import fastify from 'fastify';
+import fastify, { FastifyError, FastifyRequest } from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import formbody from '@fastify/formbody';
 import cors from '@fastify/cors';
@@ -65,14 +65,15 @@ async function buildServer() {
 	server.register(formbody);
 	server.register(cors);
 	server.setErrorHandler((error, request, reply) => {
-		if (error.code === 'FST_ERR_VALIDATION') {
+		if (error instanceof TypeError || error.code === 'FST_ERR_VALIDATION') {
+			server.log.warn(createErrorObject(error, request));
 			reply.status(400).send({ message: error.message });
 		} else if (error instanceof NotFoundError) {
 			reply.status(404).send('Resource not found');
 		} else if (error instanceof BadRequestError) {
 			reply.status(400).send({ message: error.message });
 		} else {
-			server.log.error(error);
+			server.log.error(createErrorObject(error, request));
 			reply.status(500).send({ message: 'Internal server error' });
 		}
 	});
@@ -100,6 +101,26 @@ async function buildServer() {
 	server.swagger();
 
 	return server;
+}
+
+function createErrorObject(error: FastifyError, request: FastifyRequest) {
+	return {
+		message: error.message,
+		url: request.url,
+		query: parseQuery(request.query),
+	};
+}
+
+// This function is used to parse interesting data from the query to use in the logger
+function parseQuery(query: unknown){
+	let regularObj = Object.assign({attributes: ""}, query);
+	let result: Record<string, string> = {};
+
+	try {
+		result.attributes = JSON.parse(regularObj.attributes);
+	} catch (e) {}
+
+	return result;
 }
 
 function getLoggerOptions() {

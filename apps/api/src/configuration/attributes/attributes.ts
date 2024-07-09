@@ -22,6 +22,7 @@ import { FixedSizeAttribute } from "./FixedSizeAttribute";
 import { HeightAttribute } from "./HeightAttribute";
 import { ImageFiltersAttribute } from "./ImageFiltersAttribute";
 import { ImperialUnitsAttribute } from "./ImperialUnitsAttribute";
+import { InkAttribute } from "./InkAttribute";
 import { InnercutAsKisscutAttribute } from "./InnercutAsKisscutAttribute";
 import { LaminateAttribute } from "./LaminateAttribute";
 import { MarketAttribute } from "./MarketAttribute";
@@ -72,6 +73,7 @@ export const allAttributes: ProductAttr[] = [
 	HeightAttribute,
 	ImageFiltersAttribute,
 	ImperialUnitsAttribute,
+	InkAttribute,
 	InnercutAsKisscutAttribute,
 	LaminateAttribute,
 	MarketAttribute,

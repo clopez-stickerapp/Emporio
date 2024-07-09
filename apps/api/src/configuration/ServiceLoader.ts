@@ -197,6 +197,13 @@ class ServiceLoader {
 					const attributeInstance = service.retrieveAttribute(attribute);
 					familyInstance.requireAttr(attribute, attributeInstance);
 				}
+
+				// Support optional attributes for all families
+				for(const attribute of familyConfig.rules.attributes?.optional ?? []) {
+					console.debug(`Supporting attribute '${attribute}' for family '${family}'...`);
+					const attributeInstance = service.retrieveAttribute(attribute);
+					familyInstance.supportAttr(attribute, attributeInstance);
+				}
 			}	
 		}
 	}

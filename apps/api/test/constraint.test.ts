@@ -41,7 +41,7 @@ describe( 'Constraint', () => {
 			expect( condition ).toBeInstanceOf( ProductConditionBuilder );
 		} );
 
-		test( "Add a condition to a constraint already containing one with the same name", () => {
+		test( "Add a condition to a constraint already containing one with the same key", () => {
 			expect( () => constraint.addConstraint( true, {} ) ).toThrowError();
 		} );
 

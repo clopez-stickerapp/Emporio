@@ -106,7 +106,7 @@ export class Emporio {
 
 	public async getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): Promise<PriceList> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
-		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
+		const minQuantity = this.getMinimumQuantity(productItem) ?? 1;
 		const steps = this.productService.retrieveQuantityListCollection(productFamily.getQuantityCollectionName()).getQuantityStepsFor(productItem, minQuantity) ?? [];
 
 		const prices = await Promise.all(steps.map(async (step: number) => {
@@ -118,7 +118,11 @@ export class Emporio {
 
 	public getMinimumQuantity( productItem: ProductItem ): number {
 		const productFamily = this.productService.retrieveProductFamily( productItem.getProductFamilyName() );
-		return productFamily.getMinimumQuantity( productItem );
+		const minUnitsCollection = this.productService.retrieveMinimumUnitsCollection( productFamily.getMinimumUnitsCollectionName() );
+		const units = productFamily.calculateUnits( productItem );
+		const quantity = productItem.getAttribute<number>( "quantity" ) ?? 1;
+
+		return Math.ceil( minUnitsCollection.getValue( productItem ) / ( units / quantity ) );;
 	}
 
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {

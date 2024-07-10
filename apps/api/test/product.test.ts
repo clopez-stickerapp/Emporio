@@ -3,191 +3,95 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { Product } from "$/product/Product";
-import { ProductService } from "$/product/ProductService";
 
 class DummyProduct extends Product {
-	public getConditions(): Condition[]{
+	public getConditions(): Condition[] {
 		return Object.values(this.conditions.getConditions()) as Condition[];
 	}
 }
-let product: DummyProduct;
 
 describe("Product", () => {
+	let product: DummyProduct;
+	let attribute: ProductAttr;
+
 	beforeEach(() => {
-		service = new ProductService();
-		family = new DummyFamily("dummy", 10, service);
-		service.registerProductFamily(family);
-
-		family.addProduct("test-product", "sku123");
-
-		product = new DummyProduct(family, "test-product", "sku123");
-	});
-
-	test("conditions", () => {
-		expect(() => product.addCondition("foo", ConditionOperators.EQUAL, "bar")).not.toThrowError(Error);
-
-		expect(product.testAttributes({ foo: "bar" })).toBe(true);
-		expect(product.testAttributes({ foo: "baz" })).toBe(false);
+		product = new DummyProduct("someFamily", {
+			name: "test-product",
+			sku: "sku123",
+			available: true,
+		});
 	});
 
 	test("attributes", () => {
-		expect(product.isAttrRecommendedFor("foo")).toBe(false);
-		expect(product.getAttrMap()).toEqual({});
+		expect(product.isAttrRequired("foo")).toBe(false);
+		expect(product.getRequiredAttrs()).toEqual({});
 		expect(product.getAttrValue("foo")).toBeUndefined();
-		expect(() => product.canAttrBe("foo", "bar")).toThrowError(Error);
-		expect(product.canHaveAttr("foo")).toBe(false);
 
-		service.registerAttribute(new ProductAttr(ProductAttrValueType.STRING));
-		family.requireAttr("ProductAttr", "foo");
-		product.withAttrValue("foo", "bar");		
+		product.requireAttr(new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING }), "bar");
 
-		expect(product.isAttrRecommendedFor("foo")).toBe(true);
+		expect(product.isAttrRequired("foo")).toBe(true);
 		expect(product.getAttrValue("foo")).toBe("bar");
-		expect(product.canAttrBe("foo", "bar")).toBe(true);
-		expect(product.canAttrBe("foo", "baz")).toBe(false);
-		expect(product.canHaveAttr("foo")).toBe(true);
-		expect(product.canHaveAttr("baz")).toBe(false);
 
-		expect(product.getAttrMap()).toEqual({ foo: "bar" });
+		expect(product.getRequiredAttrs()).toEqual({ foo: "bar" });
 	});
 
-	describe("withAttrValue", () => {
+	describe("requireAttr", () => {
 		describe("non multivalue attribute", () => {
 			beforeEach(() => {
-				service.registerAttribute(new ProductAttr(ProductAttrValueType.STRING));
-				family.requireAttr("ProductAttr", "foo");
+				attribute = new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING });
 			});
 
-			test("required and strictly", () => {
-				product.withAttrValue("foo", "bar", true);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(true);
+			test("should add condition for non multivalue attribute", () => {
+				product.requireAttr(attribute, "bar");
 
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.EQUAL);
-				expect(product.getConditions()[0].conditionValue).toBe("bar");
-			});
+				const conditions = product.getConditions();
+				expect(conditions.length).toBe(1);
 
-			test("required and strictly with array value", () => {
-				product.withAttrValue("foo", ["bar", "baz"], true);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(true);
-
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.IN);
-				expect(product.getConditions()[0].conditionValue).toEqual(["bar", "baz"]);
-			});
-
-			test("required but not strictly", () => {
-				product.withAttrValue("foo", "bar", true, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.EQUAL);
-				expect(product.getConditions()[0].conditionValue).toBe("bar");
-			});
-
-			test("required but not strictly with array value", () => {
-				product.withAttrValue("foo", ["bar", "baz"], true, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.IN);
-				expect(product.getConditions()[0].conditionValue).toEqual(["bar", "baz"]);
-			});
-
-			test("not required", () => {
-				product.withAttrValue("foo", "bar", false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(0);
-			});
-
-			test("not required and not strictly", () => {
-				product.withAttrValue("foo", "bar", false, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(0);
+				const condition = conditions[0];
+				expect(condition.columnName).toBe("foo");
+				expect(condition.operator).toBe(ConditionOperators.EQUAL);
+				expect(condition.conditionValue).toBe("bar");
 			});
 		});
 
-		describe("multivalue attribute", () => {	
+		describe("multivalue attribute", () => {
 			beforeEach(() => {
-				service.registerAttribute(new ProductAttr(ProductAttrValueType.STRING, true));
-				family.requireAttr("ProductAttr", "foo");
+				attribute = new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING, multivalue: true });
 			});
 
-			test("required and strictly", () => {
-				product.withAttrValue("foo", "bar", true);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(true);
+			test("should add conditions for multivalue attribute", () => {
+				product.requireAttr(attribute, ["bar", "baz"]);
 
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.EQUAL);
-				expect(product.getConditions()[0].conditionValue).toEqual("bar");
-			});
+				const conditions = product.getConditions();
+				expect(conditions.length).toBe(2);
 
-			test("required and strictly with array value", () => {
-				product.withAttrValue("foo", ["bar", "baz"], true);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(true);
+				const condition1 = conditions[0];
+				expect(condition1.columnName).toBe("foo");
+				expect(condition1.operator).toBe(ConditionOperators.IN);
+				expect(condition1.conditionValue).toBe("bar");
 
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.EQUAL);
-				expect(product.getConditions()[0].conditionValue).toEqual(["bar", "baz"]);
-			});
-	
-			test("required but not strictly", () => {
-				product.withAttrValue("foo", "bar", true, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(1);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.IN);
-				expect(product.getConditions()[0].conditionValue).toEqual("bar");
-			});
-
-			test("required but not strictly with array value", () => {
-				product.withAttrValue("foo", ["bar", "baz"], true, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(2);
-				expect(product.getConditions()[0].columnName).toBe("foo");
-				expect(product.getConditions()[0].operator).toBe(ConditionOperators.IN);
-				expect(product.getConditions()[0].conditionValue).toEqual("bar");
-
-				expect(product.getConditions()[1].columnName).toBe("foo");
-				expect(product.getConditions()[1].operator).toBe(ConditionOperators.IN);
-				expect(product.getConditions()[1].conditionValue).toEqual("baz");
-			});
-	
-			test("not required", () => {
-				product.withAttrValue("foo", "bar", false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(0);
-			});
-
-			test("not required and not strictly", () => {
-				product.withAttrValue("foo", "bar", false, false);
-				expect(product.isAttrRecommendedFor("foo")).toBe(true);
-				expect(product.isAttrStrictlyRequiredFor("foo")).toBe(false);
-
-				expect(product.getConditions()).toHaveLength(0);
+				const condition2 = conditions[1];
+				expect(condition2.columnName).toBe("foo");
+				expect(condition2.operator).toBe(ConditionOperators.IN);
+				expect(condition2.conditionValue).toBe("baz");
 			});
 		});
+	});
+
+	test("testAttributes", () => {
+		const attributes = {
+			foo: "bar",
+			baz: "qux",
+		};
+
+		expect(product.testAttributes(attributes)).toBe(true);
+
+		product.requireAttr(new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING }), "bar");
+
+		expect(product.testAttributes(attributes)).toBe(true);
+
+		product.requireAttr(new ProductAttr({ name: "baz", type: ProductAttrValueType.STRING }), "fail");
+
+		expect(product.testAttributes(attributes)).toBe(false);
 	});
 });

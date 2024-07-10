@@ -1,7 +1,6 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
 import { AttributeValueMulti } from "./attribute/AttributeValue";

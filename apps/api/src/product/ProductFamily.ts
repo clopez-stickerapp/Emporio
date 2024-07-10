@@ -150,16 +150,8 @@ export class ProductFamily {
 		return this.productQuantityListCollectionName;
 	}
 
-	public validateUnits(productItem: ProductItem): void{
-		productItem.setUnits(this.calculateUnits(productItem));
-	}
-
 	public calculateUnits(productItem: ProductItem): number {
 		return this.unitType.calculateUnits(productItem);
-	}
-
-	public getMinimumQuantity(productItem: ProductItem): number {
-		return 1;
 	}
 
 	public canHaveAttr(attrName: string): boolean {

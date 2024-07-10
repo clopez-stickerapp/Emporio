@@ -55,7 +55,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
 					// Since this function calculates the rate per unit, we can't simply add the total
 					// specified in the rate. We have to divide it by the total amount of units.
-					breakdown[provider] = rate.getMinValue() / units;
+					breakdown[provider] = rate.getMinValue();
 				} else {
 					breakdown[provider] = resultRate;
 				}
@@ -72,7 +72,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
 					// Since this function calculates the rate per unit, we can't simply add the total
 					// specified in the rate. We have to divide it by the total amount of units.
-					breakdown[provider] = rate.getMinValue() / units;
+					breakdown[provider] = rate.getMinValue();
 				} else {
 					breakdown[provider] = resultRate;
 				}

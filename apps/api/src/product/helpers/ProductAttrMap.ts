@@ -53,7 +53,7 @@ export class ProductAttrMap {
 		let icons: Record<string, string> = {};
 
 		for ( const attrValue of attrValueOptions ) {
-			const conditionsBuilder = attrConstraint?.getConditionsFor( attrValue ) ?? null;
+			const conditionsBuilder = attrConstraint?.getConstraint( attrValue ) ?? null;
 
 			if ( typeof attrValue === 'string' ) {
 				const iconBuilder = attrAsset?.getWizardIcon( attrValue ) ?? null;

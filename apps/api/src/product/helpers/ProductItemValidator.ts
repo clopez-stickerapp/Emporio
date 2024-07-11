@@ -91,7 +91,7 @@ export class ProductItemValidator
 				{
 					const productAttrValue = attr.getAttrValue( attrValue );
 
-					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( productFamily.getConstraintsCollectionName() ).get( attrName )?.getConditionsFor( productAttrValue )?.testOnItem( item ) === false )
+					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( productFamily.getConstraintsCollectionName() ).get( attrName )?.getConstraint( productAttrValue )?.testOnItem( item ) === false )
 					{
 						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
 					}

@@ -1,4 +1,4 @@
-import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { FilterConfig } from "$/configuration/interface/FilterConfig";
 import { AttributeValueMulti } from "../AttributeValue";
 import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
@@ -22,15 +22,14 @@ export class ProductAttrFilter {
 		this.mode = config.mode;
 
 		for ( const rule of config.rules ) {
-			this.filters.push( new ProductAttrFilteredValues( rule.keys, rule.conditions ) );
+			this.addFilter( rule.keys, rule.conditions );
 		}
 	}
 
-	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {
-		throw new Error("Create filters this way is no longer supported.");
-		// let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
-		// this.filters.push( filter );
-		// return filter;
+	public addFilter( attrValues: AttributeValueMulti, config: ConditionBuilderConfig ): ProductAttrFilteredValues {
+		const filter = new ProductAttrFilteredValues( attrValues, config );
+		this.filters.push( filter );
+		return filter;
 	}
 
 	public getFilters(): ProductAttrFilteredValues[] {

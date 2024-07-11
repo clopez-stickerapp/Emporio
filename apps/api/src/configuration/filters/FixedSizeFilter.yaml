@@ -6,19 +6,19 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: reseller
+        - attribute: item.attributes.reseller
           operator: not_in
           value:
             - stickersthatstick
             - stickit
         - relationMode: or
           conditions:
-            - attribute: productName
+            - attribute: item.productName
               operator: in
               value:
                 - 3d_dome
                 - sheet_legacy
-            - attribute: laminate
+            - attribute: item.attributes.laminate
               operator: in
               value:
                 - epoxy

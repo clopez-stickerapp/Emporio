@@ -27,7 +27,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: true
 
@@ -36,7 +36,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet_legacy
 
@@ -45,10 +45,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: true
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet_legacy
 
@@ -60,7 +60,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: ===
           value: epoxy
         
@@ -72,10 +72,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: ===
           value: epoxy
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: true
         
@@ -91,13 +91,13 @@ rules:
       conditions:
         - relationMode: or
           conditions:
-            - attribute: material
+            - attribute: item.attributes.material
               operator: ===
               value: white_wall
-            - attribute: productName
+            - attribute: item.productName
               operator: ===
               value: wall
-            - attribute: productName
+            - attribute: item.productName
               operator: ===
               value: floor
 
@@ -113,18 +113,18 @@ rules:
       conditions:
         - relationMode: or
           conditions:
-            - attribute: material
+            - attribute: item.attributes.material
               operator: ===
               value: white_wall
-            - attribute: productName
+            - attribute: item.productName
               operator: ===
               value: wall
-            - attribute: productName
+            - attribute: item.productName
               operator: ===
               value: floor
         - relationMode: or
           conditions:
-            - attribute: imperial_units
+            - attribute: item.attributes.imperial_units
               operator: ===
               value: true
 
@@ -135,10 +135,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: true
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet
 
@@ -149,10 +149,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: false
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet
 
@@ -162,10 +162,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: true
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet_kiss_cut
 
@@ -175,9 +175,9 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: imperial_units
+        - attribute: item.attributes.imperial_units
           operator: ===
           value: false
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet_kiss_cut

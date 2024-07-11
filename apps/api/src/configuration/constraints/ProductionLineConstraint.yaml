@@ -5,13 +5,13 @@ rules:
     conditions:
       relationMode: AND
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: IN
           value: "{DigitalMaterials}"
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: IN
           value: "{DigitalLaminates}"
-        - attribute: feature
+        - attribute: item.attributes.feature
           operator: NOT_IN
           value:
             - "{ProductFeatures.BACKPAPER_PRINT}"
@@ -22,25 +22,25 @@ rules:
       relationMode: AND
       baseComplexityScore: 2
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: IN
           value: "{LaserMaterials}"
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: IN
           value: "{LaserLaminates}"
-        - attribute: width_mm
+        - attribute: item.attributes.width_mm
           operator: <=
           value: "{MaxSizes.ONE_SIDE_LASER}"
-        - attribute: height_mm
+        - attribute: item.attributes.height_mm
           operator: <=
           value: "{MaxSizes.ONE_SIDE_LASER}"
         - relationMode: OR
           baseComplexityScore: 1
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: "{MaxSizes.LASER}"
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: "{MaxSizes.LASER}"
 
@@ -49,6 +49,6 @@ rules:
     conditions:
       relationMode: AND
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: ===
           value: "{ProductionLines.SPECIAL}"

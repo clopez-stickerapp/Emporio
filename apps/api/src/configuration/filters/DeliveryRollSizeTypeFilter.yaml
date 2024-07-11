@@ -10,6 +10,6 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: delivery
+        - attribute: item.attributes.delivery
           operator: ===
           value: roll

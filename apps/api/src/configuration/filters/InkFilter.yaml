@@ -10,7 +10,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: in
           value:
             - glossy_no_uv

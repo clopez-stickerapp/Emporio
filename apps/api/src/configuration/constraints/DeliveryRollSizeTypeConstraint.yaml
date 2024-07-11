@@ -7,10 +7,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 30
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -18,10 +18,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 30
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -34,10 +34,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 33
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -45,10 +45,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 33
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -61,10 +61,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 54
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -72,10 +72,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 54
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -88,10 +88,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 68
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -99,10 +99,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 68
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -115,10 +115,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 91
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -126,10 +126,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 91
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -142,10 +142,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 138
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -153,10 +153,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 138
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"
@@ -169,10 +169,10 @@ rules:
       conditions:
         - relationMode: OR
           conditions:
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 278
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.TOP_FIRST}"
@@ -180,10 +180,10 @@ rules:
 
         - relationMode: OR
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 278
-            - attribute: cut_direction
+            - attribute: item.attributes.cut_direction
               operator: IN
               value:
                 - "{CutDirectionAttributeValues.LEFT_FIRST}"

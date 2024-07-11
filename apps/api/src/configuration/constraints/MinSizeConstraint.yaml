@@ -5,7 +5,7 @@ rules:
     conditions:
       relationMode: AND
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: IN
           value:
             - "{ProductNames.PRODUCT_WALL}"

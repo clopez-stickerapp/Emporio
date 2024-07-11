@@ -6,10 +6,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - glitter
@@ -25,10 +25,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - white
@@ -41,10 +41,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - holographic
@@ -55,10 +55,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - mirror
@@ -71,7 +71,7 @@ rules:
       relationMode: or
       baseComplexityScore: 100
       conditions:
-        - attribute: ink
+        - attribute: item.attributes.ink
           operator: in
           value:
             - invisible_ink
@@ -82,10 +82,10 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - white_hi_tack
@@ -95,12 +95,12 @@ rules:
     conditions:
       relationMode: or
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - transfer_decal
             - wall
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - kraft_paper
@@ -116,10 +116,10 @@ rules:
       conditions:
         - relationMode: or
           conditions:
-            - attribute: productName
+            - attribute: item.productName
               operator: ===
               value: floor
-            - attribute: material
+            - attribute: item.attributes.material
               operator: ===
               value: skin
 
@@ -128,7 +128,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-      - attribute: productName
+      - attribute: item.productName
         operator: ===
         value: 3d_dome
 
@@ -138,7 +138,7 @@ rules:
       relationMode: and
       baseComplexityScore: 1000
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_sheet
@@ -151,7 +151,7 @@ rules:
       relationMode: and
       baseComplexityScore: 1000
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_roll
@@ -162,10 +162,10 @@ rules:
       relationMode: and
       baseComplexityScore: 1001
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: ===
           value: kraft_thin
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_roll
@@ -175,10 +175,10 @@ rules:
     conditions:
       relationMode: or
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: ===
           value: colored_vinyl
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: sheet_legacy
 
@@ -188,7 +188,7 @@ rules:
       relationMode: and
       baseComplexityScore: 1000
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: transfer_decal
 
@@ -200,15 +200,15 @@ rules:
       relationMode: and
       baseComplexityScore: 120
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: 3d_dome
-        - attribute: reseller
+        - attribute: item.attributes.reseller
           operator: in
           value:
             - stickersthatstick
             - stickit
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - white_hi_tack

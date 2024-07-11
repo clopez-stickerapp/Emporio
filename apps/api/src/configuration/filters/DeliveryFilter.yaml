@@ -6,7 +6,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - transfer_decal
@@ -17,7 +17,7 @@ rules:
     conditions:
       relationMode: and
       conditions:  
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - sheet

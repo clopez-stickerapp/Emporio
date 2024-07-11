@@ -15,9 +15,9 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: reseller
+        - attribute: item.attributes.reseller
           operator: ===
           value: stickerapp
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: ===
           value: epoxy

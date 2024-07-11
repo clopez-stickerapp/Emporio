@@ -8,14 +8,14 @@ rules:
       conditions:
         - relationMode: or
           conditions:
-            - attribute: material
+            - attribute: item.attributes.material
               operator: in
               value:
                 - clear
                 - mirror
                 - brushed_alloy
                 - white_removable
-            - attribute: productName
+            - attribute: item.productName
               operator: in
               value:
                 - sheet
@@ -26,7 +26,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - sheet_legacy
@@ -36,7 +36,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_roll

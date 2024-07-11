@@ -5,7 +5,7 @@ rules:
     conditions:
       relationMode: AND
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: IN
           value:
             - "{MaterialValues.COLORED_VINYL}"

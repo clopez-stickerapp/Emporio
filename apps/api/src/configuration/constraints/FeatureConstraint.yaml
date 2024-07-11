@@ -5,7 +5,7 @@ rules:
     conditions:
       relationMode: AND
       conditions:
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: NOT_IN
           value:
             - "{LaminateValues.EPOXY}"
@@ -15,7 +15,7 @@ rules:
     conditions:
         relationMode: OR
         conditions:
-          - attribute: material
+          - attribute: item.attributes.material
             operator: IN
             value: "{LaserMaterials}"
 
@@ -24,7 +24,7 @@ rules:
     conditions:
         relationMode: AND
         conditions:
-          - attribute: material
+          - attribute: item.attributes.material
             operator: IN
             value: "{EffectLayerMaterials}"
 
@@ -33,6 +33,6 @@ rules:
     conditions:
         relationMode: AND
         conditions:
-          - attribute: production_line
+          - attribute: item.attributes.production_line
             operator: ===
             value: "{ProductionLines.DIGITAL}"

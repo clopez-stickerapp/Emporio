@@ -17,7 +17,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - sheet_legacy
@@ -40,7 +40,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - die_cut
@@ -61,7 +61,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - hang_tag
@@ -71,7 +71,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - 3d_dome
@@ -81,7 +81,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - front_adhesive
@@ -91,7 +91,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - heavy_duty
@@ -101,7 +101,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - removable
@@ -111,7 +111,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - wall
@@ -121,7 +121,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - floor
@@ -132,7 +132,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_sheet
@@ -145,7 +145,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_roll
@@ -155,7 +155,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - window
@@ -171,7 +171,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: ===
           value: transfer_decal
 
@@ -193,12 +193,12 @@ rules:
       relationMode: and
       baseComplexityScore: 120
       conditions:
-        - attribute: reseller
+        - attribute: item.attributes.reseller
           operator: in
           value:
             - stickersthatstick
             - stickit
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - die_cut

@@ -6,7 +6,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - labels_on_roll
@@ -16,7 +16,7 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - wall

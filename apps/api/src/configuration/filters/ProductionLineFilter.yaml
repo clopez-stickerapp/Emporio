@@ -7,7 +7,7 @@ rules:
       relationMode: and
       baseComplexityScore: 120
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - sheet
@@ -21,27 +21,27 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: in
           value:
             - white
             - white_removable
             - clear
-        - attribute: productName
+        - attribute: item.productName
           operator: "!=="
           value: library_design
-        - attribute: width_mm
+        - attribute: item.attributes.width_mm
           operator: <=
           value: 800
-        - attribute: height_mm
+        - attribute: item.attributes.height_mm
           operator: <=
           value: 800
         - relationMode: or
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 275
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 275
 
@@ -50,15 +50,15 @@ rules:
     conditions:
       relationMode: or
       conditions:
-        - attribute: productName
+        - attribute: item.productName
           operator: in
           value:
             - transfer_decal
         - relationMode: and
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: ">"
               value: 275
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: ">"
               value: 275

@@ -18,7 +18,7 @@ rules:
       conditions:
         - relationMode: and
           conditions:
-            - attribute: material
+            - attribute: item.attributes.material
               operator: in
               value:
                 - white
@@ -26,22 +26,22 @@ rules:
                 - mirror
                 - clear
                 - pixie_dust
-            - attribute: laminate
+            - attribute: item.attributes.laminate
               operator: in
               value:
                 - glossy_uv
                 - soft_touch,
                 - satin_matte
-            - attribute: productName
+            - attribute: item.productName
               operator: not_in
               value:
                 - library_design
         - relationMode: and
           conditions:
-            - attribute: width_mm
+            - attribute: item.attributes.width_mm
               operator: <=
               value: 270
-            - attribute: height_mm
+            - attribute: item.attributes.height_mm
               operator: <=
               value: 270
 
@@ -50,9 +50,9 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: material
+        - attribute: item.attributes.material
           operator: is_empty
-        - attribute: laminate
+        - attribute: item.attributes.laminate
           operator: is_empty
 
   - keys:
@@ -60,9 +60,9 @@ rules:
     conditions:
       relationMode: and
       conditions:
-        - attribute: delivery_sheet_width
+        - attribute: item.attributes.delivery_sheet_width
           operator: <=
           value: 1130
-        - attribute: delivery_sheet_height
+        - attribute: item.attributes.delivery_sheet_height
           operator: <=
           value: 1130

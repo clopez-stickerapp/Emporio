@@ -6,6 +6,6 @@ export interface ProductConfig extends NamedConfig{
 	sku: string;
 	attributes?: Record<string, ConditionValue>;
 	overrides?: ProductSettings;
-	available: boolean;
+	available?: boolean;
 	status?: string;
 };

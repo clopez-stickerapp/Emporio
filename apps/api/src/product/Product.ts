@@ -20,7 +20,7 @@ export class Product {
 		this.name = config.name;
 		this.conditions = new ConditionBuilder();
 		this.status = config.status;
-		this.available = config.available;
+		this.available = config.available ?? true;
 		this.sku = config.sku;
 	}
 

@@ -12,9 +12,7 @@ export class ProductAttrConstraint {
 
 		for ( const rule of config.rules ) {
 			for ( const key of rule.keys ) {
-
-				console.debug( `Creating constraints for ${ this.attributeName } - ${ key }` );
-				this.constraints[ key ] = new ProductConditionBuilder( rule.conditions );
+				this.addConstraint( key, rule.conditions );
 			}
 		}
 	}

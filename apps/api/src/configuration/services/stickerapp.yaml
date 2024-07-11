@@ -4,7 +4,7 @@ pricing_models:
 #   - promo
 #   - fee
 families:
-  - sticker-custom
+  - custom_sticker
 #   - promo
 #   - fee
 collections:

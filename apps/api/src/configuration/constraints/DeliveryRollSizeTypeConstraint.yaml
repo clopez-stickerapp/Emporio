@@ -8,7 +8,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 30
             - attribute: cut_direction
               operator: IN
@@ -19,7 +19,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 30
             - attribute: cut_direction
               operator: IN
@@ -35,7 +35,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 33
             - attribute: cut_direction
               operator: IN
@@ -46,7 +46,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 33
             - attribute: cut_direction
               operator: IN
@@ -62,7 +62,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 54
             - attribute: cut_direction
               operator: IN
@@ -73,7 +73,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 54
             - attribute: cut_direction
               operator: IN
@@ -89,7 +89,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 68
             - attribute: cut_direction
               operator: IN
@@ -100,7 +100,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 68
             - attribute: cut_direction
               operator: IN
@@ -116,7 +116,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 91
             - attribute: cut_direction
               operator: IN
@@ -127,7 +127,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 91
             - attribute: cut_direction
               operator: IN
@@ -143,7 +143,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 138
             - attribute: cut_direction
               operator: IN
@@ -154,7 +154,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 138
             - attribute: cut_direction
               operator: IN
@@ -170,7 +170,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 278
             - attribute: cut_direction
               operator: IN
@@ -181,7 +181,7 @@ rules:
         - relationMode: OR
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: 278
             - attribute: cut_direction
               operator: IN

@@ -34,5 +34,5 @@ rules:
         relationMode: AND
         conditions:
           - attribute: production_line
-            operator: EQUAL
+            operator: ===
             value: "{ProductionLines.DIGITAL}"

@@ -17,7 +17,7 @@ rules:
       relationMode: OR
       conditions:
         - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
+          operator: <=
           value: '{MaxSizeOtherSideValues.ROLL}'
         - attribute: productName
           operator: NOT_IN
@@ -31,7 +31,7 @@ rules:
       relationMode: OR
       conditions:
         - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
+          operator: <=
           value: '{MaxSizeOtherSideValues.ROLL}'
         - attribute: productName
           operator: NOT_IN

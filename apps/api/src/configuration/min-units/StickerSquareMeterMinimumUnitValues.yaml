@@ -24,7 +24,7 @@ rules:
           operator: IN
           value: [stickersthatstick, stickit]
         - attribute: material
-          operator: EQUAL
+          operator: ===
           value: white_thin
   - keys: 0.1090
     conditions:

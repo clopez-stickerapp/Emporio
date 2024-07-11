@@ -29,19 +29,19 @@ rules:
           operator: IN
           value: "{LaserLaminates}"
         - attribute: width_mm
-          operator: LESS_THAN_OR_EQUAL
+          operator: <=
           value: "{MaxSizes.ONE_SIDE_LASER}"
         - attribute: height_mm
-          operator: LESS_THAN_OR_EQUAL
+          operator: <=
           value: "{MaxSizes.ONE_SIDE_LASER}"
         - relationMode: OR
           baseComplexityScore: 1
           conditions:
             - attribute: width_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: "{MaxSizes.LASER}"
             - attribute: height_mm
-              operator: LESS_THAN_OR_EQUAL
+              operator: <=
               value: "{MaxSizes.LASER}"
 
   - keys:
@@ -50,5 +50,5 @@ rules:
       relationMode: AND
       conditions:
         - attribute: material
-          operator: EQUAL
+          operator: ===
           value: "{ProductionLines.SPECIAL}"

@@ -1,7 +1,6 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
-import { ResellerAttribute } from "../Attribute/ResellerAttribute";
 import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
 import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
 import { CustomStickerFamily } from "../Family/CustomStickerFamily";
@@ -10,18 +9,10 @@ export class StickerSquareMeterMinimumUnitValues extends ProductDynamicValue {
 	public constructor() {
 		super(0.1407);
 
-		// Special for StickersThatStick
-		this.addConditionedValue(0.77)
-			.conditionBuilder.setBaseComplexityScore(120).addCondition("item.attributes.reseller", ConditionOperators.IN, [ResellerAttribute.VALUE_STICKERSTHATSTICK]);
-
-		this.addConditionedValue(1.8)
-			.conditionBuilder.setBaseComplexityScore(120).addCondition("item.attributes.reseller", ConditionOperators.IN, [ResellerAttribute.VALUE_STICKIT]);
-
-		this.addConditionedValue(5)
+		this.addConditionedValue(0.5)
 			.conditionBuilder
 			.setBaseComplexityScore(120)
-			.addCondition("item.attributes.reseller", ConditionOperators.IN, [ResellerAttribute.VALUE_STICKERSTHATSTICK, ResellerAttribute.VALUE_STICKIT])
-			.addCondition("item.attributes.material", ConditionOperators.EQUAL, MaterialAttribute.WHITE_THIN);
+			.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_ROLL);
 
 		// Material specifics, for all
 		this.addConditionedValue(0.1090)

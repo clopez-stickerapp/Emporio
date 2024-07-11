@@ -190,7 +190,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 		rl_labels_on_sheets.addRate(new Rate(-20, true), 1)
 			.addRate(new Rate(-30, true), 20)
 			.addRate(new Rate(-31.25, true), 100)
-			.conditions.addCondition("item.productName", ConditionOperators.EQUAL, CustomStickerFamily.PRODUCT_LABELS_ON_SHEET);
+			.conditions.addCondition("item.productName", ConditionOperators.IN, [CustomStickerFamily.PRODUCT_LABELS_ON_SHEET, CustomStickerFamily.PRODUCT_LABELS_ON_ROLL]);
 		this.addRateProvider(rl_labels_on_sheets);
 
 		let rl_backprint = new RateList(StickerPriceProvider.RATELIST_BACKPRINT, new Rate(25, true, 1100));
@@ -214,7 +214,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(1600), 250)
 			.addRate(new Rate(1500), 500)
 			.conditions
-			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_THIN, MaterialAttribute.WHITE_PAPER]);
+			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_PAPER]);
 		this.addRateProvider(rl_thin);
 
 		let rl_reflective = new RateList(StickerPriceProvider.RATELIST_REFLECTIVE, new Rate(16900));
@@ -231,16 +231,18 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.REFLECTIVE, MaterialAttribute.FLUORESCENT, MaterialAttribute.MAGNETIC, MaterialAttribute.HEAT_TRANSFER]);
 		this.addRateProvider(rl_reflective);
 
-		let rl_coverall = new RateList(StickerPriceProvider.RATELIST_COVERALL, new Rate(25000));
-		rl_coverall.addRate(new Rate(20000), 1)
-			.addRate(new Rate(15000), 2)
-			.addRate(new Rate(12000), 5)
-			.addRate(new Rate(10000), 6)
-			.addRate(new Rate(9600), 10)
-			.addRate(new Rate(8600), 13)
-			.addRate(new Rate(8200), 15)
-			.addRate(new Rate(7000), 20)
-			.addRate(new Rate(6200), 50)
+		let rl_coverall = new RateList(StickerPriceProvider.RATELIST_COVERALL, new Rate(35000));
+		rl_coverall.addRate(new Rate(32500), 0.5)
+			.addRate(new Rate(30000), 1)
+			.addRate(new Rate(28000), 2)
+			.addRate(new Rate(26000), 3)
+			.addRate(new Rate(25000), 4)
+			.addRate(new Rate(23000), 5)
+			.addRate(new Rate(20000), 10)
+			.addRate(new Rate(17000), 20)
+			.addRate(new Rate(16000), 30)
+			.addRate(new Rate(15000), 50)
+			.addRate(new Rate(10000), 100)
 			.conditions
 			.addCondition("item.attributes.material", ConditionOperators.IN, [MaterialAttribute.WHITE_COVERALL]);
 		this.addRateProvider(rl_coverall);

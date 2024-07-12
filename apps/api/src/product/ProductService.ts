@@ -139,11 +139,11 @@ export class ProductService {
 	}
 
 	public getAttributes(): ProductAttr[] {
-		return Array.from(Object.values(this.attributes));
+		return Object.values(this.attributes);
 	}
 
 	public getProductFamilies(): ProductFamily[] {
-		return Array.from(Object.values(this.productFamilies));
+		return Object.values(this.productFamilies);
 	}
 
 	public findProduct(productFamilyName: string, productName: string): Product{

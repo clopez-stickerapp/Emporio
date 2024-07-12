@@ -48,7 +48,7 @@ export class ProductAttrMap {
 		const attrConstraint   = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() ).get( attrName );
 		const attrFilter 	   = this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() ).get( attrName );
 		const attrAsset		   = this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() ).get( attrName );
-		const attrValueOptions = this.ps.getAllAttributeValueOptionsForProduct( this.product, attrName );
+		const attrValueOptions = family.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};
 

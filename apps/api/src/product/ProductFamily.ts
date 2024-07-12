@@ -5,6 +5,7 @@ import { ProductAttr } from "./attribute/ProductAttr";
 import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
 import { UnitType } from "./unit-type/UnitType";
 import { ProductConfig } from "$/configuration/interface/ProductConfig";
+import { AttributeValueMulti } from "./attribute/AttributeValue";
 
 export class ProductFamily {
 	protected name: string;
@@ -160,5 +161,56 @@ export class ProductFamily {
 		}
 
 		return false;
+	}
+
+	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
+	{
+		const attribute = this.getAttribute( attrAlias );
+		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
+
+		if ( !product.isAttrRequired( attrAlias ) ) 
+		{
+			for ( const attrValue of attribute.getValues() ) 
+			{
+				if ( !attrValues.includes( attrValue ) ) 
+				{
+					attrValues.push( attrValue );
+				}
+			}
+		}
+
+		return attrValues;
+	}
+
+	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
+	{
+		const attrValues: AttributeValueMulti = [];
+		const attribute = this.getAttribute( attrAlias );
+
+		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
+
+		if ( !Array.isArray( withAttrValues ) ) 
+		{
+			withAttrValues = [ withAttrValues ]
+		}
+
+		for ( const attrRawValue of withAttrValues ) 
+		{
+			if ( attribute.isDynamicValue() ) 
+			{
+				attrValues.push( attrRawValue );
+			} 
+			else 
+			{
+				const attrValue = attribute.getAttrValue( attrRawValue );
+				
+				if ( attrValue ) 
+				{
+					attrValues.push( attrValue );
+				}
+			}
+		}
+
+		return attrValues;
 	}
 }

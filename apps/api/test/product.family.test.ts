@@ -71,4 +71,52 @@ describe("ProductFamily", () => {
 
 		expect(family.getAttributes()).toEqual({ foo: attrFoo, bar: attrBar });
 	});
+
+	test("getAllAttributeValueOptionsForProduct", () => {
+		let family = new ProductFamily({ name: "foo", products: [], rules: {
+			collections:{
+				asset: "",
+				constraint: "",
+				filter: "",
+				min_units: "",
+				price_provider: "",
+				quantity_provider: ""
+			}
+		}, unitType: UnitTypeNames.PerPiece});
+
+		family.addProduct({
+			name: "bar",
+			sku: "baz",
+			available: true,
+			status: "active"
+		});
+
+		family.requireAttr("foo", new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING, values: ["bar", "baz"] }));
+
+		expect(family.getAllAttributeValueOptionsForProduct(family.getProduct("bar"), "foo")).toEqual(["bar", "baz"]);
+	});
+
+	test("getDefaultAttributeValueOptionsForProduct", () => {
+		let family = new ProductFamily({ name: "foo", products: [], rules: {
+			collections:{
+				asset: "",
+				constraint: "",
+				filter: "",
+				min_units: "",
+				price_provider: "",
+				quantity_provider: ""
+			}
+		}, unitType: UnitTypeNames.PerPiece});
+
+		family.addProduct({
+			name: "bar",
+			sku: "baz",
+			available: true,
+			status: "active"
+		});
+
+		family.requireAttr("foo", new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING }));
+
+		expect(family.getDefaultAttributeValueOptionsForProduct(family.getProduct("bar"), "foo")).toEqual([]);
+	});
 });

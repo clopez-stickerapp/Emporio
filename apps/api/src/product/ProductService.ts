@@ -3,7 +3,6 @@ import { ProductQuantityListCollection } from "../prices/ProductQuantityListColl
 import { ProductAttr } from "./attribute/ProductAttr";
 import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
-import { AttributeValueMulti } from "./attribute/AttributeValue";
 import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
@@ -153,56 +152,5 @@ export class ProductService {
 		} else {
 			throw new Error("Product family not found with name " + productFamilyName);
 		}
-	}
-
-	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
-	{
-		const attribute = this.retrieveProductFamily( product.getProductFamilyName()).getAttribute( attrAlias );
-		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
-
-		if ( !product.isAttrRequired( attrAlias ) ) 
-		{
-			for ( const attrValue of attribute.getValues() ) 
-			{
-				if ( !attrValues.includes( attrValue ) ) 
-				{
-					attrValues.push( attrValue );
-				}
-			}
-		}
-
-		return attrValues;
-	}
-
-	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
-	{
-		const attrValues: AttributeValueMulti = [];
-		const attribute = this.retrieveProductFamily( product.getProductFamilyName()).getAttribute( attrAlias );
-
-		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
-
-		if ( !Array.isArray( withAttrValues ) ) 
-		{
-			withAttrValues = [ withAttrValues ]
-		}
-
-		for ( const attrRawValue of withAttrValues ) 
-		{
-			if ( attribute.isDynamicValue() ) 
-			{
-				attrValues.push( attrRawValue );
-			} 
-			else 
-			{
-				const attrValue = attribute.getAttrValue( attrRawValue );
-				
-				if ( attrValue ) 
-				{
-					attrValues.push( attrValue );
-				}
-			}
-		}
-
-		return attrValues;
 	}
 }

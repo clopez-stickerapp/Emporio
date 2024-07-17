@@ -37,7 +37,7 @@ const vatRates: Record<string, number> = {
 	"cz": 21, // Czech Republic
 	"de": 19, // Germany
 	"dk": 25, // Denmark
-	"ee": 20, // Estonia
+	"ee": 22, // Estonia
 	"es": 21, // Spain
 	"fi": 24, // Finland
 	"fr": 20, // France

@@ -1,4 +1,4 @@
-name: LaminateFilter
+name: laminate
 mode: highest_score_wins
 rules:
   - keys:

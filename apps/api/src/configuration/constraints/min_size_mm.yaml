@@ -1,4 +1,4 @@
-name: MinSizeConstraint
+name: min_size_mm
 rules:
   - keys:
       - BIGGER

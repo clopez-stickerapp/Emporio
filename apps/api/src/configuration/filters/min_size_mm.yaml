@@ -1,4 +1,4 @@
-name: MinSizeFilter
+name: min_size_mm
 mode: highest_score_wins
 rules:
   - keys:

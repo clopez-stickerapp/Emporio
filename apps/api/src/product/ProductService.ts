@@ -7,6 +7,7 @@ import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -22,7 +23,11 @@ export class ProductService {
 	/**
 	 * Collections are used to store a set of values, such as filters and constraints.
 	 */
-	protected collections: Record<string, Collection<any>> = {};
+	public collections: Record<CollectionType, Record<string, Collection<any>>> = {
+		filter: {},
+		constraint: {},
+		asset: {}
+	};
 
 	/**
 	 * Quantity lists are used to tell the product service which quantity lists are available.
@@ -43,19 +48,29 @@ export class ProductService {
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
 
 	public registerCollection(collection: Collection<any>): void {
-		if (this.collections[collection.getCollectionName()]) {
+		const type = collection.getType();
+
+		if (!this.collections[type]) {
+			throw new Error("Collection type not found with name " + type);
+		}
+
+		if (this.collections[type][collection.getCollectionName()]) {
 			throw new Error("Collection already exists with name " + collection.getCollectionName());
 		}
 
-		this.collections[collection.getCollectionName()] = collection;
+		this.collections[type][collection.getCollectionName()] = collection
 	}
 
-	public retrieveCollection<T extends CollectionItem>(collectionName: string): Collection<T> {
-		if (!this.collections[collectionName]) {
+	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> {
+		if (!this.collections[type]) {
+			throw new Error("Collection type not found with name " + type);
+		}
+
+		if (!this.collections[type][collectionName]) {
 			throw new Error("Collection not found with name " + collectionName);
 		}
 
-		return this.collections[collectionName];	
+		return this.collections[type][collectionName] as Collection<T>;
 	}
 
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {

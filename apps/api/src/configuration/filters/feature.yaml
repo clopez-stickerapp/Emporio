@@ -1,4 +1,4 @@
-name: FeatureFilter
+name: feature
 mode: merge_all_winners
 rules:
   - keys:

@@ -1,4 +1,4 @@
-name: MaterialFilter
+name: material
 mode: highest_score_wins
 rules:
   - keys:

@@ -1,24 +1,22 @@
-name: DeliveryFilter
+name: max_size_other_side_mm
 mode: highest_score_wins
 rules:
   - keys:
-      - sheet
+      - 275
     conditions:
       relationMode: and
       conditions:
         - attribute: item.productName
           operator: in
           value:
-            - transfer_decal
-            - 3d_dome
+            - labels_on_roll
 
   - keys:
-      - single
+      - 1100
     conditions:
       relationMode: and
-      conditions:  
+      conditions:
         - attribute: item.productName
           operator: in
           value:
-            - sheet
-            - sheet_kiss_cut
+            - wall

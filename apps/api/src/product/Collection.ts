@@ -1,4 +1,4 @@
-import { CollectionConfig } from "$/configuration/interface/CollectionConfig";
+import { CollectionConfig, CollectionType } from "$/configuration/interface/CollectionConfig";
 
 export type CollectionItem = { 
 	getAttributeName(): string 
@@ -6,10 +6,12 @@ export type CollectionItem = {
 
 export class Collection<T extends CollectionItem> {
 	protected name: string;
+	protected type: CollectionType;
 	protected values: Record<string, T> = {};
 
 	public constructor( config: CollectionConfig ) {
 		this.name = config.name;
+		this.type = config.type;
 	}
 
 	public add( value: T ): T {
@@ -30,5 +32,9 @@ export class Collection<T extends CollectionItem> {
 
 	public getCollectionName(): string {
 		return this.name;
+	}
+
+	public getType(): CollectionType {
+		return this.type;
 	}
 }

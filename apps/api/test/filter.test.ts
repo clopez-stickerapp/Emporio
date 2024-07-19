@@ -1,5 +1,6 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { MaterialAttribute } from "$/configuration/attributes/MaterialAttribute";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { Collection } from "$/product/Collection";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
 import { ProductAttrFilterMode } from "$/product/attribute/Filter/ProductAttrFilterMode";
@@ -10,7 +11,7 @@ describe( 'Filter', () => {
 	let filter: ProductAttrFilter;
 
 	beforeEach( () => {
-		collection = new Collection( { name: 'stickers', values: [] } );
+		collection = new Collection( { name: 'stickers', values: [], type: CollectionType.Filter } );
 		
 		filter = new ProductAttrFilter( {
 			name: 'test',

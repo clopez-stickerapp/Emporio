@@ -1,4 +1,4 @@
-name: DeliveryRollSizeTypeFilter
+name: delivery_roll_size_type
 mode: highest_score_wins
 rules:
   - keys:

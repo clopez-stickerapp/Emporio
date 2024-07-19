@@ -1,3 +1,4 @@
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection } from "$/product/Collection";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
@@ -31,7 +32,8 @@ PizzeriaService.registerMinimumUnitsCollection( new MinimumUnitsCollection( {
 
 PizzeriaService.registerCollection( new Collection<ProductAttrAsset>( {
 	name: 'asset',
-	values: []
+	values: [],
+	type: CollectionType.Asset
 } ) );
 
 export default PizzeriaService;

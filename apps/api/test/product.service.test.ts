@@ -1,3 +1,4 @@
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
@@ -16,15 +17,19 @@ let service: ProductService;
 
 describe("ProductService", () => {
 	beforeEach(() => {
-		service = new ProductService({name: "test", collections: []});
+		service = new ProductService({name: "test", collections: {
+			constraint: "", 
+			asset: "",
+			filter: ""
+		}});
 	});
 
 	test("collection", () => {
-		expect(() => service.retrieveCollection("foo")).toThrowError(Error);
+		expect(() => service.retrieveCollection(CollectionType.Filter, "foo")).toThrowError(Error);
 	
-		service.registerCollection(new Collection({name: "foo", values: []}));
+		service.registerCollection(new Collection({name: "foo", values: [], type: CollectionType.Filter}));
 		
-		expect(service.retrieveCollection("foo")).toBeDefined();
+		expect(service.retrieveCollection(CollectionType.Filter, "foo")).toBeDefined();
 	});
 
 	test("register and retrieve attributes", () => {

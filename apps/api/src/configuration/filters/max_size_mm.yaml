@@ -1,4 +1,4 @@
-name: MaxSizeFilter
+name: max_size_mm
 mode: highest_score_wins
 rules:
   - keys:

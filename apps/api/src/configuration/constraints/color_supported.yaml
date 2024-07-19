@@ -1,4 +1,4 @@
-name: ColorSupportedConstraint
+name: color_supported
 rules:
   - keys:
       - true

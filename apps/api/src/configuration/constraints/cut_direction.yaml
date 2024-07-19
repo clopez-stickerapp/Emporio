@@ -1,4 +1,4 @@
-name: CutDirectionConstraint
+name: cut_direction
 rules:
   - keys:
       - AUTO

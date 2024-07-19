@@ -20,6 +20,7 @@ import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
+import { CollectionType } from "./configuration/interface/CollectionConfig";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -230,7 +231,7 @@ export class Emporio {
 			return false;
 		}
 
-		const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>( productFamily.getAssetCollectionName() );
+		const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() );
 
 		for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) {
 			const values = Array.isArray( attrValue ) ? attrValue : [ attrValue ];

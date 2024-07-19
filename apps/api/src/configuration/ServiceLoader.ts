@@ -21,7 +21,7 @@ import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { Collection } from "$/product/Collection";
-import { CollectionConfig } from "./interface/CollectionConfig";
+import { CollectionConfig, CollectionType } from "./interface/CollectionConfig";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
 import { AssetConfig } from "./interface/AssetConfig";
 import { FilterConfig } from "./interface/FilterConfig";
@@ -237,17 +237,22 @@ class ServiceLoader {
 
 	protected registerCollections(): void {
 		console.debug( "Registering collections..." );
-		const collectionValues = { ...this.constraints, ...this.filters, ...this.assets };
+		const collectionValues: Record<CollectionType, any> = { 
+			[CollectionType.Constraint]: this.constraints, 
+			[CollectionType.Filter]: this.filters,
+			[CollectionType.Asset]: this.assets,
+		};
 
 		for ( const config of Object.values( this.collectionConfigs ) ) {
 			for ( const value of config.values ) {
-				this.collections[ config.name ].add( collectionValues[ value ] );
+				console.log( `Adding ${config.type} for '${value}' attribute to collection '${config.name}'...` );
+				this.collections[ config.name ].add( collectionValues[ config.type ][value]  );
 			}
 		}
 
 		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
-			for (const collection of serviceConfig.collections ) {
-				console.debug( `Registering collection '${ collection }' for service '${ serviceName }'...` );
+			for (const [type, collection] of Object.entries(serviceConfig.collections)) {
+				console.debug( `Registering collection '${collection}' of type '${type}' for service '${serviceName}'...` );
 				this.services[ serviceName ].registerCollection( this.collections[ collection ] );
 			}
 		}

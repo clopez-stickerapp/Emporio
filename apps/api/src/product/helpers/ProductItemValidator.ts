@@ -8,6 +8,7 @@ import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItem
 import { isEmpty } from "../../../Util";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 
 export class ProductItemValidator 
 {
@@ -48,10 +49,10 @@ export class ProductItemValidator
 
 		if ( !product.testAttributes( item.getAttributes() ) ) 
 		{
-			throw new ProductItemInvalidException( "Attributes doesn't match product recipe." );
+			throw new ProductItemInvalidException( "Attributes don't match product recipe." );
 		}
 
-		const assets = this.ps.retrieveCollection<ProductAttrAsset>( productFamily.getAssetCollectionName() ).getAll();
+		const assets = this.ps.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() ).getAll();
 
 		for ( let [ attrName, value ] of Object.entries( item.getAttributes() ) ) 
 		{
@@ -91,7 +92,7 @@ export class ProductItemValidator
 				{
 					const productAttrValue = attr.getAttrValue( attrValue );
 
-					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( productFamily.getConstraintsCollectionName() ).get( attrName )?.getConstraint( productAttrValue )?.testOnItem( item ) === false )
+					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, productFamily.getConstraintsCollectionName() ).get( attrName )?.getConstraint( productAttrValue )?.testOnItem( item ) === false )
 					{
 						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
 					}

@@ -1,3 +1,4 @@
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { Collection } from "$/product/Collection";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
 import { beforeEach, describe, expect, test } from "vitest";
@@ -27,7 +28,8 @@ describe( "Asset", () => {
 
 		collection = new Collection( {
 			name: 'assets',
-			values: [ 'asset-1', 'asset-2' ]
+			values: [ 'asset-1', 'asset-2' ],
+			type: CollectionType.Asset
 		} );
 
 		collection.add( asset );

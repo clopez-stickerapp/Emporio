@@ -1,4 +1,4 @@
-name: ProductionLineFilter
+name: production_line
 mode: highest_score_wins
 rules:
   - keys:

@@ -1,4 +1,4 @@
-name: ProductionLineConstraint
+name: production_line
 rules:
   - keys:
       - DIGITAL

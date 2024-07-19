@@ -1,4 +1,4 @@
-name: FeatureConstraint
+name: feature
 rules:
   - keys:
       - HANGTAGGING

@@ -1,16 +1,16 @@
-name: SheetNameFilter
+name: sheet_name
 mode: highest_score_wins
 rules:
   - keys:
-      - contour
-      - rectangle
-      - round
+      - path
+      - rect
+      - circle
       - rounded
     conditions:
       conditions: []
 
   - keys:
-      - round
+      - circle
       - rounded
     conditions:
       relationMode: and

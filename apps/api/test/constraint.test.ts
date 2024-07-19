@@ -1,5 +1,6 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { MaterialAttribute } from "$/configuration/attributes/MaterialAttribute";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { Collection } from "$/product/Collection";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
@@ -10,7 +11,7 @@ describe( 'Constraint', () => {
 	let constraint: ProductAttrConstraint;
 	
 	beforeEach( () => {
-		collection = new Collection( { name: 'stickers', values: [] } );
+		collection = new Collection( { name: 'stickers', values: [], type: CollectionType.Constraint } );
 
 		constraint = new ProductAttrConstraint( {
 			name: 'test',

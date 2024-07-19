@@ -1,4 +1,4 @@
-name: DeliveryRollSizeTypeConstraint
+name: delivery_roll_size_type
 rules:
   - keys:
       - MIN

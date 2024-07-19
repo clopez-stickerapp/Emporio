@@ -1,3 +1,4 @@
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { Collection } from "$/product/Collection";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { CrustConstraint } from "./CrustConstraint";
@@ -6,7 +7,8 @@ import { PortionConstraint } from "./PortionConstraint";
 
 const PizzeriaConstraintsCollection = new Collection<ProductAttrConstraint>( {
 	name: 'pizzeria_constraints',
-	values: []
+	values: [],
+	type: CollectionType.Constraint
 } );
 
 PizzeriaConstraintsCollection.add( CuisineConstraint );

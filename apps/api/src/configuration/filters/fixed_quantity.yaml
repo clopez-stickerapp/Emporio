@@ -1,7 +1,7 @@
-name: FixedSizeFilter
+name: fixed_quantity
 mode: highest_score_wins
 rules:
-  - keys: 
+  - keys:
       - true
     conditions:
       relationMode: and
@@ -12,12 +12,10 @@ rules:
             - stickersthatstick
             - stickit
         - relationMode: or
-          conditions:
+          conditions: 
             - attribute: item.productName
-              operator: in
-              value:
-                - 3d_dome
-                - sheet_legacy
+              operator: ===
+              value: 3d_dome
             - attribute: item.attributes.laminate
               operator: in
               value:

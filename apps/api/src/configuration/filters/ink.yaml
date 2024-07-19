@@ -1,4 +1,4 @@
-name: InkFilter
+name: ink
 mode: highest_score_wins
 rules:
   - keys: []

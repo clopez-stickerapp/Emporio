@@ -1,4 +1,4 @@
-name: SizeFilter
+name: size
 mode: highest_score_wins
 rules:
   - keys:

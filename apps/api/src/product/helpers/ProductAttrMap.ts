@@ -7,6 +7,7 @@ import { ProductAttr } from "../attribute/ProductAttr";
 import { ProductAttrFilter } from "../attribute/Filter/ProductAttrFilter";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
 
 export type TProductAttrMapValue = {
 	alias: string,
@@ -45,9 +46,9 @@ export class ProductAttrMap {
 		
 		const attrValues: Record<string, string | null> = {};
 
-		const attrConstraint   = this.ps.retrieveCollection<ProductAttrConstraint>( family.getConstraintsCollectionName() ).get( attrName );
-		const attrFilter 	   = this.ps.retrieveCollection<ProductAttrFilter>( family.getFilterCollectionName() ).get( attrName );
-		const attrAsset		   = this.ps.retrieveCollection<ProductAttrAsset>( family.getAssetCollectionName() ).get( attrName );
+		const attrConstraint   = this.ps.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, family.getConstraintsCollectionName() ).get( attrName );
+		const attrFilter 	   = this.ps.retrieveCollection<ProductAttrFilter>( CollectionType.Filter, family.getFilterCollectionName() ).get( attrName );
+		const attrAsset		   = this.ps.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, family.getAssetCollectionName() ).get( attrName );
 		const attrValueOptions = family.getAllAttributeValueOptionsForProduct( this.product, attrName );
 
 		let icons: Record<string, string> = {};

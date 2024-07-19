@@ -1,22 +1,24 @@
-name: MaxSizeOtherSideFilter
+name: delivery
 mode: highest_score_wins
 rules:
   - keys:
-      - 275
+      - sheet
     conditions:
       relationMode: and
       conditions:
         - attribute: item.productName
           operator: in
           value:
-            - labels_on_roll
+            - transfer_decal
+            - 3d_dome
 
   - keys:
-      - 1100
+      - single
     conditions:
       relationMode: and
-      conditions:
+      conditions:  
         - attribute: item.productName
           operator: in
           value:
-            - wall
+            - sheet
+            - sheet_kiss_cut

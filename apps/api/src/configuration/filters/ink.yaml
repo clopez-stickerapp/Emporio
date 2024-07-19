@@ -8,10 +8,10 @@ rules:
       - invisible_ink
       - pink_ink
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.laminate
-          operator: in
+          operator: IN
           value:
             - glossy_no_uv
             - uncoated

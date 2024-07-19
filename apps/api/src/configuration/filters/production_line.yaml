@@ -4,11 +4,11 @@ rules:
   - keys:
       - laser
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 120
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet
             - sheet_kiss_cut
@@ -19,10 +19,10 @@ rules:
   - keys:
       - laser
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - white
             - white_removable
@@ -36,7 +36,7 @@ rules:
         - attribute: item.attributes.height_mm
           operator: <=
           value: 800
-        - relationMode: or
+        - relationMode: OR
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
@@ -48,13 +48,13 @@ rules:
   - keys:
       - digital
     conditions:
-      relationMode: or
+      relationMode: OR
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - transfer_decal
-        - relationMode: and
+        - relationMode: AND
           conditions:
             - attribute: item.attributes.width_mm
               operator: ">"

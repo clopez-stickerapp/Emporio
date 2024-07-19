@@ -4,19 +4,19 @@ rules:
   - keys:
       - true
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.reseller
-          operator: not_in
+          operator: NOT_IN
           value:
             - stickersthatstick
             - stickit
-        - relationMode: or
+        - relationMode: OR
           conditions: 
             - attribute: item.productName
               operator: ===
               value: 3d_dome
             - attribute: item.attributes.laminate
-              operator: in
+              operator: IN
               value:
                 - epoxy

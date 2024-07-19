@@ -1,10 +1,10 @@
 name: material
 rules:
   - keys:
-      - WHITE_THIN
-      - CLEAR_THIN
-      - KRAFT_THIN
-      - SILVER_THIN
+      - white_thin
+      - clear_thin
+      - kraft_thin
+      - silver_thin
     conditions:
       relationMode: AND
       conditions:

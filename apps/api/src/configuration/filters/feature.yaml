@@ -14,12 +14,12 @@ rules:
   - keys:
       - backpaper_print
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
-        - relationMode: and
+        - relationMode: AND
           conditions:
             - attribute: item.attributes.material
-              operator: in
+              operator: IN
               value:
                 - white
                 - holographic,
@@ -27,16 +27,16 @@ rules:
                 - clear
                 - pixie_dust
             - attribute: item.attributes.laminate
-              operator: in
+              operator: IN
               value:
                 - glossy_uv
                 - soft_touch,
                 - satin_matte
             - attribute: item.productName
-              operator: not_in
+              operator: NOT_IN
               value:
                 - library_design
-        - relationMode: and
+        - relationMode: AND
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
@@ -48,7 +48,7 @@ rules:
   - keys:
       - backpaper_print
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.material
           operator: is_empty
@@ -58,7 +58,7 @@ rules:
   - keys:
       - transfer_tape
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.delivery_sheet_width
           operator: <=

@@ -4,19 +4,19 @@ rules:
   - keys:
       - 275
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_roll
 
   - keys:
       - 1100
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - wall

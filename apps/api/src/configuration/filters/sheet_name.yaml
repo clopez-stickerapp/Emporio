@@ -13,7 +13,7 @@ rules:
       - circle
       - rounded
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.reseller
           operator: ===

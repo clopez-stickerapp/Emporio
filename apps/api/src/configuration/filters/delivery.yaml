@@ -4,10 +4,10 @@ rules:
   - keys:
       - sheet
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - transfer_decal
             - 3d_dome
@@ -15,10 +15,10 @@ rules:
   - keys:
       - single
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:  
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet
             - sheet_kiss_cut

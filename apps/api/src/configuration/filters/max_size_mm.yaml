@@ -4,19 +4,19 @@ rules:
   - keys:
       - laser
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
-        - relationMode: or
+        - relationMode: OR
           conditions:
             - attribute: item.attributes.material
-              operator: in
+              operator: IN
               value:
                 - clear
                 - mirror
                 - brushed_alloy
                 - white_removable
             - attribute: item.productName
-              operator: in
+              operator: IN
               value:
                 - sheet
                 - sheet_kiss_cut
@@ -24,19 +24,19 @@ rules:
   - keys:
       - sheet_legacy
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet_legacy
 
   - keys:
       - roll
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_roll

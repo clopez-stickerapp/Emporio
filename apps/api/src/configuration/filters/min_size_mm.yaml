@@ -9,7 +9,7 @@ rules:
   - keys:
       - 6
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.reseller
           operator: ===
@@ -18,14 +18,14 @@ rules:
   - keys:
       - 150
     conditions:
-      relationMode: or
+      relationMode: OR
       conditions:
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - white_wall
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - wall
             - floor
@@ -33,10 +33,10 @@ rules:
   - keys:
       - 50
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet
             - sheet_kiss_cut
@@ -44,20 +44,20 @@ rules:
   - keys:
       - 200
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet_legacy
 
   - keys:
       - 10
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_sheet
             - single_on_sheet

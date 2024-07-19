@@ -15,10 +15,10 @@ rules:
       - pixie_dust
       - gitd
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - sheet_legacy
             - sheet
@@ -38,10 +38,10 @@ rules:
       - gitd
       - white_removable
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - die_cut
             - single_on_sheet
@@ -59,70 +59,70 @@ rules:
       - kraft_paper
       - pixie_dust
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - hang_tag
 
   - keys:
       - white_sturdy
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - 3d_dome
 
   - keys:
       - clear
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - front_adhesive
 
   - keys:
       - white_hi_tack
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - heavy_duty
 
   - keys:
       - white_removable
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - removable
 
   - keys:
       - white_wall
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - wall
 
   - keys:
       - white
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - floor
 
@@ -130,10 +130,10 @@ rules:
       - white
       - clear
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_sheet
 
@@ -143,20 +143,20 @@ rules:
       - kraft_thin  
       - silver_thin
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_roll
 
   - keys:
       - clear
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - window
 
@@ -169,7 +169,7 @@ rules:
       - metallic_silver
       - bubble_free
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: ===
@@ -190,16 +190,16 @@ rules:
       - gitd
       - reflective
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 120
       conditions:
         - attribute: item.attributes.reseller
-          operator: in
+          operator: IN
           value:
             - stickersthatstick
             - stickit
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - die_cut
             - single_on_sheet

@@ -8,7 +8,7 @@ rules:
       - 140
       - 280
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.attributes.delivery
           operator: ===

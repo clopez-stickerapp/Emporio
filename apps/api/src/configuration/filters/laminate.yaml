@@ -4,13 +4,13 @@ rules:
   - keys:
       - glossy_uv
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - glitter
             - brushed_alloy
@@ -23,13 +23,13 @@ rules:
       - soft_touch
       - cracked_ice
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - white
             - clear
@@ -39,13 +39,13 @@ rules:
       - satin_matte
       - cracked_ice
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - holographic
 
@@ -53,13 +53,13 @@ rules:
       - glossy_uv
       - soft_touch
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - mirror
             - white_removable
@@ -68,11 +68,11 @@ rules:
       - glossy_no_uv
       - uncoated
     conditions:
-      relationMode: or
+      relationMode: OR
       baseComplexityScore: 100
       conditions:
         - attribute: item.attributes.ink
-          operator: in
+          operator: IN
           value:
             - invisible_ink
             - pink_ink
@@ -80,28 +80,28 @@ rules:
   - keys:
       - glossy_uv_12_mil_heavy_duty
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - white_hi_tack
 
   - keys:
       - uncoated
     conditions:
-      relationMode: or
+      relationMode: OR
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - transfer_decal
             - wall
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - kraft_paper
             - satin_matte
@@ -111,10 +111,10 @@ rules:
   - keys:
       - sandy
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 1000
       conditions:
-        - relationMode: or
+        - relationMode: OR
           conditions:
             - attribute: item.productName
               operator: ===
@@ -126,7 +126,7 @@ rules:
   - keys:
       - epoxy
     conditions:
-      relationMode: and
+      relationMode: AND
       conditions:
       - attribute: item.productName
         operator: ===
@@ -135,11 +135,11 @@ rules:
   - keys:
       - glossy_thin_no_uv
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 1000
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_sheet
 
@@ -148,32 +148,32 @@ rules:
       - uncoated
       - satin_matte
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 1000
       conditions:
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_roll
 
   - keys:
       - uncoted
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 1001
       conditions:
         - attribute: item.attributes.material
           operator: ===
           value: kraft_thin
         - attribute: item.productName
-          operator: in
+          operator: IN
           value:
             - labels_on_roll
 
   - keys:
       - glossy_uv
     conditions:
-      relationMode: or
+      relationMode: OR
       conditions:
         - attribute: item.attributes.material
           operator: ===
@@ -183,32 +183,22 @@ rules:
           value: sheet_legacy
 
   - keys:
-      - uncoated
-    conditions:
-      relationMode: and
-      baseComplexityScore: 1000
-      conditions:
-        - attribute: item.productName
-          operator: ===
-          value: transfer_decal
-
-  - keys:
       - glossy_uv_12_mil_heavy_duty
       - glossy_uv
       - sandy
     conditions:
-      relationMode: and
+      relationMode: AND
       baseComplexityScore: 120
       conditions:
         - attribute: item.productName
           operator: "!=="
           value: 3d_dome
         - attribute: item.attributes.reseller
-          operator: in
+          operator: IN
           value:
             - stickersthatstick
             - stickit
         - attribute: item.attributes.material
-          operator: in
+          operator: IN
           value:
             - white_hi_tack

@@ -27,12 +27,11 @@ export class ProductAttrComputerExtended extends ProductAttrComputer
 	 */
 	public prepare( productItem: ProductItem, useFilters: boolean = true ): this 
 	{
-		this.useFilters = useFilters;
 		const product = this.ps.findProduct( productItem.getProductFamilyName(), productItem.getProductName() );
 		const attrMap = ( new ProductAttrMap( this.ps, product ) ).getMap();
 		this.reset( attrMap );
 		this.attrEvaluator.reset( attrMap );
-		this.evaluate( productItem );
+		this.evaluate( productItem, useFilters );
 		return this;
 	}
 }

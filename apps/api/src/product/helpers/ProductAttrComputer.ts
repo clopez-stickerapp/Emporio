@@ -14,7 +14,6 @@ export class ProductAttrComputer
 	protected attributesConstrained:    Attributes<AttributeValueMulti> = {};
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
-	public useFilters:                  boolean                         = true;
 
 	constructor( public attrEvaluator: ProductAttrConditionEvaluator ) {}
 
@@ -33,11 +32,11 @@ export class ProductAttrComputer
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem ): void 
+	public evaluate( productItem: ProductItem, useFilters: boolean ): void 
 	{
 		this.evaluateFilteredValues( productItem );
 		this.evaluateConstrainedValues( productItem );
-		this.evaluateSuggestedValues();
+		this.evaluateSuggestedValues( useFilters );
 		this.evaluateOutOfStockValues();
 	}
 
@@ -78,7 +77,7 @@ export class ProductAttrComputer
 		}
 	}
 
-	protected evaluateSuggestedValues(): void
+	protected evaluateSuggestedValues( useFilters: boolean ): void
 	{
 		this.attributesSuggested = {};
 
@@ -86,7 +85,7 @@ export class ProductAttrComputer
 		{
 			let values = this.getFilteredValues( attributeName );
 
-			if ( !this.useFilters || !values.length )
+			if ( !useFilters || !values.length )
 			{
 				values = this.getAllValues( attributeName );
 			}

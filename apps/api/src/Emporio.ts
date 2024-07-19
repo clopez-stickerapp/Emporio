@@ -6,7 +6,7 @@ import { ProductItemConditionableParam } from "./product/condition/ProductItemCo
 import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
 import { ProductAttrComputerExtended } from "./product/helpers/ProductAttrComputerExtended";
-import { TProductAttrMap, ProductAttrMap } from "./product/helpers/ProductAttrMap";
+import { TProductAttrMap } from "./product/helpers/ProductAttrMap";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
 import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
@@ -131,8 +131,7 @@ export class Emporio {
 	}
 
 	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {
-		const product = this.productService.findProduct( productFamilyName, productName );
-		return ( new ProductAttrMap( this.productService, product ) ).getMap();
+		return this.productService.getProductMap( productFamilyName, productName );
 	}
 
 	public getConditionableMap( productFamilyName: string ): Record<string, ProductItemConditionableParam> {

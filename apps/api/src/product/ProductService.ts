@@ -8,6 +8,10 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
+import { TProductAttrMap } from "./helpers/ProductAttrMap";
+import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
+import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -167,5 +171,60 @@ export class ProductService {
 		} else {
 			throw new Error("Product family not found with name " + productFamilyName);
 		}
+	}
+
+	// public getProductMap(product: Product): TProductAttrMap{
+	public getProductMap(familyName: string, productName: string): TProductAttrMap{
+		let map: TProductAttrMap = {};
+
+		const product = this.findProduct(familyName, productName);
+
+		for (const [attrName, attr] of Object.entries(this.retrieveProductFamily(product.getProductFamilyName()).getAttributes())) {
+			const family = this.retrieveProductFamily(product.getProductFamilyName());
+
+			const attrValues: Record<string, string | null> = {};
+
+			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName()).get(attrName);
+			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName()).get(attrName);
+			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName()).get(attrName);
+			const attrValueOptions = family.getAllAttributeValueOptionsForProduct(product, attrName);
+
+			let icons: Record<string, string> = {};
+
+			for (const attrValue of attrValueOptions) {
+				const conditionsBuilder = attrConstraint?.getConstraint(attrValue) ?? null;
+
+				if (typeof attrValue === 'string') {
+					const iconBuilder = attrAsset?.getWizardIcon(attrValue) ?? null;
+
+					if (iconBuilder) {
+						icons[attrValue] = iconBuilder;
+					}
+				}
+
+				attrValues[attrValue.toString()] = conditionsBuilder ? `${conditionsBuilder}` : null;
+			}
+
+			const filters = attrFilter?.getFilters().map(filteredValues => ({
+				"values": filteredValues.getValues(),
+				"conditions": `${filteredValues.conditionBuilder}`,
+				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
+			})) ?? [];
+
+			map[attrName] = {
+				"alias": attrName,
+				"isDynamicValue": attr.isDynamicValue(),
+				"isMultiValue": attr.isMultiValue(),
+				"valueType": attr.getValueType(),
+				"isRequired": family.isRequired(attrName),
+				"valuesAndConstraints": attrValues,
+				"icons": icons,
+				"filters": filters,
+				"filterMode": attrFilter?.getMode() ?? null,
+				"outOfStockValues": attrAsset?.getUnavailableValues() ?? []
+			};
+		}
+
+		return map;
 	}
 }

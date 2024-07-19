@@ -2,7 +2,6 @@ import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
-import { ProductAttrMap } from "./ProductAttrMap";
 
 export class ProductAttrComputerExtended extends ProductAttrComputer
 {
@@ -27,8 +26,7 @@ export class ProductAttrComputerExtended extends ProductAttrComputer
 	 */
 	public prepare( productItem: ProductItem, useFilters: boolean = true ): this 
 	{
-		const product = this.ps.findProduct( productItem.getProductFamilyName(), productItem.getProductName() );
-		const attrMap = ( new ProductAttrMap( this.ps, product ) ).getMap();
+		const attrMap = this.ps.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.reset( attrMap );
 		this.attrEvaluator.reset( attrMap );
 		this.evaluate( productItem, useFilters );

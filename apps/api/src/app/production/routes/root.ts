@@ -21,8 +21,7 @@ export default async function ( fastify: FastifyInstance ) {
 			item: {
 				'productFamilyName': item.getProductFamilyName(),
 				'productName': item.getProductName(),
-				'attributes': item.getAttributes(),
-				'units': item.getUnits()
+				'attributes': item.getAttributes()
 			} 
 		};
 	} )
@@ -40,8 +39,7 @@ export default async function ( fastify: FastifyInstance ) {
 			item: {
 				'productFamilyName': item.getProductFamilyName(),
 				'productName': item.getProductName(),
-				'attributes': item.getAttributes(),
-				'units': item.getUnits()
+				'attributes': item.getAttributes()
 			} 
 		}
 	} );

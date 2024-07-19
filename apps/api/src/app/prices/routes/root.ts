@@ -43,8 +43,6 @@ export default async function (fastify: FastifyInstance) {
 			attributes: JSON.parse(request.query.attributes),
 		});
 
-		item.setUnits(emporio.calculateUnits(item));
-
 		let prices = await emporio.getPriceList(item, request.query.lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(request.query.lang));

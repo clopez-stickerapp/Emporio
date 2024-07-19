@@ -62,8 +62,6 @@ export class ProductItemBuilder
 			}
 		}
 
-		item.setUnits( this.ps.retrieveMinimumUnitsCollection( productFamily.getMinimumUnitsCollectionName() ).getValue( item ) );
-
 		return item;
 	}
 }

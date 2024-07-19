@@ -28,7 +28,6 @@ export default async function ( fastify: FastifyInstance ) {
 			productName: item.getProductName(),
 			productFamilyName: item.getProductFamilyName(),
 			attributes: item.getAttributes(),
-			units: item.getUnits(),
 			sku: item.getSku()
 		}
 	} );
@@ -57,8 +56,6 @@ export default async function ( fastify: FastifyInstance ) {
 			productName: request.params.name,
 			attributes: JSON.parse( request.query.attributes ),
 		} );
-
-		item.setUnits( request.query.units );
 
 		try {
 			emporio.validate( item, request.query.allowUnsupportedAttributeAliases, request.query.allowUnsuggestedAttributeValues, request.query.checkAgainstFilteredValues );

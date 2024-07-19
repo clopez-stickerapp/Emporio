@@ -15,7 +15,7 @@ export class ProductAttrComputer
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
 
-	constructor( public attrEvaluator: ProductAttrConditionEvaluator ) {}
+	constructor( protected attrEvaluator: ProductAttrConditionEvaluator ) {}
 
 	/**
 	 * Resets old and feeds new attributes to the computer.
@@ -25,6 +25,7 @@ export class ProductAttrComputer
 	public reset( attributes: TProductAttrMap ): void 
 	{
 		this.attributes = attributes;
+		this.attrEvaluator.reset( attributes );
 	}
 
 	/**

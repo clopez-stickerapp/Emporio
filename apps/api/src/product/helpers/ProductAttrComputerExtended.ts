@@ -28,7 +28,6 @@ export class ProductAttrComputerExtended extends ProductAttrComputer
 	{
 		const attrMap = this.ps.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.reset( attrMap );
-		this.attrEvaluator.reset( attrMap );
 		this.evaluate( productItem, useFilters );
 		return this;
 	}

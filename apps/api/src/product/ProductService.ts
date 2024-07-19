@@ -173,7 +173,6 @@ export class ProductService {
 		}
 	}
 
-	// public getProductMap(product: Product): TProductAttrMap{
 	public getProductMap(familyName: string, productName: string): TProductAttrMap{
 		let map: TProductAttrMap = {};
 

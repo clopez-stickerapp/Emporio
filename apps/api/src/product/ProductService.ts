@@ -165,18 +165,10 @@ export class ProductService {
 		return Object.values(this.productFamilies);
 	}
 
-	public findProduct(productFamilyName: string, productName: string): Product{
-		if (this.productFamilies[productFamilyName]) {
-			return this.productFamilies[productFamilyName].getProduct(productName);
-		} else {
-			throw new Error("Product family not found with name " + productFamilyName);
-		}
-	}
-
 	public getProductMap(familyName: string, productName: string): TProductAttrMap{
 		let map: TProductAttrMap = {};
 
-		const product = this.findProduct(familyName, productName);
+		const product = this.retrieveProductFamily(familyName).getProduct(productName);
 
 		for (const [attrName, attr] of Object.entries(this.retrieveProductFamily(product.getProductFamilyName()).getAttributes())) {
 			const family = this.retrieveProductFamily(product.getProductFamilyName());

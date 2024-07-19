@@ -188,7 +188,7 @@ export class Emporio {
 		if ( family.isRequired( attributeName ) ) {
 			return true;
 		} else if ( family.isSupported( attributeName ) ) {
-			const product = this.productService.findProduct( productFamilyName, productName );
+			const product = this.productService.retrieveProductFamily( productFamilyName ).getProduct( productName );
 			return product.isAttrRequired( attributeName );
 		}
 

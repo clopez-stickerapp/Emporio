@@ -150,7 +150,7 @@ export class ProductionHelper
 		}
 		else if ( this.attrComputer.isSupported( attributeName ) )
 		{
-			const product = this.ps.findProduct( this.item.getProductFamilyName(), this.item.getProductName() );
+			const product = this.ps.retrieveProductFamily( this.item.getProductFamilyName() ).getProduct( this.item.getProductName() );
 			
 			return product.isAttrRequired( attributeName );
 		}

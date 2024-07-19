@@ -90,7 +90,7 @@ describe("ProductService", () => {
 			status: "active"
 		});
 
-		let retrievedProduct = service.findProduct("foo", "bar");
+		let retrievedProduct = service.retrieveProductFamily("foo").getProduct("bar");
 		expect(retrievedProduct.getProductFamilyName()).toBe("foo");
 		expect(retrievedProduct.getName()).toBe("bar");
 		expect(retrievedProduct.getSku()).toBe("baz");

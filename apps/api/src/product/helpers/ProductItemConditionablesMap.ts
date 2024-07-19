@@ -1,4 +1,3 @@
-import { ProductService } from "../ProductService";
 import { ProductItemConditionableParam } from "../condition/ProductItemConditionableParam";
 import { ProductFamily } from "../ProductFamily";
 

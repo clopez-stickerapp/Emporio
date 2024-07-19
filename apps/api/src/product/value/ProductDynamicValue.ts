@@ -12,7 +12,7 @@ export class ProductDynamicValue {
 		this.defaultValue = config.defaultValue;
 
 		for (let rule of config.rules) {
-			console.debug("Adding conditioned value: ", rule.keys);
+			console.debug(`Adding conditions for value '${rule.keys}' to '${config.name}'`);
 			this.addConditionedValue(rule.keys, rule.conditions);
 		}
 	}

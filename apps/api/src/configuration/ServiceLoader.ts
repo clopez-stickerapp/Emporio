@@ -118,7 +118,7 @@ class ServiceLoader {
 		// this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
 
 		// Load collections
-		// console.debug("Loading collection configs...");
+		console.debug("Loading collection configs...");
 		this.collectionConfigs = this.readConfigs<CollectionConfig>(collectionPathFolder);
 	}
 

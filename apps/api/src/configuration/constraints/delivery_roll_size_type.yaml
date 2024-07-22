@@ -9,7 +9,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 30
+              value: 28
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -20,7 +20,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 30
+              value: 28
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -36,7 +36,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 33
+              value: 31
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -47,7 +47,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 33
+              value: 31
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -63,7 +63,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 54
+              value: 52
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -74,7 +74,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 54
+              value: 52
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -90,7 +90,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 68
+              value: 64
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -101,7 +101,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 68
+              value: 64
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -117,7 +117,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 91
+              value: 89
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -128,7 +128,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 91
+              value: 89
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -144,7 +144,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 138
+              value: 136
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -155,7 +155,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 138
+              value: 136
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -171,7 +171,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 278
+              value: 276
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -182,7 +182,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 278
+              value: 276
             - attribute: item.attributes.cut_direction
               operator: IN
               value:

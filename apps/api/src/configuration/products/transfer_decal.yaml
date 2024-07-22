@@ -4,5 +4,6 @@ available: true
 attributes:
 #   sheet_type: single
 #   delivery: sheet
-  feature: transfer_tape
+  feature: 
+  - transfer_tape
   

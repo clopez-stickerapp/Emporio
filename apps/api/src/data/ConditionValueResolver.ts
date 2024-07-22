@@ -22,10 +22,6 @@ function prefix(prefix: string, obj: Record<string, ConditionValue>): Record<str
 
 export const ProductNames = {
 	PRODUCT_DIE_CUT: "die_cut",
-	PRODUCT_SINGLE_ON_SHEET: "single_on_sheet",
-	PRODUCT_SHEET: "sheet",
-	PRODUCT_SHEET_KISS_CUT: "sheet_kiss_cut",
-	PRODUCT_SHEET_LEGACY: "sheet_legacy",
 	PRODUCT_HANG_TAG: "hang_tag",
 	PRODUCT_3D_DOME: "3d_dome",
 	PRODUCT_FRONT_ADHESIVE: "front_adhesive",
@@ -35,11 +31,15 @@ export const ProductNames = {
 	PRODUCT_FLOOR: "floor",
 	PRODUCT_LAPTOP_SKIN: "laptop_skin",
 	PRODUCT_DOUBLE_SIDED: "double_sided",
+	PRODUCT_TRANSFER_DECAL: "transfer_decal",
+	PRODUCT_WINDOW: "window",
+	PRODUCT_SHEET: "sheet",
+	PRODUCT_SHEET_LEGACY: "sheet_legacy",
+	PRODUCT_SHEET_KISS_CUT: "sheet_kiss_cut",
+	PRODUCT_SINGLE_ON_SHEET: "single_on_sheet",
 	PRODUCT_LABELS_ON_SHEET: "labels_on_sheet",
 	PRODUCT_LABELS_ON_ROLL: "labels_on_roll",
 	PRODUCT_LIBRARY_DESIGN: "library_design",
-	PRODUCT_TRANSFER_DECAL: "transfer_decal",
-	PRODUCT_WINDOW: "window",
 }
 
 magicList = {

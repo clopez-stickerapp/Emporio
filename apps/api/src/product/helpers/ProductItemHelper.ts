@@ -337,16 +337,6 @@ export class ProductItemHelper
 		this.item.setAttribute( 'fixed_quantity', fixedQuantity );
 	}
 
-	public getMaterialColor(): string | undefined
-	{
-		return this.item.getAttribute( 'material_color' );
-	}
-
-	public setMaterialColor( color: string ): void
-	{
-		this.item.setAttribute( 'material_color', color );
-	}
-
 	public getColorSupported(): boolean | undefined
 	{
 		return this.item.getAttribute( 'color_supported' );

@@ -39,7 +39,6 @@ import { InkAttribute } from "./Attribute/Sticker/InkAttribute";
 import { InnercutAsKisscutAttribute } from "./Attribute/Sticker/InnercutAsKisscutAttribute";
 import { LaminateAttribute } from "./Attribute/Sticker/LaminateAttribute";
 import { MaterialAttribute } from "./Attribute/Sticker/MaterialAttribute";
-import { MaterialColorAttribute } from "./Attribute/Sticker/MaterialColorAttribute";
 import { MaxSizeAttribute } from "./Attribute/Sticker/MaxSizeAttribute";
 import { MaxSizeOtherSideAttribute } from "./Attribute/Sticker/MaxSizeOtherSideAttribute";
 import { MinSizeAttribute } from "./Attribute/Sticker/MinSizeAttribute";
@@ -109,7 +108,6 @@ export class StickerAppProductService extends ProductService {
 		this.registerAttribute( new CaseSheetTypeAttr() );
 		this.registerAttribute( new DynamicStringAttr() );
 		this.registerAttribute( new MarketAttribute() );
-		this.registerAttribute( new MaterialColorAttribute() );
 		this.registerAttribute( new ColorSupportedAttribute() );
 		this.registerAttribute( new DeliveryRollSizeMMAttribute() );
 		this.registerAttribute( new DeliveryRollSizeTypeAttribute() );

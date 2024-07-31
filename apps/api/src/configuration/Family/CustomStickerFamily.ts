@@ -36,7 +36,6 @@ import { InkAttribute } from "../Attribute/Sticker/InkAttribute";
 import { InnercutAsKisscutAttribute } from "../Attribute/Sticker/InnercutAsKisscutAttribute";
 import { LaminateAttribute } from "../Attribute/Sticker/LaminateAttribute";
 import { MaterialAttribute } from "../Attribute/Sticker/MaterialAttribute";
-import { MaterialColorAttribute } from "../Attribute/Sticker/MaterialColorAttribute";
 import { MaxSizeAttribute } from "../Attribute/Sticker/MaxSizeAttribute";
 import { MaxSizeOtherSideAttribute } from "../Attribute/Sticker/MaxSizeOtherSideAttribute";
 import { MinSizeAttribute } from "../Attribute/Sticker/MinSizeAttribute";
@@ -127,7 +126,6 @@ export class CustomStickerFamily extends ProductFamily {
 		this.supportAttr( MinSizeAttribute.name, MinSizeAttribute.ALIAS );
 		this.supportAttr( FixedSizeAttribute.name, FixedSizeAttribute.ALIAS );
 		this.supportAttr( FixedQuantityAttribute.name, FixedQuantityAttribute.ALIAS );
-		this.supportAttr( MaterialColorAttribute.name, MaterialColorAttribute.ALIAS );
 		this.supportAttr( ColorSupportedAttribute.name, ColorSupportedAttribute.ALIAS );
 		this.supportAttr( MarketAttribute.name, MarketAttribute.ALIAS );
 		this.supportAttr( DeliveryRollSizeTypeAttribute.name, DeliveryRollSizeTypeAttribute.ALIAS );

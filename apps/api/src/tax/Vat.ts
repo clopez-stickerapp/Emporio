@@ -4,8 +4,7 @@
 * Here's some information about VAT and how it works. Compiled with the help of Josefin.
 * 
 * Something is considered an export if we send goods outside the EU, and we are not VAT (Value Added Tax) registered in that country. For example:
-* - Switzerland is considered an export (since it's not in the EU and we are not VAT registered).
-* - Norway or the United Kingdom is not considered an export (it's outside the EU, but we are VAT registered).
+* - Norway, United Kingdom and Switzerland are not considered exports (it's outside the EU, but we are VAT registered).
 * - Sweden is not considered an export because we are located in Sweden.
 * - For example, the Netherlands (NL), Germany (DE), France (FR) are not considered exports (since they are within the EU).
 * 
@@ -18,7 +17,7 @@
 * On export invoices, our Swedish VAT number should be mentioned.
 */
 
-const vatRegisteredCountries: string[] = ["se", "gb", "no"];
+const vatRegisteredCountries: string[] = ["se", "gb", "no", "ch"];
 
 const euCountries: string[] = [
 	'se', 'be', 'bg', 'cy', 'dk', 'ee', 'fi', 'fr', 'gr',

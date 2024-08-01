@@ -8,12 +8,9 @@ describe("Test isExport", ()=>{
 		expect(isExport("fr")).equal(false);
 	});
 
-	test("with non-EU european country and not VAT registered", ()=>{
-		expect(isExport("ch")).equal(true);
-	});
-
 	test("with non-EU country and VAT registered", ()=>{
 		expect(isExport("no")).equal(false);
+		expect(isExport("ch")).equal(false);
 	});
 
 	test("with sweden", ()=>{
@@ -64,6 +61,7 @@ describe("Test getVatPercentage", ()=>{
 		expect(getVatPercentage("nl")).equal(21);
 		expect(getVatPercentage("de")).equal(19);
 		expect(getVatPercentage("fr")).equal(20);
+		expect(getVatPercentage("ch")).equal(8.1);
 	});
 
 	test("with country that is export but shipping country isn't", ()=>{
@@ -97,7 +95,6 @@ describe("Test getVatPercentage", ()=>{
 	test("with non-european country", ()=>{
 		expect(getVatPercentage("us")).equal(0);
 		expect(getVatPercentage("jp")).equal(0);
-		expect(getVatPercentage("ch")).equal(0);
 	});
 });
 

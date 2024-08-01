@@ -337,16 +337,6 @@ export class ProductItemHelper
 		this.item.setAttribute( 'fixed_quantity', fixedQuantity );
 	}
 
-	public getColorSupported(): boolean | undefined
-	{
-		return this.item.getAttribute( 'color_supported' );
-	}
-
-	public setColorSupported( supported: boolean ): void
-	{
-		this.item.setAttribute( 'color_supported', supported );
-	}
-
 	public getMarket(): string | undefined
 	{
 		return this.item.getAttribute( 'market' );

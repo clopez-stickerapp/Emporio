@@ -1,5 +1,4 @@
 import { ProductAttrConstraintCollection } from "$/product/attribute/Constraint/ProductAttrConstraintCollection";
-import { ColorSupportedConstraint } from "./ColorSupportedConstraint";
 import { CutDirectionConstraint } from "./CutDirectionConstraint";
 import { DeliveryRollSizeTypeConstraint } from "./DeliveryRollSizeTypeConstraint";
 import { FeatureConstraint } from "./FeatureConstraint";
@@ -15,7 +14,6 @@ export class StickerProductionContraintCollection extends ProductAttrConstraintC
 		this.addConstraint( new FeatureConstraint() );
 		this.addConstraint( new MaterialConstraint() );
 		this.addConstraint( new ProductionLineConstraint() );
-		this.addConstraint( new ColorSupportedConstraint() );
 		this.addConstraint( new CutDirectionConstraint() );
 		this.addConstraint( new DeliveryRollSizeTypeConstraint() );
 		// this.addConstraint( new LaminateConstraint() );

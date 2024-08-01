@@ -1,6 +1,5 @@
 import { ProductService } from "$/product/ProductService";
 import { ChangedAttribute } from "./Attribute/ChangedAttribute";
-import { ColorSupportedAttribute } from "./Attribute/ColorSupportedAttribute";
 import { DeliveryRollItemMarginAttribute } from "./Attribute/DeliveryRollItemMarginAttribute";
 import { DeliveryRollSizeMMAttribute } from "./Attribute/DeliveryRollSizeMMAttribute";
 import { DeliveryRollSizeTypeAttribute } from "./Attribute/DeliveryRollSizeTypeAttribute";
@@ -108,7 +107,6 @@ export class StickerAppProductService extends ProductService {
 		this.registerAttribute( new CaseSheetTypeAttr() );
 		this.registerAttribute( new DynamicStringAttr() );
 		this.registerAttribute( new MarketAttribute() );
-		this.registerAttribute( new ColorSupportedAttribute() );
 		this.registerAttribute( new DeliveryRollSizeMMAttribute() );
 		this.registerAttribute( new DeliveryRollSizeTypeAttribute() );
 		this.registerAttribute( new DeliveryRollItemMarginAttribute() );

@@ -3,7 +3,6 @@ import { ProductFamily } from "$/product/ProductFamily";
 import { ProductServiceException } from "../../product/exceptions/ProductServiceException";
 import { ProductService } from "../../product/ProductService";
 import { ChangedAttribute } from "../Attribute/ChangedAttribute";
-import { ColorSupportedAttribute } from "../Attribute/ColorSupportedAttribute";
 import { DeliveryRollItemMarginAttribute } from "../Attribute/DeliveryRollItemMarginAttribute";
 import { DeliveryRollSizeMMAttribute } from "../Attribute/DeliveryRollSizeMMAttribute";
 import { DeliveryRollSizeTypeAttribute } from "../Attribute/DeliveryRollSizeTypeAttribute";
@@ -126,7 +125,6 @@ export class CustomStickerFamily extends ProductFamily {
 		this.supportAttr( MinSizeAttribute.name, MinSizeAttribute.ALIAS );
 		this.supportAttr( FixedSizeAttribute.name, FixedSizeAttribute.ALIAS );
 		this.supportAttr( FixedQuantityAttribute.name, FixedQuantityAttribute.ALIAS );
-		this.supportAttr( ColorSupportedAttribute.name, ColorSupportedAttribute.ALIAS );
 		this.supportAttr( MarketAttribute.name, MarketAttribute.ALIAS );
 		this.supportAttr( DeliveryRollSizeTypeAttribute.name, DeliveryRollSizeTypeAttribute.ALIAS );
 		this.supportAttr( DeliveryRollSizeMMAttribute.name, DeliveryRollSizeMMAttribute.ALIAS );

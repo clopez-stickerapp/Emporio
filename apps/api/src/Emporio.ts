@@ -134,10 +134,6 @@ export class Emporio {
 		return this.builder.createItem( productFamily, product, map, useFilters );
 	}
 
-	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {
-		return this.productService.getProductMap( productFamilyName, productName );
-	}
-
 	public getConditionableMap( productFamilyName: string ): Record<string, ProductItemConditionableParam> {
 		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
 		const conditionableMap = new ProductItemConditionablesMap( productFamily );
@@ -213,22 +209,6 @@ export class Emporio {
 
 	public getProductService(): ProductService {
 		return this.productService;
-	}
-
-	public getFamilies(): ProductFamily[] {
-		return this.productService.getProductFamilies();
-	}
-
-	public getFamily( name: string ): ProductFamily {
-		return this.productService.retrieveProductFamily( name );
-	}
-
-	public getAttributes(): ProductAttr[] {
-		return this.productService.getAttributes();
-	}
-
-	public getAttribute( name: string ): ProductAttr {
-		return this.productService.retrieveAttribute( name );
 	}
 
 	public getStickerAppLegacySKU( item: ProductItem ): number {

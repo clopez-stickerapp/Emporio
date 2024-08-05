@@ -51,7 +51,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/attribute-map/:family/:name', { schema: getAttributeMapSchema }, async function ( request ) {
-		return { attributes: emporio.getAttributeMap( request.params.family, request.params.name ) };
+		return { attributes: emporio.getProductService().getProductMap( request.params.family, request.params.name ) };
 	} )
 
 	f.get( '/conditionable-map/:family', { schema: getConditionableMapSchema }, async function ( request ) {
@@ -115,7 +115,7 @@ export default async function ( fastify: FastifyInstance ) {
 	f.get( '/families', { schema: getFamiliesSchema }, async function ( request ) {
 		const families: Record<string, any> = {};
 		
-		const productFamilies = request.query.name ? [ emporio.getFamily( request.query.name ) ] : emporio.getFamilies();
+		const productFamilies = request.query.name ? [ emporio.getProductService().retrieveProductFamily( request.query.name ) ] : emporio.getProductService().getProductFamilies();
 		
 		for ( const family of productFamilies ) {
 			families[ family.getName() ] = {
@@ -140,7 +140,7 @@ export default async function ( fastify: FastifyInstance ) {
 	f.get( '/attributes', { schema: getAttributesSchema }, async function ( request ) {
 		const attributes: Record<string, any> = {};
 
-		const attrs = request.query.name ? [ emporio.getAttribute( request.query.name ) ] : emporio.getAttributes();
+		const attrs = request.query.name ? [ emporio.getProductService().retrieveAttribute( request.query.name ) ] : emporio.getProductService().getAttributes();
 
 		for ( const attribute of attrs ) {
 			attributes[ attribute.getUID() ] = {
@@ -166,7 +166,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/out-of-stock/:family', { schema: getOutOfStockSchema }, async function ( request ) {
-		const products = emporio.getFamily( request.params.family ).getProducts();
+		const products = emporio.getProductService().retrieveProductFamily( request.params.family ).getProducts();
 		const unavailableProducts = Object.values( products ).filter( product => !emporio.isProductAvailable( product.getProductFamilyName(), product.getName() ) );
 		return { outOfStock: unavailableProducts.map( product => product.getName() ) };
 	} )

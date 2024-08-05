@@ -51,7 +51,7 @@ class ServiceLoader {
 	protected filterConfigs: Record<string, FilterConfig> = {};
 	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
-	protected DynamicValueConfigs: Record<string, DynamicValueConfig> = {};
+	protected minUnitsConfigs: Record<string, DynamicValueConfig> = {};
 	protected minUnits: Record<string, ProductDynamicValue> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
@@ -107,7 +107,7 @@ class ServiceLoader {
 
 		// Load min units
 		console.debug("Loading min units configs...");
-		this.DynamicValueConfigs = this.readConfigs<DynamicValueConfig>(minUnitPathFolder);
+		this.minUnitsConfigs = this.readConfigs<DynamicValueConfig>(minUnitPathFolder);
 
 		// Load price providers
 		// console.debug("Loading price provider configs...");
@@ -151,7 +151,7 @@ class ServiceLoader {
 
 		// Instantiate all min units
 		console.debug("Instantiating min units instances...");
-		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(this.DynamicValueConfigs, (config) => new MinimumUnitsCollection(config));
+		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(this.minUnitsConfigs, (config) => new MinimumUnitsCollection(config));
 
 		// Instantiate all price providers
 		console.debug("Instantiating price provider instances...");

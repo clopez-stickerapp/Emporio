@@ -1,3 +1,3 @@
 services:
   emporio-api:
-    image: stickerapp/emporio-api:5cd2b768c7
+    image: stickerapp/emporio-api:5d7fcfe7e6

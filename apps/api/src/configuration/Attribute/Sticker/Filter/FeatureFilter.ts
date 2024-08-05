@@ -44,8 +44,8 @@ export class FeatureFilter extends ProductAttrFilter {
 			] );
 
 		backpaperPrinting.conditionBuilder.addSubGroup()
-			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, 270 )
-			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, 270 );
+			.addCondition( "item.attributes.width_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER )
+			.addCondition( "item.attributes.height_mm", ConditionOperators.LESS_THAN_OR_EQUAL, MaxSizeAttribute.MAX_SIZE_LASER );
 
 		// This is a fix for ProductAttrMap to include the option in the "valuesAndConstraints" array.
 		backpaperPrinting = this.createFilter( [ 

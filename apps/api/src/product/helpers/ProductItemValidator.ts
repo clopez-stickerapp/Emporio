@@ -1,6 +1,5 @@
 import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
-import { ProductAttrComputerExtended } from "./ProductAttrComputerExtended";
 import { ProductAttrNotSupportedException } from "$/product/exceptions/ProductAttrNotSupportedException";
 import { ProductAttrValueNotSupportedException } from "$/product/exceptions/ProductAttrValueNotSupportedException";
 import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInvalidException";
@@ -9,16 +8,17 @@ import { isEmpty } from "../../../Util";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
+import { ProductAttrComputer } from "./ProductAttrComputer";
 
 export class ProductItemValidator 
 {
 	protected ps:           ProductService;
-	protected attrComputer: ProductAttrComputerExtended;
+	protected attrComputer: ProductAttrComputer;
 
 	public constructor( ps: ProductService ) 
 	{
 		this.ps           = ps;
-		this.attrComputer = new ProductAttrComputerExtended( this.ps );
+		this.attrComputer = new ProductAttrComputer();
 	}
 
 	/**
@@ -31,7 +31,9 @@ export class ProductItemValidator
 	 */
 	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = false, checkAgainstFilteredValues: boolean = true ): void 
 	{
-		this.attrComputer.prepare( item, checkAgainstFilteredValues );
+		const map = this.ps.getProductMap( item.getProductFamilyName(), item.getProductName() );
+
+		this.attrComputer.evaluate( item, map, checkAgainstFilteredValues );
 		
 		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
 		const product = productFamily.getProduct( item.getProductName() );

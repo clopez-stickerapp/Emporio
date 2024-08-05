@@ -1,4 +1,4 @@
-import { ProductAttrComputerExtended } from "$/product/helpers/ProductAttrComputerExtended";
+import { ProductAttrComputer } from "$/product/helpers/ProductAttrComputer";
 import { ProductItemBuilder } from "$/product/helpers/ProductItemBuilder";
 import { CrustAttribute, CrustValues } from "./Pizzeria/Attributes/CrustAttribute";
 import { CuisineAttribute, CuisineValues } from "./Pizzeria/Attributes/CuisineAttribute";
@@ -10,11 +10,12 @@ import PizzeriaFamily from "./Pizzeria/PizzeriaFamily";
 import { PizzeriaProducts } from "./Pizzeria/PizzeriaProducts";
 import PizzeriaService from "./Pizzeria/PizzeriaService";
 
-const computer    = new ProductAttrComputerExtended( PizzeriaService );
+const computer    = new ProductAttrComputer();
 const itemBuilder = new ProductItemBuilder( PizzeriaService );
 const item        = itemBuilder.createItem( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
 
-computer.prepare( item );
+const map = PizzeriaService.getProductMap( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
+computer.evaluate( item, map );
 
 describe( 'Test Getting', () => {
 	describe( 'Default Value', () => {

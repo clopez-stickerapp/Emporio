@@ -15,26 +15,18 @@ export class ProductAttrComputer
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
 
-	constructor( protected attrEvaluator: ProductAttrConditionEvaluator ) {}
-
-	/**
-	 * Resets old and feeds new attributes to the computer.
-	 * 
-	 * @param attributes The new attributes to be set.
-	 */
-	public reset( attributes: TProductAttrMap ): void 
-	{
-		this.attributes = attributes;
-		this.attrEvaluator.reset( attributes );
-	}
+	constructor( protected attrEvaluator: ProductAttrConditionEvaluator = new ProductAttrConditionEvaluator()) {}
 
 	/**
 	 * Evaluates filtered, constrained, suggested and out-of-stock values. 
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem, useFilters: boolean ): void 
+	public evaluate( productItem: ProductItem, map: TProductAttrMap, useFilters: boolean = true ): void 
 	{
+		this.attributes = map;
+		this.attrEvaluator.reset( map );
+
 		this.evaluateFilteredValues( productItem );
 		this.evaluateConstrainedValues( productItem );
 		this.evaluateSuggestedValues( useFilters );

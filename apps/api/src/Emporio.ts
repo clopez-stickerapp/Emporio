@@ -5,7 +5,6 @@ import { ProductAttr } from "./product/attribute/ProductAttr";
 import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
 import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
-import { ProductAttrComputerExtended } from "./product/helpers/ProductAttrComputerExtended";
 import { TProductAttrMap } from "./product/helpers/ProductAttrMap";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
@@ -21,6 +20,7 @@ import { StickerAppProductLegacySKUService } from "./configuration/StickerAppPro
 import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "./configuration/interface/CollectionConfig";
+import { ProductAttrComputer } from "./product/helpers/ProductAttrComputer";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -46,14 +46,14 @@ export class Emporio {
 	protected productService: ProductService;
 	protected builder: ProductItemBuilder;
 	protected validator: ProductItemValidator;
-	protected computer: ProductAttrComputerExtended;
+	protected computer: ProductAttrComputer;
 	protected stickerAppLegacySKU: StickerAppProductLegacySKUService;
 
 	public constructor(service: ProductService) {
 		this.productService = service;
 		this.builder = new ProductItemBuilder( service );
 		this.validator = new ProductItemValidator( service );
-		this.computer = new ProductAttrComputerExtended( service );
+		this.computer = new ProductAttrComputer();
 		this.stickerAppLegacySKU = new StickerAppProductLegacySKUService();
 	}
 
@@ -145,21 +145,24 @@ export class Emporio {
 	}
 
 	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.setSettingsAutomatically();
 		return productItem;
 	}
 
 	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;
 	}
 
 	public getSizeDetails( productItem: ProductItem, useFilters: boolean ) {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const sizeHelper = new SizeHelper( this.computer, productItem );
 		sizeHelper.evaluate();
 
@@ -177,7 +180,8 @@ export class Emporio {
 	}
 
 	public isAttributeAvailable( productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean ): boolean {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
@@ -196,7 +200,8 @@ export class Emporio {
 	}
 
 	public getFixedQuantityEvaluated( productItem: ProductItem, useFilters: boolean ): boolean {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const fixedQuantityHelper = new FixedQuantityHelper( this.computer, productItem );
 		fixedQuantityHelper.evaluate();
 		return fixedQuantityHelper.fixedQuantity;

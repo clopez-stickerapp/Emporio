@@ -1,16 +1,16 @@
 import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
-import { ProductAttrComputerExtended } from "./ProductAttrComputerExtended";
+import { ProductAttrComputer } from "./ProductAttrComputer";
 
 export class ProductItemBuilder 
 {
 	protected ps:           ProductService;
-	protected attrComputer: ProductAttrComputerExtended;
+	protected attrComputer: ProductAttrComputer;
 
 	public constructor( productService: ProductService ) 
 	{
 		this.ps           = productService;
-		this.attrComputer = new ProductAttrComputerExtended( this.ps );
+		this.attrComputer = new ProductAttrComputer();
 	}
 
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean = true ): ProductItem 
@@ -20,8 +20,10 @@ export class ProductItemBuilder
 		const item          = new ProductItem( productFamilyName, productName );
 		
 		item.setSku( product.getSku() );
+
+		const map = this.ps.getProductMap(productFamilyName, productName);
 		
-		this.attrComputer.prepare( item, useFilters );
+		this.attrComputer.evaluate( item, map, useFilters );
 
 		for ( const [ attrName, attr ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
 		{

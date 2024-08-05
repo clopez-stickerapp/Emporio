@@ -19,6 +19,7 @@ declare module 'fastify' {
 async function buildServer() {
 	const server = fastify({
 		logger: getLoggerOptions(),
+		disableRequestLogging: true,
 	});
 
 	const service = new StickerAppProductService();
@@ -37,6 +38,22 @@ async function buildServer() {
 				{ name: 'Other', description: 'Other endpoints' },
 			],
 		}
+	});
+
+	/**
+	 * @see https://fastify.dev/docs/latest/Reference/Hooks/#onsend
+	 * 
+	 * This doesn't actually change the payload, but it does log the payload in a more readable format 
+	 * */
+
+	server.addHook('onRequest', (request, reply, done) => {
+		server.log.info({
+			msg: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,	
+			hostname: request.hostname,
+			url: request.url,
+			query: parseQuery(request.query),
+		});
+		done()
 	});
 
 	await server.register(swaggerUi, {
@@ -148,7 +165,7 @@ function getLoggerOptions() {
 					return { level: label }
 				}
 			},	
-			file: logFile 
+			file: logFile
 		};
 	} else {
 		console.log('Unable to write to log file, using console logger');

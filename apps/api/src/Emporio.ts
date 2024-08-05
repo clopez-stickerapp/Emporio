@@ -1,18 +1,15 @@
 import { Type, Static } from "@sinclair/typebox";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
-import { ProductAttr } from "./product/attribute/ProductAttr";
 import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
 import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
-import { TProductAttrMap } from "./product/helpers/ProductAttrMap";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
 import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
 import { ProductionHelper } from "./product/helpers/ProductionHelper";
 import { SizeHelper } from "./product/helpers/SizeHelper";
 import { ProductItem } from "./product/ProductItem";
-import { ProductFamily } from "./product/ProductFamily";
 import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
 import { AttributeValueSingle } from "./product/attribute/AttributeValue";

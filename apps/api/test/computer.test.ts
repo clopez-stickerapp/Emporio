@@ -11,10 +11,10 @@ import { PizzeriaProducts } from "./Pizzeria/PizzeriaProducts";
 import PizzeriaService from "./Pizzeria/PizzeriaService";
 
 const computer    = new ProductAttrComputer();
-const itemBuilder = new ProductItemBuilder( PizzeriaService );
-const item        = itemBuilder.createItem( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
-
+const itemBuilder = new ProductItemBuilder();
 const map = PizzeriaService.getProductMap( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
+const product = PizzeriaFamily.getProduct( PizzeriaProducts.HAWAII );
+const item        = itemBuilder.createItem( PizzeriaFamily, product, map );
 computer.evaluate( item, map );
 
 describe( 'Test Getting', () => {

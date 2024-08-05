@@ -51,7 +51,7 @@ export class Emporio {
 
 	public constructor(service: ProductService) {
 		this.productService = service;
-		this.builder = new ProductItemBuilder( service );
+		this.builder = new ProductItemBuilder();
 		this.validator = new ProductItemValidator( service );
 		this.computer = new ProductAttrComputer();
 		this.stickerAppLegacySKU = new StickerAppProductLegacySKUService();
@@ -127,7 +127,11 @@ export class Emporio {
 	}
 
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {
-		return this.builder.createItem( productFamilyName, productName, useFilters );
+		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
+		const product = productFamily.getProduct( productName );
+		const map = this.productService.getProductMap( productFamilyName, productName );
+
+		return this.builder.createItem( productFamily, product, map, useFilters );
 	}
 
 	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {

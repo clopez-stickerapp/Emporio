@@ -1,27 +1,23 @@
-import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
+import { ProductFamily } from "../ProductFamily";
+import { TProductAttrMap } from "./ProductAttrMap";
+import { Product } from "../Product";
 
 export class ProductItemBuilder 
 {
-	protected ps:           ProductService;
 	protected attrComputer: ProductAttrComputer;
 
-	public constructor( productService: ProductService ) 
+	public constructor() 
 	{
-		this.ps           = productService;
 		this.attrComputer = new ProductAttrComputer();
 	}
 
-	public createItem( productFamilyName: string, productName: string, useFilters: boolean = true ): ProductItem 
+	public createItem( productFamily: ProductFamily, product: Product, map: TProductAttrMap, useFilters: boolean = true ): ProductItem 
 	{
-		const productFamily = this.ps.retrieveProductFamily( productFamilyName );
-		const product       = productFamily.getProduct( productName );
-		const item          = new ProductItem( productFamilyName, productName );
+		const item          = new ProductItem( productFamily.getName(), product.getName() );
 		
 		item.setSku( product.getSku() );
-
-		const map = this.ps.getProductMap(productFamilyName, productName);
 		
 		this.attrComputer.evaluate( item, map, useFilters );
 

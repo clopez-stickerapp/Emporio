@@ -5,7 +5,6 @@ export class ProductItem {
 	private readonly productFamilyName: string;
 	private readonly productName: string;
 	private attributes: Attributes = {};
-	private sku: string = '';
 
 	public constructor(productFamilyName: string, productName: string){
 		this.productFamilyName = productFamilyName;
@@ -64,13 +63,5 @@ export class ProductItem {
 		}
 
 		return result;
-	}
-
-	public getSku(): string {
-		return this.sku;
-	}
-
-	public setSku(sku: string): void {
-		this.sku = sku;
 	}
 }

@@ -211,6 +211,10 @@ export class Emporio {
 		return fixedQuantityHelper.fixedQuantity;
 	}
 
+	public getProductService(): ProductService {
+		return this.productService;
+	}
+
 	public getFamilies(): ProductFamily[] {
 		return this.productService.getProductFamilies();
 	}

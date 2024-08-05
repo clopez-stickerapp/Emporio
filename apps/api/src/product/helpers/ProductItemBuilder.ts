@@ -17,8 +17,6 @@ export class ProductItemBuilder
 	{
 		const item          = new ProductItem( productFamily.getName(), product.getName() );
 		
-		item.setSku( product.getSku() );
-		
 		this.attrComputer.evaluate( item, map, useFilters );
 
 		for ( const [ attrName, attr ] of Object.entries( productFamily.getRequiredAttrs() ) ) 

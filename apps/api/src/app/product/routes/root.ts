@@ -16,6 +16,7 @@ import {
 	isAttributeRequiredSchema
 } from '../schema';
 import { ProductItem } from '$/product/ProductItem';
+import { ProductItemBuilder } from '$/product/helpers/ProductItemBuilder';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -23,12 +24,19 @@ export default async function ( fastify: FastifyInstance ) {
 	const emporio = fastify.emporio;
 
 	f.get( '/item/:family/:name', { schema: getCreateItemSchema }, async function ( request ) {
-		const item = emporio.createItem( request.params.family, request.params.name, request.query.useFilters );
+		const service = emporio.getProductService();
+
+		const productFamily = service.retrieveProductFamily( request.params.family );
+		const product = productFamily.getProduct( request.params.name );
+		const map = service.getProductMap( request.params.family, request.params.name );
+		const builder = new ProductItemBuilder();
+		const item = builder.createItem( productFamily, product, map, request.query.useFilters );
+
 		return {
 			productName: item.getProductName(),
 			productFamilyName: item.getProductFamilyName(),
 			attributes: item.getAttributes(),
-			sku: item.getSku()
+			sku: product.getSku()
 		}
 	} );
 

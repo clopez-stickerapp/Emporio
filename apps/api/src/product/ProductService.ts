@@ -27,7 +27,7 @@ export class ProductService {
 	/**
 	 * Collections are used to store a set of values, such as filters and constraints.
 	 */
-	public collections: Record<CollectionType, Record<string, Collection<any>>> = {
+	protected collections: Record<CollectionType, Record<string, Collection<any>>> = {
 		filter: {},
 		constraint: {},
 		asset: {}

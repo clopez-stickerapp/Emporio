@@ -17,11 +17,7 @@ let service: ProductService;
 
 describe("ProductService", () => {
 	beforeEach(() => {
-		service = new ProductService({name: "test", collections: {
-			constraint: "", 
-			asset: "",
-			filter: ""
-		}});
+		service = new ProductService();
 	});
 
 	test("collection", () => {

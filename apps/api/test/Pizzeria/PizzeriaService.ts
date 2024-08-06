@@ -13,7 +13,7 @@ import PizzeriaConstraintsCollection from "./Constraints/PizzeriaConstraintsColl
 import PizzeriaFilterCollection from "./Filters/PizzeriaFiltersCollection";
 import PizzeriaFamily from "./PizzeriaFamily";
 
-const PizzeriaService = new ProductService( {} as any );
+const PizzeriaService = new ProductService();
 PizzeriaService.registerProductFamily( PizzeriaFamily.getName(), PizzeriaFamily );
 PizzeriaService.registerCollection( PizzeriaConstraintsCollection );
 PizzeriaService.registerCollection( PizzeriaFilterCollection );

@@ -1,9 +1,7 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
-import { ServiceConfig } from "$/configuration/interface/ServiceConfig";
 import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
@@ -16,13 +14,6 @@ import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
 	protected productFamilies: Record<string, ProductFamily> = {};
-
-	public constructor(config: ServiceConfig) {
-		// this.name = config.name;
-		// this.families = config.families ?? [];
-		// this.attributes = config.attributes ?? [];
-		// this.pricingModels = config.pricing_models ?? [];
-	}
 
 	/**
 	 * Collections are used to store a set of values, such as filters and constraints.

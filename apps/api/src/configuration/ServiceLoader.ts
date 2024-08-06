@@ -127,7 +127,7 @@ class ServiceLoader {
 
 		// Instantiate all services
 		console.debug("Instantiating service instances...");
-		this.services = this.instantiateFromConfig<ServiceConfig, ProductService>(this.serviceConfigs, (config) => new ProductService(config));
+		this.services = this.instantiateFromConfig<ServiceConfig, ProductService>(this.serviceConfigs, () => new ProductService());
 
 		// Instantiate all families
 		console.debug("Instantiating family instances...");

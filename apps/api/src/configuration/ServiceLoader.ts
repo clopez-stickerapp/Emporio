@@ -223,11 +223,13 @@ class ServiceLoader {
 	protected registerMinUnits(): void {
 		console.debug("Registering min units...");
 		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["StickerSquareMeterMinimumUnitValues"] as MinimumUnitsCollection);
+		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["one"] as MinimumUnitsCollection);
 	}
 
 	protected registerPriceProviders(): void {
 		console.debug("Registering price providers...");
 		this.services["stickerapp"].registerPriceProvider(this.priceProviders[StickerPriceProvider.NAME]);
+		this.services["stickerapp"].registerPriceProvider(this.priceProviders[PromoProductPriceProvider.NAME]);
 	}
 
 	protected registerQuantityLists(): void {

@@ -124,7 +124,7 @@ export class ProductFamily {
 			return this.supportedAttrs[name];
 		}
 
-		throw new Error("Alias is not supported by product family: " + name + " (" + this.getName() + ")");
+		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
 	}
 
 	public getConstraintsCollectionName(): string {

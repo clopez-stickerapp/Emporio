@@ -52,7 +52,7 @@ class ServiceLoader {
 	protected filters: Record<string, ProductAttrFilter> = {};
 	// protected iconConfigs: Record<string, NamedConfig> = {};
 	protected minUnitsConfigs: Record<string, DynamicValueConfig> = {};
-	protected minUnits: Record<string, ProductDynamicValue> = {};
+	protected minUnits: Record<string, MinimumUnitsCollection> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
 	protected quantityProviderConfigs: Record<string, QuantityProviderConfig> = {};
@@ -222,8 +222,8 @@ class ServiceLoader {
 
 	protected registerMinUnits(): void {
 		console.debug("Registering min units...");
-		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["StickerSquareMeterMinimumUnitValues"] as MinimumUnitsCollection);
-		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["one"] as MinimumUnitsCollection);
+		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["StickerSquareMeterMinimumUnitValues"]);
+		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["one"]);
 	}
 
 	protected registerPriceProviders(): void {

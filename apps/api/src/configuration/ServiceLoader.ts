@@ -222,19 +222,35 @@ class ServiceLoader {
 
 	protected registerMinUnits(): void {
 		console.debug("Registering min units...");
-		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["StickerSquareMeterMinimumUnitValues"]);
-		this.services["stickerapp"].registerMinimumUnitsCollection(this.minUnits["one"]);
+
+		for(const [serviceName, service] of Object.entries(this.services)) {
+			for(const [name, minUnit] of Object.entries(this.minUnits)) {
+				console.debug(`Registering min unit '${name}' for service '${serviceName}'...`);
+				service.registerMinimumUnitsCollection(minUnit);
+			}
+		}
 	}
 
 	protected registerPriceProviders(): void {
 		console.debug("Registering price providers...");
-		this.services["stickerapp"].registerPriceProvider(this.priceProviders[StickerPriceProvider.NAME]);
-		this.services["stickerapp"].registerPriceProvider(this.priceProviders[PromoProductPriceProvider.NAME]);
+
+		for(const [serviceName, service] of Object.entries(this.services)) {
+			for(const [name, priceProvider] of Object.entries(this.priceProviders)) {
+				console.debug(`Registering price provider '${name}' for service '${serviceName}'...`);
+				service.registerPriceProvider(priceProvider);
+			}
+		}
 	}
 
 	protected registerQuantityLists(): void {
 		console.debug("Registering quantity lists...");
-		this.services["stickerapp"].registerQuantityListCollection(this.quantityProviders["sticker_quantity_lists"]);
+
+		for(const [serviceName, service] of Object.entries(this.services)) {
+			for(const [name, quantityProvider] of Object.entries(this.quantityProviders)) {
+				console.debug(`Registering quantity provider '${name}' for service '${serviceName}'...`);
+				service.registerQuantityListCollection(quantityProvider);
+			}
+		}
 	}
 
 	protected registerCollections(): void {

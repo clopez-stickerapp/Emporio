@@ -48,9 +48,7 @@ async function buildServer() {
 
 	server.addHook('onRequest', (request, reply, done) => {
 		server.log.info({
-			msg: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,
-			host: request.hostname,
-			referer: request.headers.referer,
+			message: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,
 			url: request.url,
 			query: parseQuery(request.query),
 		});
@@ -124,8 +122,6 @@ async function buildServer() {
 function createErrorObject(error: FastifyError, request: FastifyRequest) {
 	return {
 		message: error.message,
-		host: request.hostname,
-		referer: request.headers.referer,
 		url: request.url,
 		query: parseQuery(request.query),
 	};

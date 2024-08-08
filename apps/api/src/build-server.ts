@@ -47,7 +47,7 @@ async function buildServer() {
 	 * */
 
 	server.addHook('onRequest', (request, reply, done) => {
-		server.log.info({
+		server.log.debug({
 			message: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,
 			url: request.url,
 			query: parseQuery(request.query),
@@ -167,7 +167,9 @@ function getLoggerOptions() {
 		};
 	} else {
 		console.log('Unable to write to log file, using console logger');
-		return {};
+		return {
+			level: process.env.LOG_LEVEL || 'info', 
+		};
 	}
 }
 

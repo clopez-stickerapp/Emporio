@@ -1,6 +1,5 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ChangedAttribute } from "./ChangedAttribute";
-import { ColorSupportedAttribute } from "./ColorSupportedAttribute";
 import { CutDirectionAttribute } from "./CutDirectionAttribute";
 import { DeliveryAttribute } from "./DeliveryAttribute";
 import { DeliveryRollItemMarginAttribute } from "./DeliveryRollItemMarginAttribute";
@@ -27,7 +26,6 @@ import { InnercutAsKisscutAttribute } from "./InnercutAsKisscutAttribute";
 import { LaminateAttribute } from "./LaminateAttribute";
 import { MarketAttribute } from "./MarketAttribute";
 import { MaterialAttribute } from "./MaterialAttribute";
-import { MaterialColorAttribute } from "./MaterialColorAttribute";
 import { MaxSizeAttribute } from "./MaxSizeAttribute";
 import { MaxSizeOtherSideAttribute } from "./MaxSizeOtherSideAttribute";
 import { MinSizeAttribute } from "./MinSizeAttribute";
@@ -51,7 +49,6 @@ import { WidthAttribute } from "./WidthAttribute";
 
 export const allAttributes: ProductAttr[] = [
 	ChangedAttribute,
-	ColorSupportedAttribute,
 	CutDirectionAttribute,
 	DeliveryAttribute,
 	DeliveryRollItemMarginAttribute,
@@ -78,7 +75,6 @@ export const allAttributes: ProductAttr[] = [
 	LaminateAttribute,
 	MarketAttribute,
 	MaterialAttribute,
-	MaterialColorAttribute,
 	MaxSizeAttribute,
 	MaxSizeOtherSideAttribute,
 	MinSizeAttribute,

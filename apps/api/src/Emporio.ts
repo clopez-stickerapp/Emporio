@@ -171,8 +171,6 @@ export class Emporio {
 			maxSizeOtherSide: sizeHelper.maxSizeOtherSide.toObject(),
 			minSize:          sizeHelper.minSize.toObject(),
 			maxSize:          sizeHelper.maxSize.toObject(),
-			maxWidth:         sizeHelper.maxWidth.toObject(),
-			maxHeight:        sizeHelper.maxHeight.toObject(),
 			width:            sizeHelper.width.toObject(),
 			height:           sizeHelper.height.toObject()
 		}

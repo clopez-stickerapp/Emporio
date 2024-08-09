@@ -1,31 +1,14 @@
 name: StickerSquareMeterMinimumUnitValues
 defaultValue: 0.1407
 rules:
-  - keys: 0.77
-    conditions:
-      baseComplexityScore: 120
-      conditions:
-        - attribute: item.attributes.reseller
-          operator: IN
-          value: [stickersthatstick]
-  - keys: 1.8
-    conditions:
-      baseComplexityScore: 120
-      conditions:
-        - attribute: item.attributes.reseller
-          operator: IN
-          value: [stickit]
-  - keys: 5
+  - keys: 0.5
     conditions:
       baseComplexityScore: 120
       relationMode: AND
       conditions:
-        - attribute: item.attributes.reseller
-          operator: IN
-          value: [stickersthatstick, stickit]
-        - attribute: material
+        - attribute: item.productName
           operator: ===
-          value: white_thin
+          value: "{ProductNames.PRODUCT_LABELS_ON_ROLL}"
   - keys: 0.1090
     conditions:
       baseComplexityScore: 1
@@ -56,7 +39,7 @@ rules:
           value: [clear]
         - attribute: item.productName
           operator: "!=="
-          value: ProductNames.PRODUCT_LABELS_ON_SHEET
+          value: "{ProductNames.PRODUCT_LABELS_ON_SHEET}"
   - keys: 0.35
     conditions:
       baseComplexityScore: 1

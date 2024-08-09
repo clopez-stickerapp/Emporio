@@ -16,8 +16,6 @@ export class SizeHelper
 	public minSize:          SizeConverter;
 	public maxSize:          SizeConverter;
 	public maxSizeOtherSide: SizeConverter;
-	public maxWidth:         SizeConverter;
-	public maxHeight:        SizeConverter;
 	public transform:        TransformHelper;
 	public deliverySheet:    DeliverySheetSizeHelper;
 
@@ -28,8 +26,6 @@ export class SizeHelper
 		this.minSize          = new SizeConverter( productItem );
 		this.maxSize          = new SizeConverter( productItem );
 		this.maxSizeOtherSide = new SizeConverter( productItem );
-		this.maxWidth         = new SizeConverter( productItem );
-		this.maxHeight        = new SizeConverter( productItem );
 	}
 
 	public toString(): string
@@ -38,7 +34,7 @@ export class SizeHelper
 	}
 
 	/**
-	 * Evaluates maxSize, minSize, maxSizeOtherSide, fixedSize, maxWidth and maxHeight.
+	 * Evaluates maxSize, minSize, maxSizeOtherSide, fixedSize.
 	 */
 	public evaluate(): void
 	{
@@ -46,8 +42,6 @@ export class SizeHelper
 		this.evaluateMinSize();
 		this.evaluateMaxSizeOtherSide();
 		this.evaluateFixedSize();
-		this.evaluateMaxWidth();
-		this.evaluateMaxHeight();
 	}
 
 	public getSizeOptions(): AttributeValueMulti
@@ -79,9 +73,9 @@ export class SizeHelper
 	 */
 	public extractMeassuresFromString( sizeString: string ): { width: number, height: number }
 	{
-		const [ width, height ] = sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g ) as string[];
+		const [ width, height ] = ( sizeString.match( /([\d]{1,3}\.?[\d]{1,3})|([\d]{1,3})/g )?.map( Number ) ?? [] ).slice( -2 );
 
-		return { width: parseFloat( width ), height: parseFloat( height ) };
+		return { width, height };
 	}
 
 	/**
@@ -292,30 +286,6 @@ export class SizeHelper
 		}
 
 		this.maxSizeOtherSide.mm = maxSizeOtherSide;
-	}
-
-	protected evaluateMaxWidth(): void
-	{
-		if ( this.hasMaxSizeOtherSide() && this.width.mm < this.height.mm )
-		{
-			this.maxWidth.mm = this.maxSizeOtherSide.mm;
-		}
-		else
-		{
-			this.maxWidth.mm = this.maxSize.mm;
-		}
-	}
-
-	protected evaluateMaxHeight(): void
-	{
-		if ( this.hasMaxSizeOtherSide() && this.width.mm >= this.height.mm )
-		{
-			this.maxHeight.mm = this.maxSizeOtherSide.mm;
-		}
-		else
-		{
-			this.maxHeight.mm = this.maxSize.mm;
-		}
 	}
 
 	protected sanitizeMeasureAttrName( attributeName: string ): string

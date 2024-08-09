@@ -61,8 +61,6 @@ rules:
       - min_size_mm
       - fixed_size
       - fixed_quantity
-      - material_color
-      - color_supported
       - market
       - delivery_roll_size_type
       - delivery_roll_size_mm

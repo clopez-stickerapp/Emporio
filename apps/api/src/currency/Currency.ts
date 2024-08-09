@@ -15,6 +15,23 @@ export function getCurrencies(): string[] {
 	return Object.values(Currencies);
 }
 
+const showDecimalsInShop: Record<string, boolean> = {
+	"us": true,
+	"se": false,
+	"dk": false,
+	"uk": true,
+	"de": true,
+	"no": false,
+	"nl": true,
+	"fi": true,
+	"it": true,
+	"fr": true,
+	"jp": false,
+	"es": true,
+	"pt": true,
+	"pl": true
+}
+
 const conversionRates: ConversionRates = {
 	[Currencies.USD]: 1,
     [Currencies.SEK]: 9.897,
@@ -154,4 +171,15 @@ export type FormatCurrencyOptions = {
 
 export function convertToMajorUnits(amount: number, currency: Currencies): number {
 	return amount / (10 ** getDefaultDecimals(currency));
+}
+
+/**
+ * @deprecated Only for backwards compatibility for giftcard prices
+ */
+export function convertToMinorUnits(amount: number, currency: Currencies): number {
+	return amount * (10 ** getDefaultDecimals(currency));
+}
+
+export function shouldShowDecimalsInShop(market: string): boolean {
+	return showDecimalsInShop[market];
 }

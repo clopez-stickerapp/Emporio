@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import fastify from 'fastify';
+import fastify, { FastifyError, FastifyRequest } from 'fastify';
 import AutoLoad from '@fastify/autoload';
 import formbody from '@fastify/formbody';
 import cors from '@fastify/cors';
@@ -19,6 +19,7 @@ declare module 'fastify' {
 async function buildServer() {
 	const server = fastify({
 		logger: getLoggerOptions(),
+		disableRequestLogging: true,
 	});
 
 	const service = services['stickerapp'];
@@ -37,6 +38,21 @@ async function buildServer() {
 				{ name: 'Other', description: 'Other endpoints' },
 			],
 		}
+	});
+
+	/**
+	 * @see https://fastify.dev/docs/latest/Reference/Hooks/#onsend
+	 * 
+	 * This doesn't actually change the payload, but it does log the payload in a more readable format 
+	 * */
+
+	server.addHook('onRequest', (request, reply, done) => {
+		server.log.debug({
+			message: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,
+			url: request.url,
+			query: parseQuery(request.query),
+		});
+		done()
 	});
 
 	await server.register(swaggerUi, {
@@ -65,14 +81,15 @@ async function buildServer() {
 	server.register(formbody);
 	server.register(cors);
 	server.setErrorHandler((error, request, reply) => {
-		if (error.code === 'FST_ERR_VALIDATION') {
+		if (error instanceof TypeError || error.code === 'FST_ERR_VALIDATION') {
+			server.log.warn(createErrorObject(error, request));
 			reply.status(400).send({ message: error.message });
 		} else if (error instanceof NotFoundError) {
 			reply.status(404).send('Resource not found');
 		} else if (error instanceof BadRequestError) {
 			reply.status(400).send({ message: error.message });
 		} else {
-			server.log.error(error);
+			server.log.error(createErrorObject(error, request));
 			reply.status(500).send({ message: 'Internal server error' });
 		}
 	});
@@ -102,6 +119,26 @@ async function buildServer() {
 	return server;
 }
 
+function createErrorObject(error: FastifyError, request: FastifyRequest) {
+	return {
+		message: error.message,
+		url: request.url,
+		query: parseQuery(request.query),
+	};
+}
+
+// This function is used to parse interesting data from the query to use in the logger
+function parseQuery(query: unknown){
+	let regularObj = Object.assign({attributes: ""}, query);
+	let result: Record<string, string> = {};
+
+	try {
+		result.attributes = JSON.parse(regularObj.attributes);
+	} catch (e) {}
+
+	return result;
+}
+
 function getLoggerOptions() {
 	const logDir = path.join('/var/log/emporio/'); //TODO: make this configurable
 	const logFile = path.join(logDir, 'api.log');
@@ -117,10 +154,22 @@ function getLoggerOptions() {
 	let useFileLogger = fs.existsSync(logDir) && hasFileAccess;
 
 	if(useFileLogger) {
-		return { level: process.env.LOG_LEVEL || 'info', file: logFile };
+		return { 
+			level: process.env.LOG_LEVEL || 'info', 
+			formatters: {
+				// This formatter makes the level output show as "info", rather than
+				// the level number as specified in https://github.com/pinojs/pino/blob/main/docs/api.md#levels
+				level: (label: string) => {
+					return { level: label }
+				}
+			},	
+			file: logFile
+		};
 	} else {
 		console.log('Unable to write to log file, using console logger');
-		return {};
+		return {
+			level: process.env.LOG_LEVEL || 'info', 
+		};
 	}
 }
 

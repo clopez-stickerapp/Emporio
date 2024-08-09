@@ -47,32 +47,20 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		for (const [provider, rate] of Object.entries(percentageRates)) {
 			if (rate.getType() === RateType.ADDITIVE) {
 				const resultRate = rate.getValue() * flatTotal;
-				// The minimum value is based on the total amount, the unit rate * amount of units,
-				// so that's the value we have to compare to the minimum rate to decide if it's over
-				// the threshold.
-				const resultTotalRate = resultRate * units;
 
-				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
-					// Since this function calculates the rate per unit, we can't simply add the total
-					// specified in the rate. We have to divide it by the total amount of units.
-					breakdown[provider] = rate.getMinValue() / units;
+				// If the result rate is less than the minimum value, use the minimum value
+				if (resultRate > 0 && resultRate < rate.getMinValue()) {
+					breakdown[provider] = rate.getMinValue();
 				} else {
 					breakdown[provider] = resultRate;
 				}
 			} else if (rate.getType() === RateType.MULTIPLICATIVE) {
-				//map to array
 				let compoundArray = Array.from(Object.values(breakdown));
 				const resultRate = rate.getValue() * compoundArray.reduce((a, b) => a + b, 0);
 
-				// The minimum value is based on the total amount, the unit rate * amount of units,
-				// so that's the value we have to compare to the minimum rate to decide if it's over
-				// the threshold.
-				const resultTotalRate = resultRate * units;
-
-				if (resultTotalRate > 0 && resultTotalRate < rate.getMinValue()) {
-					// Since this function calculates the rate per unit, we can't simply add the total
-					// specified in the rate. We have to divide it by the total amount of units.
-					breakdown[provider] = rate.getMinValue() / units;
+				// If the result rate is less than the minimum value, use the minimum value
+				if (resultRate > 0 && resultRate < rate.getMinValue()) {
+					breakdown[provider] = rate.getMinValue();
 				} else {
 					breakdown[provider] = resultRate;
 				}

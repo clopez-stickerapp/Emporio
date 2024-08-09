@@ -1,5 +1,5 @@
 import { fetchGiftcardData } from "$/Atlas";
-import { Currencies } from "$/currency/Currency";
+import { convertToMinorUnits, Currencies } from "$/currency/Currency";
 import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
 import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
@@ -118,11 +118,15 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 
 					const [giftcardSetPrice, giftcardHasDiscount, giftcardDiscount] = await fetchGiftcardData(giftcardId);
 
-					let giftcardPrice = giftcardSetPrice * 100;
+					let giftcardPrice = giftcardSetPrice;
 
 					if (giftcardHasDiscount) {
 						giftcardPrice = giftcardSetPrice - giftcardDiscount;
 					}
+
+					// The giftcard price is in major units, we need to convert it to minor units
+					// since it will be converted back to major units in the end
+					giftcardPrice = convertToMinorUnits(giftcardPrice, currency)
 
 					price = giftcardPrice;
 					break;

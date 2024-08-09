@@ -40,10 +40,10 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 270
+              value: "{MaxSizes.LASER}"
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 270
+              value: "{MaxSizes.LASER}"
 
   - keys:
       - backpaper_print

@@ -51,8 +51,6 @@ attributes:
   - figure_id
   - dynamic_string
   - market
-  - material_color
-  - color_supported
   - delivery_roll_size_mm
   - delivery_roll_size_type
   - delivery_roll_item_margin

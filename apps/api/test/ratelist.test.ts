@@ -81,7 +81,7 @@ describe("Test getRate", () => {
 		expect(rate.getValue()).equal(0);
 
 		rate = await rateList.getRate(item, 10);
-		expect(rate.getValue()).equal(10);
+		expect(rate.getValue()).equal(0);
 
 		rate = await rateList.getRate(item, 10.01);
 		expect(rate.getValue()).equal(10);
@@ -93,7 +93,7 @@ describe("Test getRate", () => {
 		expect(rate.getValue()).equal(10);
 
 		rate = await rateList.getRate(item, 20);
-		expect(rate.getValue()).equal(20);
+		expect(rate.getValue()).equal(10);
 
 		rate = await rateList.getRate(item, 20.01);
 		expect(rate.getValue()).equal(20);

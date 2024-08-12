@@ -5,6 +5,6 @@ export class TextAttribute extends ProductAttr {
 	public static readonly ALIAS = "text";
 
 	public constructor() {
-		super( ProductAttrValueType.STRING );
+		super( ProductAttrValueType.STRING, false, true );
 	}
 }

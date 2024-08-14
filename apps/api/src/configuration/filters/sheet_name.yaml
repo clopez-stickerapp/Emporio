@@ -16,8 +16,10 @@ rules:
       relationMode: AND
       conditions:
         - attribute: item.attributes.reseller
-          operator: ===
-          value: stickerapp
+          operator: NOT_IN
+          value:
+            - stickersthatstick
+            - stickit
         - attribute: item.attributes.laminate
           operator: ===
           value: epoxy

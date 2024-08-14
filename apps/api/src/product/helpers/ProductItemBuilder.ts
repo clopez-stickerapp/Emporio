@@ -15,7 +15,31 @@ export class ProductItemBuilder
 
 	public createItem( productFamily: ProductFamily, product: Product, map: TProductAttrMap, useFilters: boolean = true ): ProductItem 
 	{
-		const item          = new ProductItem( productFamily.getName(), product.getName() );
+		// TODO: transfer_decal - delivery sheet missing
+		// TODO: labels_on_roll - cut_direction missing
+		// TODO: hang_tag       - note missing (add as required?)
+		// TODO: front_adhesive - note missing (add as required?)
+		// FIXED: 3d_dome       - path instead of circle for sheet_name
+		// FIXED: laptop_skin   - glossy_uv instead of sandy for laminate
+		
+		const item = new ProductItem( productFamily.getName(), product.getName() );
+
+		this.attrComputer.evaluate( item, map, useFilters );
+
+		for ( let [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
+		{
+			const attr = productFamily.getAttribute( attrName );
+			
+			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
+			{
+				attrValue = attrValue[ 0 ];
+			}
+
+			if ( attr.canBe( attrValue ) ) 
+			{
+				item.setAttribute( attrName, attrValue );
+			}
+		}
 		
 		this.attrComputer.evaluate( item, map, useFilters );
 
@@ -31,30 +55,16 @@ export class ProductItemBuilder
 				{
 					attrValue = defaultValue;
 				}
-			}
 
-			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-			{
-				attrValue = attrValue[ 0 ];
-			}
-
-			if( attrValue !== undefined){
-				item.setAttribute( attrName, attrValue );
-			}			
-		}
-
-		for ( let [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
-		{
-			const attr = productFamily.getAttribute( attrName );
-
-			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-			{
-				attrValue = attrValue[ 0 ];
-			}
-
-			if ( !item.getAttribute( attrName ) && attr.canBe( attrValue ) ) 
-			{
-				item.setAttribute( attrName, attrValue );
+				if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
+				{
+					attrValue = attrValue[ 0 ];
+				}
+	
+				if ( attrValue !== undefined )
+				{
+					item.setAttribute( attrName, attrValue );
+				}
 			}
 		}
 

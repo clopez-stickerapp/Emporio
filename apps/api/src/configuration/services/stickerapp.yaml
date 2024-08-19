@@ -8,9 +8,13 @@ families:
   - promo
 #   - fee
 collections:
-  filter: sticker_wizard_filters
-  constraint: sticker_production
-  asset: sticker_assets
+  filter: 
+    - sticker_wizard_filters
+  constraint: 
+    - sticker_production
+    - promo_production
+  asset: 
+    - sticker_assets
 attributes:
   - sheet_type
   - sheet_name

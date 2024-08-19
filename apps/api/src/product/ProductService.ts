@@ -56,16 +56,16 @@ export class ProductService {
 		this.collections[type][collection.getCollectionName()] = collection
 	}
 
-	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> {
-		if (!this.collections[type]) {
-			throw new Error("Collection type not found with name " + type);
-		}
+	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> | null {
+		// if (!this.collections[type]) {
+		// 	throw new Error("Collection type not found with name " + type);
+		// }
 
-		if (!this.collections[type][collectionName]) {
-			throw new Error("Collection not found with name " + collectionName);
-		}
+		// if (!this.collections[type][collectionName]) {
+		// 	throw new Error("Collection not found with name " + collectionName);
+		// }
 
-		return this.collections[type][collectionName] as Collection<T>;
+		return this.collections?.[type]?.[collectionName] ?? null;
 	}
 
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
@@ -166,9 +166,9 @@ export class ProductService {
 
 			const attrValues: Record<string, string | null> = {};
 
-			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName()).get(attrName);
-			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName()).get(attrName);
-			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName()).get(attrName);
+			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName())?.get(attrName);
+			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName())?.get(attrName);
+			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName())?.get(attrName);
 			const attrValueOptions = family.getAllAttributeValueOptionsForProduct(product, attrName);
 
 			let icons: Record<string, string> = {};

@@ -64,6 +64,8 @@ export class ProductItemBuilder
 				if ( attrValue !== undefined )
 				{
 					item.setAttribute( attrName, attrValue );
+
+					this.attrComputer.evaluate( item, map, useFilters );
 				}
 			}
 		}

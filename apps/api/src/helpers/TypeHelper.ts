@@ -50,8 +50,8 @@ export const AttributesString = ( withProductionAttributes: boolean = false ) =>
 	examples: [ JSON.stringify( getAttributes( withProductionAttributes ) ) ]
 } );
 
-export const AttributeUID = () => Type.String( {
-	examples: service.getAttributes().map( attribute => attribute.getUID() ),
+export const AttributeName = () => Type.String( {
+	examples: service.getAttributes().map( attribute => attribute.getName() ),
 } )
 
 export const ProductItem = ( withProductionAttributes: boolean = false ) => Type.Object( {

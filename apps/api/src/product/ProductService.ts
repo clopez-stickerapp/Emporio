@@ -86,18 +86,18 @@ export class ProductService {
 
 	public registerAttribute(name: string, attr: ProductAttr): void {
 		if (this.attributes[name]) {
-			throw new Error("Attribute already exists with UID " + attr.getUID());
+			throw new Error("Attribute already exists with name " + attr.getName());
 		}
 
 		this.attributes[name] = attr;
 	}
 
-	public retrieveAttribute(attrUID: string): ProductAttr {
-		if (!this.attributes[attrUID]) {
-			throw new Error("Attribute not found with UID " + attrUID);
+	public retrieveAttribute(attrName: string): ProductAttr {
+		if (!this.attributes[attrName]) {
+			throw new Error("Attribute not found with name " + attrName);
 		}
 
-		return this.attributes[attrUID];
+		return this.attributes[attrName];
 	}
 
 	public registerProductFamily(name: string, instance: ProductFamily): void {

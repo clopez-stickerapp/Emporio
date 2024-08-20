@@ -186,7 +186,7 @@ export const getAttributesSchema = {
 	operationId: 'getAttributes',
 	tags: ['Product'],
 	querystring: Type.Object( {
-		name: Type.Optional( TypeHelper.AttributeUID() )
+		name: Type.Optional( TypeHelper.AttributeName() )
 	} ),
 	response: {
 		200: Type.Object( {

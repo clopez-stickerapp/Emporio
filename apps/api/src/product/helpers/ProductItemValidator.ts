@@ -51,7 +51,17 @@ export class ProductItemValidator
 
 		if ( !product.testAttributes( item.getAttributes() ) ) 
 		{
-			throw new ProductItemInvalidException( "Attributes don't match product recipe." );
+			let msg: string = "Attributes don't match product recipe - ";
+
+			for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
+			{
+				if ( attrValue !== item.getAttribute( attrName ) )
+				{
+					msg += `${ attrName } needs to be ${ attrValue }, `;
+				}
+			}
+
+			throw new ProductItemInvalidException( msg.slice( 0, -2 ) );
 		}
 
 		const assets = this.ps.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() )?.getAll();

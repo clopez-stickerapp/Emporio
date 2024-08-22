@@ -1,7 +1,7 @@
 name: feature
 rules:
   - keys:
-      - HANGTAGGING
+      - hangtagging
     conditions:
       relationMode: AND
       conditions:
@@ -11,7 +11,7 @@ rules:
             - "{LaminateValues.EPOXY}"
 
   - keys:
-      - BACKPAPER_PRINT
+      - backpaper_print
     conditions:
         relationMode: OR
         conditions:
@@ -20,7 +20,7 @@ rules:
             value: "{LaserMaterials}"
 
   - keys:
-      - EFFECT_LAYER
+      - effect_layer
     conditions:
         relationMode: AND
         conditions:
@@ -29,7 +29,7 @@ rules:
             value: "{EffectLayerMaterials}"
 
   - keys:
-      - TRANSFER_TAPE
+      - transfer_tape
     conditions:
         relationMode: AND
         conditions:

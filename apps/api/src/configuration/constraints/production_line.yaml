@@ -1,7 +1,7 @@
 name: production_line
 rules:
   - keys:
-      - DIGITAL
+      - digital
     conditions:
       relationMode: AND
       conditions:
@@ -17,7 +17,7 @@ rules:
             - "{ProductFeatures.BACKPAPER_PRINT}"
 
   - keys:
-      - LASER
+      - laser
     conditions:
       relationMode: AND
       baseComplexityScore: 2
@@ -45,7 +45,7 @@ rules:
               value: "{MaxSizes.LASER}"
 
   - keys:
-      - SPECIAL
+      - special
     conditions:
       relationMode: AND
       conditions:

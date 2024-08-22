@@ -1,7 +1,7 @@
 name: delivery_roll_size_type
 rules:
   - keys:
-      - MIN
+      - 32
     conditions:
       relationMode: OR
       conditions:
@@ -28,7 +28,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - SMALL
+      - 35
     conditions:
       relationMode: OR
       conditions:
@@ -55,7 +55,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - MEDIUM
+      - 56
     conditions:
       relationMode: OR
       conditions:
@@ -82,7 +82,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - LARGE
+      - 70
     conditions:
       relationMode: OR
       conditions:
@@ -109,7 +109,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - XLARGE
+      - 93
     conditions:
       relationMode: OR
       conditions:
@@ -136,7 +136,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - XXLARGE
+      - 140
     conditions:
       relationMode: OR
       conditions:
@@ -163,7 +163,7 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - MAX
+      - 280
     conditions:
       relationMode: OR
       conditions:

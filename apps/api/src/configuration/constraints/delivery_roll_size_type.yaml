@@ -3,7 +3,7 @@ rules:
   - keys:
       - 32
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -30,7 +30,7 @@ rules:
   - keys:
       - 35
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -57,7 +57,7 @@ rules:
   - keys:
       - 56
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -84,7 +84,7 @@ rules:
   - keys:
       - 70
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -111,7 +111,7 @@ rules:
   - keys:
       - 93
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -138,7 +138,7 @@ rules:
   - keys:
       - 140
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -165,7 +165,7 @@ rules:
   - keys:
       - 280
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:

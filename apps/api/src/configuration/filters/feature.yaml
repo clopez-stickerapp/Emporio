@@ -51,9 +51,9 @@ rules:
       relationMode: AND
       conditions:
         - attribute: item.attributes.material
-          operator: is_empty
+          operator: IS_EMPTY
         - attribute: item.attributes.laminate
-          operator: is_empty
+          operator: IS_EMPTY
 
   - keys:
       - transfer_tape

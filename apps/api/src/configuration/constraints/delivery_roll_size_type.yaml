@@ -90,7 +90,7 @@ rules:
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 64
+              value: 66
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -101,7 +101,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 64
+              value: 66
             - attribute: item.attributes.cut_direction
               operator: IN
               value:

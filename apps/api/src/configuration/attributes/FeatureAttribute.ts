@@ -3,10 +3,10 @@ import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { MaterialValues } from "./MaterialAttribute";
 
 export const ProductFeatures = {
-	BACKPAPER_PRINT: "backpaper_print",
 	HANGTAGGING: "hangtagging",
-	TRANSFER_TAPE: "transfer_tape",
+	BACKPAPER_PRINT: "backpaper_print",
 	EFFECT_LAYER: "effect_layer",
+	TRANSFER_TAPE: "transfer_tape",
 	VARIABLE_DATA: "variable_data",
 	MANUAL_BACKSCORE: "manual_backscore",
 	PACK_SET_AMOUNT: "pack_set_amount",

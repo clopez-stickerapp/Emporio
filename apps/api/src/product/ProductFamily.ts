@@ -203,8 +203,8 @@ export class ProductFamily {
 			else 
 			{
 				const attrValue = attribute.getAttrValue( attrRawValue );
-				
-				if ( attrValue ) 
+
+				if ( attrValue !== null ) 
 				{
 					attrValues.push( attrValue );
 				}

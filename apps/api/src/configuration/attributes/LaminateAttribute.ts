@@ -19,10 +19,6 @@ export const LaminateValues = {
 	GLOSSY_THIN_NO_UV: "glossy_thin_no_uv",
 }
 
-export const LaminatesOOS = [
-	LaminateValues.CRACKED_ICE,
-];
-
 export const LaminateAttribute = new ProductAttr({
 	name: "laminate",
 	type: ProductAttrValueType.STRING,

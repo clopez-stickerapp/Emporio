@@ -30,8 +30,6 @@ export const EffectLayerMaterials = [
 	MaterialValues.CLEAR_BACKSCORE,
 ]
 
-export const ProductFeaturesOOS: string[] = [];
-
 export const FeatureAttribute = new ProductAttr({
 	name: "feature",
 	type: ProductAttrValueType.STRING,

@@ -40,11 +40,6 @@ export const MaterialValues = {
 	SPECIAL: "special",
 };
 
-export const MaterialsOOS = [
-	MaterialValues.WARRANTY,
-	MaterialValues.CLEAR_BACKSCORE,
-];
-
 export const MaterialsLabelsOnRollValues = [
 	MaterialValues.WHITE_THIN,
 	MaterialValues.CLEAR_THIN,

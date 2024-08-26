@@ -1,5 +1,5 @@
-import { Attributes } from "./attribute/Attributes";
-import { AttributeValue } from "./attribute/AttributeValue";
+import { Attributes } from "./Attributes";
+import { AttributeValue } from "./AttributeValue";
 
 export class ProductItem {
 	private readonly productFamilyName: string;

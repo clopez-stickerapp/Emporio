@@ -1,5 +1,5 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export const EffectLayerFileAppIdAttribute = new ProductAttr({
 	name: "effect_layer_upload_fileapp_id",

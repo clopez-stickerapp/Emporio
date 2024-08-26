@@ -3,7 +3,7 @@ import { MaterialAttribute } from "$/configuration/attributes/MaterialAttribute"
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { Collection } from "$/product/Collection";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ProductAttrFilterMode } from "$/product/attribute/Filter/ProductAttrFilterMode";
+import { ProductAttrFilterMode } from "@stickerapp-org/nomisma";
 import { ProductAttrFilteredValues } from "$/product/attribute/Filter/ProductAttrFilteredValues";
 
 describe( 'Filter', () => {

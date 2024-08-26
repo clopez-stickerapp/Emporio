@@ -1,6 +1,6 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValue, AttributeValueMulti, AttributeValueSingle } from "../attribute/AttributeValue";
+import { Attributes } from "Attributes";
 import { ProductAttrComputer } from "./ProductAttrComputer";
+import { AttributeValue, AttributeValueMulti, AttributeValueSingle } from "AttributeValue";
 
 export class CherryPickHelper
 {

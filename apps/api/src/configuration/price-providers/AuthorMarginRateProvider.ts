@@ -1,10 +1,9 @@
-import { Condition } from "$/conditions/Condition";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate, RateType } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
 import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
-import { ProductItem } from "$/product/ProductItem";
 import { ProductNames } from "$data/ConditionValueResolver";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { PriceMarginPercentageAttribute } from "../attributes/PriceMarginPercentageAttribute";
 
 export class AuthorMarginRateProvider extends RateProvider{

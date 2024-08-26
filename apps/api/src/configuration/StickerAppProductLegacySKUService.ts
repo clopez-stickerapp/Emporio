@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
-import { ProductItem } from "$/product/ProductItem";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 import { ProductNames } from "$data/ConditionValueResolver";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { LaminateValues } from "./attributes/LaminateAttribute";
 import { MaterialValues } from "./attributes/MaterialAttribute";
 

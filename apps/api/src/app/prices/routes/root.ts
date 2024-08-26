@@ -4,8 +4,8 @@ import { getPriceListSchema, getPricesSchema } from '../schema';
 import { formatCurrency, shouldShowDecimalsInShop } from '$/currency/Currency';
 import { getLocale } from '$/localization/Locale';
 import { formatPrice } from '$/prices/Price';
-import { ProductItem } from '$/product/ProductItem';
 import { ProductNames } from '$data/ConditionValueResolver';
+import { ProductItem } from '@stickerapp-org/nomisma';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();

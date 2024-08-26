@@ -1,5 +1,5 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export const SheetTypeSaveAsAttribute = new ProductAttr({
 	name: "sheet_type_save_as",

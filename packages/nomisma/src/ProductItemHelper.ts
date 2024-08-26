@@ -1,4 +1,4 @@
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "./ProductItem";
 import { MultiValueHelper } from "./MultiValueHelper";
 
 export class ProductItemHelper

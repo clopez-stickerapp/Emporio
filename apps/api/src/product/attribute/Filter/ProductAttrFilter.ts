@@ -1,7 +1,6 @@
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { FilterConfig } from "$/configuration/interface/FilterConfig";
-import { AttributeValueMulti } from "../AttributeValue";
-import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
+import { AttributeValueMulti, ProductAttrFilterMode } from "@stickerapp-org/nomisma";
 import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
 
 /**

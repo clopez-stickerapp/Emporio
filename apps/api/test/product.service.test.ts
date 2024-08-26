@@ -2,11 +2,11 @@ import { CollectionType } from "$/configuration/interface/CollectionConfig";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { Collection } from "$/product/Collection";
 import { ProductFamily } from "$/product/ProductFamily";
 import { ProductService } from "$/product/ProductService";
 import { UnitTypeNames } from "$/product/unit-type/AllUnitTypes";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 class DummyPriceProvider extends ProductPriceProvider {
 	public async calculatePrice(): Promise<any> {

@@ -1,7 +1,7 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
 import { getItemWithProductionSettingsSchema, getItemWithoutProductionSettingsSchema } from '../schema';
-import { ProductItem } from '$/product/ProductItem';
+import { ProductItem } from '@stickerapp-org/nomisma';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();

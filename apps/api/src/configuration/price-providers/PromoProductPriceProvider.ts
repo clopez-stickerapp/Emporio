@@ -3,9 +3,9 @@ import { convertToMinorUnits, Currencies } from "$/currency/Currency";
 import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
 import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { ProductItem } from "$/product/ProductItem";
 import { FigureAttribute } from "../attributes/FigureAttribute";
 import { PromoProductFamily } from "../Family/PromoProductFamily";
+import { ProductItem } from "@stickerapp-org/nomisma";
 
 export class PromoProductPriceProvider extends ProductPriceProvider {
 	public static readonly NAME = "promo_price_provider";

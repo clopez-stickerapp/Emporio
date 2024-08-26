@@ -1,6 +1,6 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValueMulti, AttributeValue } from "../attribute/AttributeValue";
-import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode";
+import { Attributes } from "./Attributes";
+import { AttributeValueMulti, AttributeValue } from "./AttributeValue";
+import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
 import { ProductAttributeFilter, TProductAttrMap, TProductAttrMapValue } from "./ProductAttrMap";
 
 type Constraints = Record<string, string[]>;

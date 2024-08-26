@@ -1,7 +1,5 @@
 import { FeatureAttribute, ProductFeatures } from "$/configuration/attributes/FeatureAttribute";
-import { ProductItem } from "../ProductItem";
-import { MultiValueHelper } from "./MultiValueHelper";
-import { ProductAttrComputer } from "./ProductAttrComputer";
+import { ProductAttrComputer, ProductItem, MultiValueHelper } from "@stickerapp-org/nomisma";
 
 export class FeatureHelper extends MultiValueHelper
 {

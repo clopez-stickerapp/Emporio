@@ -8,16 +8,13 @@ import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
 import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
 import { ProductionHelper } from "./product/helpers/ProductionHelper";
-import { SizeHelper } from "./product/helpers/SizeHelper";
-import { ProductItem } from "./product/ProductItem";
 import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
-import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "./configuration/interface/CollectionConfig";
-import { ProductAttrComputer } from "./product/helpers/ProductAttrComputer";
+import { ProductAttrComputer, SizeHelper, ProductItem, AttributeValueSingle } from "@stickerapp-org/nomisma";
 
 export const PriceDTO = Type.Object({
 	price: Price,

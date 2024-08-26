@@ -5,7 +5,7 @@ import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { Rate } from "$/prices/Rate";
 import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPriceProvider";
 import { RateProvider } from "$/prices/RateProvider";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { beforeEach, describe, expect, test } from "vitest";
 
 describe("calculateBreakdownSum", () => {

@@ -1,6 +1,6 @@
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
-import { Attributes } from "$/product/attribute/Attributes";
+import { Attributes } from "@stickerapp-org/nomisma";
 import { Condition } from "./Condition";
 import { ConditionRelations } from "./ConditionRelations";
 import { ConditionValue } from "./ConditionValue";

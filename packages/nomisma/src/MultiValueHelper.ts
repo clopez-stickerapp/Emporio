@@ -1,5 +1,5 @@
-import { ProductItem } from "../ProductItem";
-import { AttributeValueSingle, AttributeValueMulti } from "../attribute/AttributeValue";
+import { ProductItem } from "./ProductItem";
+import { AttributeValueSingle, AttributeValueMulti } from "./AttributeValue";
 
 export class MultiValueHelper
 {

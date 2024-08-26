@@ -1,6 +1,6 @@
 import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
 import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { Rate } from "./Rate";
 
 export enum RateProviderType {

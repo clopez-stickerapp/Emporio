@@ -1,8 +1,6 @@
-import { ProductItem } from "../ProductItem";
-import { ProductAttrComputer } from "./ProductAttrComputer";
 import { ProductFamily } from "../ProductFamily";
-import { TProductAttrMap } from "./ProductAttrMap";
 import { Product } from "../Product";
+import { ProductItem, TProductAttrMap, ProductAttrComputer } from "@stickerapp-org/nomisma";
 
 export class ProductItemBuilder 
 {

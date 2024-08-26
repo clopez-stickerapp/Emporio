@@ -1,4 +1,4 @@
-import { ProductAttrComputer } from "$/product/helpers/ProductAttrComputer";
+import { ProductAttrComputer } from "@stickerapp-org/nomisma";
 import { ProductItemBuilder } from "$/product/helpers/ProductItemBuilder";
 import { CrustAttribute, CrustValues } from "./Pizzeria/Attributes/CrustAttribute";
 import { CuisineAttribute, CuisineValues } from "./Pizzeria/Attributes/CuisineAttribute";

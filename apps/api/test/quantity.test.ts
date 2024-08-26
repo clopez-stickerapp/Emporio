@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { QuantityList } from "$/prices/QuantityList";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { beforeEach, describe, expect, test } from "vitest";
 
 let quantityList: QuantityList;

@@ -1,8 +1,8 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { Product } from "$/product/Product";
 import { ProductFamily } from "$/product/ProductFamily";
 import { UnitTypeNames } from "$/product/unit-type/AllUnitTypes";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 let family: ProductFamily;
 

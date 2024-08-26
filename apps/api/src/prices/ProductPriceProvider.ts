@@ -1,5 +1,5 @@
 import { Currencies } from "$/currency/Currency";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { Price } from "./Price";
 
 export abstract class ProductPriceProvider {

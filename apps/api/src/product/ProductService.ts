@@ -6,7 +6,7 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { TProductAttrMap } from "./helpers/ProductAttrMap";
+import { TProductAttrMap } from "@stickerapp-org/nomisma";
 import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";

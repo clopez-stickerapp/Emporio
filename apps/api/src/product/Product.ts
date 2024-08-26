@@ -1,8 +1,7 @@
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionValue } from "$/conditions/ConditionValue";
-import { AttributeValue } from "./attribute/AttributeValue";
-import { Attributes } from "./attribute/Attributes";
+import { AttributeValue, Attributes } from "@stickerapp-org/nomisma";
 import { ProductConfig } from "$/configuration/interface/ProductConfig";
 import { ProductAttr } from "./attribute/ProductAttr";
 

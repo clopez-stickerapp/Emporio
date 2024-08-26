@@ -1,6 +1,6 @@
-import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode";
-import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
-import { AttributeValueMulti } from "../attribute/AttributeValue";
+import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
+import { ProductAttrValueType } from "./ProductAttrValueType";
+import { AttributeValueMulti } from "./AttributeValue";
 
 export type TProductAttrMapValue = {
 	alias: string,

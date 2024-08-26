@@ -1,5 +1,5 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 
 let value: ProductDynamicValue;

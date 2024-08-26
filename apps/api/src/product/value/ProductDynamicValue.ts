@@ -1,7 +1,7 @@
 import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { DynamicValueConfig } from "$/configuration/interface/DynamicValueConfig";
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { ProductConditionedValue } from "./ProductConditionedValue";
 
 export class ProductDynamicValue {

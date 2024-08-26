@@ -1,8 +1,6 @@
 import { ProductService } from "../ProductService";
-import { ProductItem } from "../ProductItem";
+import { ProductItem, ProductAttrComputer, ProductItemHelper } from "@stickerapp-org/nomisma";
 import { FeatureHelper } from "./FeatureHelper";
-import { ProductAttrComputer } from "./ProductAttrComputer";
-import { ProductItemHelper } from "./ProductItemHelper";
 import { ProductionLineAttribute, ProductionLines } from "$/configuration/attributes/ProductionLineAttribute";
 import { CutDirectionAttribute, CutDirectionAttributeValues } from "$/configuration/attributes/CutDirectionAttribute";
 import { DeliveryAttribute, DeliveryTypes } from "$/configuration/attributes/DeliveryAttribute";

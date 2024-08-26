@@ -1,6 +1,5 @@
 import { FixedQuantityAttribute } from "$/configuration/attributes/FixedQuantityAttribute";
-import { ProductItem } from "../ProductItem";
-import { ProductAttrComputer } from "./ProductAttrComputer";
+import { ProductAttrComputer, ProductItem } from "@stickerapp-org/nomisma";
 
 export class FixedQuantityHelper
 {

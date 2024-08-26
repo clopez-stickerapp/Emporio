@@ -1,10 +1,10 @@
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "./ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { DeliverySheetSizeHelper } from "./DeliverySheetSizeHelper";
 import { TransformHelper } from "./TransformHelper";
-import { convertCMToMM, convertInchesToMM, formatMM } from "../../helpers/UnitConverter";
+import { convertCMToMM, convertInchesToMM, formatMM } from "./UnitConverter";
 import { SizeConverter } from "./SizeConverter";
-import { AttributeValueMulti } from "../attribute/AttributeValue";
+import { AttributeValueMulti } from "./AttributeValue";
 
 export class SizeHelper
 {

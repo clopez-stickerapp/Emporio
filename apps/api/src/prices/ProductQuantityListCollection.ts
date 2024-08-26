@@ -1,4 +1,4 @@
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { QuantityList } from "./QuantityList";
 
 export class ProductQuantityListCollection {

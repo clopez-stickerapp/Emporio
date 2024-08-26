@@ -15,8 +15,8 @@ import {
 	isAttributeAvailableSchema, 
 	isAttributeRequiredSchema
 } from '../schema';
-import { ProductItem } from '$/product/ProductItem';
 import { ProductItemBuilder } from '$/product/helpers/ProductItemBuilder';
+import { ProductItem } from '@stickerapp-org/nomisma';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();

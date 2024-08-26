@@ -1,7 +1,7 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "../attribute/AttributeValue";
-import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
-import { ProductItem } from "../ProductItem";
+import { Attributes } from "./Attributes";
+import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "./AttributeValue";
+import { ProductAttrValueType } from "./ProductAttrValueType";
+import { ProductItem } from "./ProductItem";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
 import { TProductAttrMap } from "./ProductAttrMap";
 

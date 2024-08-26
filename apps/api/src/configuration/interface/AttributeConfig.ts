@@ -1,5 +1,4 @@
-import { AttributeValueSingle } from "$/product/attribute/AttributeValue";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { ProductAttrValueType, AttributeValueSingle } from "@stickerapp-org/nomisma";
 import { NamedConfig } from "../../data/NamedConfig";
 
 export interface AttributeConfig extends NamedConfig{

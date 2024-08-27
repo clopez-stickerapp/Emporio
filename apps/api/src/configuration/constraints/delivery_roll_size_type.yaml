@@ -1,9 +1,9 @@
 name: delivery_roll_size_type
 rules:
   - keys:
-      - MIN
+      - 32
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -28,9 +28,9 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - SMALL
+      - 35
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -55,9 +55,9 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - MEDIUM
+      - 56
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -82,15 +82,15 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - LARGE
+      - 70
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
             - attribute: item.attributes.height_mm
               operator: <=
-              value: 64
+              value: 66
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -101,7 +101,7 @@ rules:
           conditions:
             - attribute: item.attributes.width_mm
               operator: <=
-              value: 64
+              value: 66
             - attribute: item.attributes.cut_direction
               operator: IN
               value:
@@ -109,9 +109,9 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - XLARGE
+      - 93
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -136,9 +136,9 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - XXLARGE
+      - 140
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:
@@ -163,9 +163,9 @@ rules:
                 - "{CutDirectionAttributeValues.RIGHT_FIRST}"
 
   - keys:
-      - MAX
+      - 280
     conditions:
-      relationMode: OR
+      relationMode: AND
       conditions:
         - relationMode: OR
           conditions:

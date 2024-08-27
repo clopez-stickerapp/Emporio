@@ -143,8 +143,8 @@ export default async function ( fastify: FastifyInstance ) {
 		const attrs = request.query.name ? [ emporio.getProductService().retrieveAttribute( request.query.name ) ] : emporio.getProductService().getAttributes();
 
 		for ( const attribute of attrs ) {
-			attributes[ attribute.getUID() ] = {
-				'name': attribute.getUID(),
+			attributes[ attribute.getName() ] = {
+				'name': attribute.getName(),
 				'values': attribute.getValues(),
 				'dynamic': attribute.isDynamicValue(),
 				'multi': attribute.isMultiValue(),

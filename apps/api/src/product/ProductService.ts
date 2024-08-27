@@ -6,7 +6,7 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { TProductAttrMap } from "@stickerapp-org/nomisma";
+import { AttributesMap } from "@stickerapp-org/nomisma";
 import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
@@ -56,16 +56,16 @@ export class ProductService {
 		this.collections[type][collection.getCollectionName()] = collection
 	}
 
-	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> {
-		if (!this.collections[type]) {
-			throw new Error("Collection type not found with name " + type);
-		}
+	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> | null {
+		// if (!this.collections[type]) {
+		// 	throw new Error("Collection type not found with name " + type);
+		// }
 
-		if (!this.collections[type][collectionName]) {
-			throw new Error("Collection not found with name " + collectionName);
-		}
+		// if (!this.collections[type][collectionName]) {
+		// 	throw new Error("Collection not found with name " + collectionName);
+		// }
 
-		return this.collections[type][collectionName] as Collection<T>;
+		return this.collections?.[type]?.[collectionName] ?? null;
 	}
 
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
@@ -86,18 +86,18 @@ export class ProductService {
 
 	public registerAttribute(name: string, attr: ProductAttr): void {
 		if (this.attributes[name]) {
-			throw new Error("Attribute already exists with UID " + attr.getUID());
+			throw new Error("Attribute already exists with name " + attr.getName());
 		}
 
 		this.attributes[name] = attr;
 	}
 
-	public retrieveAttribute(attrUID: string): ProductAttr {
-		if (!this.attributes[attrUID]) {
-			throw new Error("Attribute not found with UID " + attrUID);
+	public retrieveAttribute(attrName: string): ProductAttr {
+		if (!this.attributes[attrName]) {
+			throw new Error("Attribute not found with name " + attrName);
 		}
 
-		return this.attributes[attrUID];
+		return this.attributes[attrName];
 	}
 
 	public registerProductFamily(name: string, instance: ProductFamily): void {
@@ -156,8 +156,8 @@ export class ProductService {
 		return Object.values(this.productFamilies);
 	}
 
-	public getProductMap(familyName: string, productName: string): TProductAttrMap{
-		let map: TProductAttrMap = {};
+	public getProductMap(familyName: string, productName: string): AttributesMap {
+		let map: AttributesMap = {};
 
 		const product = this.retrieveProductFamily(familyName).getProduct(productName);
 
@@ -166,9 +166,9 @@ export class ProductService {
 
 			const attrValues: Record<string, string | null> = {};
 
-			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName()).get(attrName);
-			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName()).get(attrName);
-			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName()).get(attrName);
+			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName())?.get(attrName);
+			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName())?.get(attrName);
+			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName())?.get(attrName);
 			const attrValueOptions = family.getAllAttributeValueOptionsForProduct(product, attrName);
 
 			let icons: Record<string, string> = {};

@@ -269,9 +269,11 @@ class ServiceLoader {
 		}
 
 		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
-			for (const [type, collection] of Object.entries(serviceConfig.collections)) {
-				console.debug( `Registering collection '${collection}' of type '${type}' for service '${serviceName}'...` );
-				this.services[ serviceName ].registerCollection( this.collections[ collection ] );
+			for (const [type, collectionNames] of Object.entries(serviceConfig.collections)) {
+				for ( const collectionName of collectionNames ) {
+					console.debug( `Registering collection '${collectionName}' of type '${type}' for service '${serviceName}'...` );
+					this.services[ serviceName ].registerCollection( this.collections[ collectionName ] );
+				}
 			}
 		}
 	}

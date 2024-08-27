@@ -219,6 +219,10 @@ export class Emporio {
 
 		const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() );
 
+		if ( !assetCollection ) {
+			return true;
+		}
+
 		for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) {
 			const values = Array.isArray( attrValue ) ? attrValue : [ attrValue ];
 			const attrAsset = assetCollection.get( attrName );

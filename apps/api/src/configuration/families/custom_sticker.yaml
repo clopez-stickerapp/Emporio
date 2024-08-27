@@ -2,10 +2,11 @@ name: custom_sticker
 unitType: square_meter
 products:
   - die_cut
-  - single_on_sheet
+  - sheet_legacy
   - sheet
   - sheet_kiss_cut
-  - sheet_legacy
+  - labels_on_sheet
+  - labels_on_roll
   - hang_tag
   - 3d_dome
   - front_adhesive
@@ -15,11 +16,10 @@ products:
   - floor
   - laptop_skin
   - double_sided
-  - labels_on_sheet
-  - labels_on_roll
   - library_design
   - transfer_decal
   - window
+  - single_on_sheet
 rules:
   attributes:
     required:

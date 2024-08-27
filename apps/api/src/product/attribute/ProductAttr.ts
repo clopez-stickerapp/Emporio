@@ -58,7 +58,7 @@ export class ProductAttr {
 		} else {
 			if ( !this.getAttrValue( value as AttributeValueSingle ) && !this.isDynamicValue() ) {
 				if ( typeof value === "boolean" && this.getValueType() !== ProductAttrValueType.BOOL ) {
-					throw new ProductAttrValueInvalidException( `Product attr value not found: ${ value } (for ${ this.getUID() })` );
+					throw new ProductAttrValueInvalidException( `Product attr value not found: ${ value } (for ${ this.getName() })` );
 				}
 			}
 
@@ -106,7 +106,7 @@ export class ProductAttr {
 		}
 
 		if ( !result ) {
-			throw new ProductAttrValueInvalidException( `Product attr value type is not valid. ${ value } should be ${ this.valueType } (${ this.getUID() })` );
+			throw new ProductAttrValueInvalidException( `Product attr value type is not valid. ${ value } should be ${ this.valueType } (${ this.getName() })` );
 		}
 
 		return result;
@@ -134,9 +134,5 @@ export class ProductAttr {
 
 	public getValueType(): ProductAttrValueType {
 		return this.valueType;
-	}
-
-	public getUID(): string {
-		return this.constructor.name;
 	}
 }

@@ -5,5 +5,5 @@ export interface ServiceConfig extends NamedConfig {
 	families?: string[];
 	attributes?: string[];
 	pricing_models?: string[];
-	collections: Record<CollectionType, string>;
+	collections: Record<CollectionType, string[]>;
 }

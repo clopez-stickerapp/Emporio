@@ -1,7 +1,7 @@
 name: cut_direction
 rules:
   - keys:
-      - AUTO
+      - auto
     conditions:
       relationMode: AND
       conditions:
@@ -11,8 +11,8 @@ rules:
             - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
 
   - keys:
-      - TOP_FIRST
-      - BOTTOM_FIRST
+      - top_first
+      - bottom_first
     conditions:
       relationMode: OR
       conditions:
@@ -25,8 +25,8 @@ rules:
             - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
 
   - keys:
-      - LEFT_FIRST
-      - RIGHT_FIRST
+      - left_first
+      - right_first
     conditions:
       relationMode: OR
       conditions:

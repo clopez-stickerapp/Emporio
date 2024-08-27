@@ -21,7 +21,7 @@ describe("ProductService", () => {
 	});
 
 	test("collection", () => {
-		expect(() => service.retrieveCollection(CollectionType.Filter, "foo")).toThrowError(Error);
+		expect(service.retrieveCollection(CollectionType.Filter, "foo")).toBeNull();
 	
 		service.registerCollection(new Collection({name: "foo", values: [], type: CollectionType.Filter}));
 		

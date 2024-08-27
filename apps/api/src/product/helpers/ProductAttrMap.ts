@@ -3,7 +3,7 @@ import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { AttributeValueMulti } from "../attribute/AttributeValue";
 import { Filter } from "../attribute/Filter/ProductAttrFilter";
 
-export type MapValue = {
+export type AttributeMap = {
 	alias: string,
 	isDynamicValue: boolean,
 	isMultiValue: boolean,
@@ -16,4 +16,4 @@ export type MapValue = {
 	outOfStockValues: AttributeValueMulti
 }
 
-export type Map = Record<string, MapValue>
+export type AttributesMap = Record<string, AttributeMap>

@@ -1,7 +1,7 @@
 import { ProductItem } from "../ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { ProductFamily } from "../ProductFamily";
-import { Map } from "./ProductAttrMap";
+import { AttributesMap } from "./ProductAttrMap";
 import { Product } from "../Product";
 
 export class ProductItemBuilder 
@@ -13,15 +13,8 @@ export class ProductItemBuilder
 		this.attrComputer = new ProductAttrComputer();
 	}
 
-	public createItem( productFamily: ProductFamily, product: Product, map: Map, useFilters: boolean = true ): ProductItem 
+	public createItem( productFamily: ProductFamily, product: Product, map: AttributesMap, useFilters: boolean = true ): ProductItem 
 	{
-		// TODO: transfer_decal - delivery sheet missing
-		// TODO: labels_on_roll - cut_direction missing
-		// TODO: hang_tag       - note missing (add as required?)
-		// TODO: front_adhesive - note missing (add as required?)
-		// FIXED: 3d_dome       - path instead of circle for sheet_name
-		// FIXED: laptop_skin   - glossy_uv instead of sandy for laminate
-		
 		const item = new ProductItem( productFamily.getName(), product.getName() );
 
 		this.attrComputer.evaluate( item, map, useFilters );

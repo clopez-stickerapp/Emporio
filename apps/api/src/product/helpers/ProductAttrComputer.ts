@@ -3,11 +3,11 @@ import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "../at
 import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { ProductItem } from "../ProductItem";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
-import { Map } from "./ProductAttrMap";
+import { AttributesMap } from "./ProductAttrMap";
 
 export class ProductAttrComputer
 {
-	protected attributes:               Map                             = {};
+	protected attributes:               AttributesMap                   = {};
 	protected attributesFiltersMatched: Attributes<number>              = {};
 	protected attributesPreferred:      Attributes                      = {};
 	protected attributesOutOfStock:     Attributes<AttributeValueMulti> = {};
@@ -22,7 +22,7 @@ export class ProductAttrComputer
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem, map: Map, useFilters: boolean = true ): void 
+	public evaluate( productItem: ProductItem, map: AttributesMap, useFilters: boolean = true ): void 
 	{
 		this.attributes = map;
 		this.attrEvaluator.reset( map );

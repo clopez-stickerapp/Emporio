@@ -1,7 +1,8 @@
 import { Attributes } from "../attribute/Attributes";
 import { AttributeValueMulti, AttributeValue } from "../attribute/AttributeValue";
+import { Filter } from "../attribute/Filter/ProductAttrFilter";
 import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode";
-import { ProductAttributeFilter, TProductAttrMap, TProductAttrMapValue } from "./ProductAttrMap";
+import { Map, MapValue } from "./ProductAttrMap";
 
 type Constraints = Record<string, string[]>;
 
@@ -10,13 +11,13 @@ export class ProductAttrConditionEvaluator
 	public debugEnabled: boolean  = false;
 	public debugList:    string[] = [];
 
-	protected attributes:         TProductAttrMap             = {};
+	protected attributes:         Map                         = {};
 	protected ignoredConstraints: Constraints                 = {};
 	protected debugConstraints:   Record<string, Constraints> = {};
 	protected regex:              RegExp                      = /[$][{].*?[}]/g;
 	protected logEnabled:         boolean                     = false;
 
-	public reset( attributes: TProductAttrMap ): void
+	public reset( attributes: Map ): void
 	{
 		this.attributes = attributes;
 	}
@@ -90,12 +91,12 @@ export class ProductAttrConditionEvaluator
 		return false;
 	}
 
-	public filter( productItemAsOneDimensionalObject: Attributes, attrName: string ): [ AttributeValueMulti, ProductAttributeFilter[] ]
+	public filter( productItemAsOneDimensionalObject: Attributes, attrName: string ): [ AttributeValueMulti, Filter[] ]
 	{
 		const attr = this.getAttribute( attrName );
 
 		let values:  AttributeValueMulti      = [];
-		let filters: ProductAttributeFilter[] = [];
+		let filters: Filter[] = [];
 		
 		if ( attr?.filters )
 		{
@@ -419,7 +420,7 @@ export class ProductAttrConditionEvaluator
 		return null;
 	}
 
-	public getAttribute( attributeName: string ): TProductAttrMapValue | null
+	public getAttribute( attributeName: string ): MapValue | null
 	{
 		if( this.attributes.hasOwnProperty( attributeName ) )
 		{

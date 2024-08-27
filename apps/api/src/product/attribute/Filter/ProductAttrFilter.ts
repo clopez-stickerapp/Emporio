@@ -44,3 +44,9 @@ export class ProductAttrFilter {
 		return this.attributeName;
 	}
 }
+
+export type Filter = {
+	values: AttributeValueMulti;
+	conditions: string;
+	conditionsComplexityScore: number;
+}

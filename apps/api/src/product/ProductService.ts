@@ -6,7 +6,7 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { TProductAttrMap } from "./helpers/ProductAttrMap";
+import { Map } from "./helpers/ProductAttrMap";
 import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
@@ -156,8 +156,8 @@ export class ProductService {
 		return Object.values(this.productFamilies);
 	}
 
-	public getProductMap(familyName: string, productName: string): TProductAttrMap{
-		let map: TProductAttrMap = {};
+	public getProductMap(familyName: string, productName: string): Map {
+		let map: Map = {};
 
 		const product = this.retrieveProductFamily(familyName).getProduct(productName);
 

@@ -1,8 +1,9 @@
 import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode";
 import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { AttributeValueMulti } from "../attribute/AttributeValue";
+import { Filter } from "../attribute/Filter/ProductAttrFilter";
 
-export type TProductAttrMapValue = {
+export type MapValue = {
 	alias: string,
 	isDynamicValue: boolean,
 	isMultiValue: boolean,
@@ -10,15 +11,9 @@ export type TProductAttrMapValue = {
 	isRequired: boolean,
 	valuesAndConstraints: Record<string, string | null>,
 	icons: Record<string, string>,
-	filters: ProductAttributeFilter[],
+	filters: Filter[],
 	filterMode: ProductAttrFilterMode | null,
 	outOfStockValues: AttributeValueMulti
 }
 
-export type TProductAttrMap = Record<string, TProductAttrMapValue>
-
-export type ProductAttributeFilter = {
-	values: AttributeValueMulti;
-	conditions: string;
-	conditionsComplexityScore: number;
-}
+export type Map = Record<string, MapValue>

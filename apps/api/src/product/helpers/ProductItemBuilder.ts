@@ -1,7 +1,7 @@
 import { ProductItem } from "../ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { ProductFamily } from "../ProductFamily";
-import { TProductAttrMap } from "./ProductAttrMap";
+import { Map } from "./ProductAttrMap";
 import { Product } from "../Product";
 
 export class ProductItemBuilder 
@@ -13,7 +13,7 @@ export class ProductItemBuilder
 		this.attrComputer = new ProductAttrComputer();
 	}
 
-	public createItem( productFamily: ProductFamily, product: Product, map: TProductAttrMap, useFilters: boolean = true ): ProductItem 
+	public createItem( productFamily: ProductFamily, product: Product, map: Map, useFilters: boolean = true ): ProductItem 
 	{
 		// TODO: transfer_decal - delivery sheet missing
 		// TODO: labels_on_roll - cut_direction missing

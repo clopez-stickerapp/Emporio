@@ -1,0 +1,63 @@
+name: Publish package to GitHub Packages
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    name: Init workflow
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write
+    outputs:
+      package_version: ${{ steps.version.outputs.package_version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: packages/nomisma
+      - name: Check version
+        id: version
+        run: |
+          registry_version=$(npm view @stickerapp-org/nomisma version)
+          package_version=$(npm pkg get version | tr -d '"')
+          echo "package_version=$package_version" >> $GITHUB_OUTPUT
+
+          # Compare the versions
+          if [ "$registry_version" = "$package_version" ]; then
+            echo "The version you are trying to publish already exists. Bump the version and publish again. Exiting workflow."
+            exit 0
+          fi
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@stickerapp-org'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build javascript
+        run: npm build
+      - name: Publish package
+        run: |
+          cd dist
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  notify-result:
+    name: Notify result
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: [publish]
+    steps:
+      - name: Notify slack
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ needs.publish.result }}
+          notification_title: "*Nomisma npm package publish*"
+          message_format: |
+            {emoji} Nomisma npm package publish {status_message} in <{repo_url}|{repo}@{branch}>
+            *Version:* ${{ needs.publish.outputs.package_version }}
+          footer: "<{run_url}|View Run>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

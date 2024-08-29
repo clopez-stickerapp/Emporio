@@ -17,8 +17,11 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/stickerapp-org/commerce"
+		"url": "git+https://github.com/stickerapp-org/commerce.git"
 	},
+	"files": [
+		"dist"
+	],
 	"types": "./dist/esm/index.d.ts",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.mjs",

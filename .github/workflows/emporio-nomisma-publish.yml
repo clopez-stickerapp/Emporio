@@ -40,13 +40,12 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@stickerapp-org'
       - name: Install dependencies
-        run: cd packages/nomisma && npm ci
+        run: npm ci
       - name: Build javascript
-        run: npm run build
+        run: npm run build -w @stickerapp-org/nomisma
       - name: Publish package
         run: |
-          cd dist
-          npm publish
+          npm publish -w @stickerapp-org/nomisma
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   notify-result:

@@ -2,7 +2,6 @@ import { Type, Static } from "@sinclair/typebox";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
 import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
-import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
@@ -141,7 +140,7 @@ export class Emporio {
 	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem );
 		productionHelper.setSettingsAutomatically();
 		return productItem;
 	}
@@ -149,7 +148,7 @@ export class Emporio {
 	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;
 	}

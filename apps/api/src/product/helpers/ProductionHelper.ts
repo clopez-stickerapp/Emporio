@@ -1,21 +1,16 @@
 import { ProductService } from "../ProductService";
 import { ProductItem, ProductAttrComputer, ProductItemHelper } from "@stickerapp-org/nomisma";
-import { FeatureHelper } from "./FeatureHelper";
 import { ProductionLineAttribute, ProductionLines } from "$/configuration/attributes/ProductionLineAttribute";
 import { CutDirectionAttribute, CutDirectionAttributeValues } from "$/configuration/attributes/CutDirectionAttribute";
 import { DeliveryAttribute, DeliveryTypes } from "$/configuration/attributes/DeliveryAttribute";
 import { WhiteLayerAttribute, WhiteLayerValues } from "$/configuration/attributes/WhiteLayerAttribute";
+import { FeatureAttribute, ProductFeatures } from "$/configuration/attributes/FeatureAttribute";
 
 export class ProductionHelper
 {
 	private itemHelper: ProductItemHelper;
 
-    public constructor( 
-		protected ps:            ProductService, 
-		protected attrComputer:  ProductAttrComputer, 
-		protected item:          ProductItem, 
-		protected featureHelper: FeatureHelper 
-	)
+    public constructor( protected ps: ProductService, protected attrComputer: ProductAttrComputer, protected item: ProductItem )
 	{
 		this.itemHelper = new ProductItemHelper( this.item );
 	}
@@ -82,7 +77,7 @@ export class ProductionHelper
 				this.itemHelper.setWhiteLayer( whiteLayerSetting );
 			}
         }
-        else if ( this.itemHelper.getWhiteLayer() && !this.featureHelper.doesSupportEffectLayer() )
+        else if ( this.itemHelper.getWhiteLayer() && !this.attrComputer.isAvailable( FeatureAttribute.getName(), ProductFeatures.EFFECT_LAYER ) )
         {
             this.item.removeAttribute( WhiteLayerAttribute.getName() );
         }
@@ -121,7 +116,7 @@ export class ProductionHelper
 
     public detectSuitableWhiteLayerSetting(): string | null
     {
-		if ( this.featureHelper.doesSupportEffectLayer() && this.attrComputer.isAvailable( WhiteLayerAttribute.getName(), WhiteLayerValues.ALPHA ) )
+		if ( this.attrComputer.isAvailable( FeatureAttribute.getName(), ProductFeatures.EFFECT_LAYER ) && this.attrComputer.isAvailable( WhiteLayerAttribute.getName(), WhiteLayerValues.ALPHA ) )
 		{
 			return WhiteLayerValues.ALPHA;
 		}

@@ -6,6 +6,8 @@ export class DeliverySheetSizeHelper
 
 	public static readonly WIDTH_DEFAULT           = 204;
 	public static readonly HEIGHT_DEFAULT          = 270;
+	public static readonly WIDTH_MINIMUM           = 25;
+	public static readonly HEIGHT_MINIMUM          = 25;
 	public static readonly INSIDE_PADDING_DEFAULT  = 2;
 	public static readonly OUTSIDE_PADDING_DEFAULT = 0;
 

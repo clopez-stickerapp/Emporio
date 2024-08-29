@@ -5,7 +5,7 @@ export class MultiValueHelper
 {
     public constructor( protected item: ProductItem, protected attrAlias: string ) {}
 
-	public insertOne( value: AttributeValueSingle ): void
+	public insertOne( value: AttributeValueSingle ): ProductItem
 	{
 		let attrValues = this.get() ?? [];
 		
@@ -16,15 +16,13 @@ export class MultiValueHelper
 
 		if ( attrValues.length )
 		{
-			this.set( attrValues );
+			return this.set( attrValues );
 		}
-		else
-		{
-			this.delete();
-		}
+
+		return this.delete();
 	}
 
-	public deleteOne( value: AttributeValueSingle ): void
+	public deleteOne( value: AttributeValueSingle ): ProductItem
 	{
 		let attrValues = this.get() ?? [];
 
@@ -32,12 +30,10 @@ export class MultiValueHelper
 
 		if ( attrValues.length )
 		{
-			this.set( attrValues );
+			return this.set( attrValues );
 		}
-		else
-		{
-			this.delete();
-		}
+
+		return this.delete();
 	}
 
     public has( attrValue: AttributeValueSingle ): boolean
@@ -50,13 +46,13 @@ export class MultiValueHelper
 		return this.item.getAttribute( this.attrAlias );
 	}
 
-	public set( attrValues: AttributeValueMulti ): void
+	public set( attrValues: AttributeValueMulti ): ProductItem
 	{
-		this.item.setAttribute( this.attrAlias, attrValues );
+		return this.item.setAttribute( this.attrAlias, attrValues );
 	}
 
-	public delete(): void
+	public delete(): ProductItem
 	{
-		this.item.removeAttribute( this.attrAlias );
+		return this.item.removeAttribute( this.attrAlias );
 	}
 }

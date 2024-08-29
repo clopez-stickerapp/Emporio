@@ -23,7 +23,7 @@ jobs:
       - name: Check version
         id: version
         run: |
-          registry_version=$(npm view @stickerapp-org/nomisma version 2>/dev/null || echo "not_found")
+          registry_version=$(npm view @stickerapp-org/nomisma version)
           package_version=$(npm pkg get version -w @stickerapp-org/nomisma | jq -r '."@stickerapp-org/nomisma"')
           echo "package_version=$package_version" >> $GITHUB_OUTPUT
 

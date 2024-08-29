@@ -19,14 +19,19 @@ jobs:
       - name: Check version
         id: version
         run: |
-          registry_version=$(npm view @stickerapp-org/nomisma version)
+          registry_version=$(npm view @stickerapp-org/nomisma version 2>/dev/null || echo "not_found")
           package_version=$(npm pkg get version | tr -d '"')
           echo "package_version=$package_version" >> $GITHUB_OUTPUT
 
-          # Compare the versions
-          if [ "$registry_version" = "$package_version" ]; then
-            echo "The version you are trying to publish already exists. Bump the version and publish again. Exiting workflow."
-            exit 0
+          # Check if the registry_version was not found
+          if [ "$registry_version" = "not_found" ]; then
+            echo "Package @stickerapp-org/nomisma not found in the registry. Proceeding with publish."
+          else
+            # Compare the versions
+            if [ "$registry_version" = "$package_version" ]; then
+              echo "The version you are trying to publish already exists. Bump the version and publish again. Exiting workflow."
+              exit 0
+            fi
           fi
       - name: Setup Node.js
         uses: actions/setup-node@v4

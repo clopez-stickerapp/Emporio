@@ -22,7 +22,7 @@
 		"ts-node": "^10.9.2",
 		"ts-node-dev": "^2.0.0",
 		"ts-patch": "^3.1.2",
-		"turbo": "latest",
+		"turbo": "^2.1.0",
 		"typescript": "^5.3.3",
 		"typescript-transform-paths": "^3.4.7"
 	},

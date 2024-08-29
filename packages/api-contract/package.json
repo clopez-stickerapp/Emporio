@@ -43,6 +43,7 @@
     "@sinclair/typebox": "^0.32.13"
   },
   "devDependencies": {
+	"@stickerapp-org/ts-transform-module-type": "*",
     "@stickerapp-org/eslint-config": "*",
     "@stickerapp-org/prettier-config": "*",
     "concurrently": "^8.2.2",

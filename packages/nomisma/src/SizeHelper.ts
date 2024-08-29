@@ -44,9 +44,9 @@ export class SizeHelper
 		this.evaluateFixedSize();
 	}
 
-	public getSizeOptions(): AttributeValueMulti
+	public getSizeOptions(): string[]
 	{
-		return this.attrComputer.getSuggestedValues( "size" );
+		return this.attrComputer.getSuggestedValues<string>( "size" );
 	}
 
 	public canBeProductionLine( productionLine: string ): boolean

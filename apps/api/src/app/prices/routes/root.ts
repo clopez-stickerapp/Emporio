@@ -1,16 +1,19 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { getPriceListSchema, getPricesSchema } from '../schema';
+import { getPriceListSchema, getPricesSchema, getBulkPricesSchema } from '../schema';
 import { formatCurrency, shouldShowDecimalsInShop } from '$/currency/Currency';
 import { getLocale } from '$/localization/Locale';
 import { formatPrice } from '$/prices/Price';
 import { ProductItem } from '$/product/ProductItem';
 import { ProductNames } from '$data/ConditionValueResolver';
+import { Emporio } from '$/Emporio';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
-	const emporio = fastify.emporio;
+	// Temporary solution until switched to bulk price system
+	const bulkMarkets: string[] = ["fr", "uk"]
+	const emporio = (lang: string): Emporio => { return bulkMarkets.includes(lang) ? fastify.emporioBulk : fastify.emporio; }
 
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
 		let item = ProductItem.fromJSON({
@@ -21,7 +24,7 @@ export default async function (fastify: FastifyInstance) {
 
 		const quantity = item.getAttribute<number>('quantity') ?? 1;
 
-		const priceDTO = await emporio.calculatePrice(item, quantity, request.query.lang, request.query.incVat)
+		const priceDTO = await emporio(request.query.lang).calculatePrice(item, quantity, request.query.lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(request.query.lang));
 
@@ -43,7 +46,7 @@ export default async function (fastify: FastifyInstance) {
 			attributes: JSON.parse(request.query.attributes),
 		});
 
-		let prices = await emporio.getPriceList(item, request.query.lang, request.query.incVat)
+		let prices = await emporio(request.query.lang).getPriceList(item, request.query.lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(request.query.lang));
 

@@ -12,7 +12,6 @@ import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
 import { ServiceConfig } from "./interface/ServiceConfig";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
 import { DynamicValueConfig } from "./interface/DynamicValueConfig";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { StickerPriceProvider } from "./price-providers/StickerPriceProvider";
@@ -25,6 +24,7 @@ import { CollectionConfig, CollectionType } from "./interface/CollectionConfig";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
 import { AssetConfig } from "./interface/AssetConfig";
 import { FilterConfig } from "./interface/FilterConfig";
+import { CurvePriceProvider } from "./price-providers/CurvePriceProvider";
 
 const servicePathFolder = "src/configuration/services";
 const familyConfigFolder = "src/configuration/families";
@@ -38,7 +38,7 @@ const quantityPathFolder = "src/configuration/quantity-providers";
 const collectionPathFolder = "src/configuration/collections";
 const assetPathFolder = "src/configuration/assets";
 
-class ServiceLoader {
+export class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
 	protected services: Record<string, ProductService> = {};
 	protected familyConfigs: Record<string, FamilyConfig> = {};
@@ -158,6 +158,7 @@ class ServiceLoader {
 		// this.priceProviders = this.instantiateFromConfig<PriceProviderConfig, PriceProvider>(this.priceProviderConfigs, (config) => new PriceProvider(config));
 		this.priceProviders[StickerPriceProvider.NAME] = new StickerPriceProvider();
 		this.priceProviders[PromoProductPriceProvider.NAME] = new PromoProductPriceProvider();
+		this.priceProviders[CurvePriceProvider.NAME] = new CurvePriceProvider();
 
 		// Instantiate all quantity providers
 		console.debug("Instantiating quantity provider instances...");

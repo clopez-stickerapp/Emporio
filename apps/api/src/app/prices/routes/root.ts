@@ -1,12 +1,13 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyInstance } from 'fastify';
-import { getPriceListSchema, getPricesSchema, getBulkPricesSchema } from '../schema';
-import { formatCurrency, shouldShowDecimalsInShop } from '$/currency/Currency';
-import { getLocale } from '$/localization/Locale';
-import { formatPrice } from '$/prices/Price';
+import { getPriceListSchema, getPricesSchema, postBulkPricesSchema } from '../schema';
+import { Currencies, CurrencyConverter, formatCurrency, shouldShowDecimalsInShop } from '$/currency/Currency';
+import { getCurrency, getLocale } from '$/localization/Locale';
+import { calculateBreakdownSum, formatPrice, toMajorUnits } from '$/prices/Price';
 import { ProductItem } from '$/product/ProductItem';
 import { ProductNames } from '$data/ConditionValueResolver';
 import { Emporio } from '$/Emporio';
+import { RateBasedProductPriceProvider } from '$/prices/RateBasedProductPriceProvider';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -14,6 +15,7 @@ export default async function (fastify: FastifyInstance) {
 	// Temporary solution until switched to bulk price system
 	const bulkMarkets: string[] = ["fr", "uk"]
 	const emporio = (lang: string): Emporio => { return bulkMarkets.includes(lang) ? fastify.emporioBulk : fastify.emporio; }
+	const emporioBulk = fastify.emporioBulk;
 
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
 		let item = ProductItem.fromJSON({
@@ -64,4 +66,58 @@ export default async function (fastify: FastifyInstance) {
 			prices: formattedPrices
 		};
 	} )
+
+	// add a route that calculates something called a bulk discount, you send in an array of product items and it returns that discount percentage
+	f.post( '/bulk-discount', { schema: postBulkPricesSchema }, async function (request) {
+		const items = request.body.items.map((item: any) => ProductItem.fromJSON(item));
+		const lang = request.body.lang;
+		const incVat = request.body.incVat;
+
+		let discount: number = 0;
+
+		const totalUnits = items.reduce((acc: number, item: ProductItem) => acc + emporioBulk.calculateUnits(item), 0);
+
+		let totalUnitsTotalPrice = 0;
+		let normalTotalPrice = 0;
+		let customStickerItems = 0;
+
+		for (const item of items) {
+			if (item.getProductFamilyName() == "custom_sticker") {				
+				customStickerItems++;
+				const units = emporioBulk.calculateUnits(item);
+				const normalPrice = await emporioBulk.calculatePriceByUnits(item, units, lang, incVat);
+				normalTotalPrice += normalPrice.total;
+				
+				const family = emporioBulk.getProductService().retrieveProductFamily(item.getProductFamilyName());
+				const priceProvider = emporioBulk.getProductService().retrievePriceProvider(family.getPriceProviderName()) as RateBasedProductPriceProvider;
+
+				const currency = getCurrency(lang);
+				const rates = await priceProvider.getRatesFor(item, totalUnits);
+				const breakdown = priceProvider.getBreakdownFor(rates, units);
+				const total = calculateBreakdownSum(breakdown);
+
+				const converter = new CurrencyConverter();
+				const result =  toMajorUnits(converter.convertPrice({
+					total,
+					breakdown,
+					currency: Currencies.USD
+				}, currency));
+
+				totalUnitsTotalPrice += result.total;
+			}
+		}
+
+		if (normalTotalPrice > 0 && customStickerItems > 1) {
+			let difference = normalTotalPrice - totalUnitsTotalPrice;
+			discount = difference * 0.3;
+
+			if (discount / normalTotalPrice > 0.2) {
+				discount = normalTotalPrice * 0.2;
+			}
+		}
+
+		return {
+			discount
+		}
+	})
 }

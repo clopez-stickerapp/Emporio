@@ -40,7 +40,7 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 	public constructor() {
 		super(CurvePriceProvider.NAME);
 
-		let modifier: number = 1;
+		let modifier: number = 0.94;
 
 		const rl_white = new RateFunction(CurvePriceProvider.RATELIST_WHITE, 8500 * modifier, 0.5, 1800 * modifier);
 		rl_white.conditions

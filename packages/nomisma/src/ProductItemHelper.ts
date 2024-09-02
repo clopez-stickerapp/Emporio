@@ -427,6 +427,26 @@ export class ProductItemHelper
 		this.item.setAttribute( 'delivery_sheet_outside_padding', padding );
 	}
 
+	public getEffectLayerFileName(): string | undefined
+	{
+		return this.item.getAttribute( 'effect_layer_file_name' );
+	}
+
+	public setEffectLayerFileName( fileName: string ): void
+	{
+		this.item.setAttribute( 'effect_layer_file_name', fileName );
+	}
+
+	public getEffectLayerFileAppID(): string | undefined
+	{
+		return this.item.getAttribute( 'effect_layer_upload_fileapp_id' );
+	}
+
+	public setEffectLayerFileAppID( id: string ): void
+	{
+		this.item.setAttribute( 'effect_layer_upload_fileapp_id', id );
+	}
+
 	public isCustomizableSheet(): boolean
 	{
 		return [ 'sheet', 'sheet_kiss_cut' ].includes( this.item.getProductName() );

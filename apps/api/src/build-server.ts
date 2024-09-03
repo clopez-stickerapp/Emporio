@@ -32,7 +32,7 @@ async function buildServer() {
 	const stickerFamily = bulkService.retrieveProductFamily("custom_sticker")
 	stickerFamily.setUnitType(AllUnitTypes.square_meter_with_bleed)
 	stickerFamily.setPriceProviderName("curve_price_provider")
-	bulkService.retrieveMinimumUnitsCollection("StickerSquareMeterMinimumUnitValues").defaultValue = 0.08
+	bulkService.retrieveMinimumUnitsCollection("StickerSquareMeterMinimumUnitValues").defaultValue = 0.09
 	server.decorate("emporioBulk", new Emporio(bulkService));
 	// End of temporary solution
 

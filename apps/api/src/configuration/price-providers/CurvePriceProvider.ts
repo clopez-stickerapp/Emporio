@@ -48,7 +48,6 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.NOT_EQUAL, value: ProductNames.PRODUCT_TRANSFER_DECAL})
 			.addSubGroup({ relationMode: ConditionRelations.OR })
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE, MaterialValues.WHITE_BACKSCORE, MaterialValues.BUBBLE_FREE, MaterialValues.SATIN_MATTE]})
-			.addCondition({ attribute: "item.productName", operator: ConditionOperators.EQUAL, value: ProductNames.PRODUCT_LABELS_ON_ROLL})
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.EQUAL, value: ProductNames.PRODUCT_FLOOR})
 		this.addRateProvider(rl_white);
 

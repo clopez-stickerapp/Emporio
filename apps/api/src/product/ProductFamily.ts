@@ -48,6 +48,11 @@ export class ProductFamily {
 		this.priceProviderName = priceProviderName;
 	}
 
+	// Temporary method for moving over to bulk price system
+	public setMinimumUnitsCollectionName(minimumUnitsCollectionName: string): void {
+		this.minimumUnitsCollectionName = minimumUnitsCollectionName;
+	}
+
 	public addProduct(config: ProductConfig): Product {
 		if (this.products[config.name]) {
 			throw new Error("Product already exists: " + config.name);

@@ -13,8 +13,7 @@ export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
 
 	// Temporary solution until switched to bulk price system
-	const bulkMarkets: string[] = ["fr", "uk"]
-	const emporio = (lang: string): Emporio => { return bulkMarkets.includes(lang) ? fastify.emporioBulk : fastify.emporio; }
+	const emporio = (useNewCurves: boolean): Emporio => { return useNewCurves ? fastify.emporioBulk : fastify.emporio; }
 	const emporioBulk = fastify.emporioBulk;
 
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
@@ -24,9 +23,11 @@ export default async function (fastify: FastifyInstance) {
 			attributes: JSON.parse(request.query.attributes),
 		});
 
+		const useNewCurves = request.query.useNewCurves ?? false;
+
 		const quantity = item.getAttribute<number>('quantity') ?? 1;
 
-		const priceDTO = await emporio(request.query.lang).calculatePrice(item, quantity, request.query.lang, request.query.incVat)
+		const priceDTO = await emporio(useNewCurves).calculatePrice(item, quantity, request.query.lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(request.query.lang));
 
@@ -48,7 +49,9 @@ export default async function (fastify: FastifyInstance) {
 			attributes: JSON.parse(request.query.attributes),
 		});
 
-		let prices = await emporio(request.query.lang).getPriceList(item, request.query.lang, request.query.incVat)
+		const useNewCurves = request.query.useNewCurves ?? false;
+
+		let prices = await emporio(useNewCurves).getPriceList(item, request.query.lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(request.query.lang));
 

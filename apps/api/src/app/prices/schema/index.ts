@@ -7,6 +7,7 @@ const querySchema = Type.Object({
 	attributes: TypeHelper.AttributesString(),
 	lang: Type.String({ examples: ['us'] }),
 	incVat: Type.Boolean({ default: true }),
+	useNewCurves: Type.Optional(Type.Boolean({ default: false })),
 });
 
 export const getPricesSchema = {

@@ -1,0 +1,183 @@
+name: size
+mode: highest_score_wins
+rules:
+  - keys:
+      - 5x3 cm
+      - 5x5 cm
+      - 8x5 cm
+      - 8x8 cm
+      - 10x7 cm
+      - 10x10 cm
+      - 12x5 cm
+      - 13x7 cm
+      - 15x10 cm
+    conditions:
+      conditions: []
+
+  - keys:
+      - 2" x 1"
+      - 2" x 2"
+      - 3" x 2"
+      - 3" x 3"
+      - 4" x 3"
+      - 4" x 4"
+      - 5" x 2"
+      - 5" x 3"
+      - 8" x 4"
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: true
+
+  - keys:
+      - 30x20 cm
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: ===
+          value: sheet_legacy
+
+  - keys:
+      - 11.8" x 7.9"
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: true
+        - attribute: item.productName
+          operator: ===
+          value: sheet_legacy
+
+  - keys:
+      - 2.5x2.5 cm
+      - 3.8x3.8 cm
+      - 5.1x2.5 cm
+      - 7.7x3.8 cm
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.laminate
+          operator: ===
+          value: epoxy
+        
+  - keys:
+      - 1" x 1"
+      - 1.5" x 1.5"
+      - 2" x 1"
+      - 3" x 1.5"
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.laminate
+          operator: ===
+          value: epoxy
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: true
+        
+  - keys:
+      - 30x15 cm
+      - 40x20 cm
+      - 60x25 cm
+      - 80x40 cm
+      - 100x70 cm
+      - 120x80 cm
+    conditions:
+      relationMode: AND
+      conditions:
+        - relationMode: OR
+          conditions:
+            - attribute: item.attributes.material
+              operator: ===
+              value: white_wall
+            - attribute: item.productName
+              operator: ===
+              value: wall
+            - attribute: item.productName
+              operator: ===
+              value: floor
+
+  - keys:
+      - 14" x 7"
+      - 16" x 10"
+      - 20" x 10"
+      - 30" x 20"
+      - 40" x 20"
+      - 46" x 25"
+    conditions:
+      relationMode: AND
+      conditions:
+        - relationMode: OR
+          conditions:
+            - attribute: item.attributes.material
+              operator: ===
+              value: white_wall
+            - attribute: item.productName
+              operator: ===
+              value: wall
+            - attribute: item.productName
+              operator: ===
+              value: floor
+        - relationMode: OR
+          conditions:
+            - attribute: item.attributes.imperial_units
+              operator: ===
+              value: true
+
+  - keys:
+      - US half letter <br> 8.5" x 5.5",
+      - A5 paper <br> 5.8" x 8.3",
+      - Thank you card <br> 5.1" x 6.4"
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: true
+        - attribute: item.productName
+          operator: ===
+          value: sheet
+
+  - keys:
+      - 21.6x14 cm
+      - 14.8x21 cm
+      - 13x16.3 cm
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: false
+        - attribute: item.productName
+          operator: ===
+          value: sheet
+
+  - keys:
+      - 3" x 4"
+      - 3.5" x 5"
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: true
+        - attribute: item.productName
+          operator: ===
+          value: sheet_kiss_cut
+
+  - keys:
+      - 7.6x10.1 cm
+      - 8.9x12.7 cm
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.imperial_units
+          operator: ===
+          value: false
+        - attribute: item.productName
+          operator: ===
+          value: sheet_kiss_cut

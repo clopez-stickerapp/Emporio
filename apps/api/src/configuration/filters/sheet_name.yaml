@@ -1,0 +1,25 @@
+name: sheet_name
+mode: highest_score_wins
+rules:
+  - keys:
+      - path
+      - rect
+      - circle
+      - rounded
+    conditions:
+      conditions: []
+
+  - keys:
+      - circle
+      - rounded
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.reseller
+          operator: NOT_IN
+          value:
+            - stickersthatstick
+            - stickit
+        - attribute: item.attributes.laminate
+          operator: ===
+          value: epoxy

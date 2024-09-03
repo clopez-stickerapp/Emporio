@@ -1,0 +1,39 @@
+name: cut_direction
+rules:
+  - keys:
+      - auto
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: NOT_IN
+          value:
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
+
+  - keys:
+      - top_first
+      - bottom_first
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.attributes.width_mm
+          operator: <=
+          value: '{MaxSizeOtherSideValues.ROLL}'
+        - attribute: item.productName
+          operator: NOT_IN
+          value:
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'
+
+  - keys:
+      - left_first
+      - right_first
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.attributes.height_mm
+          operator: <=
+          value: '{MaxSizeOtherSideValues.ROLL}'
+        - attribute: item.productName
+          operator: NOT_IN
+          value:
+            - '{ProductNames.PRODUCT_LABELS_ON_ROLL}'

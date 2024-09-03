@@ -1,0 +1,4 @@
+name: promo_production
+type: constraint
+values:
+  - production_line

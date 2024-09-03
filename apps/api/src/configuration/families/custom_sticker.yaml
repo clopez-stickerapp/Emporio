@@ -1,0 +1,80 @@
+name: custom_sticker
+unitType: square_meter
+products:
+  - die_cut
+  - sheet_legacy
+  - sheet
+  - sheet_kiss_cut
+  - labels_on_sheet
+  - labels_on_roll
+  - hang_tag
+  - 3d_dome
+  - front_adhesive
+  - heavy_duty
+  - removable
+  - wall
+  - floor
+  - laptop_skin
+  - double_sided
+  - library_design
+  - transfer_decal
+  - window
+  - single_on_sheet
+rules:
+  attributes:
+    required:
+      - sheet_type
+      - sheet_name
+      - material
+      - laminate
+      - width_mm
+      - height_mm
+      - quantity
+    optional:
+      - price_margin_percentage
+      - changed
+      - figure_id
+      - reorder_id
+      - note
+      - sheet_type_save_as
+      - template_id
+      - size
+      - imperial_units
+      - feature
+      - production_line
+      - production_instruction
+      - delivery
+      - delivery_sheet_width
+      - delivery_sheet_height
+      - delivery_sheet_inside_padding
+      - delivery_sheet_outside_padding
+      - epoxy_template_id
+      - innercut_as_kisscut
+      - white_layer
+      - cut_direction
+      - image_filters
+      - outline
+      - ink
+      - reseller
+      - max_size_mm
+      - max_size_other_side_mm
+      - min_size_mm
+      - fixed_size
+      - fixed_quantity
+      - market
+      - delivery_roll_size_type
+      - delivery_roll_size_mm
+      - delivery_roll_top_edge_margin
+      - delivery_roll_item_margin
+  collections:
+    constraint: sticker_production
+    filter: sticker_wizard_filters
+    # icon: icons
+    min_units: StickerSquareMeterMinimumUnitValues
+    price_provider: sticker_rate_lists
+    quantity_provider: sticker_quantity_lists
+    asset: sticker_assets
+template: |
+  {{name}}
+  {{material}} / {{laminate}}
+  {{width_mm}} x {{height_mm}} mm

@@ -1,50 +1,28 @@
 import { ProductPriceProvider } from "../prices/ProductPriceProvider";
 import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
-import { ProductAttrConstraintCollection } from "./attribute/Constraint/ProductAttrConstraintCollection";
-import { ProductAttrFilterCollection } from "./attribute/Filter/ProductAttrFilterCollection";
-import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
 import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductAttrValue } from "./attribute/ProductAttrValue";
-import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
-import { ProductItem } from "./ProductItem";
-import { Product } from "./Product";
 import { ProductFamily } from "./ProductFamily";
-import { AttributeValueSingle, AttributeValueMulti } from "./attribute/AttributeValue";
+import { ProductDynamicValue } from "./value/ProductDynamicValue";
+import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
+import { Collection, CollectionItem } from "./Collection";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
+import { AttributesMap } from "./helpers/ProductAttrMap";
+import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
+import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
 	protected productFamilies: Record<string, ProductFamily> = {};
-	protected productSkus: string[] = [];
 
 	/**
-	 * Constraints are used to tell the product service which attributes can not be combined.
-	 * In other words here we set rules for what is simply not possible to do.
-	 *
-	 * For instance: Laser materials are impossible to produce a sticker larger than 28cm.
+	 * Collections are used to store a set of values, such as filters and constraints.
 	 */
-	protected attrConstraintCollections: Record<string, ProductAttrConstraintCollection> = {};
-
-	/**
-	 * Filters are used to limit what attribute values are available / visible.
-	 * For instance: only show a set of materials if a specific product is selected.
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrFilterCollections: Record<string, ProductAttrFilterCollection> = {};
-
-	/**
-	 * Icons are used to show icons in the wizard for attributes.
-	 * For instance: show a material icon for the material attribute.
-	 */
-	protected attrIconCollections: Record<string, ProductAttrIconCollection> = {};
-
-	/**
-	 * Stock keeps track of which attribute values are available to filter on
-	 * An product with no valid attribute values should be out of stock
-	 *
-	 * We can then choose to ignore filters for admin / QT users.
-	 */
-	protected attrStockCollections: Record<string, ProductAttrStockCollection> = {};
+	protected collections: Record<CollectionType, Record<string, Collection<any>>> = {
+		filter: {},
+		constraint: {},
+		asset: {}
+	};
 
 	/**
 	 * Quantity lists are used to tell the product service which quantity lists are available.
@@ -58,92 +36,76 @@ export class ProductService {
 	 */
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
 
-	public registerAttrFilterCollection(collection: ProductAttrFilterCollection): void {
-		if (this.attrFilterCollections[collection.getCollectionName()]) {
-			throw new Error("Filter collection already exists with name " + collection.getCollectionName());
+	/**
+	 * Minimum units are used to tell the product service which are the minimum units 
+	 * for a product. No less than the minimum units can be ordered.
+	 */
+	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
+
+	public registerCollection(collection: Collection<any>): void {
+		const type = collection.getType();
+
+		if (!this.collections[type]) {
+			throw new Error("Collection type not found with name " + type);
 		}
 
-		this.attrFilterCollections[collection.getCollectionName()] = collection;
+		if (this.collections[type][collection.getCollectionName()]) {
+			throw new Error("Collection already exists with name " + collection.getCollectionName());
+		}
+
+		this.collections[type][collection.getCollectionName()] = collection
 	}
 
-	public retrieveAttrFilterCollection(collectionName: string): ProductAttrFilterCollection {
-		if (!this.attrFilterCollections[collectionName]) {
-			throw new Error("Filter collection not found with name " + collectionName);
-		}
+	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> | null {
+		// if (!this.collections[type]) {
+		// 	throw new Error("Collection type not found with name " + type);
+		// }
 
-		return this.attrFilterCollections[collectionName];
+		// if (!this.collections[type][collectionName]) {
+		// 	throw new Error("Collection not found with name " + collectionName);
+		// }
+
+		return this.collections?.[type]?.[collectionName] ?? null;
 	}
 
-	public registerAttrIconCollection(collection: ProductAttrIconCollection): void {
-		if (this.attrIconCollections[collection.getCollectionName()]) {
-			throw new Error("Icon collection already exists with name " + collection.getCollectionName());
+	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
+		if (this.minimumUnitsCollections[collection.getCollectionName()]) {
+			throw new Error("Minimum units collection already exists with name " + collection.getCollectionName());
 		}
 
-		this.attrIconCollections[collection.getCollectionName()] = collection;
+		this.minimumUnitsCollections[collection.getCollectionName()] = collection;
 	}
 
-	public retrieveAttrIconCollection(collectionName: string): ProductAttrIconCollection {
-		if (!this.attrIconCollections[collectionName]) {
-			throw new Error("Icon collection not found with name " + collectionName);
+	public retrieveMinimumUnitsCollection(collectionName: string): ProductDynamicValue {
+		if (!this.minimumUnitsCollections[collectionName]) {
+			throw new Error("Minimum units collection not found with name " + collectionName);
 		}
 
-		return this.attrIconCollections[collectionName];
+		return this.minimumUnitsCollections[collectionName];
 	}
 
-	public registerAttrConstraintCollection(collection: ProductAttrConstraintCollection): void {
-		if (this.attrConstraintCollections[collection.getCollectionName()]) {
-			throw new Error("Constraint collection already exists with name " + collection.getCollectionName());
+	public registerAttribute(name: string, attr: ProductAttr): void {
+		if (this.attributes[name]) {
+			throw new Error("Attribute already exists with name " + attr.getName());
 		}
 
-		this.attrConstraintCollections[collection.getCollectionName()] = collection;
+		this.attributes[name] = attr;
 	}
 
-	public retrieveAttrConstraintCollection(collectionName: string): ProductAttrConstraintCollection {
-		if (!this.attrConstraintCollections[collectionName]) {
-			throw new Error("Constraint collection not found with name " + collectionName);
+	public retrieveAttribute(attrName: string): ProductAttr {
+		if (!this.attributes[attrName]) {
+			throw new Error("Attribute not found with name " + attrName);
 		}
 
-		return this.attrConstraintCollections[collectionName];
+		return this.attributes[attrName];
 	}
 
-	public registerAttrStockCollection(collection: ProductAttrStockCollection): void {
-		if (this.attrStockCollections[collection.getCollectionName()]) {
-			throw new Error("Stock collection already exists with name " + collection.getCollectionName());
+	public registerProductFamily(name: string, instance: ProductFamily): void {
+		if (this.productFamilies[name]) {
+			throw new Error("Product family already exists with name " + instance.getName());
 		}
 
-		this.attrStockCollections[collection.getCollectionName()] = collection;
-	}
-
-	public retrieveAttrStockCollection(collectionName: string): ProductAttrStockCollection {
-		if (!this.attrStockCollections[collectionName]) {
-			throw new Error("Stock collection not found with name " + collectionName);
-		}
-
-		return this.attrStockCollections[collectionName];
-	}
-
-	public registerAttribute(attr: ProductAttr): void {
-		if (this.attributes[attr.getUID()]) {
-			throw new Error("Attribute already exists with UID " + attr.getUID());
-		}
-
-		this.attributes[attr.getUID()] = attr;
-	}
-
-	public retrieveAttribute(attrUID: string): ProductAttr {
-		if (!this.attributes[attrUID]) {
-			throw new Error("Attribute not found with UID " + attrUID);
-		}
-
-		return this.attributes[attrUID];
-	}
-
-	public registerProductFamily(productFamily: ProductFamily): void {
-		if (this.productFamilies[productFamily.getName()]) {
-			throw new Error("Product family already exists with name " + productFamily.getName());
-		}
-
-		this.productFamilies[productFamily.getName()] = productFamily;
+		this.productFamilies[name] = instance;
 	}
 
 	public retrieveProductFamily(productFamilyName: string): ProductFamily {
@@ -187,102 +149,64 @@ export class ProductService {
 	}
 
 	public getAttributes(): ProductAttr[] {
-		return Array.from(Object.values(this.attributes));
+		return Object.values(this.attributes);
 	}
 
 	public getProductFamilies(): ProductFamily[] {
-		return Array.from(Object.values(this.productFamilies));
+		return Object.values(this.productFamilies);
 	}
 
-	public findAttributeValue(attributeUID: string, attributeValue: AttributeValueSingle): ProductAttrValue | null {
-		throw new Error("I don't think this function is needed.")
-		if (this.attributes[attributeUID]) {
-			return this.attributes[attributeUID].getAttrValue(attributeValue);
-		}
+	public getProductMap(familyName: string, productName: string): AttributesMap {
+		let map: AttributesMap = {};
 
-		return null;
-	}
+		const product = this.retrieveProductFamily(familyName).getProduct(productName);
 
-	public findProduct(productFamilyName: string, productName: string): Product{
-		if (this.productFamilies[productFamilyName]) {
-			return this.productFamilies[productFamilyName].getProduct(productName);
-		} else {
-			throw new Error("Product family not found with name " + productFamilyName);
-		}
-	}
+		for (const [attrName, attr] of Object.entries(this.retrieveProductFamily(product.getProductFamilyName()).getAttributes())) {
+			const family = this.retrieveProductFamily(product.getProductFamilyName());
 
-	public registerProductSku(sku: string): void {
-		if (this.productSkus.includes(sku)) {
-			throw new Error("SKU " + sku + " already exists. SKU value must be unique per product");
-		}
+			const attrValues: Record<string, string | null> = {};
 
-		this.productSkus.push(sku);
-	}
+			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName())?.get(attrName);
+			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName())?.get(attrName);
+			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName())?.get(attrName);
+			const attrValueOptions = family.getAllAttributeValueOptionsForProduct(product, attrName);
 
-	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
-	{
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
-		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
+			let icons: Record<string, string> = {};
 
-		if ( !product.isAttrStrictlyRequiredFor( attrAlias ) ) 
-		{
-			for ( const attrValue of this.retrieveAttribute( attrUID ).getValues() ) 
-			{
-				if ( !attrValues.includes( attrValue.getValue() ) ) 
-				{
-					attrValues.push( attrValue.getValue() );
+			for (const attrValue of attrValueOptions) {
+				const conditionsBuilder = attrConstraint?.getConstraint(attrValue) ?? null;
+
+				if (typeof attrValue === 'string') {
+					const iconBuilder = attrAsset?.getWizardIcon(attrValue) ?? null;
+
+					if (iconBuilder) {
+						icons[attrValue] = iconBuilder;
+					}
 				}
+
+				attrValues[attrValue.toString()] = conditionsBuilder ? `${conditionsBuilder}` : null;
 			}
+
+			const filters = attrFilter?.getFilters().map(filteredValues => ({
+				"values": filteredValues.getValues(),
+				"conditions": `${filteredValues.conditionBuilder}`,
+				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
+			})) ?? [];
+
+			map[attrName] = {
+				"alias": attrName,
+				"isDynamicValue": attr.isDynamicValue(),
+				"isMultiValue": attr.isMultiValue(),
+				"valueType": attr.getValueType(),
+				"isRequired": family.isRequired(attrName),
+				"valuesAndConstraints": attrValues,
+				"icons": icons,
+				"filters": filters,
+				"filterMode": attrFilter?.getMode() ?? null,
+				"outOfStockValues": attrAsset?.getUnavailableValues() ?? []
+			};
 		}
 
-		return attrValues;
-	}
-
-	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
-	{
-		const attrValues: AttributeValueMulti = [];
-		const attrUID = product.getProductFamily().findAttrUIDByAlias( attrAlias );
-		const attr = product.getProductService().retrieveAttribute( attrUID );
-		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
-
-		if ( !Array.isArray( withAttrValues ) ) 
-		{
-			withAttrValues = [ withAttrValues ]
-		}
-
-		for ( const attrRawValue of withAttrValues ) 
-		{
-			if ( attr.isDynamicValue() ) 
-			{
-				attrValues.push( attrRawValue );
-			} 
-			else 
-			{
-				const attrValue = this.retrieveAttribute( attrUID ).getAttrValue( attrRawValue );
-				
-				if ( attrValue ) 
-				{
-					attrValues.push( attrValue.getValue() );
-				}
-			}
-		}
-
-		return attrValues;
-	}
-
-	public hasProductRecommendedValuesFor( productItem: ProductItem, attributeName: string ): boolean 
-	{
-		const productFamily = this.retrieveProductFamily( productItem.getProductFamilyName() );
-		
-		if ( productFamily.isRequired( attributeName ) ) 
-		{
-			return true;
-		} 
-		else if ( productFamily.isSupported( attributeName ) ) 
-		{
-			return this.findProduct( productItem.getProductFamilyName(), productItem.getProductName() ).isAttrRecommendedFor( attributeName );
-		}
-
-		return false;
+		return map;
 	}
 }

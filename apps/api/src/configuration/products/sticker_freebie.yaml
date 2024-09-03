@@ -1,0 +1,6 @@
+name: sticker_freebie
+sku: SF-31
+available: true
+attributes:
+  sheet_type: sticker_freebie
+  material: special

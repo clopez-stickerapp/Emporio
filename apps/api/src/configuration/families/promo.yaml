@@ -1,0 +1,33 @@
+name: promo
+unitType: per_piece
+products:
+  - giftcard
+  - uv_lamp
+  - monster_pack
+  - most_liked_pack_2021
+  - most_liked_pack_2022
+  - creepy_head_pack
+  - sample_sticker_pack
+  - most_liked_pack_2023
+  - slap_pack
+  - sticker_freebie
+rules:
+  attributes:
+    required:
+      - sheet_type
+      - sheet_name
+      - material
+      - quantity
+    optional:
+      - dynamic_string
+      - template_id
+      - laminate
+      - height_mm
+      - width_mm
+      - figure_id
+      - reorder_id
+      - production_line
+  collections:
+    constraint: promo_production
+    min_units: one
+    price_provider: promo_price_provider

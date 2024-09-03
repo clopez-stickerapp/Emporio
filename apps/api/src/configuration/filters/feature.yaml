@@ -1,0 +1,68 @@
+name: feature
+mode: merge_all_winners
+rules:
+  - keys:
+      - effect_layer
+      - hangtagging
+      - manual_backscore
+      - pack_set_amount
+      - perforation
+      - variable_data
+    conditions:
+      conditions: []
+    
+  - keys:
+      - backpaper_print
+    conditions:
+      relationMode: AND
+      conditions:
+        - relationMode: AND
+          conditions:
+            - attribute: item.attributes.material
+              operator: IN
+              value:
+                - white
+                - holographic,
+                - mirror
+                - clear
+                - pixie_dust
+            - attribute: item.attributes.laminate
+              operator: IN
+              value:
+                - glossy_uv
+                - soft_touch,
+                - satin_matte
+            - attribute: item.productName
+              operator: NOT_IN
+              value:
+                - library_design
+        - relationMode: AND
+          conditions:
+            - attribute: item.attributes.width_mm
+              operator: <=
+              value: "{MaxSizes.LASER}"
+            - attribute: item.attributes.height_mm
+              operator: <=
+              value: "{MaxSizes.LASER}"
+
+  - keys:
+      - backpaper_print
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.material
+          operator: IS_EMPTY
+        - attribute: item.attributes.laminate
+          operator: IS_EMPTY
+
+  - keys:
+      - transfer_tape
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.delivery_sheet_width
+          operator: <=
+          value: 1130
+        - attribute: item.attributes.delivery_sheet_height
+          operator: <=
+          value: 1130

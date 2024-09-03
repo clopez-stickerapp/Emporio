@@ -1,0 +1,7 @@
+name: sticker_assets
+type: asset
+values:
+  - ink
+  - laminate
+  - material
+  - sheet_name

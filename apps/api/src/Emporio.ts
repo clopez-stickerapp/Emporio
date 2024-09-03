@@ -1,25 +1,23 @@
 import { Type, Static } from "@sinclair/typebox";
-import { CustomStickerFamily } from "./configuration/Family/CustomStickerFamily";
-import { StickerAppProductLegacySKUService } from "./configuration/SKU/StickerAppProductLegacySKUService";
-import { StickerAppProductService } from "./configuration/StickerAppProductService";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
-import { ProductAttr } from "./product/attribute/ProductAttr";
 import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
 import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
-import { ProductAttrComputerExtended } from "./product/helpers/ProductAttrComputerExtended";
-import { TProductAttrMap, ProductAttrMap } from "./product/helpers/ProductAttrMap";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
 import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
 import { ProductionHelper } from "./product/helpers/ProductionHelper";
 import { SizeHelper } from "./product/helpers/SizeHelper";
 import { ProductItem } from "./product/ProductItem";
-import { ProductFamily } from "./product/ProductFamily";
 import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
 import { AttributeValueSingle } from "./product/attribute/AttributeValue";
+import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
+import { ProductNames } from "$data/ConditionValueResolver";
+import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
+import { CollectionType } from "./configuration/interface/CollectionConfig";
+import { ProductAttrComputer } from "./product/helpers/ProductAttrComputer";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -45,14 +43,14 @@ export class Emporio {
 	protected productService: ProductService;
 	protected builder: ProductItemBuilder;
 	protected validator: ProductItemValidator;
-	protected computer: ProductAttrComputerExtended;
+	protected computer: ProductAttrComputer;
 	protected stickerAppLegacySKU: StickerAppProductLegacySKUService;
 
-	public constructor(service: ProductService = new StickerAppProductService()) {
+	public constructor(service: ProductService) {
 		this.productService = service;
-		this.builder = new ProductItemBuilder( service );
+		this.builder = new ProductItemBuilder();
 		this.validator = new ProductItemValidator( service );
-		this.computer = new ProductAttrComputerExtended( service );
+		this.computer = new ProductAttrComputer();
 		this.stickerAppLegacySKU = new StickerAppProductLegacySKUService();
 	}
 
@@ -65,13 +63,13 @@ export class Emporio {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 		const currency = getCurrency(lang);
 
-		const minUnits = productFamily.getMinimumUnits(productItem);
+		const minUnits = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName()).getValue(productItem);
 
-		if(units < minUnits && productItem.getProductName() !== CustomStickerFamily.PRODUCT_LIBRARY_DESIGN) {
+		if(units < minUnits && productItem.getProductName() !== ProductNames.PRODUCT_LIBRARY_DESIGN) {
 			units = minUnits;
 		}
 
-		let price = await productFamily.getProductPriceProvider()?.calculatePrice(productItem, units, currency);
+		let price = await this.productService.retrievePriceProvider(productFamily.getPriceProviderName()).calculatePrice(productItem, units, currency);
 
 		if (!price) {
 			throw new Error("Price provider not found for product family: " + productItem.getProductFamilyName());
@@ -106,8 +104,8 @@ export class Emporio {
 
 	public async getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): Promise<PriceList> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
-		const minQuantity = productFamily.getMinimumQuantity(productItem) ?? 1;
-		const steps = productFamily.getProductQuantityListCollection()?.getQuantityStepsFor(productItem, minQuantity) ?? [];
+		const minQuantity = this.getMinimumQuantity(productItem) ?? 1;
+		const steps = this.productService.retrieveQuantityListCollection(productFamily.getQuantityCollectionName()).getQuantityStepsFor(productItem, minQuantity) ?? [];
 
 		const prices = await Promise.all(steps.map(async (step: number) => {
 			return await this.calculatePrice(productItem, step, lang, inclVat);
@@ -118,21 +116,24 @@ export class Emporio {
 
 	public getMinimumQuantity( productItem: ProductItem ): number {
 		const productFamily = this.productService.retrieveProductFamily( productItem.getProductFamilyName() );
-		return productFamily.getMinimumQuantity( productItem );
+		const minUnitsCollection = this.productService.retrieveMinimumUnitsCollection( productFamily.getMinimumUnitsCollectionName() );
+		const units = productFamily.calculateUnits( productItem );
+		const quantity = productItem.getAttribute<number>( "quantity" ) ?? 1;
+
+		return Math.ceil( minUnitsCollection.getValue( productItem ) / ( units / quantity ) );;
 	}
 
 	public createItem( productFamilyName: string, productName: string, useFilters: boolean ): ProductItem {
-		return this.builder.createItem( productFamilyName, productName, useFilters );
-	}
+		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
+		const product = productFamily.getProduct( productName );
+		const map = this.productService.getProductMap( productFamilyName, productName );
 
-	public getAttributeMap( productFamilyName: string, productName: string ): TProductAttrMap {
-		const product = this.productService.findProduct( productFamilyName, productName );
-		return ( new ProductAttrMap( this.productService, product ) ).getMap();
+		return this.builder.createItem( productFamily, product, map, useFilters );
 	}
 
 	public getConditionableMap( productFamilyName: string ): Record<string, ProductItemConditionableParam> {
 		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
-		const conditionableMap = new ProductItemConditionablesMap( this.productService, productFamily );
+		const conditionableMap = new ProductItemConditionablesMap( productFamily );
 		return conditionableMap.map;
 	}
 
@@ -141,21 +142,24 @@ export class Emporio {
 	}
 
 	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.setSettingsAutomatically();
 		return productItem;
 	}
 
 	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;
 	}
 
 	public getSizeDetails( productItem: ProductItem, useFilters: boolean ) {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const sizeHelper = new SizeHelper( this.computer, productItem );
 		sizeHelper.evaluate();
 
@@ -173,7 +177,8 @@ export class Emporio {
 	}
 
 	public isAttributeAvailable( productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean ): boolean {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
@@ -184,37 +189,51 @@ export class Emporio {
 		if ( family.isRequired( attributeName ) ) {
 			return true;
 		} else if ( family.isSupported( attributeName ) ) {
-			const product = this.productService.findProduct( productFamilyName, productName );
-			return product.isAttrStrictlyRequiredFor( attributeName );
+			const product = this.productService.retrieveProductFamily( productFamilyName ).getProduct( productName );
+			return product.isAttrRequired( attributeName );
 		}
 
 		return false;
 	}
 
 	public getFixedQuantityEvaluated( productItem: ProductItem, useFilters: boolean ): boolean {
-		this.computer.prepare( productItem, useFilters );
+		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
+		this.computer.evaluate( productItem, map, useFilters );
 		const fixedQuantityHelper = new FixedQuantityHelper( this.computer, productItem );
 		fixedQuantityHelper.evaluate();
 		return fixedQuantityHelper.fixedQuantity;
 	}
 
-	public getFamilies(): ProductFamily[] {
-		return this.productService.getProductFamilies();
-	}
-
-	public getFamily( name: string ): ProductFamily {
-		return this.productService.retrieveProductFamily( name );
-	}
-
-	public getAttributes(): ProductAttr[] {
-		return this.productService.getAttributes();
-	}
-
-	public getAttribute( name: string ): ProductAttr {
-		return this.productService.retrieveAttribute( name );
+	public getProductService(): ProductService {
+		return this.productService;
 	}
 
 	public getStickerAppLegacySKU( item: ProductItem ): number {
 		return this.stickerAppLegacySKU.getSKU( item );
-	} 
+	}
+
+	public isProductAvailable( productFamilyName: string, productName: string ): boolean {
+		const productFamily = this.productService.retrieveProductFamily( productFamilyName );
+		const product = productFamily.getProduct( productName );
+
+		if ( !product.isAvailable() ) {
+			return false;
+		}
+
+		const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() );
+
+		if ( !assetCollection ) {
+			return true;
+		}
+
+		for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) {
+			const values = Array.isArray( attrValue ) ? attrValue : [ attrValue ];
+			const attrAsset = assetCollection.get( attrName );
+			if ( attrAsset && values.some( value => !attrAsset.isAvailable( value ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }

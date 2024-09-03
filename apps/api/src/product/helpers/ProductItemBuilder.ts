@@ -1,31 +1,43 @@
-import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
-import { ProductAttrComputerExtended } from "./ProductAttrComputerExtended";
+import { ProductAttrComputer } from "./ProductAttrComputer";
+import { ProductFamily } from "../ProductFamily";
+import { AttributesMap } from "./ProductAttrMap";
+import { Product } from "../Product";
 
 export class ProductItemBuilder 
 {
-	protected ps:           ProductService;
-	protected attrComputer: ProductAttrComputerExtended;
+	protected attrComputer: ProductAttrComputer;
 
-	public constructor( productService: ProductService ) 
+	public constructor() 
 	{
-		this.ps           = productService;
-		this.attrComputer = new ProductAttrComputerExtended( this.ps );
+		this.attrComputer = new ProductAttrComputer();
 	}
 
-	public createItem( productFamilyName: string, productName: string, useFilters: boolean = true ): ProductItem 
+	public createItem( productFamily: ProductFamily, product: Product, map: AttributesMap, useFilters: boolean = true ): ProductItem 
 	{
-		const productFamily = this.ps.retrieveProductFamily( productFamilyName );
-		const product       = productFamily.getProduct( productName );
-		const item          = new ProductItem( productFamilyName, productName );
-		
-		item.setSku( product.getSku() );
-		
-		this.attrComputer.prepare( item, useFilters );
+		const item = new ProductItem( productFamily.getName(), product.getName() );
 
-		for ( const [ attrName, attrUID ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
+		this.attrComputer.evaluate( item, map, useFilters );
+
+		for ( let [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
 		{
-			const attr = this.ps.retrieveAttribute( attrUID );
+			const attr = productFamily.getAttribute( attrName );
+			
+			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
+			{
+				attrValue = attrValue[ 0 ];
+			}
+
+			if ( attr.canBe( attrValue ) ) 
+			{
+				item.setAttribute( attrName, attrValue );
+			}
+		}
+		
+		this.attrComputer.evaluate( item, map, useFilters );
+
+		for ( const [ attrName, attr ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
+		{
 			let attrValue = product.getAttrValue( attrName );
 
 			if ( !attrValue ) 
@@ -36,35 +48,20 @@ export class ProductItemBuilder
 				{
 					attrValue = defaultValue;
 				}
-			}
 
-			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-			{
-				attrValue = attrValue[ 0 ];
-			}
+				if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
+				{
+					attrValue = attrValue[ 0 ];
+				}
+	
+				if ( attrValue !== undefined )
+				{
+					item.setAttribute( attrName, attrValue );
 
-			if( attrValue !== undefined){
-				item.setAttribute( attrName, attrValue );
-			}			
-		}
-
-		for ( let [ attrName, attrValue ] of Object.entries( product.getAttrMap() ) ) 
-		{
-			const attrUID = productFamily.findAttrUIDByAlias( attrName );
-			const attr = this.ps.retrieveAttribute( attrUID );
-
-			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-			{
-				attrValue = attrValue[ 0 ];
-			}
-
-			if ( !item.getAttribute( attrName ) && attr.canBe( attrValue ) ) 
-			{
-				item.setAttribute( attrName, attrValue );
+					this.attrComputer.evaluate( item, map, useFilters );
+				}
 			}
 		}
-
-		item.setUnits( productFamily.getMinimumUnits( item ) );
 
 		return item;
 	}

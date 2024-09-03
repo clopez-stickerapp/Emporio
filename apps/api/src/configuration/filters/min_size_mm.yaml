@@ -1,0 +1,63 @@
+name: min_size_mm
+mode: highest_score_wins
+rules:
+  - keys:
+      - 25
+    conditions:
+      conditions: []
+  
+  - keys:
+      - 6
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.reseller
+          operator: ===
+          value: stickersthatstick
+
+  - keys:
+      - 150
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - white_wall
+        - attribute: item.productName
+          operator: IN
+          value:
+            - wall
+            - floor
+
+  - keys:
+      - 50
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet
+            - sheet_kiss_cut
+
+  - keys:
+      - 200
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet_legacy
+
+  - keys:
+      - 10
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_sheet
+            - single_on_sheet

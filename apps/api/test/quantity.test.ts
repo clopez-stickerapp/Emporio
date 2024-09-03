@@ -32,7 +32,7 @@ describe("QuantityList", () => {
 
 	test("Test testOnItem", () => {
 		quantityList = new QuantityList("test", [1, 2, 3]);
-		quantityList.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+		quantityList.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 
 		const item = new ProductItem("foo", "bar");
 		expect(quantityList.testOnItem(item)).toBe(false);
@@ -132,7 +132,7 @@ describe("ProductQuantityListCollection", () => {
 
 		test("with no matching list", () => {
 			const list = new QuantityList("test", [1, 2, 3]);
-			list.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list);
 
 			const item = new ProductItem("foo", "bar");
@@ -141,7 +141,7 @@ describe("ProductQuantityListCollection", () => {
 
 		test("with matching list", () => {
 			const list = new QuantityList("test", [1, 2, 3]);
-			list.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list);
 
 			const item = new ProductItem("foo", "bar");
@@ -151,11 +151,11 @@ describe("ProductQuantityListCollection", () => {
 
 		test("with multiple lists with one match", () => {
 			const list1 = new QuantityList("test1", [1, 2, 3]);
-			list1.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list1.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list1);
 
 			const list2 = new QuantityList("test2", [1, 2, 3]);
-			list2.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "black");
+			list2.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "black"});
 			collection.addConditionedQuantityList(list2);
 
 			const item = new ProductItem("foo", "bar");
@@ -166,15 +166,15 @@ describe("ProductQuantityListCollection", () => {
 		// It should match the first list that was added that tests positive
 		test("with multiple lists with two matches", () => {
 			const list0 = new QuantityList("test0", [1, 2, 3]);
-			list0.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "black");
+			list0.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "black"});
 			collection.addConditionedQuantityList(list0);
 
 			const list1 = new QuantityList("test1", [1, 2, 3]);
-			list1.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list1.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list1);
 
 			const list2 = new QuantityList("test2", [1, 2, 3]);
-			list2.conditions.addCondition("item.attributes.laminate", ConditionOperators.EQUAL, "glossy");
+			list2.conditions.addCondition({ attribute: "item.attributes.laminate", operator: ConditionOperators.EQUAL, value: "glossy"});
 			collection.addConditionedQuantityList(list2);
 
 			const item = new ProductItem("foo", "bar");
@@ -252,11 +252,11 @@ describe("ProductQuantityListCollection", () => {
 
 		test("with only conditioned lists", () => {
 			const list1 = new QuantityList("test1", [1, 2, 3]);
-			list1.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "black");
+			list1.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "black"});
 			collection.addConditionedQuantityList(list1);
 			
 			const list2 = new QuantityList("test2", [10, 20, 30]);
-			list2.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list2.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list2);
 
 			const item = new ProductItem("foo", "bar");
@@ -278,11 +278,11 @@ describe("ProductQuantityListCollection", () => {
 			collection.addQuantityList(list3);
 
 			const list4 = new QuantityList("test4", [15, 25, 35]);
-			list4.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "white");
+			list4.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "white"});
 			collection.addConditionedQuantityList(list4);
 
 			const list5 = new QuantityList("test5", [1, 2, 3]);
-			list5.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "black");
+			list5.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "black"});
 			collection.addConditionedQuantityList(list5);
 
 			const item = new ProductItem("foo", "bar");
@@ -304,7 +304,7 @@ describe("ProductQuantityListCollection", () => {
 			collection.addQuantityList(list3);
 
 			const list4 = new QuantityList("test4", [15, 25, 35]);
-			list4.conditions.addCondition("item.attributes.material", ConditionOperators.EQUAL, "black");
+			list4.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.EQUAL, value: "black"});
 			collection.addConditionedQuantityList(list4);
 
 			const item = new ProductItem("foo", "bar");

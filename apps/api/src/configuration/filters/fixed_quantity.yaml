@@ -1,0 +1,22 @@
+name: fixed_quantity
+mode: highest_score_wins
+rules:
+  - keys:
+      - true
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.reseller
+          operator: NOT_IN
+          value:
+            - stickersthatstick
+            - stickit
+        - relationMode: OR
+          conditions: 
+            - attribute: item.productName
+              operator: ===
+              value: 3d_dome
+            - attribute: item.attributes.laminate
+              operator: IN
+              value:
+                - epoxy

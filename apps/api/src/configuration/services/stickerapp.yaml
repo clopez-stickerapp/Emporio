@@ -1,0 +1,63 @@
+name: stickerapp
+pricing_models:
+  - default
+  - promo
+families:
+  - custom_sticker
+  - promo
+  - fee
+collections:
+  filter: 
+    - sticker_wizard_filters
+  constraint: 
+    - sticker_production
+    - promo_production
+  asset: 
+    - sticker_assets
+attributes:
+  - sheet_type
+  - sheet_name
+  - template_id
+  - laminate
+  - material
+  - width_mm
+  - height_mm
+  - quantity
+  - feature
+  - ink
+  - production_line
+  - production_instruction
+  - delivery
+  - delivery_sheet_width
+  - delivery_sheet_height
+  - delivery_sheet_inside_padding
+  - delivery_sheet_outside_padding
+  - epoxy_template_id
+  - cut_direction
+  - white_layer
+  - innercut_as_kisscut
+  - outline
+  - image_filters
+  - reseller
+  - size
+  - min_size_mm
+  - max_size_mm
+  - max_size_other_side_mm
+  - imperial_units
+  - fixed_size
+  - fixed_quantity
+  - sheet_type_save_as
+  - note
+  - price_margin_percentage
+  - reorder_id
+  - changed
+  - figure_id
+  - dynamic_string
+  - market
+  - delivery_roll_size_mm
+  - delivery_roll_size_type
+  - delivery_roll_item_margin
+  - delivery_roll_top_edge_margin
+  - effect_layer_file_name
+  - effect_layer_upload_fileapp_id
+  - text

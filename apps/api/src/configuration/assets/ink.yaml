@@ -1,0 +1,6 @@
+name: ink
+values:
+  pink_ink:
+    available: false
+  invisible_ink:
+    available: false

@@ -1,21 +1,28 @@
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
+import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
 import { Attributes } from "$/product/attribute/Attributes";
 import { Condition } from "./Condition";
-import { ConditionOperators } from "./ConditionOperators";
 import { ConditionRelations } from "./ConditionRelations";
-import { ConditionTestableInterface } from "./ConditionTestableInterface";
 import { ConditionValue } from "./ConditionValue";
 import { Conditions } from "./Conditions";
-import { ConditionSubGroupAlreadyExistsException } from "./exceptions/ConditionSubGroupAlreadyExistsException";
-import { ConditionSubGroupNotFoundException } from "./exceptions/ConditionSubGroupNotFoundException";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 
-export class ConditionBuilder implements ConditionTestableInterface {
+export class ConditionBuilder {
 	public relationMode: string;
-	protected conditions: Conditions = {};
+	protected conditions: Conditions = [];
 	protected baseComplexityScore: number = 0;
 
-	public constructor(relationMode: string = ConditionRelations.AND) {
-		this.relationMode = relationMode;
+	public constructor(config: ConditionBuilderConfig = {}, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v){
+		this.relationMode = config.relationMode ?? ConditionRelations.AND;
+		this.baseComplexityScore = config.baseComplexityScore ?? 0;		
+
+		for (const condition of config.conditions ?? []) {
+			if( "operator" in condition ){
+				this.addCondition( condition, resolve );
+			} else {
+				this.addSubGroup( condition, resolve );
+			}
+		}
 	}
 
 	public calculateComplexityScore(): number {
@@ -41,54 +48,15 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.keys(this.conditions).length;
 	}
 
-	public addSubGroup(mode: ConditionRelations = ConditionRelations.AND, alias: string|null = null): ConditionBuilder {
-		if (!alias) {
-			alias = `subgroup_${this.count()}`;
-		}
-
-		if (this.conditions[alias] !== undefined) {
-			throw new ConditionSubGroupAlreadyExistsException(`Sub group already exists with alias: ${alias}`);
-		}
-
-		const subGroup = new ConditionBuilder(mode);
-		this.conditions[alias] = subGroup;
-
+	public addSubGroup(config: ConditionBuilderConfig = {}, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v): ConditionBuilder {
+		const subGroup = new ConditionBuilder(config, resolve);
+		this.conditions.push(subGroup);
 		return subGroup;
 	}
 
-	/**
-	 * @throws ConditionSubGroupNotFoundException
-	 */
-	public getSubGroup(alias: string): ConditionBuilder {
-		if (this.conditions[alias] === undefined) {
-			throw new ConditionSubGroupNotFoundException(`Sub group doesn't exists with alias: ${alias}`);
-		}
-
-		const subGroup = this.conditions[alias];
-
-		if (!(subGroup instanceof ConditionBuilder)) {
-			throw new Error(`${alias} is not a subgroup!`);	//this wasn't there before
-		}
-
-		return subGroup;
-	}
-
-	public removeSubGroup(alias: string): void {
-		delete this.conditions[alias];
-	}
-
-	public addCondition(columnName: string, operator: ConditionOperators, conditionValue: ConditionValue|null = null): ConditionBuilder {
-		const condition = new Condition(columnName, operator, conditionValue);
-
-		if (!this.hasCondition(condition)) {
-			this.conditions[`${condition}`] = condition;
-		}
-
+	public addCondition(condition: ConditionConfig, resolve: (value: ConditionValue|null) => ConditionValue|null = (v) => v): ConditionBuilder {
+		this.conditions.push(new Condition(condition, resolve));
 		return this;
-	}
-
-	public hasCondition(condition: Condition): boolean {
-		return this.conditions[`${condition}`] !== undefined;
 	}
 
 	public test(data: Attributes): boolean {
@@ -149,12 +117,5 @@ export class ConditionBuilder implements ConditionTestableInterface {
 		return Object.values( this.conditions ).map( condition => {
 			return condition instanceof ConditionBuilder ? `(${ condition })` : `${ condition }`;
         } ).join( ` ${ relation } ` );
-	}
-
-	public toArray(): any[] {
-		throw new Error("Method not implemented.");
-	}
-	public fromArray(data: any[]): void {
-		throw new Error("Method not implemented.");
 	}
 }

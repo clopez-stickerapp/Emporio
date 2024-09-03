@@ -8,11 +8,13 @@ import { BadRequestError, NotFoundError } from './app/utils';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { Emporio } from './Emporio';
-import { StickerAppProductService } from './configuration/StickerAppProductService';
+import { ServiceLoader, services } from './configuration/ServiceLoader';
+import { AllUnitTypes } from './product/unit-type/AllUnitTypes';
 
 declare module 'fastify' {
 	interface FastifyInstance {
 		emporio: Emporio;
+		emporioBulk: Emporio;
 	}
 }
 
@@ -22,8 +24,17 @@ async function buildServer() {
 		disableRequestLogging: true,
 	});
 
-	const service = new StickerAppProductService();
+	const service = services['stickerapp'];
 	server.decorate("emporio", new Emporio(service));
+
+	// Temporary solution whilst transitioning to the bulk price system
+	const bulkService = new ServiceLoader().getServices()['stickerapp'];
+	const stickerFamily = bulkService.retrieveProductFamily("custom_sticker")
+	stickerFamily.setUnitType(AllUnitTypes.square_meter_with_bleed)
+	stickerFamily.setPriceProviderName("curve_price_provider")
+	stickerFamily.setMinimumUnitsCollectionName("MinimumValuesPriceCurves")
+	server.decorate("emporioBulk", new Emporio(bulkService));
+	// End of temporary solution
 
 	await server.register(swagger, {
 		openapi: {

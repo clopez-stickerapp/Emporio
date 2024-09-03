@@ -1,76 +1,95 @@
-import { QuantityAttribute } from "$/configuration/Attribute/QuantityAttribute";
-import { ProductItem } from "$/product/ProductItem";
 import { ProductFamily } from "$/product/ProductFamily";
-import { ProductService } from "../../src/product/ProductService";
 import { CrustAttribute } from "./Attributes/CrustAttribute";
 import { CuisineAttribute } from "./Attributes/CuisineAttribute";
-import { IngredientAttribute } from "./Attributes/IngredientAttribute";
+import { IngredientAttribute, IngredientValues } from "./Attributes/IngredientAttribute";
 import { PortionAttribute } from "./Attributes/PortionAttribute";
-import { SauceBaseAttribute } from "./Attributes/SauceBaseAttribute";
+import { SauceBaseAttribute, SauceBaseValues } from "./Attributes/SauceBaseAttribute";
 import { ToppingAttribute } from "./Attributes/ToppingAttribute";
-import { PizzeriaConstraintsCollection } from "./Constraints/PizzeriaConstraintsCollection";
-import { PizzeriaFilterCollection } from "./Filters/PizzeriaFiltersCollection";
+import PizzeriaConstraintsCollection from "./Constraints/PizzeriaConstraintsCollection";
+import PizzeriaFilterCollection from "./Filters/PizzeriaFiltersCollection";
+import { PizzeriaProducts } from "./PizzeriaProducts";
 
-export class PizzeriaFamily extends ProductFamily {
-	public static readonly NAME = 'pizza';
+const PizzeriaFamily = new ProductFamily( {
+	name: 'pizza',
+	rules: {
+		collections: {
+			constraint: PizzeriaConstraintsCollection.getCollectionName(),
+			filter: PizzeriaFilterCollection.getCollectionName(),
+			asset: 'asset',
+			min_units: 'min_units',
+			price_provider: '',
+			quantity_provider: ''
+		}
+	},
+	unitType: '',
+	products: []
+} );
 
-	public static readonly MAKE_YOUR_OWN = 'make_your_own';
-	public static readonly MARGARHITA = 'margarhita';
-	public static readonly CAPRICIOSA = 'capriciosa';
-	public static readonly HAWAII = 'hawaii';
-	public static readonly BIANCA = 'bianca';
+PizzeriaFamily.requireAttr( SauceBaseAttribute.getName(), SauceBaseAttribute );
+PizzeriaFamily.requireAttr( IngredientAttribute.getName(), IngredientAttribute );
+PizzeriaFamily.requireAttr( CuisineAttribute.getName(), CuisineAttribute );
+PizzeriaFamily.requireAttr( PortionAttribute.getName(), PortionAttribute );
+PizzeriaFamily.requireAttr( ToppingAttribute.getName(), ToppingAttribute );
+PizzeriaFamily.supportAttr( CrustAttribute.getName(), CrustAttribute );
 
-	public constructor( productService: ProductService ) {
-		super( PizzeriaFamily.NAME, 1, productService );
-
-		this.relateConstraintCollection( PizzeriaConstraintsCollection.NAME );
-		this.relateFilterCollection( PizzeriaFilterCollection.NAME );
-
-		this.requireAttr( SauceBaseAttribute.name, SauceBaseAttribute.NAME );
-		this.requireAttr( IngredientAttribute.name, IngredientAttribute.NAME );
-		this.requireAttr( CuisineAttribute.name, CuisineAttribute.NAME );
-		this.requireAttr( PortionAttribute.name, PortionAttribute.NAME );
-		this.requireAttr( ToppingAttribute.name, ToppingAttribute.NAME );
-
-		this.supportAttr( CrustAttribute.name, CrustAttribute.NAME );
-
-		this.addProduct( PizzeriaFamily.MAKE_YOUR_OWN, "123" )
-			.withAttrValue( IngredientAttribute.NAME, [
-				IngredientAttribute.CHEESE
-			], false );
-
-		this.addProduct( PizzeriaFamily.MARGARHITA, "124" )
-			.withAttrValue( SauceBaseAttribute.NAME, SauceBaseAttribute.TOMATO )
-			.withAttrValue( IngredientAttribute.NAME, [
-				IngredientAttribute.CHEESE
-			] );
-
-		this.addProduct( PizzeriaFamily.CAPRICIOSA, "125" )
-			.withAttrValue( SauceBaseAttribute.NAME, SauceBaseAttribute.TOMATO )
-			.withAttrValue( IngredientAttribute.NAME, [
-				IngredientAttribute.CHEESE,
-				IngredientAttribute.HAM,
-				IngredientAttribute.MUSHROOM
-			] );
-
-		this.addProduct( PizzeriaFamily.HAWAII, "121" )
-			.withAttrValue( SauceBaseAttribute.NAME, SauceBaseAttribute.TOMATO )
-			.withAttrValue( IngredientAttribute.NAME, [
-				IngredientAttribute.CHEESE,
-				IngredientAttribute.HAM,
-				IngredientAttribute.PINEAPPLE
-			] );
-			
-		this.addProduct( PizzeriaFamily.BIANCA, "129" )
-			.withAttrValue( SauceBaseAttribute.NAME, SauceBaseAttribute.CREME_FRAICHE )
-			.withAttrValue( IngredientAttribute.NAME, [
-				IngredientAttribute.CHEESE,
-				IngredientAttribute.GARLIC,
-				IngredientAttribute.WALNUT
-			] );
+PizzeriaFamily.addProduct( {
+	name: PizzeriaProducts.MAKE_YOUR_OWN,
+	sku: 'SKU_1',
+	attributes: {
+		[ IngredientAttribute.getName() ]: [
+			IngredientValues.CHEESE
+		]
 	}
+} );
 
-	public calculateUnits( productItem: ProductItem ): number {
-		return productItem.getAttribute<number>( QuantityAttribute.ALIAS ) ?? 0;
+PizzeriaFamily.addProduct( {
+	name: PizzeriaProducts.MARGARHITA,
+	sku: 'SKU_2',
+	attributes: {
+		[ SauceBaseAttribute.getName() ]: SauceBaseValues.TOMATO,
+		[ IngredientAttribute.getName() ]: [
+			IngredientValues.CHEESE
+		]
 	}
-}
+} );
+
+PizzeriaFamily.addProduct( {
+	name: PizzeriaProducts.CAPRICIOSA,
+	sku: 'SKU_3',
+	attributes: {
+		[ SauceBaseAttribute.getName() ]: SauceBaseValues.TOMATO,
+		[ IngredientAttribute.getName() ]: [
+			IngredientValues.CHEESE,
+			IngredientValues.HAM,
+			IngredientValues.MUSHROOM
+		]
+	}
+} );
+
+PizzeriaFamily.addProduct( {
+	name: PizzeriaProducts.HAWAII,
+	sku: 'SKU_4',
+	attributes: {
+		[ SauceBaseAttribute.getName() ]: SauceBaseValues.TOMATO,
+		[ IngredientAttribute.getName() ]: [
+			IngredientValues.CHEESE,
+			IngredientValues.HAM,
+			IngredientValues.PINEAPPLE
+		]
+	}
+} );
+
+PizzeriaFamily.addProduct( {
+	name: PizzeriaProducts.BIANCA,
+	sku: 'SKU_5',
+	attributes: {
+		[ SauceBaseAttribute.getName() ]: SauceBaseValues.CREME_FRAICHE,
+		[ IngredientAttribute.getName() ]: [
+			IngredientValues.CHEESE,
+			IngredientValues.GARLIC,
+			IngredientValues.WALNUT
+		]
+	}
+} );
+
+export default PizzeriaFamily;

@@ -1,24 +1,33 @@
-import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
+import { RuleConfig } from "$/configuration/interface/RuleConfig";
 import { ProductConditionBuilder } from "../../condition/ProductConditionBuilder";
 import { AttributeValueSingle } from "../AttributeValue";
 
 export class ProductAttrConstraint {
+	protected attributeName: string;
 	public constraints: Record<string, ProductConditionBuilder> = {};
 
-	public constructor( private attributeName: string ) {}
+	public constructor( config: RuleConfig ) {
+		this.attributeName = config.name;
 
-	public createConditionsFor( attributeValue: AttributeValueSingle, relationMode: string = ConditionRelations.AND ): ProductConditionBuilder {
-		attributeValue = attributeValue.toString();
+		for ( const rule of config.rules ) {
+			for ( const key of rule.keys ) {
+				this.addConstraint( key, rule.conditions );
+			}
+		}
+	}
 
-		if ( attributeValue in this.constraints ) {
-			// TODO: Custom exception
+	public addConstraint( attributeValue: AttributeValueSingle, config: ConditionBuilderConfig ): ProductConditionBuilder {
+		const key = attributeValue.toString();
+
+		if ( key in this.constraints ) {
 			throw new Error( `Constraints already created for ${ attributeValue }` );
 		}
 
-		return this.constraints[ attributeValue ] = new ProductConditionBuilder( relationMode );
+		return this.constraints[ key ] = new ProductConditionBuilder( config );
 	}
 
-	public getConditionsFor( attributeValue: AttributeValueSingle ): ProductConditionBuilder | null {
+	public getConstraint( attributeValue: AttributeValueSingle ): ProductConditionBuilder | null {
 		attributeValue = attributeValue.toString();
 		return attributeValue in this.constraints ? this.constraints[ attributeValue ] : null;
 	}

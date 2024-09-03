@@ -1,0 +1,204 @@
+name: laminate
+mode: highest_score_wins
+rules:
+  - keys:
+      - glossy_uv
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - glitter
+            - brushed_alloy
+            - prismatic
+            - gitd
+            - pixie_dust
+
+  - keys:
+      - glossy_uv
+      - soft_touch
+      - cracked_ice
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - white
+            - clear
+
+  - keys:
+      - glossy_uv
+      - satin_matte
+      - cracked_ice
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - holographic
+
+  - keys:
+      - glossy_uv
+      - soft_touch
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - mirror
+            - white_removable
+
+  - keys:
+      - glossy_no_uv
+      - uncoated
+    conditions:
+      relationMode: OR
+      baseComplexityScore: 100
+      conditions:
+        - attribute: item.attributes.ink
+          operator: IN
+          value:
+            - invisible_ink
+            - pink_ink
+
+  - keys:
+      - glossy_uv_12_mil_heavy_duty
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - white_hi_tack
+
+  - keys:
+      - uncoated
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - transfer_decal
+            - wall
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - kraft_paper
+            - satin_matte
+            - colored_vinyl
+            - white_wall
+
+  - keys:
+      - sandy
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 1000
+      conditions:
+        - relationMode: OR
+          conditions:
+            - attribute: item.productName
+              operator: ===
+              value: floor
+            - attribute: item.attributes.material
+              operator: ===
+              value: skin
+
+  - keys:
+      - epoxy
+    conditions:
+      relationMode: AND
+      conditions:
+      - attribute: item.productName
+        operator: ===
+        value: 3d_dome
+
+  - keys:
+      - glossy_thin_no_uv
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 1000
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_sheet
+
+  - keys:
+      - glossy_thin_no_uv
+      - uncoated
+      - satin_matte
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 1000
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_roll
+
+  - keys:
+      - uncoted
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 1001
+      conditions:
+        - attribute: item.attributes.material
+          operator: ===
+          value: kraft_thin
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_roll
+
+  - keys:
+      - glossy_uv
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.attributes.material
+          operator: ===
+          value: colored_vinyl
+        - attribute: item.productName
+          operator: ===
+          value: sheet_legacy
+
+  - keys:
+      - glossy_uv_12_mil_heavy_duty
+      - glossy_uv
+      - sandy
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 120
+      conditions:
+        - attribute: item.productName
+          operator: "!=="
+          value: 3d_dome
+        - attribute: item.attributes.reseller
+          operator: IN
+          value:
+            - stickersthatstick
+            - stickit
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - white_hi_tack

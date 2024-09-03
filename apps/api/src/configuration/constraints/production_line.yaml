@@ -1,0 +1,54 @@
+name: production_line
+rules:
+  - keys:
+      - digital
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: "{DigitalMaterials}"
+        - attribute: item.attributes.laminate
+          operator: IN
+          value: "{DigitalLaminates}"
+        - attribute: item.attributes.feature
+          operator: NOT_IN
+          value:
+            - "{ProductFeatures.BACKPAPER_PRINT}"
+
+  - keys:
+      - laser
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 2
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: "{LaserMaterials}"
+        - attribute: item.attributes.laminate
+          operator: IN
+          value: "{LaserLaminates}"
+        - attribute: item.attributes.width_mm
+          operator: <=
+          value: "{MaxSizes.ONE_SIDE_LASER}"
+        - attribute: item.attributes.height_mm
+          operator: <=
+          value: "{MaxSizes.ONE_SIDE_LASER}"
+        - relationMode: OR
+          baseComplexityScore: 1
+          conditions:
+            - attribute: item.attributes.width_mm
+              operator: <=
+              value: "{MaxSizes.LASER}"
+            - attribute: item.attributes.height_mm
+              operator: <=
+              value: "{MaxSizes.LASER}"
+
+  - keys:
+      - special
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.material
+          operator: ===
+          value: "{ProductionLines.SPECIAL}"

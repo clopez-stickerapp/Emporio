@@ -1,21 +1,24 @@
 import { ProductService } from "../ProductService";
 import { ProductItem } from "../ProductItem";
-import { ProductAttrComputerExtended } from "./ProductAttrComputerExtended";
 import { ProductAttrNotSupportedException } from "$/product/exceptions/ProductAttrNotSupportedException";
 import { ProductAttrValueNotSupportedException } from "$/product/exceptions/ProductAttrValueNotSupportedException";
 import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInvalidException";
 import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItemOutOfStockException";
 import { isEmpty } from "../../../Util";
+import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
+import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
+import { ProductAttrComputer } from "./ProductAttrComputer";
 
 export class ProductItemValidator 
 {
 	protected ps:           ProductService;
-	protected attrComputer: ProductAttrComputerExtended;
+	protected attrComputer: ProductAttrComputer;
 
 	public constructor( ps: ProductService ) 
 	{
 		this.ps           = ps;
-		this.attrComputer = new ProductAttrComputerExtended( this.ps );
+		this.attrComputer = new ProductAttrComputer();
 	}
 
 	/**
@@ -28,7 +31,9 @@ export class ProductItemValidator
 	 */
 	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = false, checkAgainstFilteredValues: boolean = true ): void 
 	{
-		this.attrComputer.prepare( item, checkAgainstFilteredValues );
+		const map = this.ps.getProductMap( item.getProductFamilyName(), item.getProductName() );
+
+		this.attrComputer.evaluate( item, map, checkAgainstFilteredValues );
 		
 		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
 		const product = productFamily.getProduct( item.getProductName() );
@@ -46,10 +51,20 @@ export class ProductItemValidator
 
 		if ( !product.testAttributes( item.getAttributes() ) ) 
 		{
-			throw new ProductItemInvalidException( "Attributes doesn't match product recipe." );
+			let msg: string = "Attributes don't match product recipe - ";
+
+			for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
+			{
+				if ( attrValue !== item.getAttribute( attrName ) )
+				{
+					msg += `${ attrName } needs to be ${ attrValue }, `;
+				}
+			}
+
+			throw new ProductItemInvalidException( msg.slice( 0, -2 ) );
 		}
 
-		const stockMap = product.getProductFamily().getStockCollection()?.getAllOutOfStock() ?? {};
+		const assets = this.ps.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() )?.getAll();
 
 		for ( let [ attrName, value ] of Object.entries( item.getAttributes() ) ) 
 		{
@@ -58,7 +73,7 @@ export class ProductItemValidator
 				value = value.filter( v => !isEmpty( v ) );
 			}
 
-			if ( !product.canHaveAttr( attrName ) )
+			if ( !productFamily.canHaveAttr( attrName ) )
 			{
 				if ( !allowUnsupportedAttributeAliases )
 				{
@@ -68,8 +83,7 @@ export class ProductItemValidator
 				continue;
 			}
 
-			const attrUID = productFamily.findAttrUIDByAlias( attrName );
-			const attr = this.ps.retrieveAttribute( attrUID );
+			const attr = productFamily.getAttribute( attrName );
 
 			if ( attr.canBe( value ) )
 			{
@@ -90,19 +104,19 @@ export class ProductItemValidator
 				{
 					const productAttrValue = attr.getAttrValue( attrValue );
 
-					if ( productAttrValue && productFamily.getConstraintsCollection()?.test( attrName, productAttrValue.getValue(), item ) === false ) 
+					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, productFamily.getConstraintsCollectionName() )?.get( attrName )?.getConstraint( productAttrValue )?.testOnItem( item ) === false )
 					{
-						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue.getValue() }" (${ attrName })` );
+						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
 					}
 				}
 
-				if ( attrName in stockMap ) 
+				if ( assets && attrName in assets ) 
 				{
-					const outOfStock = stockMap[ attrName ];
+					const asset = assets[ attrName ];
 
 					for ( const attrValue of attrValues ) 
 					{
-						if ( outOfStock.isOutOfStock( attrValue ) ) 
+						if ( !asset.isAvailable( attrValue ) ) 
 						{
 							throw new ProductItemOutOfStockException( `${ attrName } "${ attrValue }" is out of stock` );
 						}

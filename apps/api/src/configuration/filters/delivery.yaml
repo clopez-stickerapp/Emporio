@@ -1,0 +1,24 @@
+name: delivery
+mode: highest_score_wins
+rules:
+  - keys:
+      - sheet
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - transfer_decal
+            - 3d_dome
+
+  - keys:
+      - single
+    conditions:
+      relationMode: AND
+      conditions:  
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet
+            - sheet_kiss_cut

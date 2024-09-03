@@ -1,0 +1,64 @@
+name: production_line
+mode: highest_score_wins
+rules:
+  - keys:
+      - laser
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 120
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet
+            - sheet_kiss_cut
+            - window
+            - labels_on_roll
+            - labels_on_sheet
+
+  - keys:
+      - laser
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - white
+            - white_removable
+            - clear
+        - attribute: item.productName
+          operator: "!=="
+          value: library_design
+        - attribute: item.attributes.width_mm
+          operator: <=
+          value: 800
+        - attribute: item.attributes.height_mm
+          operator: <=
+          value: 800
+        - relationMode: OR
+          conditions:
+            - attribute: item.attributes.width_mm
+              operator: <=
+              value: 275
+            - attribute: item.attributes.height_mm
+              operator: <=
+              value: 275
+
+  - keys:
+      - digital
+    conditions:
+      relationMode: OR
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - transfer_decal
+        - relationMode: AND
+          conditions:
+            - attribute: item.attributes.width_mm
+              operator: ">"
+              value: 275
+            - attribute: item.attributes.height_mm
+              operator: ">"
+              value: 275

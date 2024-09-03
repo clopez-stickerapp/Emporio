@@ -1,4 +1,4 @@
-import { StickerAppProductService } from "$/configuration/StickerAppProductService";
+import { services } from "$/configuration/ServiceLoader";
 import { Type } from "@sinclair/typebox";
 
 const attributesExample = {
@@ -21,7 +21,7 @@ const getAttributes = ( withProduction: boolean = false ) => {
 	} : attributesExample;
 }
 
-const service = new StickerAppProductService();
+const service = services["stickerapp"]; //Todo: should we do it like this?
 
 export const ProductFamily = () => Type.String( { 
 	minLength: 1,
@@ -33,7 +33,8 @@ export const ProductName = () => Type.String( {
 	examples: service.getProductFamilies().map( family => Object.keys( family.getProducts() ) ).flat()
 } );
 
-export const AttributeValueSingle = () => Type.Union( [ Type.String(), Type.Number(), Type.Boolean() ] );
+// Type.String should be last in this list to ensure proper conversion
+export const AttributeValueSingle = () => Type.Union( [ Type.Number(), Type.Boolean(), Type.String() ] );
 
 export const AttributeValueMulti = () => Type.Array( AttributeValueSingle() );
 
@@ -50,15 +51,14 @@ export const AttributesString = ( withProductionAttributes: boolean = false ) =>
 	examples: [ JSON.stringify( getAttributes( withProductionAttributes ) ) ]
 } );
 
-export const AttributeUID = () => Type.String( {
-	examples: service.getAttributes().map( attribute => attribute.getUID() ),
+export const AttributeName = () => Type.String( {
+	examples: service.getAttributes().map( attribute => attribute.getName() ),
 } )
 
 export const ProductItem = ( withProductionAttributes: boolean = false ) => Type.Object( {
 	productFamilyName: ProductFamily(),
 	productName: ProductName(),
 	attributes: Attributes( withProductionAttributes ),
-	units: Type.Optional( Type.Number() ),
 	sku: Type.Optional( Type.String() )
 } );
 
@@ -67,7 +67,6 @@ export const ProductItemString = ( withProductionAttributes: boolean = false ) =
 		productFamilyName: 'custom_sticker',
 		productName: 'die_cut',
 		attributes: getAttributes( withProductionAttributes ),
-		units: 1,
 		sku: 'DCRS-108'
 	} ) ]
 } );

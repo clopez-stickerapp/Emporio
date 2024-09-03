@@ -1,4 +1,5 @@
-import { ConditionRelations } from "$/conditions/ConditionRelations";
+import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
+import { FilterConfig } from "$/configuration/interface/FilterConfig";
 import { AttributeValueMulti } from "../AttributeValue";
 import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
 import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
@@ -14,24 +15,38 @@ import { ProductAttrFilteredValues } from "./ProductAttrFilteredValues";
 export class ProductAttrFilter {
 	private attributeName: string;
 	protected filters: ProductAttrFilteredValues[] = [];
-	public mode: ProductAttrFilterMode;
+	protected mode: ProductAttrFilterMode;
 
-	public constructor( attrAlias: string, mode: ProductAttrFilterMode = ProductAttrFilterMode.MODE_HIGHEST_SCORE_WINS ) {
-		this.attributeName = attrAlias;
-		this.mode = mode;
+	public constructor( config: FilterConfig ) {
+		this.attributeName = config.name;
+		this.mode = config.mode;
+
+		for ( const rule of config.rules ) {
+			this.addFilter( rule.keys, rule.conditions );
+		}
 	}
 
-	public createFilter( attrValues: AttributeValueMulti, conditionRelationMode: ConditionRelations = ConditionRelations.AND ): ProductAttrFilteredValues {
-		let filter = new ProductAttrFilteredValues( attrValues, conditionRelationMode );
+	public addFilter( attrValues: AttributeValueMulti, config: ConditionBuilderConfig ): ProductAttrFilteredValues {
+		const filter = new ProductAttrFilteredValues( attrValues, config );
 		this.filters.push( filter );
 		return filter;
 	}
 
-	public getAllFilters(): ProductAttrFilteredValues[] {
+	public getFilters(): ProductAttrFilteredValues[] {
 		return this.filters;
+	}
+
+	public getMode(): ProductAttrFilterMode {
+		return this.mode;
 	}
 
 	public getAttributeName(): string {
 		return this.attributeName;
 	}
+}
+
+export type Filter = {
+	values: AttributeValueMulti;
+	conditions: string;
+	conditionsComplexityScore: number;
 }

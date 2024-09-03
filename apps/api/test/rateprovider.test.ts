@@ -36,7 +36,7 @@ describe("Test creating RateProvider", () => {
 describe("Test test function", () => {
 	test("with applicable condition", () => {
 		provider = new ProviderTest("test");
-		provider.conditions.addCondition("item.attributes.test-attribute", ConditionOperators.GREATER_THAN, 0);
+		provider.conditions.addCondition({ attribute: "item.attributes.test-attribute", operator: ConditionOperators.GREATER_THAN, value: 0});
 
 		item = new ProductItem("foo", "bar");
 		item.setAttribute("test-attribute", 5);
@@ -46,7 +46,7 @@ describe("Test test function", () => {
 
 	test("with inapplicable condition", () => {
 		provider = new ProviderTest("test");
-		provider.conditions.addCondition("item.attributes.test-attribute", ConditionOperators.GREATER_THAN, 0);
+		provider.conditions.addCondition({ attribute: "item.attributes.test-attribute", operator: ConditionOperators.GREATER_THAN, value: 0});
 
 		item = new ProductItem("foo", "bar");
 		item.setAttribute("test-attribute", 0);

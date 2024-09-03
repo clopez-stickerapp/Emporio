@@ -1,0 +1,6 @@
+name: giftcard
+sku: GC-31
+available: true
+attributes:
+  sheet_type: giftcard
+  material: special

@@ -16,6 +16,7 @@ import {
 	isAttributeRequiredSchema
 } from '../schema';
 import { ProductItem } from '$/product/ProductItem';
+import { ProductItemBuilder } from '$/product/helpers/ProductItemBuilder';
 
 export default async function ( fastify: FastifyInstance ) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -23,13 +24,19 @@ export default async function ( fastify: FastifyInstance ) {
 	const emporio = fastify.emporio;
 
 	f.get( '/item/:family/:name', { schema: getCreateItemSchema }, async function ( request ) {
-		const item = emporio.createItem( request.params.family, request.params.name, request.query.useFilters );
+		const service = emporio.getProductService();
+
+		const productFamily = service.retrieveProductFamily( request.params.family );
+		const product = productFamily.getProduct( request.params.name );
+		const map = service.getProductMap( request.params.family, request.params.name );
+		const builder = new ProductItemBuilder();
+		const item = builder.createItem( productFamily, product, map, request.query.useFilters );
+
 		return {
 			productName: item.getProductName(),
 			productFamilyName: item.getProductFamilyName(),
 			attributes: item.getAttributes(),
-			units: item.getUnits(),
-			sku: item.getSku()
+			sku: product.getSku()
 		}
 	} );
 
@@ -44,7 +51,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/attribute-map/:family/:name', { schema: getAttributeMapSchema }, async function ( request ) {
-		return { attributes: emporio.getAttributeMap( request.params.family, request.params.name ) };
+		return { attributes: emporio.getProductService().getProductMap( request.params.family, request.params.name ) };
 	} )
 
 	f.get( '/conditionable-map/:family', { schema: getConditionableMapSchema }, async function ( request ) {
@@ -57,8 +64,6 @@ export default async function ( fastify: FastifyInstance ) {
 			productName: request.params.name,
 			attributes: JSON.parse( request.query.attributes ),
 		} );
-
-		item.setUnits( request.query.units );
 
 		try {
 			emporio.validate( item, request.query.allowUnsupportedAttributeAliases, request.query.allowUnsuggestedAttributeValues, request.query.checkAgainstFilteredValues );
@@ -110,7 +115,7 @@ export default async function ( fastify: FastifyInstance ) {
 	f.get( '/families', { schema: getFamiliesSchema }, async function ( request ) {
 		const families: Record<string, any> = {};
 		
-		const productFamilies = request.query.name ? [ emporio.getFamily( request.query.name ) ] : emporio.getFamilies();
+		const productFamilies = request.query.name ? [ emporio.getProductService().retrieveProductFamily( request.query.name ) ] : emporio.getProductService().getProductFamilies();
 		
 		for ( const family of productFamilies ) {
 			families[ family.getName() ] = {
@@ -122,9 +127,9 @@ export default async function ( fastify: FastifyInstance ) {
 			for ( const product of Object.values( family.getProducts() ) ) {
 				families[ family.getName() ].products[ product.getName() ] = {
 					'name': product.getName(),
-					'attributes': product.getAttrMap(),
+					'attributes': product.getRequiredAttrs(),
 					'sku': product.getSku(),
-					'inStock': product.isInStock()
+					'available': product.isAvailable()
 				}
 			}
 		}
@@ -135,12 +140,12 @@ export default async function ( fastify: FastifyInstance ) {
 	f.get( '/attributes', { schema: getAttributesSchema }, async function ( request ) {
 		const attributes: Record<string, any> = {};
 
-		const attrs = request.query.name ? [ emporio.getAttribute( request.query.name ) ] : emporio.getAttributes();
+		const attrs = request.query.name ? [ emporio.getProductService().retrieveAttribute( request.query.name ) ] : emporio.getProductService().getAttributes();
 
 		for ( const attribute of attrs ) {
-			attributes[ attribute.getUID() ] = {
-				'name': attribute.getUID(),
-				'values': attribute.getValues().map( value => value.getValue() ),
+			attributes[ attribute.getName() ] = {
+				'name': attribute.getName(),
+				'values': attribute.getValues(),
 				'dynamic': attribute.isDynamicValue(),
 				'multi': attribute.isMultiValue(),
 				'type': attribute.getValueType(),
@@ -161,6 +166,8 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/out-of-stock/:family', { schema: getOutOfStockSchema }, async function ( request ) {
-		return { outOfStock: emporio.getFamily( request.params.family ).getOutOfStockProducts() };
+		const products = emporio.getProductService().retrieveProductFamily( request.params.family ).getProducts();
+		const unavailableProducts = Object.values( products ).filter( product => !emporio.isProductAvailable( product.getProductFamilyName(), product.getName() ) );
+		return { outOfStock: unavailableProducts.map( product => product.getName() ) };
 	} )
 }

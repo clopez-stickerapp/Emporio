@@ -1,55 +1,73 @@
-import { ProductService } from "./ProductService";
-import { ProductAttrConstraintCollection } from "./attribute/Constraint/ProductAttrConstraintCollection";
-import { ProductAttrFilterCollection } from "./attribute/Filter/ProductAttrFilterCollection";
-import { ProductAttrIconCollection } from "./attribute/Icon/ProductAttrIconCollection";
-import { ProductAttrStockCollection } from "./attribute/Stock/ProductAttrStockCollection";
 import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
-import { ProductDynamicValue } from "./value/ProductDynamicValue";
-import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
+import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
+import { ProductAttr } from "./attribute/ProductAttr";
+import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
+import { UnitType } from "./unit-type/UnitType";
+import { ProductConfig } from "$/configuration/interface/ProductConfig";
+import { AttributeValueMulti } from "./attribute/AttributeValue";
 
-export abstract class ProductFamily {
-	protected productService: ProductService;
+export class ProductFamily {
 	protected name: string;
-	protected attrConstraintCollectionName: string | undefined;
-	protected attrFilterCollectionName: string | undefined;
-	protected attrOutOfStockCollectionName: string | undefined;
-	protected attrIconCollectionName: string | undefined;
-	protected attrStockCollectionName: string | undefined;
-	protected productItemProcessorCollectionName: string | undefined;
-	protected priceProviderName: string | undefined;
-	protected productQuantityListCollectionName: string | undefined;
+	protected attrConstraintCollectionName: string;
+	protected attrFilterCollectionName: string;
+	protected minimumUnitsCollectionName: string;
+	protected priceProviderName: string;
+	protected productQuantityListCollectionName: string;
+	protected assetCollectionName: string;
 
-	public minimumUnitsValue: ProductDynamicValue;
+	protected unitType: UnitType;
+
 	protected products: Record<string, Product> = {};
-	protected requiredAttrs: Record<string, string> = {};
-	protected supportedAttrs: Record<string, string> = {};
+	protected requiredAttrs: Record<string, ProductAttr> = {};
+	protected supportedAttrs: Record<string, ProductAttr> = {};
 
-	public constructor(name: string, defaultMinimumUnitsValue: number, productService: ProductService) {
-		this.name = name;
-		this.minimumUnitsValue = new ProductDynamicValue(defaultMinimumUnitsValue);
-		this.productService = productService;
+	public constructor(config: FamilyConfig){
+		this.name = config.name;
+		this.attrConstraintCollectionName = config.rules.collections.constraint;
+		this.attrFilterCollectionName = config.rules.collections.filter;
+		this.minimumUnitsCollectionName = config.rules.collections.min_units;
+		this.priceProviderName = config.rules.collections.price_provider;
+		this.productQuantityListCollectionName = config.rules.collections.quantity_provider;
+		this.assetCollectionName = config.rules.collections.asset;
+
+		this.unitType = AllUnitTypes[config.unitType as UnitTypeNames];
 	}
 
 	public getName(): string {
 		return this.name;
 	}
 
-	public addProduct(productName: string, sku: string){
-		if (this.products[productName]) {
-			throw new Error("Product already exists: " + productName);
-		}
-
-		const product = new Product(this, productName, sku);
-		this.productService.registerProductSku(sku);
-		this.products[productName] = product;
-
-		return product;
+	// Temporary method for moving over to bulk price system
+	public setUnitType(unitType: UnitType): void {
+		this.unitType = unitType;
 	}
 
-	public getMinimumUnits(productItem: ProductItem): number {
-		return this.minimumUnitsValue.getValue(productItem);
+	// Temporary method for moving over to bulk price system
+	public setPriceProviderName(priceProviderName: string): void {
+		this.priceProviderName = priceProviderName;
+	}
+
+	// Temporary method for moving over to bulk price system
+	public setMinimumUnitsCollectionName(minimumUnitsCollectionName: string): void {
+		this.minimumUnitsCollectionName = minimumUnitsCollectionName;
+	}
+
+	public addProduct(config: ProductConfig): Product {
+		if (this.products[config.name]) {
+			throw new Error("Product already exists: " + config.name);
+		}
+
+		const product = new Product(this.getName(), config);
+
+		for ( const [ name, value ] of Object.entries( config.attributes ?? {} ) ) {
+			const productAttr = this.getAttribute( name );
+			product.requireAttr( productAttr, value );
+		}
+
+		this.products[config.name] = product;
+
+		return product;
 	}
 
 	public getProduct(productName: string): Product {
@@ -64,19 +82,19 @@ export abstract class ProductFamily {
 		return this.products;
 	}
 
-	public requireAttr(attributeClassRef: string, alias: string): void {
-		if (this.requiredAttrs[alias]) {
+	public requireAttr(name: string, instance: ProductAttr): void {
+		if (this.requiredAttrs[name]) {
 			throw new Error("Attribute alias already required.");
 		}
 
-		if (this.supportedAttrs[alias]) {
+		if (this.supportedAttrs[name]) {
 			throw new Error("Attribute alias already supported.");
 		}
 
-		this.requiredAttrs[alias] = attributeClassRef;
+		this.requiredAttrs[name] = instance;
 	}
 
-	public getRequiredAttrs(): Record<string, string> {
+	public getRequiredAttrs(): Record<string, ProductAttr> {
 		return this.requiredAttrs;
 	}
 
@@ -84,19 +102,19 @@ export abstract class ProductFamily {
 		return this.requiredAttrs[alias] !== undefined;
 	}
 
-	public supportAttr(attributeClassRef: string, alias: string): void {
-		if (this.requiredAttrs[alias]) {
+	public supportAttr(name: string, instance: ProductAttr): void {
+		if (this.requiredAttrs[name]) {
 			throw new Error("Attribute alias already required.");
 		}
 
-		if (this.supportedAttrs[alias]) {
+		if (this.supportedAttrs[name]) {
 			throw new Error("Attribute alias already supported.");
 		}
 
-		this.supportedAttrs[alias] = attributeClassRef;
+		this.supportedAttrs[name] = instance;
 	}
 
-	public getSupportedAttrs(): Record<string, string> {
+	public getSupportedAttrs(): Record<string, ProductAttr> {
 		return this.supportedAttrs;
 	}
 
@@ -108,96 +126,106 @@ export abstract class ProductFamily {
 		return this.supportedAttrs[alias] !== undefined;
 	}
 
-	public getAttributes(): Record<string, string> {
+	public getAttributes(): Record<string, ProductAttr> {
 		return {...this.supportedAttrs, ...this.requiredAttrs};
 	}
 
-	public findAttrUIDByAlias(alias: string): string {
-		if (this.requiredAttrs[alias]) {
-			return this.requiredAttrs[alias];
+	public getAttribute(name: string): ProductAttr {
+		if (this.requiredAttrs[name]) {
+			return this.requiredAttrs[name];
 		}
 
-		if (this.supportedAttrs[alias]) {
-			return this.supportedAttrs[alias];
+		if (this.supportedAttrs[name]) {
+			return this.supportedAttrs[name];
 		}
 
-		throw new Error("Alias is not supported by product family: " + alias + " (" + this.getName() + ")");
+		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
 	}
 
-	public getProductService(): ProductService {
-		return this.productService;
+	public getConstraintsCollectionName(): string {
+		return this.attrConstraintCollectionName;
 	}
 
-	public setProductService(productService: ProductService): void {
-		this.productService = productService;
+	public getFilterCollectionName(): string {
+		return this.attrFilterCollectionName;
 	}
 
-	public relateConstraintCollection(collectionName: string): void {
-		this.attrConstraintCollectionName = collectionName;
+	public getMinimumUnitsCollectionName(): string {
+		return this.minimumUnitsCollectionName;
 	}
 
-	public getConstraintsCollection(): ProductAttrConstraintCollection | null {
-		return this.attrConstraintCollectionName ? this.getProductService().retrieveAttrConstraintCollection(this.attrConstraintCollectionName) : null;
+	public getAssetCollectionName(): string {
+		return this.assetCollectionName;
 	}
 
-	public relateFilterCollection(collectionName: string): void {
-		this.attrFilterCollectionName = collectionName;
+	public getPriceProviderName(): string {
+		return this.priceProviderName;
 	}
 
-	public getFilterCollection(): ProductAttrFilterCollection | null {
-		return this.attrFilterCollectionName ? this.getProductService().retrieveAttrFilterCollection(this.attrFilterCollectionName) : null;
+	public getQuantityCollectionName(): string {
+		return this.productQuantityListCollectionName;
 	}
 
-	public relateIconCollection(collectionName: string): void {
-		this.attrIconCollectionName = collectionName;
+	public calculateUnits(productItem: ProductItem): number {
+		return this.unitType.calculateUnits(productItem);
 	}
 
-	public getIconsCollection(): ProductAttrIconCollection | null {
-		return this.attrIconCollectionName ? this.getProductService().retrieveAttrIconCollection(this.attrIconCollectionName) : null;
+	public canHaveAttr(attrName: string): boolean {
+		if(this.getRequiredAttrs()[attrName] || this.getSupportedAttrs()[attrName]){
+			return true;
+		}
+
+		return false;
 	}
 
-	public relateStockCollection(collectionName: string): void {
-		this.attrStockCollectionName = collectionName;
-	}
+	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
+	{
+		const attribute = this.getAttribute( attrAlias );
+		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
 
-	public getStockCollection(): ProductAttrStockCollection | null {
-		return this.attrStockCollectionName ? this.getProductService().retrieveAttrStockCollection(this.attrStockCollectionName) : null;
-	}
-
-	public relateProductPriceProvider(collectionName: string): void {
-		this.priceProviderName = collectionName;
-	}
-
-	public getProductPriceProvider(): ProductPriceProvider | null {
-		return this.priceProviderName ? this.getProductService().retrievePriceProvider(this.priceProviderName) : null;
-	}
-
-	public relateProductQuantityListCollection(collectionName: string): void {
-		this.productQuantityListCollectionName = collectionName;
-	}
-
-	public getProductQuantityListCollection(): ProductQuantityListCollection | null {
-		return this.productQuantityListCollectionName ? this.getProductService().retrieveQuantityListCollection(this.productQuantityListCollectionName) : null;
-	}
-
-	public validateUnits(productItem: ProductItem): void{
-		productItem.setUnits(this.calculateUnits(productItem));
-	}
-
-	public abstract calculateUnits(productItem: ProductItem): number;
-
-	public getMinimumQuantity(productItem: ProductItem): number {
-		return 1;
-	}
-
-	public getOutOfStockProducts(): string[] {
-		const outOfStockProducts: string[] = [];
-		for (const product of Object.values(this.products)) {
-			if (product.isInStock() === false) {
-				outOfStockProducts.push(product.getName());
+		if ( !product.isAttrRequired( attrAlias ) ) 
+		{
+			for ( const attrValue of attribute.getValues() ) 
+			{
+				if ( !attrValues.includes( attrValue ) ) 
+				{
+					attrValues.push( attrValue );
+				}
 			}
 		}
 
-		return outOfStockProducts;
+		return attrValues;
+	}
+
+	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
+	{
+		const attrValues: AttributeValueMulti = [];
+		const attribute = this.getAttribute( attrAlias );
+
+		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
+
+		if ( !Array.isArray( withAttrValues ) ) 
+		{
+			withAttrValues = [ withAttrValues ]
+		}
+
+		for ( const attrRawValue of withAttrValues ) 
+		{
+			if ( attribute.isDynamicValue() ) 
+			{
+				attrValues.push( attrRawValue );
+			} 
+			else 
+			{
+				const attrValue = attribute.getAttrValue( attrRawValue );
+
+				if ( attrValue !== null ) 
+				{
+					attrValues.push( attrValue );
+				}
+			}
+		}
+
+		return attrValues;
 	}
 }

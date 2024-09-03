@@ -1,0 +1,11 @@
+name: color_supported
+rules:
+  - keys:
+      - true
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value:
+            - "{MaterialValues.COLORED_VINYL}"

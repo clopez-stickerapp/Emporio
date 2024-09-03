@@ -1,23 +1,30 @@
+import { AttributeConfig } from "$/configuration/interface/AttributeConfig";
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
 import { isEmpty } from "../../../Util";
 import { AttributeValue, AttributeValueSingle } from "./AttributeValue";
-import { ProductAttrValue } from "./ProductAttrValue";
 import { ProductAttrValueType } from "./ProductAttrValueType";
 
 export class ProductAttr {
+	protected name: string;
 	protected valueType: ProductAttrValueType;
 	protected multiValue: boolean;
 	protected dynamicValue: boolean = false;
-	protected values: ProductAttrValue[] = [];
+	protected values: AttributeValueSingle[] = [];
 
-	public constructor( valueType: ProductAttrValueType, multiValue: boolean = false, dynamicValue: boolean = false ) {
-		if ( multiValue && valueType === "boolean" ) {
-			throw new Error( "Cannot make a multivalue attribute with boolean type." );
+	public constructor( config: AttributeConfig ) {
+		this.name = config.name;
+		this.valueType = config.type;
+		this.multiValue = config.multivalue || false;
+		this.dynamicValue = config.dynamicvalue || false;
+		this.values = config.values || [];
+
+		if( this.multiValue && this.valueType === ProductAttrValueType.BOOL ){
+			throw new Error("Can't make a multivalue attribute with boolean type.");
 		}
-		
-		this.valueType = valueType;
-		this.multiValue = multiValue;
-		this.dynamicValue = dynamicValue;
+
+		for (const value of this.values) {
+			this.testValueType(value, true);
+		}
 	}
 
 	/**
@@ -27,15 +34,13 @@ export class ProductAttr {
 	 * @see ProductAttrValueTypes
 	 *
 	 */
-	public addAttrValue( value: AttributeValueSingle ): ProductAttrValue {
+	public addAttrValue( value: AttributeValueSingle ): void {
 		this.testValueType( value, true );
-		const productAttrValue = new ProductAttrValue( value, this );
-		this.values.push( productAttrValue );
-		return productAttrValue;
+		this.values.push( value );
 	}
 
-	public getAttrValue( value: AttributeValueSingle ): ProductAttrValue | null {
-		return this.values.find( attrValue => attrValue.getValue() === value ) ?? null;
+	public getAttrValue( value: AttributeValueSingle ): AttributeValueSingle | null {
+		return this.values.find( attrValue => attrValue === value ) ?? null;
 	}
 
 	public canBe( value: AttributeValue, skipMultiValue: boolean = false ): boolean {
@@ -54,7 +59,7 @@ export class ProductAttr {
 		} else {
 			if ( !this.getAttrValue( value as AttributeValueSingle ) && !this.isDynamicValue() ) {
 				if ( typeof value === "boolean" && this.getValueType() !== ProductAttrValueType.BOOL ) {
-					throw new ProductAttrValueInvalidException( `Product attr value not found: ${ value } (for ${ this.getUID() })` );
+					throw new ProductAttrValueInvalidException( `Product attr value not found: ${ value } (for ${ this.getName() })` );
 				}
 			}
 
@@ -102,13 +107,17 @@ export class ProductAttr {
 		}
 
 		if ( !result ) {
-			throw new ProductAttrValueInvalidException( `Product attr value type is not valid. ${ value } should be ${ this.valueType } (${ this.getUID() })` );
+			throw new ProductAttrValueInvalidException( `Product attr value type is not valid. ${ value } should be ${ this.valueType } (${ this.getName() })` );
 		}
 
 		return result;
 	}
 
-	public getValues(): ProductAttrValue[] {
+	public getName(): string {
+		return this.name;
+	}
+
+	public getValues(): AttributeValueSingle[] {
 		return this.values;
 	}
 
@@ -126,9 +135,5 @@ export class ProductAttr {
 
 	public getValueType(): ProductAttrValueType {
 		return this.valueType;
-	}
-
-	public getUID(): string {
-		return this.constructor.name;
 	}
 }

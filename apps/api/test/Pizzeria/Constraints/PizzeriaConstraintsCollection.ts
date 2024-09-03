@@ -1,16 +1,18 @@
-import { ProductAttrConstraintCollection } from "$/product/attribute/Constraint/ProductAttrConstraintCollection";
+import { CollectionType } from "$/configuration/interface/CollectionConfig";
+import { Collection } from "$/product/Collection";
+import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { CrustConstraint } from "./CrustConstraint";
 import { CuisineConstraint } from "./CuisineConstraint";
 import { PortionConstraint } from "./PortionConstraint";
 
-export class PizzeriaConstraintsCollection extends ProductAttrConstraintCollection {
-	public static readonly NAME = "pizzeria_constraints";
+const PizzeriaConstraintsCollection = new Collection<ProductAttrConstraint>( {
+	name: 'pizzeria_constraints',
+	values: [],
+	type: CollectionType.Constraint
+} );
 
-	public constructor() {
-		super( PizzeriaConstraintsCollection.NAME );
-		
-		this.addConstraint( new CuisineConstraint() );
-		this.addConstraint( new PortionConstraint() );
-		this.addConstraint( new CrustConstraint() );
-	}
-}
+PizzeriaConstraintsCollection.add( CuisineConstraint );
+PizzeriaConstraintsCollection.add( CrustConstraint );
+PizzeriaConstraintsCollection.add( PortionConstraint );
+
+export default PizzeriaConstraintsCollection;

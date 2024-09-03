@@ -3,41 +3,33 @@ import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "../at
 import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
 import { ProductItem } from "../ProductItem";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
-import { TProductAttrMap } from "./ProductAttrMap";
+import { AttributesMap } from "./ProductAttrMap";
 
 export class ProductAttrComputer
 {
-	protected attributes:               TProductAttrMap                 = {};
+	protected attributes:               AttributesMap                   = {};
 	protected attributesFiltersMatched: Attributes<number>              = {};
 	protected attributesPreferred:      Attributes                      = {};
 	protected attributesOutOfStock:     Attributes<AttributeValueMulti> = {};
 	protected attributesConstrained:    Attributes<AttributeValueMulti> = {};
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
-	public useFilters:                  boolean                         = true;
 
-	constructor( public attrEvaluator: ProductAttrConditionEvaluator ) {}
-
-	/**
-	 * Resets old and feeds new attributes to the computer.
-	 * 
-	 * @param attributes The new attributes to be set.
-	 */
-	public reset( attributes: TProductAttrMap ): void 
-	{
-		this.attributes = attributes;
-	}
+	constructor( protected attrEvaluator: ProductAttrConditionEvaluator = new ProductAttrConditionEvaluator()) {}
 
 	/**
 	 * Evaluates filtered, constrained, suggested and out-of-stock values. 
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem ): void 
+	public evaluate( productItem: ProductItem, map: AttributesMap, useFilters: boolean = true ): void 
 	{
+		this.attributes = map;
+		this.attrEvaluator.reset( map );
+
 		this.evaluateFilteredValues( productItem );
 		this.evaluateConstrainedValues( productItem );
-		this.evaluateSuggestedValues();
+		this.evaluateSuggestedValues( useFilters );
 		this.evaluateOutOfStockValues();
 	}
 
@@ -78,7 +70,7 @@ export class ProductAttrComputer
 		}
 	}
 
-	protected evaluateSuggestedValues(): void
+	protected evaluateSuggestedValues( useFilters: boolean ): void
 	{
 		this.attributesSuggested = {};
 
@@ -86,7 +78,7 @@ export class ProductAttrComputer
 		{
 			let values = this.getFilteredValues( attributeName );
 
-			if ( !this.useFilters || !values.length )
+			if ( !useFilters || !values.length )
 			{
 				values = this.getAllValues( attributeName );
 			}

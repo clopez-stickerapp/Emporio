@@ -1,0 +1,9 @@
+name: sheet_kiss_cut
+sku: SKCRR-108
+available: true
+attributes:
+  innercut_as_kisscut: yes
+  sheet_name: rect
+  sheet_type: sheet
+  delivery: single
+  

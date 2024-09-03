@@ -1,0 +1,17 @@
+name: sticker_wizard_filters
+type: filter
+values:
+  - laminate
+  - material
+  - size
+  - min_size_mm
+  - max_size_mm
+  - max_size_other_side_mm
+  - fixed_size
+  - fixed_quantity
+  - sheet_name
+  - production_line
+  - feature
+  - delivery
+  - ink
+  - delivery_roll_size_type

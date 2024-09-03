@@ -1,0 +1,9 @@
+name: transfer_decal
+sku: TDTTDSS-108
+available: true
+attributes:
+#   sheet_type: single
+#   delivery: sheet
+  feature: 
+  - transfer_tape
+  

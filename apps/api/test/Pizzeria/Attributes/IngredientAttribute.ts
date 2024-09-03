@@ -1,26 +1,27 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
-export class IngredientAttribute extends ProductAttr {
-	public static readonly NAME = 'ingredient';
-	
-	public static readonly CHEESE = 'cheese';
-	public static readonly MUSHROOM = 'mushroom';
-	public static readonly HAM = 'ham';
-	public static readonly ONION = 'onion';
-	public static readonly GARLIC = 'garlic';
-	public static readonly WALNUT = 'walnut';
-	public static readonly PINEAPPLE = 'pineapple';
+export const IngredientValues = {
+	CHEESE: "cheese",
+	MUSHROOM: "mushroom",
+	HAM: "ham",
+	ONION: "onion",
+	GARLIC: "garlic",
+	WALNUT: "walnut",
+	PINEAPPLE: "pineapple"
+};
 
-	public constructor() {
-		super( ProductAttrValueType.STRING, true );
-
-		this.addAttrValue( IngredientAttribute.CHEESE );
-		this.addAttrValue( IngredientAttribute.MUSHROOM );
-		this.addAttrValue( IngredientAttribute.HAM );
-		this.addAttrValue( IngredientAttribute.ONION );
-		this.addAttrValue( IngredientAttribute.GARLIC );
-		this.addAttrValue( IngredientAttribute.WALNUT );
-		this.addAttrValue( IngredientAttribute.PINEAPPLE );
-	}
-}
+export const IngredientAttribute = new ProductAttr( {
+	name: "ingredient",
+	type: ProductAttrValueType.STRING,
+	multivalue: true,
+	values: [
+		IngredientValues.CHEESE,
+		IngredientValues.MUSHROOM,
+		IngredientValues.HAM,
+		IngredientValues.ONION,
+		IngredientValues.GARLIC,
+		IngredientValues.WALNUT,
+		IngredientValues.PINEAPPLE
+	]
+} );

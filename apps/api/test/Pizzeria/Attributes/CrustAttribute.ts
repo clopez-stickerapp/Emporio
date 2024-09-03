@@ -1,18 +1,18 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 
-export class CrustAttribute extends ProductAttr {
-	public static readonly NAME = 'crust';
+export const CrustValues = {
+	THIN: "thin",
+	THICK: "thick",
+	STUFFED: "stuffed"
+};
 
-	public static readonly THIN = 'thin';
-	public static readonly THICK = 'thick';
-	public static readonly STUFFED = 'stuffed';
-	
-	public constructor() {
-		super( ProductAttrValueType.STRING );
-		
-		this.addAttrValue( CrustAttribute.THIN );
-		this.addAttrValue( CrustAttribute.THICK );
-		this.addAttrValue( CrustAttribute.STUFFED );
-	}
-}
+export const CrustAttribute = new ProductAttr( {
+	name: "crust",
+	type: ProductAttrValueType.STRING,
+	values: [ 
+		CrustValues.THIN,
+		CrustValues.THICK,
+		CrustValues.STUFFED
+	]
+} );

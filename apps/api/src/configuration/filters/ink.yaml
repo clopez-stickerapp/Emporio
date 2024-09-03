@@ -1,0 +1,17 @@
+name: ink
+mode: highest_score_wins
+rules:
+  - keys: []
+    conditions:
+      conditions: []
+  - keys:
+      - invisible_ink
+      - pink_ink
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.laminate
+          operator: IN
+          value:
+            - glossy_no_uv
+            - uncoated

@@ -1,0 +1,14 @@
+name: material
+rules:
+  - keys:
+      - white_thin
+      - clear_thin
+      - kraft_thin
+      - silver_thin
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - "{ProductNames.PRODUCT_LABELS_ON_ROLL}"

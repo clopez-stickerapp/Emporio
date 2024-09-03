@@ -1,0 +1,22 @@
+name: max_size_other_side_mm
+mode: highest_score_wins
+rules:
+  - keys:
+      - 275
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_roll
+
+  - keys:
+      - 1100
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - wall

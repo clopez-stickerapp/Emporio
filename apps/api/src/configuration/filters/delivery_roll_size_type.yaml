@@ -1,0 +1,15 @@
+name: delivery_roll_size_type
+mode: highest_score_wins
+rules:
+  - keys:
+      - 35
+      - 70
+      - 93
+      - 140
+      - 280
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.delivery
+          operator: ===
+          value: roll

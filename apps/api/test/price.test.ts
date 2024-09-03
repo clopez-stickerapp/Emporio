@@ -60,10 +60,10 @@ describe("RateBasedProductPriceProvider", () => {
 		const item = new ProductItem("family", "product");
 		item.setAttribute("foo", "bar");
 
-		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
+		rateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "baz"});
 		provider.addRateProvider(rateProvider);
 
-		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
+		anotherRateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "bar"});
 		provider.addRateProvider(anotherRateProvider);
 
 		const providers = provider.getRateProvidersFor(item);
@@ -75,10 +75,10 @@ describe("RateBasedProductPriceProvider", () => {
 		const item = new ProductItem("family", "product");
 		item.setAttribute("foo", "bar");
 
-		rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
+		rateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "bar"});
 		provider.addRateProvider(rateProvider);
 
-		anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
+		anotherRateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "baz"});
 		provider.addRateProvider(anotherRateProvider);
 
 		const rates = await provider.getRatesFor(item, 25);
@@ -97,10 +97,10 @@ describe("RateBasedProductPriceProvider", () => {
 		test("without attributes on the product item", async () => {
 			const item = new ProductItem("family", "product");
 
-			rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "baz");
+			rateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.NOT_EQUAL, value: "baz"});
 			provider.addRateProvider(rateProvider);
 	
-			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.NOT_EQUAL, "bar");
+			anotherRateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.NOT_EQUAL, value: "bar"});
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = await provider.calculatePrice(item, 25, Currencies.USD);
@@ -111,10 +111,10 @@ describe("RateBasedProductPriceProvider", () => {
 			const item = new ProductItem("family", "product");
 			item.setAttribute("foo", "bar");
 
-			rateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "baz");
+			rateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "baz"});
 			provider.addRateProvider(rateProvider);
 	
-			anotherRateProvider.conditions.addCondition("item.attributes.foo", ConditionOperators.EQUAL, "bar");
+			anotherRateProvider.conditions.addCondition({ attribute: "item.attributes.foo", operator: ConditionOperators.EQUAL, value: "bar"});
 			provider.addRateProvider(anotherRateProvider);
 	
 			const price = await provider.calculatePrice(item, 25, Currencies.USD);

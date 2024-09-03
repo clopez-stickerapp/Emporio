@@ -1,0 +1,42 @@
+name: max_size_mm
+mode: highest_score_wins
+rules:
+  - keys:
+      - laser
+    conditions:
+      relationMode: AND
+      conditions:
+        - relationMode: OR
+          conditions:
+            - attribute: item.attributes.material
+              operator: IN
+              value:
+                - clear
+                - mirror
+                - brushed_alloy
+                - white_removable
+            - attribute: item.productName
+              operator: IN
+              value:
+                - sheet
+                - sheet_kiss_cut
+
+  - keys:
+      - sheet_legacy
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet_legacy
+
+  - keys:
+      - roll
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_roll

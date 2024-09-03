@@ -1,0 +1,38 @@
+name: feature
+rules:
+  - keys:
+      - hangtagging
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.attributes.laminate
+          operator: NOT_IN
+          value:
+            - "{LaminateValues.EPOXY}"
+
+  - keys:
+      - backpaper_print
+    conditions:
+        relationMode: OR
+        conditions:
+          - attribute: item.attributes.material
+            operator: IN
+            value: "{LaserMaterials}"
+
+  - keys:
+      - effect_layer
+    conditions:
+        relationMode: AND
+        conditions:
+          - attribute: item.attributes.material
+            operator: IN
+            value: "{EffectLayerMaterials}"
+
+  - keys:
+      - transfer_tape
+    conditions:
+        relationMode: AND
+        conditions:
+          - attribute: item.attributes.production_line
+            operator: ===
+            value: "{ProductionLines.DIGITAL}"

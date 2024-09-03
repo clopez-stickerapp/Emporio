@@ -1,161 +1,77 @@
-import { ProductService } from "./ProductService";
-import { ProductFamily } from "./ProductFamily";
-import { Condition } from "$/conditions/Condition";
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionValue } from "$/conditions/ConditionValue";
-import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
-import { AttributeValue, AttributeValueSingle } from "./attribute/AttributeValue";
+import { AttributeValue } from "./attribute/AttributeValue";
 import { Attributes } from "./attribute/Attributes";
+import { ProductConfig } from "$/configuration/interface/ProductConfig";
+import { ProductAttr } from "./attribute/ProductAttr";
 
 export class Product {
-	protected productService: ProductService;
-	protected productFamily: ProductFamily;
+	protected productFamilyName: string;
 	protected name: string;
-	protected attrMap: Record<string, AttributeValue> = {};
-	protected attrStrictMatches: string[] = [];
+	protected requiredAttrs: Record<string, AttributeValue> = {};
 	protected conditions: ConditionBuilder;
-	protected inStock: boolean = true;
+	protected available: boolean;
+	protected status?: string;
 	protected sku: string;
 
-	public constructor(productFamily: ProductFamily, name: string, sku: string) {
-		this.productFamily = productFamily;
-		this.productService = productFamily.getProductService();
-		this.name = name;
+	public constructor(productFamilyName: string, config: ProductConfig) {
+		this.productFamilyName = productFamilyName;
+		this.name = config.name;
 		this.conditions = new ConditionBuilder();
-		this.inStock = true;
-		this.sku = sku;
+		this.status = config.status;
+		this.available = config.available ?? true;
+		this.sku = config.sku;
 	}
 
-	// Instead of making this.conditions public like in other classes, we use this method to add conditions
-	// This is because adding subgroups to conditions is not allowed in this class
-	public addCondition(attrName: string, operator: ConditionOperators, attrValue: ConditionValue|null = null): Product {
-		this.conditions.addCondition(attrName, operator, attrValue);
-
-		return this;
-	}
-
-	public isAttrRecommendedFor(attrName: string): boolean {
-		return this.attrMap[attrName] !== undefined;
-	}
-
-	public isAttrStrictlyRequiredFor(attrName: string): boolean {
-		return this.attrStrictMatches.includes(attrName);
+	public isAttrRequired(attrName: string): boolean {
+		return this.requiredAttrs[attrName] !== undefined;
 	}
 
 	public testAttributes(attributes: Attributes): boolean {
 		return this.conditions.test(attributes);
 	}
 
-	public canAttrBe(attrName: string, attrValue: ConditionValue): boolean {
-		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
-		let attr = this.productService.retrieveAttribute(attrUID);
-
-		try{
-			attr.canBe(attrValue);
-		} catch (e) {
-			if(e instanceof ProductAttrValueInvalidException){
-				return false;
-			} else {
-				throw e;
-			}
-		}
-
-		// this.conditions doesn't contain any Condition builders, that's why we can cast it to Condition[]
-		for (let condition of Object.values(this.conditions.getConditions()) as Condition[]) {
-			if(condition.columnName === attrName && !condition.test({[attrName]: attrValue})){
-				return false;
-			}
-		}
-
-		return true;
-	}
-
-	public canHaveAttr(attrName: string): boolean {
-		if(this.productFamily.getRequiredAttrs()[attrName] || this.productFamily.getSupportedAttrs()[attrName]){
-			return true;
-		}
-
-		return false;
-	}
-
 	public getAttrValue(attrName: string): AttributeValue | undefined {
-		return this.attrMap[attrName];
+		return this.requiredAttrs[attrName];
 	}
 
-	public withAttrValue(attrName: string, value: ConditionValue, required: boolean = true, strictMatchIfRequired: boolean = true): Product {
-		let attrUID = this.productFamily.findAttrUIDByAlias(attrName);
-		let attr = this.productService.retrieveAttribute(attrUID);
+	public requireAttr(attr: ProductAttr, value: ConditionValue): Product {
+		let attribute = attr.getName();
 
-		this.attrMap[attrName] = value;
+		this.requiredAttrs[attribute] = value;
 
-		if (required && strictMatchIfRequired) {
-			this.attrStrictMatches.push(attrName);
-		}
-
-		if (required) {
-			if (attr.isMultiValue()) {
-				if (strictMatchIfRequired) {
-					this.addCondition(attrName, ConditionOperators.EQUAL, value);
-				}
-				else {
-					if (!Array.isArray(value)) {
-						value = [value.toString()];
-					}
-					for (let subValue of value) {
-						this.addCondition(attrName, ConditionOperators.IN, subValue);
-					}
-				}
+		if ( attr.isMultiValue() ) {
+			const values = Array.isArray( value ) ? value : [ value.toString() ];
+			for ( const subValue of values ) {
+				this.conditions.addCondition( { attribute, operator: ConditionOperators.IN, value: subValue } );
 			}
-			else {
-				if (Array.isArray(value)) {
-					this.addCondition(attrName, ConditionOperators.IN, value);
-				}
-				else {
-					this.addCondition(attrName, ConditionOperators.EQUAL, value);
-				}
-			}
+		} else {
+			const operator = Array.isArray( value ) ? ConditionOperators.IN : ConditionOperators.EQUAL;
+			this.conditions.addCondition( { attribute, operator, value } );
 		}
 
 		return this;
-	}
-
-	public setStock(): void {
-		for (let [key, value] of Object.entries(this.attrMap)) {
-			if (!Array.isArray(value)) {
-				value = [value];
-			}
-			if (!this.isAttrInStock(key, value)) {
-				this.inStock = false;
-				break;
-			}
-		}
-	}
-
-	public isAttrInStock(attrName: string, attrValue: AttributeValueSingle[]): boolean {
-		let stockCollection = this.productFamily.getStockCollection();
-		let outOfStockForAttr = stockCollection?.getOutOfStockFor(attrName)?.getOutOfStock() ?? [];
-		return attrValue.filter((value) => outOfStockForAttr.includes(value.toString())).length === 0;
 	}
 
 	public getName(): string {
 		return this.name;
 	}
 
-	public getProductService(): ProductService {
-		return this.productService;
+	public getProductFamilyName(): string {
+		return this.productFamilyName;
 	}
 
-	public getProductFamily(): ProductFamily {
-		return this.productFamily;
+	public getRequiredAttrs(): Record<string, AttributeValue> {
+		return this.requiredAttrs;
 	}
 
-	public getAttrMap(): Record<string, AttributeValue> {
-		return this.attrMap;
+	public isAvailable(): boolean {
+		return this.available;
 	}
 
-	public isInStock(): boolean {
-		return this.inStock;
+	public getStatus(): string | undefined {
+		return this.status;
 	}
 
 	public getSku(): string {

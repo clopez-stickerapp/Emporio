@@ -1,0 +1,8 @@
+name: hang_tag
+sku: HTSH-108
+available: true
+attributes:
+  sheet_type: single
+  feature: 
+    - hangtagging
+  

@@ -1,0 +1,18 @@
+name: fee
+unitType: per_piece
+products:
+  - custom_fee
+rules:
+  attributes:
+    required:
+      - text
+      - sheet_type
+      - dynamic_string
+      - quantity
+  collections:
+    constraint: ''
+    filter: ''
+    min_units: ''
+    price_provider: ''
+    quantity_provider: ''
+    asset: ''

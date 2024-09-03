@@ -1,0 +1,205 @@
+name: material
+mode: highest_score_wins
+rules:
+  - keys:
+      - white
+      - holographic
+      - glitter
+      - clear
+      - mirror
+      - prismatic
+      - brushed_alloy
+      - white_hi_tack
+      - kraft_paper
+      - white_removable
+      - pixie_dust
+      - gitd
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - sheet_legacy
+            - sheet
+            - sheet_kiss_cut
+
+  - keys:
+      - white
+      - holographic
+      - clear
+      - glitter
+      - mirror
+      - pixie_dust
+      - prismatic
+      - brushed_alloy
+      - kraft_paper
+      - white_hi_tack
+      - gitd
+      - white_removable
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - die_cut
+            - single_on_sheet
+
+  - keys:
+      - white
+      - white_removable
+      - clear
+      - holographic
+      - mirror
+      - glitter
+      - brushed_alloy
+      - gitd
+      - prismatic
+      - kraft_paper
+      - pixie_dust
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - hang_tag
+
+  - keys:
+      - white_sturdy
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - 3d_dome
+
+  - keys:
+      - clear
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - front_adhesive
+
+  - keys:
+      - white_hi_tack
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - heavy_duty
+
+  - keys:
+      - white_removable
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - removable
+
+  - keys:
+      - white_wall
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - wall
+
+  - keys:
+      - white
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - floor
+
+  - keys:
+      - white
+      - clear
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_sheet
+
+  - keys:
+      - white_thin
+      - clear_thin
+      - kraft_thin  
+      - silver_thin
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - labels_on_roll
+
+  - keys:
+      - clear
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: IN
+          value:
+            - window
+
+  - keys:
+      - colored_vinyl
+      - white
+      - frosted
+      - white_hi_tack
+      - metallic_gold
+      - metallic_silver
+      - bubble_free
+    conditions:
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: ===
+          value: transfer_decal
+
+  - keys:
+      - white
+      - holographic
+      - glitter
+      - clear
+      - mirror
+      - prismatic
+      - brushed_alloy
+      - white_hi_tack
+      - kraft_paper
+      - white_removable
+      - white_wall
+      - gitd
+      - reflective
+    conditions:
+      relationMode: AND
+      baseComplexityScore: 120
+      conditions:
+        - attribute: item.attributes.reseller
+          operator: IN
+          value:
+            - stickersthatstick
+            - stickit
+        - attribute: item.productName
+          operator: IN
+          value:
+            - die_cut
+            - single_on_sheet

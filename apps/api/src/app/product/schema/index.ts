@@ -73,7 +73,6 @@ export const getValidationSchema = {
 	} ),
 	querystring: Type.Object( {
 		attributes: TypeHelper.AttributesString(),
-		units: Type.Number(),
 		allowUnsupportedAttributeAliases: Type.Boolean(),
 		allowUnsuggestedAttributeValues: Type.Boolean(),
 		checkAgainstFilteredValues: TypeHelper.UseFilters()
@@ -175,7 +174,7 @@ export const getFamiliesSchema = {
 					name: Type.String(),
 					attributes: TypeHelper.Attributes(),
 					sku: Type.String(),
-					inStock: Type.Boolean()
+					available: Type.Boolean()
 				} ) ),
 			} ) )
 		} ),
@@ -187,7 +186,7 @@ export const getAttributesSchema = {
 	operationId: 'getAttributes',
 	tags: ['Product'],
 	querystring: Type.Object( {
-		name: Type.Optional( TypeHelper.AttributeUID() )
+		name: Type.Optional( TypeHelper.AttributeName() )
 	} ),
 	response: {
 		200: Type.Object( {

@@ -1,0 +1,9 @@
+name: sticker_production
+type: constraint
+values:
+  - feature
+  - material
+  - production_line
+  - color_supported
+  - cut_direction
+  - delivery_roll_size_type

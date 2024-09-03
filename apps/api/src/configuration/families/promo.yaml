@@ -15,6 +15,7 @@ rules:
   attributes:
     required:
       - sheet_type
+      - sheet_name
       - material
       - quantity
     optional:

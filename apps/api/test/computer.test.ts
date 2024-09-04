@@ -15,7 +15,7 @@ const itemBuilder = new ProductItemBuilder();
 const map = PizzeriaService.getProductMap( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
 const product = PizzeriaFamily.getProduct( PizzeriaProducts.HAWAII );
 const item        = itemBuilder.createItem( PizzeriaFamily, product, map );
-computer.evaluate( item, map );
+computer.evaluate( item, map, true );
 
 describe( 'Test Getting', () => {
 	describe( 'Default Value', () => {

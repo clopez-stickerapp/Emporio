@@ -33,9 +33,12 @@ export class ProductAttrComputer
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem, map?: AttributesMap, useFilters: boolean = true ): void 
+	public evaluate( productItem: ProductItem, map?: AttributesMap, useFilters?: boolean ): void 
 	{
-		this.useFilters = useFilters;
+		if ( useFilters !== undefined )
+		{
+			this.useFilters = useFilters;
+		}
 		
 		if ( map )
 		{

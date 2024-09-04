@@ -42,6 +42,19 @@ export const ProductNames = {
 	PRODUCT_LIBRARY_DESIGN: "library_design",
 }
 
+export const PromoProductNames = {
+	PRODUCT_GIFTCARD: "giftcard",
+	PRODUCT_UV_LAMP: "uv_lamp",
+	PRODUCT_MONSTER_PACK: "monster_pack",
+	PRODUCT_MOST_LIKED_PACK_2021: "most_liked_pack_2021",
+	PRODUCT_MOST_LIKED_PACK_2022: "most_liked_pack_2022",
+	PRODUCT_CREEPY_HEAD_PACK: "creepy_head_pack",
+	PRODUCT_SAMPLE_STICKER_PACK: "sample_sticker_pack",
+	PRODUCT_MOST_LIKED_PACK_2023: "most_liked_pack_2023",
+	PRODUCT_SLAP_PACK: "slap_pack",
+	PRODUCT_STICKER_FREEBIE: "sticker_freebie",
+}
+
 magicList = {
 	...magicList,
 	...prefix("MaxSizes", MaxSizes),
@@ -53,6 +66,7 @@ magicList = {
 	...prefix("MaterialValues", MaterialValues),
 	...prefix("LaminateValues", LaminateValues),
 	...prefix("ProductNames", ProductNames),
+	...prefix("PromoProductNames", PromoProductNames),
 };
 
 export function resolve(value: ConditionValue | null): ConditionValue | null {

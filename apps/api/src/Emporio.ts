@@ -175,7 +175,7 @@ export class Emporio {
 	public isAttributeAvailable( productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean ): boolean {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
+		const attributeValueParsed = this.computer.parseAttribute<AttributeValueSingle>( attributeName, attributeValue ) ?? attributeValue;
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
 

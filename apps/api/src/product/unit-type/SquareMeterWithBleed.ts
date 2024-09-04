@@ -1,7 +1,7 @@
 import { HeightAttribute } from "$/configuration/attributes/HeightAttribute";
 import { QuantityAttribute } from "$/configuration/attributes/QuantityAttribute";
 import { WidthAttribute } from "$/configuration/attributes/WidthAttribute";
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { UnitType } from "./UnitType";
 
 export class SquareMeterWithBleed extends UnitType {

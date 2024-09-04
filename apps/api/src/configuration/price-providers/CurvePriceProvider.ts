@@ -7,7 +7,7 @@ import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPricePro
 import { RateFunction } from "$/prices/RateFunction";
 import { RateList } from "$/prices/RateList";
 import { RateProviderType } from "$/prices/RateProvider";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { LaminateValues } from "../attributes/LaminateAttribute";
 import { MaterialValues } from "../attributes/MaterialAttribute";

@@ -116,7 +116,6 @@ export class ProductAttrConditionEvaluator
 
 					default:
 						let filter = filters[ 0 ];
-						// console.log( "Winning filter for ", attrName, filter );
 						values = filter.values;
 						break;
 				}

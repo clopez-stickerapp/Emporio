@@ -137,4 +137,14 @@ export class CherryPickHelper
 	{
 		return this.lostAttributes[ attributeName ] as T | undefined;
 	}
+
+	public getLostAttributes(): Attributes
+	{
+		return this.lostAttributes;
+	}
+
+	public getAttributes(): Attributes
+	{
+		return this.attributes;
+	}
 }

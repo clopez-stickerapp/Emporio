@@ -1,0 +1,6 @@
+name: custom_fee
+sku: fee12
+attributes:
+  quantity: 1
+  dynamic_string: text
+  sheet_type: text

@@ -3,7 +3,7 @@ import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export const MaxSizes = {
 	LASER: 275,
-	DIGITAL: 1250,
+	DIGITAL: 1200,
 	SHEET_LEGACY: 300,
 	ONE_SIDE_LASER: 800,
 	ROLL: 980,

@@ -1,6 +1,7 @@
-name: most_liked_pack_2022
-sku: MLP22-31
+name: creepy_head_pack
+sku: CH-31
 available: true
 attributes:
   sheet_type: sticker_pack
+  sheet_name: creepy_head_pack
   material: special

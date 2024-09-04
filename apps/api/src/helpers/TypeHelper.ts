@@ -1,4 +1,4 @@
-import { services } from "$/configuration/ServiceLoader";
+import { services } from "$/ServiceLoader";
 import { Type } from "@sinclair/typebox";
 
 const attributesExample = {
@@ -33,7 +33,8 @@ export const ProductName = () => Type.String( {
 	examples: service.getProductFamilies().map( family => Object.keys( family.getProducts() ) ).flat()
 } );
 
-export const AttributeValueSingle = () => Type.Union( [ Type.String(), Type.Number(), Type.Boolean() ] );
+// Type.String should be last in this list to ensure proper conversion
+export const AttributeValueSingle = () => Type.Union( [ Type.Number(), Type.Boolean(), Type.String() ] );
 
 export const AttributeValueMulti = () => Type.Array( AttributeValueSingle() );
 

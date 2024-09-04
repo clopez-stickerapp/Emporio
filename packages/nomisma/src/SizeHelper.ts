@@ -8,7 +8,7 @@ import { AttributeValueMulti } from "./AttributeValue";
 
 export class SizeHelper
 {
-	public static readonly MAX_SIZE_MM_DIGITAL = 1250;
+	public static readonly MAX_SIZE_MM_DIGITAL = 1200;
 	public static readonly MAX_SIZE_MM_LASER   = 275;
 	public static readonly MIN_SIZE_MM_DEFAULT = 25;
 

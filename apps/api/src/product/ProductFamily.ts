@@ -37,6 +37,21 @@ export class ProductFamily {
 		return this.name;
 	}
 
+	// Temporary method for moving over to bulk price system
+	public setUnitType(unitType: UnitType): void {
+		this.unitType = unitType;
+	}
+
+	// Temporary method for moving over to bulk price system
+	public setPriceProviderName(priceProviderName: string): void {
+		this.priceProviderName = priceProviderName;
+	}
+
+	// Temporary method for moving over to bulk price system
+	public setMinimumUnitsCollectionName(minimumUnitsCollectionName: string): void {
+		this.minimumUnitsCollectionName = minimumUnitsCollectionName;
+	}
+
 	public addProduct(config: ProductConfig): Product {
 		if (this.products[config.name]) {
 			throw new Error("Product already exists: " + config.name);

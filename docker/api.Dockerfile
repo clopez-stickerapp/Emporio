@@ -5,10 +5,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY . .
 
-RUN npm ci \
-    && npm run build -w @stickerapp-org/ts-transform-module-type \
-    && npm run build -w @stickerapp-org/emporio-api-contract \
-    && npm run build -w @stickerapp-org/emporio-api
+RUN npm ci && npm run build -w @stickerapp-org/emporio-api
 RUN npm prune --omit dev
 
 FROM node:20.12.2-alpine
@@ -17,6 +14,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/apps/api/configuration ./apps/api/dist/configuration
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages ./packages
 

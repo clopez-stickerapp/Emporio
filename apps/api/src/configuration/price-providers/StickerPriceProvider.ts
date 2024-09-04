@@ -57,7 +57,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 			.addRate(new Rate(23100), 0.045)
 			.addRate(new Rate(20900), 0.05)
 			.addRate(new Rate(18205), 0.12)
-			.addRate(new Rate(12312), 0.5)
+			.addRate(new Rate(12312), 0.49)
 			.addRate(new Rate(8736), 1)
 			.addRate(new Rate(7488), 2)
 			.addRate(new Rate(6448), 3)

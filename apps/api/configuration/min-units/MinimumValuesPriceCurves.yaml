@@ -1,0 +1,69 @@
+name: MinimumValuesPriceCurves
+defaultValue: 0.09
+rules:
+  - keys: 0.42
+    conditions:
+      baseComplexityScore: 120
+      relationMode: AND
+      conditions:
+        - attribute: item.productName
+          operator: ===
+          value: "{ProductNames.PRODUCT_LABELS_ON_ROLL}"
+  - keys: 0.1220
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [holographic, glitter, mirror, prismatic, pixie_dust]
+  - keys: 0.1360
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [white_hi_tack]
+  - keys: 0.1635
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [gitd]
+  - keys: 0.115
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [clear]
+        - attribute: item.productName
+          operator: "!=="
+          value: "{ProductNames.PRODUCT_LABELS_ON_SHEET}"
+  - keys: 0.1235
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [brushed_alloy]
+  - keys: 0.35
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [white_wall]
+  - keys: 0.058
+    conditions:
+      conditions:
+        - attribute: item.attributes.laminate
+          operator: ===
+          value: epoxy
+  - keys: 0.06
+    conditions:
+      baseComplexityScore: 10
+      conditions:
+        - attribute: item.productName
+          operator: ===
+          value: ProductNames.PRODUCT_SHEET_LEGACY

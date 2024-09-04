@@ -3,42 +3,42 @@ import { ProductFamily } from "$/product/ProductFamily";
 import { ProductService } from "$/product/ProductService";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
 import { NamedConfig } from "$data/NamedConfig";
-import { allAttributes } from "./attributes/attributes";
-import { RuleConfig } from "./interface/RuleConfig";
-import { FamilyConfig } from "./interface/FamilyConfig";
-import { PriceProviderConfig } from "./interface/PriceProviderConfig";
-import { ProductConfig } from "./interface/ProductConfig";
-import { QuantityProviderConfig } from "./interface/QuantityProviderConfig";
-import { ServiceConfig } from "./interface/ServiceConfig";
+import { allAttributes } from "./configuration/attributes/attributes";
+import { RuleConfig } from "./configuration/interface/RuleConfig";
+import { FamilyConfig } from "./configuration/interface/FamilyConfig";
+import { PriceProviderConfig } from "./configuration/interface/PriceProviderConfig";
+import { ProductConfig } from "./configuration/interface/ProductConfig";
+import { QuantityProviderConfig } from "./configuration/interface/QuantityProviderConfig";
+import { ServiceConfig } from "./configuration/interface/ServiceConfig";
 import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ProductDynamicValue } from "$/product/value/ProductDynamicValue";
-import { DynamicValueConfig } from "./interface/DynamicValueConfig";
+import { DynamicValueConfig } from "./configuration/interface/DynamicValueConfig";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { StickerPriceProvider } from "./price-providers/StickerPriceProvider";
-import { PromoProductPriceProvider } from "./price-providers/PromoProductPriceProvider";
+import { StickerPriceProvider } from "./configuration/price-providers/StickerPriceProvider";
+import { PromoProductPriceProvider } from "./configuration/price-providers/PromoProductPriceProvider";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { StickerQuantityListCollection } from "./quantity-providers/StickerQuantityListCollection";
+import { StickerQuantityListCollection } from "./configuration/quantity-providers/StickerQuantityListCollection";
 import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
 import { Collection } from "$/product/Collection";
-import { CollectionConfig, CollectionType } from "./interface/CollectionConfig";
+import { CollectionConfig, CollectionType } from "./configuration/interface/CollectionConfig";
 import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
-import { AssetConfig } from "./interface/AssetConfig";
-import { FilterConfig } from "./interface/FilterConfig";
+import { AssetConfig } from "./configuration/interface/AssetConfig";
+import { FilterConfig } from "./configuration/interface/FilterConfig";
+import { CurvePriceProvider } from "./configuration/price-providers/CurvePriceProvider";
+import path from "path";
 
-const servicePathFolder = "src/configuration/services";
-const familyConfigFolder = "src/configuration/families";
-const productConfigFolder = "src/configuration/products";
-const constraintPathFolder = "src/configuration/constraints";
-const filterPathFolder = "src/configuration/filters";
-// const iconPathFolder = "src/configuration/icons";
-const minUnitPathFolder = "src/configuration/min-units";
-const pricePathFolder = "src/configuration/price-providers";
-const quantityPathFolder = "src/configuration/quantity-providers";
-const collectionPathFolder = "src/configuration/collections";
-const assetPathFolder = "src/configuration/assets";
+const root = path.join(__dirname , '..')
 
-class ServiceLoader {
+const servicePathFolder = root + "/configuration/services";
+const familyConfigFolder = root + "/configuration/families";
+const productConfigFolder = root + "/configuration/products";
+const constraintPathFolder = root + "/configuration/constraints";
+const filterPathFolder = root + "/configuration/filters";
+const minUnitPathFolder = root + "/configuration/min-units";
+const collectionPathFolder = root + "/configuration/collections";
+const assetPathFolder = root + "/configuration/assets";
+
+export class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
 	protected services: Record<string, ProductService> = {};
 	protected familyConfigs: Record<string, FamilyConfig> = {};
@@ -50,7 +50,6 @@ class ServiceLoader {
 	protected constraints: Record<string, ProductAttrConstraint> = {};
 	protected filterConfigs: Record<string, FilterConfig> = {};
 	protected filters: Record<string, ProductAttrFilter> = {};
-	// protected iconConfigs: Record<string, NamedConfig> = {};
 	protected minUnitsConfigs: Record<string, DynamicValueConfig> = {};
 	protected minUnits: Record<string, MinimumUnitsCollection> = {};
 	protected priceProviderConfigs: Record<string, PriceProviderConfig> = {};
@@ -101,21 +100,9 @@ class ServiceLoader {
 		console.debug("Loading asset configs...");
 		this.assetConfigs = this.readConfigs<AssetConfig>(assetPathFolder);
 
-		// Load icons
-		// console.debug("Loading icon configs...");
-		// this.iconConfigs = this.readConfigs<IconConfig>(iconPathFolder);
-
 		// Load min units
 		console.debug("Loading min units configs...");
 		this.minUnitsConfigs = this.readConfigs<DynamicValueConfig>(minUnitPathFolder);
-
-		// Load price providers
-		// console.debug("Loading price provider configs...");
-		// this.priceProviderConfigs = this.readConfigs<PriceProviderConfig>(pricePathFolder);
-
-		// Load quantity providers
-		// console.debug("Loading quantity provider configs...");
-		// this.quantityProviderConfigs = this.readConfigs<QuantityProviderConfig>(quantityPathFolder);
 
 		// Load collections
 		console.debug("Loading collection configs...");
@@ -158,6 +145,7 @@ class ServiceLoader {
 		// this.priceProviders = this.instantiateFromConfig<PriceProviderConfig, PriceProvider>(this.priceProviderConfigs, (config) => new PriceProvider(config));
 		this.priceProviders[StickerPriceProvider.NAME] = new StickerPriceProvider();
 		this.priceProviders[PromoProductPriceProvider.NAME] = new PromoProductPriceProvider();
+		this.priceProviders[CurvePriceProvider.NAME] = new CurvePriceProvider();
 
 		// Instantiate all quantity providers
 		console.debug("Instantiating quantity provider instances...");

@@ -23,7 +23,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		return converter.convertPrice(price, currency);	
 	}
 
-	protected getBreakdownFor(rates: Record<string, Rate>, units: number): Record<string, number> {
+	public getBreakdownFor(rates: Record<string, Rate>, units: number): Record<string, number> {
 		// TODO: have two modes: merge or highest wins
 		const flatRates: Record<string, Rate> = {};
 		const percentageRates: Record<string, Rate> = {};

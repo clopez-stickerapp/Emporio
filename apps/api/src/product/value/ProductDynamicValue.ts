@@ -5,8 +5,8 @@ import { ProductItem } from "@stickerapp-org/nomisma";
 import { ProductConditionedValue } from "./ProductConditionedValue";
 
 export class ProductDynamicValue {
-	public defaultValue: number;
-	public conditionedValues: ProductConditionedValue[] = [];
+	protected defaultValue: number;
+	protected conditionedValues: ProductConditionedValue[] = [];
 
 	public constructor( config: DynamicValueConfig ) {
 		this.defaultValue = config.defaultValue;

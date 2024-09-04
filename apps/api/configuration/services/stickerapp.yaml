@@ -2,11 +2,10 @@ name: stickerapp
 pricing_models:
   - default
   - promo
-#   - fee
 families:
   - custom_sticker
   - promo
-#   - fee
+  - fee
 collections:
   filter: 
     - sticker_wizard_filters

@@ -4,14 +4,14 @@ import { ProductServiceException } from "$/product/exceptions/ProductServiceExce
 import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { FigureAttribute } from "../attributes/FigureAttribute";
-import { PromoProductFamily } from "../Family/PromoProductFamily";
 import { ProductItem } from "@stickerapp-org/nomisma";
+import { PromoProductNames } from "$data/ConditionValueResolver";
 
 export class PromoProductPriceProvider extends ProductPriceProvider {
 	public static readonly NAME = "promo_price_provider";
 
 	private stickerPackPrices: Record<string, Record<string, number>> = {
-		[PromoProductFamily.PRODUCT_SAMPLE_STICKER_PACK]: {
+		[PromoProductNames.PRODUCT_SAMPLE_STICKER_PACK]: {
 			USD: 200,
 			SEK: 1900,
 			DKK: 1900,
@@ -21,7 +21,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 250,
 			PLN: 800
 		},
-		[PromoProductFamily.PRODUCT_MONSTER_PACK]: {
+		[PromoProductNames.PRODUCT_MONSTER_PACK]: {
 			USD: 1500,
 			SEK: 13900,
 			DKK: 9900,
@@ -31,7 +31,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 1700,
 			PLN: 6000
 		},
-		[PromoProductFamily.PRODUCT_CREEPY_HEAD_PACK]: {
+		[PromoProductNames.PRODUCT_CREEPY_HEAD_PACK]: {
 			USD: 1900,
 			SEK: 21000,
 			DKK: 15000,
@@ -41,7 +41,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 2600,
 			PLN: 9500
 		},
-		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2021]: {
+		[PromoProductNames.PRODUCT_MOST_LIKED_PACK_2021]: {
 			USD: 1900,
 			SEK: 21000,
 			DKK: 15000,
@@ -51,7 +51,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 2600,
 			PLN: 9500
 		},
-		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2022]: {
+		[PromoProductNames.PRODUCT_MOST_LIKED_PACK_2022]: {
 			USD: 1900,
 			SEK: 21000,
 			DKK: 15000,
@@ -61,7 +61,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 2600,
 			PLN: 9500
 		},
-		[PromoProductFamily.PRODUCT_MOST_LIKED_PACK_2023]: {
+		[PromoProductNames.PRODUCT_MOST_LIKED_PACK_2023]: {
 			USD: 1900,
 			SEK: 21000,
 			DKK: 15000,
@@ -71,7 +71,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			JPY: 2600,
 			PLN: 9500
 		},
-		[PromoProductFamily.PRODUCT_SLAP_PACK]: {
+		[PromoProductNames.PRODUCT_SLAP_PACK]: {
 			USD: 1500,
 			SEK: 15000,
 			DKK: 15000,
@@ -105,15 +105,15 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 			price = this.getStickerPackPrice(productItem.getProductName(), currency);
 		} else {
 			switch (productItem.getProductName()) {
-				case PromoProductFamily.PRODUCT_UV_LAMP:
+				case PromoProductNames.PRODUCT_UV_LAMP:
 					price = 0;
 					break;
 
-				case PromoProductFamily.PRODUCT_STICKER_FREEBIE:
+				case PromoProductNames.PRODUCT_STICKER_FREEBIE:
 					price = this.stickerFreebiePrices[currency];
 					break;
 
-				case PromoProductFamily.PRODUCT_GIFTCARD:
+				case PromoProductNames.PRODUCT_GIFTCARD:
 					const giftcardId = productItem.getAttribute(FigureAttribute.getName()) as number;
 
 					const [giftcardSetPrice, giftcardHasDiscount, giftcardDiscount] = await fetchGiftcardData(giftcardId);

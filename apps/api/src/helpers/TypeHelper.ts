@@ -1,4 +1,4 @@
-import { services } from "$/configuration/ServiceLoader";
+import { services } from "$/ServiceLoader";
 import { Type } from "@sinclair/typebox";
 
 const attributesExample = {

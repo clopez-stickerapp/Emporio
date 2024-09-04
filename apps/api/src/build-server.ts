@@ -8,7 +8,7 @@ import { BadRequestError, NotFoundError } from './app/utils';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import { Emporio } from './Emporio';
-import { ServiceLoader, services } from './configuration/ServiceLoader';
+import { ServiceLoader, services } from './ServiceLoader';
 import { AllUnitTypes } from './product/unit-type/AllUnitTypes';
 
 declare module 'fastify' {

@@ -204,3 +204,77 @@ describe( 'Test If The Attribute Value Is', () => {
 		} );
 	} );
 } );
+
+describe( 'Test Attribute Parser With', () => {
+	describe( 'Multi Attribute Of Type String', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), 'first' ) ).toEqual( 'first' );
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), 1 ) ).toEqual( '1' );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), true ) ).toEqual( 'true' );
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ '1', '2', 'true', '5', 'false' ] );
+		} )
+	} );
+
+	describe( 'Non-Multi Attribute Of Type String', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), 'first' ) ).toEqual( 'first' );
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), 1 ) ).toEqual( '1' );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), true ) ).toEqual( 'true' );
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ '1', '2', 'true', '5', 'false' ] );
+		} )
+	} );
+
+	describe( 'Non-Multi Attribute Of Type Integer', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), 'first' ) ).toBeNull();
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), 1 ) ).toEqual( 1 );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), true ) ).toBeNull();
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ 1, 2, 5 ] );
+		} )
+	} );
+
+	test( 'Empty Or Unsupported Attribute Value', () => {
+		for ( const attrName of [ IngredientAttribute.getName(), SauceBaseAttribute.getName(), 'this_attr_does_not_exist' ] ) {
+			expect( computer.parseAttribute( attrName, null ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, undefined ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, [] ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, {} ) ).toBeNull();
+		}
+	} );
+
+	test( 'Non-Existing Attribute', () => {
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', [ '1' ] ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', undefined ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', null ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', [] ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', 1 ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', { '1': '1' } ) ).toBeNull();
+	} );
+} );

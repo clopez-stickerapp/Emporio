@@ -94,6 +94,17 @@ export class ProductService {
 
 	public retrieveAttribute(attrName: string): ProductAttr {
 		if (!this.attributes[attrName]) {
+
+			/** Start tempory compatibility code */
+			/** This code allows MaterialAttribute to resolve to material, the new name */
+			/** TODO: remove when no longer needed */
+			const lowerAttrName = attrName.toLowerCase().replace("attribute", "");
+
+			if(this.attributes[lowerAttrName]) {
+				return this.attributes[lowerAttrName];
+			}
+			/** End of temporary code */
+
 			throw new Error("Attribute not found with name " + attrName);
 		}
 

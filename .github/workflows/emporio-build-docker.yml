@@ -38,7 +38,7 @@ jobs:
           tags: ${{ env.repository }}:${{ env.docker_tag }},${{ env.repository }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: |
+          secrets: |
            NODE_AUTH_TOKEN=${{secrets.NODE_AUTH_TOKEN}}
       - name: Notify Slack
         uses: ravsamhq/notify-slack-action@v2

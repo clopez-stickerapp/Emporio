@@ -2,8 +2,8 @@ import { Attributes } from "./Attributes";
 import { AttributeValue } from "./AttributeValue";
 
 export class ProductItem {
-	private readonly productFamilyName: string;
-	private readonly productName: string;
+	private productFamilyName: string;
+	private productName: string;
 	private attributes: Attributes = {};
 
 	public constructor(productFamilyName: string, productName: string){
@@ -45,10 +45,12 @@ export class ProductItem {
 		return this.productFamilyName;
 	}
 
-	public static fromJSON(json: Record<string, any>): ProductItem {
-		const item = new ProductItem(json["productFamilyName"], json["productName"]);
-		item.setAttributes(json["attributes"]);
-		return item;
+	/** @deprecated Use createProductItemFromJSON in Elpis instead. */
+	public reset(json: Record<string, any>): ProductItem {
+		this.productFamilyName = json["productFamilyName"];
+		this.productName = json["productName"];
+		this.attributes = json["attributes"];
+		return this;
 	}
 
 	// Should be rename to "toTestableObject"

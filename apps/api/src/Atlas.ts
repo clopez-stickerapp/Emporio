@@ -1,3 +1,5 @@
+import { ProductServiceException } from "./product/exceptions/ProductServiceException";
+
 const baseUrl = process.env.ATLAS_API_URL || 'http://api.testing.stickerapp.com';
 
 /**
@@ -13,6 +15,6 @@ export async function fetchGiftcardData(giftcardId: number): Promise<[number, bo
 		const data = await response.json();
 		return [data.giftcardSetPrice, data.giftcardHasDiscount, data.giftcardDiscount];
 	} catch (error) {
-		throw new Error("Emporio can't connect to Atlas to fetch gift card data for gift card ID: " + giftcardId);
+		throw new ProductServiceException("Emporio can't connect to Atlas to fetch gift card data for gift card ID: " + giftcardId);
 	}
 }

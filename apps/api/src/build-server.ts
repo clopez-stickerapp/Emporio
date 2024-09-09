@@ -10,6 +10,7 @@ import swaggerUi from '@fastify/swagger-ui';
 import { Emporio } from './Emporio';
 import { ServiceLoader, services } from './ServiceLoader';
 import { AllUnitTypes } from './product/unit-type/AllUnitTypes';
+import { ProductServiceException } from './product/exceptions/ProductServiceException';
 
 declare module 'fastify' {
 	interface FastifyInstance {
@@ -97,7 +98,7 @@ async function buildServer() {
 			reply.status(400).send({ message: error.message });
 		} else if (error instanceof NotFoundError) {
 			reply.status(404).send({ message: error.message });
-		} else if (error instanceof BadRequestError) {
+		} else if (error instanceof BadRequestError || error instanceof ProductServiceException) {
 			reply.status(400).send({ message: error.message });
 		} else {
 			server.log.error(createErrorObject(error, request));

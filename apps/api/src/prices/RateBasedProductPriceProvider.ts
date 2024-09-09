@@ -1,5 +1,6 @@
 import { Currencies, CurrencyConverter } from "$/currency/Currency";
 import { ProductItem } from "@stickerapp-org/nomisma";
+import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
 import { Price, calculateBreakdownSum } from "./Price";
 import { ProductPriceProvider } from "./ProductPriceProvider";
 import { Rate, RateType } from "./Rate";
@@ -99,7 +100,7 @@ export class RateBasedProductPriceProvider extends ProductPriceProvider {
 		}
 
 		if (rateProviders.length === 0) {
-			throw new Error("No applicable rate providers found for: " + JSON.stringify(productItem) + ".");
+			throw new ProductServiceException("No applicable rate providers found for: " + JSON.stringify(productItem) + ".");
 		}
 
 		return rateProviders;

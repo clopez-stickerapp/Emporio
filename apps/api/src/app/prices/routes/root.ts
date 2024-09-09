@@ -9,6 +9,7 @@ import { ProductNames } from '$data/ConditionValueResolver';
 import { Emporio } from '$/Emporio';
 import { RateBasedProductPriceProvider } from '$/prices/RateBasedProductPriceProvider';
 import { validateCountryCode } from '$/localization/Countries';
+import { BadRequestError, throwIfError } from '$app/utils';
 
 export default async function (fastify: FastifyInstance) {
 	const f = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -20,7 +21,7 @@ export default async function (fastify: FastifyInstance) {
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
 		let item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
-		const lang = validateCountryCode(request.query.lang);
+		const lang = throwIfError(() => validateCountryCode(request.query.lang), BadRequestError);
 		const useNewCurves = request.query.useNewCurves ?? false;
 		const quantity = item.getAttribute<number>('quantity') ?? 1;
 		const priceDTO = await emporio(useNewCurves).calculatePrice(item, quantity, lang, request.query.incVat)
@@ -42,7 +43,7 @@ export default async function (fastify: FastifyInstance) {
 		let item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
 		const useNewCurves = request.query.useNewCurves ?? false;
-		const lang = validateCountryCode(request.query.lang);
+		const lang = throwIfError(() => validateCountryCode(request.query.lang), BadRequestError);
 		let prices = await emporio(useNewCurves).getPriceList(item, lang, request.query.incVat)
 
 		const showDecimals = (item.getProductName() == ProductNames.PRODUCT_LIBRARY_DESIGN && shouldShowDecimalsInShop(lang));
@@ -65,7 +66,7 @@ export default async function (fastify: FastifyInstance) {
 	// add a route that calculates something called a bulk discount, you send in an array of product items and it returns that discount percentage
 	f.post( '/bulk-discount', { schema: postBulkPricesSchema }, async function (request) {
 		const items = request.body.items.map((item) => new ProductItem(item.productFamilyName, item.productName, item.attributes));
-		let lang = validateCountryCode(request.body.lang);
+		const lang = throwIfError(() => validateCountryCode(request.body.lang), BadRequestError);
 		const incVat = request.body.incVat;
 
 		let discount: number = 0;
@@ -76,7 +77,7 @@ export default async function (fastify: FastifyInstance) {
 		let normalTotalPrice = 0;
 		let customStickerItems = 0;
 
-		const currency = getCurrency(lang);
+		const currency = throwIfError(() => getCurrency(lang), BadRequestError);
 		const converter = new CurrencyConverter();
 
 		for (const item of items) {

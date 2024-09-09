@@ -2,6 +2,7 @@ import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate, RateType } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
 import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
+import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductItem } from "@stickerapp-org/nomisma";
 import { PriceMarginPercentageAttribute } from "../attributes/PriceMarginPercentageAttribute";
@@ -28,7 +29,7 @@ export class AuthorMarginRateProvider extends RateProvider{
 		let priceMarginPercentage = productItem.getAttribute<number>( PriceMarginPercentageAttribute.getName() );
 
 		if ( priceMarginPercentage === undefined ) {
-			throw new Error( "Can't find price margin" );
+			throw new ProductServiceException( "Price margin missing on product item." );
 		} else if ( priceMarginPercentage > AuthorMarginRateProvider.PRICE_MARGIN_LIMIT ) {
 			priceMarginPercentage = AuthorMarginRateProvider.PRICE_MARGIN_LIMIT;
 		}

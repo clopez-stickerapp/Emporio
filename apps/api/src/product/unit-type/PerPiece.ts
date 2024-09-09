@@ -1,5 +1,6 @@
 import { QuantityAttribute } from "$/configuration/attributes/QuantityAttribute";
 import { ProductItem } from "@stickerapp-org/nomisma";
+import { ProductServiceException } from "../exceptions/ProductServiceException";
 import { UnitType } from "./UnitType";
 
 export class PerPiece extends UnitType {
@@ -7,7 +8,7 @@ export class PerPiece extends UnitType {
 		const quantity = productItem.getAttribute<number>(QuantityAttribute.getName());
 
 		if( !quantity ) {
-			throw new Error("Missing required attributes for PerPiece calculation");
+			throw new ProductServiceException("Missing required quantity attribute for PerPiece calculation");
 		}
 
 		return quantity;

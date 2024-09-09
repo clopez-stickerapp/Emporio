@@ -14,6 +14,8 @@ import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "./configuration/interface/CollectionConfig";
 import { ProductAttrComputer, SizeHelper, ProductItem, AttributeValueSingle } from "@stickerapp-org/nomisma";
+import { ProductServiceException } from "./product/exceptions/ProductServiceException";
+import { throwIfError } from "$app/utils";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -57,7 +59,7 @@ export class Emporio {
 
 	public async calculatePriceByUnits(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Promise<Price> {
 		const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
-		const currency = getCurrency(lang);
+		const currency = throwIfError( () => getCurrency(lang), ProductServiceException);
 
 		const minUnits = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName()).getValue(productItem);
 
@@ -68,7 +70,7 @@ export class Emporio {
 		let price = await this.productService.retrievePriceProvider(productFamily.getPriceProviderName()).calculatePrice(productItem, units, currency);
 
 		if (!incVAT) {
-			const vat = getVatPercentage(lang);
+			const vat = throwIfError(() => getVatPercentage(lang), ProductServiceException); 
 			price = excludeVATFromPrice(price, vat);
 		}
 

@@ -10,3 +10,11 @@ export function throwBadRequest(): never {
 export function assertUnreachable(_: never): never {
   throw new Error('Unreachable code reached')
 }
+
+export function throwIfError<T>( fn: () => T, errorType: new (mmessage: string) => any ): T{
+	  try {
+	return fn();
+  } catch (error) {
+	throw new errorType((error as Error).message);
+  }
+}

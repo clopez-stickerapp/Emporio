@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { Rate } from "$/prices/Rate";
 import { RateProvider, RateProviderType } from "$/prices/RateProvider";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { describe, expect, test } from "vitest";
 class ProviderTest extends RateProvider {
 	public async getRate(productItem: ProductItem): Promise<Rate> {

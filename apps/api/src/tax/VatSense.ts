@@ -1,3 +1,16 @@
+type SuccessResponse<T, V extends string> = {
+    success: true;
+} & {
+    [key in V]: T;
+};
+
+type ErrorResponse = {
+	success: false;
+	message: string
+}
+
+type VatSenseResponse<T, V extends string> = SuccessResponse<T, V> | ErrorResponse;
+
 export class VatSense
 {
 	public constructor( private _apiURL: string, private _apiKey: string ) {}
@@ -5,38 +18,42 @@ export class VatSense
 	/**
 	 * Validates a VAT number.
 	 * 
-	 * @param vatNumber The VAT number to be validated.
-	 * @returns A promise that resolves to a boolean indicating whether the VAT number is valid.
-	 * @throws An error if the validation request fails, with a detailed error message.
+	 * @param vatNumber The VAT number to validate.
+	 * @returns A promise that resolves to whether the VAT number is valid, or an error message.
 	 */
-	public async validateVATNumber( vatNumber: string ): Promise<boolean>
+	public async validate( vatNumber: string ): Promise<VatSenseResponse<boolean, 'valid'>>
 	{
 		const response = await this._fetchWithAuthorization( `/validate?vat_number=${ vatNumber }` );
 
-		return response.data.valid;
+		return response.success ? { 
+			'success': response.success, 
+			'valid': response.data.valid 
+		} : response;
 	}
 
 	/**
-	 * Retrieves the tax/vat rate for a country or province.
+	 * Retrieves the VAT rate for a country or province.
 	 * 
-	 * @param countryCode The country code for which the rate is requested.
-	 * @param provinceCode The province code for which the rate is requested (optional).
-	 * @returns A promise that resolves to a number representing the rate.
-	 * @throws An error if the validation request fails, with a detailed error message.
+	 * @param countryCode The country code.
+	 * @param provinceCode The province code (optional).
+	 * @returns A promise that resolves to the VAT rate, or an error message.
 	 */
-	public async getRate( countryCode: string, provinceCode?: string ): Promise<number>
+	public async getRate( countryCode: string, provinceCode?: string ): Promise<VatSenseResponse<number, 'rate'>>
 	{
-		const params = new URLSearchParams( Object.fromEntries( Object.entries( {
-			'country_code': countryCode,
-			'province_code': provinceCode,
-		} ).filter( ( [ _key, value ] ) => value !== undefined ) ) as Record<string, string> );
+		const params = new URLSearchParams( {
+			...{ country_code: countryCode },
+			...( provinceCode && { province_code: provinceCode } ),
+		} );
 
 		const response = await this._fetchWithAuthorization( "/rates/rate?" + params.toString() );
 
-		return response.data.tax_rate.rate;
+		return response.success ? { 
+			'success': response.success, 
+			'rate': response.data.tax_rate.rate
+		} : response;
 	}
 
-	private async _fetchWithAuthorization( endpoint: string, init?: RequestInit ): Promise<any>
+	private async _fetchWithAuthorization( endpoint: string, init?: RequestInit ): Promise<VatSenseResponse<any, 'data'>>
 	{
 		const response = await fetch( this._apiURL + endpoint, {
 			...init, 
@@ -50,9 +67,15 @@ export class VatSense
 
 		if ( response.ok && json.success )
 		{
-			return json;
+			return {
+				'success': true,
+				'data': json.data
+			}
 		}
 
-		throw new Error( `${ json.error.title } - ${ json.error.detail }` );
+		return {
+			'success': false,
+			'message': `${ json.error.title } - ${ json.error.detail }`
+		}
 	}
 }

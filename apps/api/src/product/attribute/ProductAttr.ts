@@ -1,8 +1,7 @@
 import { AttributeConfig } from "$/configuration/interface/AttributeConfig";
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
+import { ProductAttrValueType, AttributeValue, AttributeValueSingle } from "@stickerapp-org/nomisma";
 import { isEmpty } from "../../../Util";
-import { AttributeValue, AttributeValueSingle } from "./AttributeValue";
-import { ProductAttrValueType } from "./ProductAttrValueType";
 
 export class ProductAttr {
 	protected name: string;

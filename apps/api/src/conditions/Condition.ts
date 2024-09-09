@@ -1,10 +1,10 @@
 import { isEmpty } from "../../Util";
-import { Attributes } from "$/product/attribute/Attributes";
 import { ConditionOperators } from "./ConditionOperators";
 import { ConditionValue } from "./ConditionValue";
 import { ConditionTestDataKeyNotFoundException } from "./exceptions/ConditionTestDataKeyNotFoundException";
 import { ConditionTestFailedException } from "./exceptions/ConditionTestFailedException";
 import { ConditionConfig } from "$/configuration/interface/ConditionConfig";
+import { Attributes } from "@stickerapp-org/nomisma";
 
 export class Condition {
 	public columnName: string;

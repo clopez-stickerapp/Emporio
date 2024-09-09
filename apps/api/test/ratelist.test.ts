@@ -1,6 +1,6 @@
 import { Rate } from "$/prices/Rate";
 import { RateList } from "$/prices/RateList";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { describe, expect, test } from "vitest";
 
 let rateList: RateList;

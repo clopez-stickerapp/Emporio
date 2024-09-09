@@ -1,5 +1,5 @@
 import { AssetConfig } from "$/configuration/interface/AssetConfig";
-import { AttributeValueSingle } from "../AttributeValue";
+import { AttributeValueSingle } from "@stickerapp-org/nomisma";
 
 export class ProductAttrAsset {
 	protected name: string;

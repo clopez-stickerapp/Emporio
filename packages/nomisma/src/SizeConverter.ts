@@ -1,5 +1,5 @@
-import { ProductItem } from "../ProductItem";
-import { convertMMToCM, convertMMToInches, convertMMToPX } from "../../helpers/UnitConverter";
+import { ProductItem } from "./ProductItem";
+import { convertMMToCM, convertMMToInches, convertMMToPX } from "./UnitConverter";
 
 export class SizeConverter
 {

@@ -1,7 +1,7 @@
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
-import { Attributes } from "$/product/attribute/Attributes";
+import { Attributes } from "@stickerapp-org/nomisma";
 import { beforeEach, describe, expect, test } from "vitest";
 
 let conditionbuilder: ConditionBuilder;

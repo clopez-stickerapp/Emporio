@@ -1,8 +1,8 @@
 import { Condition } from "$/conditions/Condition";
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
 import { Product } from "$/product/Product";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 class DummyProduct extends Product {
 	public getConditions(): Condition[] {

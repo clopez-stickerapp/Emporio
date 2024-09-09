@@ -1,7 +1,7 @@
 import { ConditionBuilder } from "$/conditions/ConditionBuilder";
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { resolve } from "$data/ConditionValueResolver";
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 
 export class ProductConditionBuilder extends ConditionBuilder {
 	public constructor(config: ConditionBuilderConfig = {}) {

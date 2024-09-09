@@ -1,7 +1,7 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "../attribute/AttributeValue";
-import { ProductAttrValueType } from "../attribute/ProductAttrValueType";
-import { ProductItem } from "../ProductItem";
+import { Attributes } from "./Attributes";
+import { AttributeValueMulti, AttributeValueSingle, AttributeValue } from "./AttributeValue";
+import { ProductAttrValueType } from "./ProductAttrValueType";
+import { ProductItem } from "./ProductItem";
 import { ProductAttrConditionEvaluator } from "./ProductAttrConditionEvaluator";
 import { AttributesMap } from "./ProductAttrMap";
 
@@ -14,22 +14,41 @@ export class ProductAttrComputer
 	protected attributesConstrained:    Attributes<AttributeValueMulti> = {};
 	protected attributesSuggested:      Attributes<AttributeValueMulti> = {};
 	protected attributesFiltered:       Attributes<AttributeValueMulti> = {};
+	public useFilters:                  boolean                         = true;
 
 	constructor( protected attrEvaluator: ProductAttrConditionEvaluator = new ProductAttrConditionEvaluator()) {}
 
+	public reset( attributes: AttributesMap ): void
+	{
+		this.attributes = attributes;
+	}
+
+	public getAttributes(): AttributesMap
+	{
+		return this.attributes;
+	}
+
 	/**
-	 * Evaluates filtered, constrained, suggested and out-of-stock values. 
+	 * Evaluates filtered, constrained, suggested and unavailable values. 
 	 * 
 	 * @param productItem 
 	 */
-	public evaluate( productItem: ProductItem, map: AttributesMap, useFilters: boolean = true ): void 
+	public evaluate( productItem: ProductItem, map?: AttributesMap, useFilters?: boolean ): void 
 	{
-		this.attributes = map;
-		this.attrEvaluator.reset( map );
+		if ( useFilters !== undefined )
+		{
+			this.useFilters = useFilters;
+		}
+		
+		if ( map )
+		{
+			this.reset( map );
+			this.attrEvaluator.reset( map );
+		}
 
 		this.evaluateFilteredValues( productItem );
 		this.evaluateConstrainedValues( productItem );
-		this.evaluateSuggestedValues( useFilters );
+		this.evaluateSuggestedValues();
 		this.evaluateOutOfStockValues();
 	}
 
@@ -70,7 +89,7 @@ export class ProductAttrComputer
 		}
 	}
 
-	protected evaluateSuggestedValues( useFilters: boolean ): void
+	protected evaluateSuggestedValues(): void
 	{
 		this.attributesSuggested = {};
 
@@ -78,7 +97,7 @@ export class ProductAttrComputer
 		{
 			let values = this.getFilteredValues( attributeName );
 
-			if ( !useFilters || !values.length )
+			if ( !this.useFilters || !values.length )
 			{
 				values = this.getAllValues( attributeName );
 			}
@@ -154,7 +173,7 @@ export class ProductAttrComputer
 		{
 			const attrValuesRaw = Object.keys( this.attributes[ attributeName ].valuesAndConstraints );
 
-			return attrValuesRaw.map( attrValueRaw => this.parseAttributeValue( attributeName, attrValueRaw ) ?? attrValueRaw as T );
+			return attrValuesRaw.map( attrValueRaw => this.parseAttribute( attributeName, attrValueRaw ) ?? attrValueRaw as T );
 		}
 
 		return [];
@@ -270,16 +289,6 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * Deletes all preferred values.
-	 * 
-	 * @returns void
-	 */
-	public resetPreferredValues(): void
-	{
-		this.attributesPreferred = {};
-	}
-
-	/**
 	 * Sets a preferred value. Will be available as a suggested value if not constrained. 
 	 * 
 	 * @param attributeName The name of the attribute.
@@ -289,6 +298,11 @@ export class ProductAttrComputer
 	public setPreferredValue( attributeName: string, attributeValue: AttributeValue ): void
 	{
 		this.attributesPreferred[ attributeName ] = attributeValue;
+	}
+
+	public setPreferredValues( attributes: Attributes ): void
+	{
+		this.attributesPreferred = attributes;
 	}
 
 	/**
@@ -487,11 +501,6 @@ export class ProductAttrComputer
             return false;
         }
 
-        if ( this.isDynamicValue( attributeName ) )
-        {
-            return true;
-        }
-
         return this.hasBeenFiltered( attributeName ) && this.isInFilteredValues( attributeName, attributeValue );
     }
 
@@ -507,14 +516,36 @@ export class ProductAttrComputer
 	}
 
 	/**
-	 * Parses a raw attribute value to its correct type.
+	 * Parses an attribute value to the correct type.
 	 * 
 	 * @param attributeName The name of the attribute.
 	 * @param attributeValueRaw The raw attribute value.
-	 * @returns The parsed attribute value on succes, null on failure.
+	 * @returns The parsed attribute value on success, null on failure.
 	 */
-	public parseAttributeValue<T extends AttributeValueSingle>( attributeName: string, attributeValueRaw: any ): T | null
+	public parseAttribute<T extends AttributeValue>( attributeName: string, attributeValueRaw: any ): T | null
 	{
+		if ( Array.isArray( attributeValueRaw ) )
+		{
+			let parsedValues: AttributeValueMulti = [];
+
+			for ( const value of attributeValueRaw )
+			{
+				const parsedValue = this.parseAttribute<AttributeValueSingle>( attributeName, value );
+
+				if ( parsedValue !== null )
+				{
+					parsedValues.push( parsedValue );
+				}
+			}
+
+			return parsedValues.length > 0 ? parsedValues as T : null;
+		}
+
+		if ( ![ "string", "boolean", "number" ].includes( typeof attributeValueRaw ) )
+		{
+			return null;
+		}
+
 		if ( this.isStringType( attributeName ) )
 		{
 			return String( attributeValueRaw ) as T;
@@ -534,11 +565,15 @@ export class ProductAttrComputer
 		}
 		else if ( this.isIntType( attributeName ) )
 		{
-			return parseInt( attributeValueRaw ) as T;
+			const value = parseInt( attributeValueRaw );
+
+			return isNaN( value ) ? null : value as T;
 		}
 		else if ( this.isFloatType( attributeName ) )
 		{
-			return parseFloat( attributeValueRaw ) as T;
+			const value = parseFloat( attributeValueRaw );
+
+			return isNaN( value ) ? null : value as T;
 		}
 
 		return null;

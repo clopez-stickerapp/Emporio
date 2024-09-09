@@ -3,8 +3,8 @@ import { convertToMinorUnits, Currencies } from "$/currency/Currency";
 import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
 import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { ProductItem } from "$/product/ProductItem";
 import { FigureAttribute } from "../attributes/FigureAttribute";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { PromoProductNames } from "$data/ConditionValueResolver";
 
 export class PromoProductPriceProvider extends ProductPriceProvider {

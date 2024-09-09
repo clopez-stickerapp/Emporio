@@ -4,7 +4,7 @@ import { getPriceListSchema, getPricesSchema, postBulkPricesSchema } from '../sc
 import { Currencies, CurrencyConverter, formatCurrency, shouldShowDecimalsInShop } from '$/currency/Currency';
 import { getCurrency, getLocale } from '$/localization/Locale';
 import { calculateBreakdownSum, formatPrice, toMajorUnits } from '$/prices/Price';
-import { ProductItem } from '$/product/ProductItem';
+import { ProductItem } from '@stickerapp-org/nomisma';
 import { ProductNames } from '$data/ConditionValueResolver';
 import { Emporio } from '$/Emporio';
 import { RateBasedProductPriceProvider } from '$/prices/RateBasedProductPriceProvider';
@@ -17,11 +17,7 @@ export default async function (fastify: FastifyInstance) {
 	const emporioBulk = fastify.emporioBulk;
 
 	f.get( '/price/:family/:name', { schema: getPricesSchema }, async function (request) {
-		let item = ProductItem.fromJSON({
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse(request.query.attributes),
-		});
+		let item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
 		const useNewCurves = request.query.useNewCurves ?? false;
 
@@ -43,11 +39,7 @@ export default async function (fastify: FastifyInstance) {
 	} );
 
 	f.get( '/price-list/:family/:name', { schema: getPriceListSchema }, async function (request) {
-		let item = ProductItem.fromJSON({
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse(request.query.attributes),
-		});
+		let item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
 		const useNewCurves = request.query.useNewCurves ?? false;
 
@@ -72,7 +64,7 @@ export default async function (fastify: FastifyInstance) {
 
 	// add a route that calculates something called a bulk discount, you send in an array of product items and it returns that discount percentage
 	f.post( '/bulk-discount', { schema: postBulkPricesSchema }, async function (request) {
-		const items = request.body.items.map((item: any) => ProductItem.fromJSON(item));
+		const items = request.body.items.map((item) => new ProductItem(item.productFamilyName, item.productName, item.attributes));
 		const lang = request.body.lang;
 		const incVat = request.body.incVat;
 

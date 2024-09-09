@@ -1,10 +1,10 @@
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "./ProductItem";
 import { ProductAttrComputer } from "./ProductAttrComputer";
 import { DeliverySheetSizeHelper } from "./DeliverySheetSizeHelper";
 import { TransformHelper } from "./TransformHelper";
-import { convertCMToMM, convertInchesToMM, formatMM } from "../../helpers/UnitConverter";
+import { convertCMToMM, convertInchesToMM, formatMM } from "./UnitConverter";
 import { SizeConverter } from "./SizeConverter";
-import { AttributeValueMulti } from "../attribute/AttributeValue";
+import { AttributeValueMulti } from "./AttributeValue";
 
 export class SizeHelper
 {
@@ -44,9 +44,9 @@ export class SizeHelper
 		this.evaluateFixedSize();
 	}
 
-	public getSizeOptions(): AttributeValueMulti
+	public getSizeOptions(): string[]
 	{
-		return this.attrComputer.getSuggestedValues( "size" );
+		return this.attrComputer.getSuggestedValues<string>( "size" );
 	}
 
 	public canBeProductionLine( productionLine: string ): boolean

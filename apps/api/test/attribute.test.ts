@@ -1,6 +1,6 @@
 import { ProductAttrValueInvalidException } from "$/product/exceptions/ProductAttrValueInvalidException";
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 let productAttr: ProductAttr;
 

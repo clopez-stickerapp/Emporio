@@ -1,5 +1,5 @@
 import { QuantityAttribute } from "$/configuration/attributes/QuantityAttribute";
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { UnitType } from "./UnitType";
 
 export class PerPiece extends UnitType {

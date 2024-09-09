@@ -1,4 +1,4 @@
-import { ProductAttrComputer } from "$/product/helpers/ProductAttrComputer";
+import { ProductAttrComputer } from "@stickerapp-org/nomisma";
 import { ProductItemBuilder } from "$/product/helpers/ProductItemBuilder";
 import { CrustAttribute, CrustValues } from "./Pizzeria/Attributes/CrustAttribute";
 import { CuisineAttribute, CuisineValues } from "./Pizzeria/Attributes/CuisineAttribute";
@@ -15,7 +15,7 @@ const itemBuilder = new ProductItemBuilder();
 const map = PizzeriaService.getProductMap( PizzeriaFamily.getName(), PizzeriaProducts.HAWAII );
 const product = PizzeriaFamily.getProduct( PizzeriaProducts.HAWAII );
 const item        = itemBuilder.createItem( PizzeriaFamily, product, map );
-computer.evaluate( item, map );
+computer.evaluate( item, map, true );
 
 describe( 'Test Getting', () => {
 	describe( 'Default Value', () => {
@@ -202,5 +202,79 @@ describe( 'Test If The Attribute Value Is', () => {
 			expect( computer.isInSuggestedValues( IngredientAttribute.getName(), 'this_value_does_not_exist' ) ).toBe( false );
 			expect( computer.isInSuggestedValues( 'this_attr_does_not_exist', IngredientValues.CHEESE ) ).toBe( false );
 		} );
+	} );
+} );
+
+describe( 'Test Attribute Parser With', () => {
+	describe( 'Multi Attribute Of Type String', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), 'first' ) ).toEqual( 'first' );
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), 1 ) ).toEqual( '1' );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), true ) ).toEqual( 'true' );
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( IngredientAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ '1', '2', 'true', '5', 'false' ] );
+		} )
+	} );
+
+	describe( 'Non-Multi Attribute Of Type String', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), 'first' ) ).toEqual( 'first' );
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), 1 ) ).toEqual( '1' );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), true ) ).toEqual( 'true' );
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( SauceBaseAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ '1', '2', 'true', '5', 'false' ] );
+		} )
+	} );
+
+	describe( 'Non-Multi Attribute Of Type Integer', () => {
+		test( "Parse String", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), 'first' ) ).toBeNull();
+		} )
+
+		test( "Parse Integer", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), 1 ) ).toEqual( 1 );
+		} )
+
+		test( "Parse Boolean", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), true ) ).toBeNull();
+		} )
+
+		test( "Parse Array Of Integers, Strings, Booleans And Empty Values", () => {
+			expect( computer.parseAttribute( PortionAttribute.getName(), [ 1, '2', true, 5, false, null, [], {} ] ) ).toEqual( [ 1, 2, 5 ] );
+		} )
+	} );
+
+	test( 'Empty Or Unsupported Attribute Value', () => {
+		for ( const attrName of [ IngredientAttribute.getName(), SauceBaseAttribute.getName(), 'this_attr_does_not_exist' ] ) {
+			expect( computer.parseAttribute( attrName, null ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, undefined ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, [] ) ).toBeNull();
+			expect( computer.parseAttribute( attrName, {} ) ).toBeNull();
+		}
+	} );
+
+	test( 'Non-Existing Attribute', () => {
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', [ '1' ] ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', undefined ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', null ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', [] ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', 1 ) ).toBeNull();
+		expect( computer.parseAttribute( 'this_attr_does_not_exist', { '1': '1' } ) ).toBeNull();
 	} );
 } );

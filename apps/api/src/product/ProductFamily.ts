@@ -1,11 +1,10 @@
-import { ProductItem } from "./ProductItem";
 import { Product } from "./Product";
 import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
 import { ProductAttr } from "./attribute/ProductAttr";
 import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
 import { UnitType } from "./unit-type/UnitType";
 import { ProductConfig } from "$/configuration/interface/ProductConfig";
-import { AttributeValueMulti } from "./attribute/AttributeValue";
+import { AttributeValueMulti, ProductItem } from "@stickerapp-org/nomisma";
 
 export class ProductFamily {
 	protected name: string;

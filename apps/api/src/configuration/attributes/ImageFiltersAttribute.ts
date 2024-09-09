@@ -1,5 +1,5 @@
 import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export const ImageFilterValues = {
 	BRIGHTNESS_ADD_10: "brightness_add_10_filter",

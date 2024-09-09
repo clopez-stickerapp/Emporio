@@ -2,22 +2,18 @@ import { Type, Static } from "@sinclair/typebox";
 import { getCurrency } from "./localization/Locale";
 import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from "./prices/Price";
 import { ProductItemConditionableParam } from "./product/condition/ProductItemConditionableParam";
-import { FeatureHelper } from "./product/helpers/FeatureHelper";
 import { FixedQuantityHelper } from "./product/helpers/FixedQuantityHelper";
 import { ProductItemBuilder } from "./product/helpers/ProductItemBuilder";
 import { ProductItemConditionablesMap } from "./product/helpers/ProductItemConditionablesMap";
 import { ProductItemValidator } from "./product/helpers/ProductItemValidator";
 import { ProductionHelper } from "./product/helpers/ProductionHelper";
-import { SizeHelper } from "./product/helpers/SizeHelper";
-import { ProductItem } from "./product/ProductItem";
 import { ProductService } from "./product/ProductService";
 import { getVatPercentage } from "./tax/Vat";
-import { AttributeValueSingle } from "./product/attribute/AttributeValue";
 import { StickerAppProductLegacySKUService } from "./configuration/StickerAppProductLegacySKUService";
 import { ProductNames } from "$data/ConditionValueResolver";
 import { ProductAttrAsset } from "./product/attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "./configuration/interface/CollectionConfig";
-import { ProductAttrComputer } from "./product/helpers/ProductAttrComputer";
+import { ProductAttrComputer, SizeHelper, ProductItem, AttributeValueSingle } from "@stickerapp-org/nomisma";
 
 export const PriceDTO = Type.Object({
 	price: Price,
@@ -144,7 +140,7 @@ export class Emporio {
 	public setProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem );
 		productionHelper.setSettingsAutomatically();
 		return productItem;
 	}
@@ -152,7 +148,7 @@ export class Emporio {
 	public unsetProductionSettingsOnItem( productItem: ProductItem, useFilters: boolean ): ProductItem {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem, new FeatureHelper( this.computer, productItem ) );
+		const productionHelper = new ProductionHelper( this.productService, this.computer, productItem );
 		productionHelper.unsetSettingsAutomatically();
 		return productItem;
 	}
@@ -179,7 +175,7 @@ export class Emporio {
 	public isAttributeAvailable( productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean ): boolean {
 		const map = this.productService.getProductMap( productItem.getProductFamilyName(), productItem.getProductName() );
 		this.computer.evaluate( productItem, map, useFilters );
-		const attributeValueParsed = this.computer.parseAttributeValue( attributeName, attributeValue ) ?? attributeValue;
+		const attributeValueParsed = this.computer.parseAttribute<AttributeValueSingle>( attributeName, attributeValue ) ?? attributeValue;
 		return this.computer.isAvailable( attributeName, attributeValueParsed );
 	}
 

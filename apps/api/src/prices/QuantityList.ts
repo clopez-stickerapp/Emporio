@@ -1,6 +1,6 @@
 import { ConditionTestDataKeyNotFoundException } from "$/conditions/exceptions/ConditionTestDataKeyNotFoundException";
 import { ProductConditionBuilder } from "$/product/condition/ProductConditionBuilder";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 
 /**
  * Contains a list of quantities in the form of an array

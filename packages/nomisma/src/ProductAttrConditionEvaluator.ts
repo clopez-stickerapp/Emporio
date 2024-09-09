@@ -1,8 +1,7 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValueMulti, AttributeValue } from "../attribute/AttributeValue";
-import { Filter } from "../attribute/Filter/ProductAttrFilter";
-import { ProductAttrFilterMode } from "../attribute/Filter/ProductAttrFilterMode";
-import { AttributesMap, AttributeMap } from "./ProductAttrMap";
+import { Attributes } from "./Attributes";
+import { AttributeValueMulti, AttributeValue } from "./AttributeValue";
+import { ProductAttrFilterMode } from "./ProductAttrFilterMode";
+import { Filter, AttributesMap, AttributeMap } from "./ProductAttrMap";
 
 type Constraints = Record<string, string[]>;
 
@@ -117,7 +116,6 @@ export class ProductAttrConditionEvaluator
 
 					default:
 						let filter = filters[ 0 ];
-						// console.log( "Winning filter for ", attrName, filter );
 						values = filter.values;
 						break;
 				}

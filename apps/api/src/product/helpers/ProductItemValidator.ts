@@ -1,5 +1,4 @@
 import { ProductService } from "../ProductService";
-import { ProductItem } from "../ProductItem";
 import { ProductAttrNotSupportedException } from "$/product/exceptions/ProductAttrNotSupportedException";
 import { ProductAttrValueNotSupportedException } from "$/product/exceptions/ProductAttrValueNotSupportedException";
 import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInvalidException";
@@ -8,7 +7,7 @@ import { isEmpty } from "../../../Util";
 import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { ProductAttrComputer } from "./ProductAttrComputer";
+import { ProductAttrComputer, ProductItem } from "@stickerapp-org/nomisma";
 
 export class ProductItemValidator 
 {

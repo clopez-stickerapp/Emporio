@@ -1,5 +1,5 @@
 import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { ProductAttrFilterMode } from "$/product/attribute/Filter/ProductAttrFilterMode";
+import { ProductAttrFilterMode } from "@stickerapp-org/nomisma";
 import { CrustAttribute, CrustValues } from "../Attributes/CrustAttribute";
 
 export const CrustFilter = new ProductAttrFilter( {

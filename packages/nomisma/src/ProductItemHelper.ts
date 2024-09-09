@@ -1,4 +1,4 @@
-import { ProductItem } from "../ProductItem";
+import { ProductItem } from "./ProductItem";
 import { MultiValueHelper } from "./MultiValueHelper";
 
 export class ProductItemHelper
@@ -425,6 +425,26 @@ export class ProductItemHelper
 	public setDeliverySheetOutsidePadding( padding: number ): void
 	{
 		this.item.setAttribute( 'delivery_sheet_outside_padding', padding );
+	}
+
+	public getEffectLayerFileName(): string | undefined
+	{
+		return this.item.getAttribute( 'effect_layer_file_name' );
+	}
+
+	public setEffectLayerFileName( fileName: string ): void
+	{
+		this.item.setAttribute( 'effect_layer_file_name', fileName );
+	}
+
+	public getEffectLayerFileAppID(): string | undefined
+	{
+		return this.item.getAttribute( 'effect_layer_upload_fileapp_id' );
+	}
+
+	public setEffectLayerFileAppID( id: string ): void
+	{
+		this.item.setAttribute( 'effect_layer_upload_fileapp_id', id );
 	}
 
 	public isCustomizableSheet(): boolean

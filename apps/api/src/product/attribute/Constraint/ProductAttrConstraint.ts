@@ -1,7 +1,7 @@
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { RuleConfig } from "$/configuration/interface/RuleConfig";
 import { ProductConditionBuilder } from "../../condition/ProductConditionBuilder";
-import { AttributeValueSingle } from "../AttributeValue";
+import { AttributeValueSingle } from "@stickerapp-org/nomisma";
 
 export class ProductAttrConstraint {
 	protected attributeName: string;

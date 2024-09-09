@@ -1,6 +1,6 @@
-import { Attributes } from "../attribute/Attributes";
-import { AttributeValue, AttributeValueMulti, AttributeValueSingle } from "../attribute/AttributeValue";
+import { Attributes } from "Attributes";
 import { ProductAttrComputer } from "./ProductAttrComputer";
+import { AttributeValue, AttributeValueMulti, AttributeValueSingle } from "AttributeValue";
 
 export class CherryPickHelper
 {
@@ -67,7 +67,7 @@ export class CherryPickHelper
 				const cherryPickedValueAsString = JSON.stringify( cherryPickedValue );
 				const attributeValueAsString    = JSON.stringify( attributeValue );
 
-				if ( cherryPickedValue !== null && cherryPickedValueAsString != attributeValueAsString )
+				if ( cherryPickedValue !== undefined && cherryPickedValueAsString != attributeValueAsString )
 				{
 					this.lostAttributes[ attributeName ] = cherryPickedValue;
 
@@ -105,6 +105,11 @@ export class CherryPickHelper
 		return this.attributes.hasOwnProperty( attributeName );
 	}
 
+	public setAttributes( attributes: Attributes ): void
+	{
+		this.attributes = attributes;
+	}
+
 	public setAttribute( attributeName: string, attributeValue: AttributeValueSingle ): void
 	{
 		// TODO: Make sure it keeps track of multi values: Example, when selecting both backpaper printing and effect layer it seems to just remembed the last picked one?
@@ -123,23 +128,23 @@ export class CherryPickHelper
 		}
 	}
 
-	public getAttribute<T extends AttributeValue>( attributeName: string ): T | null
+	public getAttribute<T extends AttributeValue>( attributeName: string ): T | undefined
 	{
-		if ( this.hasAttribute( attributeName ) )
-		{
-			return this.attributes[ attributeName ] as T;
-		}
-
-		return null;
+		return this.attributes[ attributeName ] as T | undefined;
 	}
 
-	public getLostAttribute<T extends AttributeValue>( attributeName: string ): T | null
+	public getLostAttribute<T extends AttributeValue>( attributeName: string ): T | undefined
 	{
-		if ( this.hasLostAttribute( attributeName ) )
-		{
-			return this.lostAttributes[ attributeName ] as T;
-		}
+		return this.lostAttributes[ attributeName ] as T | undefined;
+	}
 
-		return null;
+	public getLostAttributes(): Attributes
+	{
+		return this.lostAttributes;
+	}
+
+	public getAttributes(): Attributes
+	{
+		return this.attributes;
 	}
 }

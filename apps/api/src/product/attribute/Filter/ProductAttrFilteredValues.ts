@@ -1,6 +1,6 @@
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
 import { ProductConditionBuilder } from "../../condition/ProductConditionBuilder";
-import { AttributeValueMulti } from "../AttributeValue";
+import { AttributeValueMulti } from "@stickerapp-org/nomisma";
 
 export class ProductAttrFilteredValues {
 	public conditionBuilder: ProductConditionBuilder;

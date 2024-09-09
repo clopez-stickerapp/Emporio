@@ -1,5 +1,5 @@
 import { ConditionBuilderConfig } from "$/configuration/interface/ConditionBuilderConfig";
-import { Attributes } from "$/product/attribute/Attributes";
+import { Attributes } from "@stickerapp-org/nomisma";
 import { ProductConditionBuilder } from "../condition/ProductConditionBuilder";
 
 export class ProductConditionedValue {

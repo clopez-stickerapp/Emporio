@@ -1,5 +1,4 @@
-import { AttributeValue } from "$/product/attribute/AttributeValue";
-import { ProductAttrValueType } from "$/product/attribute/ProductAttrValueType";
+import { AttributeValue, ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export function testValueType(value: AttributeValue, type: ProductAttrValueType): boolean {
 	let result = false;

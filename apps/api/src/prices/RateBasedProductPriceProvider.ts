@@ -1,5 +1,5 @@
 import { Currencies, CurrencyConverter } from "$/currency/Currency";
-import { ProductItem } from "$/product/ProductItem";
+import { ProductItem } from "@stickerapp-org/nomisma";
 import { Price, calculateBreakdownSum } from "./Price";
 import { ProductPriceProvider } from "./ProductPriceProvider";
 import { Rate, RateType } from "./Rate";

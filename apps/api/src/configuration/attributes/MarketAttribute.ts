@@ -5,7 +5,7 @@ export const MarketValues = {
 	US: "us",
 	SE: "se",
 	DK: "dk",
-	UK: "uk",
+	GB: "gb",
 	DE: "de",
 	NO: "no",
 	NL: "nl",
@@ -16,6 +16,9 @@ export const MarketValues = {
 	ES: "es",
 	PT: "pt",
 	PL: "pl",
+
+	// Legacy support
+	UK: "uk",
 };
 
 export const MarketAttribute = new ProductAttr({

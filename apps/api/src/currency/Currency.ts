@@ -19,7 +19,7 @@ const showDecimalsInShop: Record<string, boolean> = {
 	"us": true,
 	"se": false,
 	"dk": false,
-	"uk": true,
+	"gb": true,
 	"de": true,
 	"no": false,
 	"nl": true,

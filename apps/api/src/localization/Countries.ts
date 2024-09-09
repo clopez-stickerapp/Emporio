@@ -7,9 +7,6 @@ export function validateCountryCode(countryCode: string): string {
 		throw new Error(`Invalid country code: ${countryCode}`);
 	}
 
-	if (countryCode === "gb") {
-		return "uk";
-	}
 
 	return countryCode.toLowerCase();
 }

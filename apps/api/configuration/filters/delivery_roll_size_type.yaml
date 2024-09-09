@@ -3,6 +3,7 @@ mode: highest_score_wins
 rules:
   - keys:
       - 35
+      - 56
       - 70
       - 93
       - 140

@@ -36,7 +36,7 @@ const conversionRates: ConversionRates = {
 	[Currencies.USD]: 1,
     [Currencies.SEK]: 9.897,
     [Currencies.DKK]: 8.253,
-    [Currencies.GBP]: 0.793,
+    [Currencies.GBP]: 0.864,
     [Currencies.NOK]: 9.002,
     [Currencies.EUR]: 1.103,
     [Currencies.JPY]: 1.50537,

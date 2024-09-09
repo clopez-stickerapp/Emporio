@@ -9,13 +9,20 @@ rules:
         - attribute: item.productName
           operator: ===
           value: "{ProductNames.PRODUCT_LABELS_ON_ROLL}"
-  - keys: 0.1220
+  - keys: 0.09
     conditions:
       baseComplexityScore: 1
       conditions:
         - attribute: item.attributes.material
           operator: IN
-          value: [holographic, glitter, mirror, prismatic, pixie_dust]
+          value: [holographic, glitter, prismatic, pixie_dust]
+  - keys: 0.1
+    conditions:
+      baseComplexityScore: 1
+      conditions:
+        - attribute: item.attributes.material
+          operator: IN
+          value: [mirror]
   - keys: 0.1360
     conditions:
       baseComplexityScore: 1

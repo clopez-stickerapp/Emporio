@@ -40,9 +40,7 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 	public constructor() {
 		super(CurvePriceProvider.NAME);
 
-		let modifier: number = 0.94;
-
-		const rl_white = new RateFunction(CurvePriceProvider.RATELIST_WHITE, 8500 * modifier, 0.5, 1800 * modifier);
+		const rl_white = new RateFunction(CurvePriceProvider.RATELIST_WHITE, 8500, 0.5, 1800);
 		rl_white.conditions
 			.addSubGroup({ relationMode: ConditionRelations.AND })
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.NOT_EQUAL, value: ProductNames.PRODUCT_TRANSFER_DECAL})
@@ -51,13 +49,13 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.EQUAL, value: ProductNames.PRODUCT_FLOOR})
 		this.addRateProvider(rl_white);
 
-		let rl_shiny = new RateFunction(CurvePriceProvider.RATELIST_SHINY, 10500 * modifier, 0.37, 2300 * modifier);
+		let rl_shiny = new RateFunction(CurvePriceProvider.RATELIST_SHINY, 11000, 0.42, 2000);
 		rl_shiny.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.HOLOGRAPHIC, MaterialValues.GLITTER, MaterialValues.PRISMATIC, MaterialValues.BRUSHED_ALLOY, MaterialValues.WARRANTY, MaterialValues.FROSTED, MaterialValues.PIXIE_DUST]})
 			.addCondition({ attribute: "item.attributes.laminate", operator: ConditionOperators.NOT_EQUAL, value: LaminateValues.EPOXY})
 		this.addRateProvider(rl_shiny);
 
-		let rl_thick = new RateFunction(CurvePriceProvider.RATELIST_THICK, 11500 * modifier, 0.45, 6500 * modifier);
+		let rl_thick = new RateFunction(CurvePriceProvider.RATELIST_THICK, 11500, 0.45, 6500);
 		rl_thick.conditions
 			.addSubGroup({ relationMode: ConditionRelations.OR })
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.GITD, MaterialValues.METALLIC_GOLD, MaterialValues.METALLIC_SILVER, MaterialValues.COLORED_VINYL] })
@@ -67,33 +65,33 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE_HI_TACK]});
 		this.addRateProvider(rl_thick);
 
-		let rl_clear = new RateFunction(CurvePriceProvider.RATELIST_CLEAR, 8500 * modifier, 0.5, 2100 * modifier);
+		let rl_clear = new RateFunction(CurvePriceProvider.RATELIST_CLEAR, 8500, 0.5, 2100);
 		rl_clear.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.CLEAR, MaterialValues.CLEAR_BACKSCORE]});
 		this.addRateProvider(rl_clear);
 
-		let rl_mirror = new RateFunction(CurvePriceProvider.RATELIST_MIRROR, 10000 * modifier, 0.4, 2200 * modifier);
+		let rl_mirror = new RateFunction(CurvePriceProvider.RATELIST_MIRROR, 10000, 0.4, 2200);
 		rl_mirror.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.MIRROR]})
 			.addCondition({ attribute: "item.attributes.laminate", operator: ConditionOperators.NOT_EQUAL, value: LaminateValues.EPOXY});
 		this.addRateProvider(rl_mirror);
 
-		let rl_kraft = new RateFunction(CurvePriceProvider.RATELIST_KRAFT, 8500 * modifier, 0.5, 1800 * modifier);
+		let rl_kraft = new RateFunction(CurvePriceProvider.RATELIST_KRAFT, 8500, 0.5, 1800);
 		rl_kraft.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.KRAFT_PAPER, MaterialValues.WHITE_REMOVABLE]})
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.NOT_EQUAL, value: ProductNames.PRODUCT_FLOOR});
 		this.addRateProvider(rl_kraft);
 
-		let rl_wall = new RateFunction(CurvePriceProvider.RATELIST_WALL, 3000 * modifier, 0.7, 6500 * modifier);
+		let rl_wall = new RateFunction(CurvePriceProvider.RATELIST_WALL, 3000, 0.7, 6500);
 		rl_wall.conditions.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE_WALL]});
 		this.addRateProvider(rl_wall);
 
-		let rl_epoxy = new RateFunction(CurvePriceProvider.RATELIST_EPOXY, 21900 * modifier, 0.3, 16000 * modifier);
+		let rl_epoxy = new RateFunction(CurvePriceProvider.RATELIST_EPOXY, 21900, 0.3, 16000);
 		rl_epoxy.conditions
 			.addCondition({ attribute: "item.attributes.laminate", operator: ConditionOperators.IN, value: [LaminateValues.EPOXY]});
 		this.addRateProvider(rl_epoxy);
 
-		let rl_labels_on_sheets = new RateFunction(CurvePriceProvider.RATELIST_LABELS_ON_SHEET, 8000 * modifier, 0.6, 1400 * modifier);
+		let rl_labels_on_sheets = new RateFunction(CurvePriceProvider.RATELIST_LABELS_ON_SHEET, 8000, 0.6, 1400);
 		rl_labels_on_sheets.conditions
 			.addCondition({ attribute: "item.productName", operator: ConditionOperators.IN, value: [ProductNames.PRODUCT_LABELS_ON_SHEET, ProductNames.PRODUCT_LABELS_ON_ROLL]});
 		this.addRateProvider(rl_labels_on_sheets);
@@ -108,23 +106,23 @@ export class CurvePriceProvider extends RateBasedProductPriceProvider {
 		/** 
 		 * STS ONLY 
 		*/
-		let rl_thin = new RateFunction(CurvePriceProvider.RATELIST_WHITE_THIN, 7000 * modifier, 0.6, 1300 * modifier);
+		let rl_thin = new RateFunction(CurvePriceProvider.RATELIST_WHITE_THIN, 7000, 0.6, 1300);
 		rl_thin.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE_PAPER]});
 		this.addRateProvider(rl_thin);
 
-		let rl_reflective = new RateFunction(CurvePriceProvider.RATELIST_REFLECTIVE, 7000 * modifier, 0.45, 10000 * modifier);
+		let rl_reflective = new RateFunction(CurvePriceProvider.RATELIST_REFLECTIVE, 7000, 0.45, 10000);
 		rl_reflective.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.REFLECTIVE, MaterialValues.FLUORESCENT, MaterialValues.MAGNETIC, MaterialValues.HEAT_TRANSFER]});
 		this.addRateProvider(rl_reflective);
 
-		let rl_coverall = new RateFunction(CurvePriceProvider.RATELIST_COVERALL, 18000 * modifier, 0.25, 9000 * modifier);
+		let rl_coverall = new RateFunction(CurvePriceProvider.RATELIST_COVERALL, 18000, 0.25, 9000);
 		rl_coverall.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE_COVERALL]});
 		this.addRateProvider(rl_coverall);
 
 		// Glossy + sandy hi-tack
-		let rl_sts_hi_tack = new RateFunction(CurvePriceProvider.RATELIST_STS_HI_TACK, 8000 * modifier, 0.6, 4500 * modifier);
+		let rl_sts_hi_tack = new RateFunction(CurvePriceProvider.RATELIST_STS_HI_TACK, 8000, 0.6, 4500);
 		rl_sts_hi_tack.conditions
 			.addCondition({ attribute: "item.attributes.material", operator: ConditionOperators.IN, value: [MaterialValues.WHITE_HI_TACK]})
 			.addCondition({ attribute: "item.attributes.laminate", operator: ConditionOperators.NOT_EQUAL, value: LaminateValues.GLOSSY_UV_12_MIL_HEAVY_DUTY });

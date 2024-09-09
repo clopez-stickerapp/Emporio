@@ -91,6 +91,15 @@ export class StickerAppProductLegacySKUService {
 				value: MaterialValues.GLITTER
 			});
 
+		this.skuValue.addConditionedValue(112)
+			.conditionBuilder
+			.addCondition({
+				attribute: "item.attributes.laminate",
+				operator: ConditionOperators.EQUAL,
+				value: LaminateValues.EPOXY
+			})
+			.setBaseComplexityScore(1000);
+
 
 		this.skuValue.addConditionedValue(113)
 			.conditionBuilder

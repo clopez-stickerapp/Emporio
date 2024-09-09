@@ -96,7 +96,7 @@ async function buildServer() {
 			server.log.warn(createErrorObject(error, request));
 			reply.status(400).send({ message: error.message });
 		} else if (error instanceof NotFoundError) {
-			reply.status(404).send('Resource not found');
+			reply.status(404).send({ message: error.message });
 		} else if (error instanceof BadRequestError) {
 			reply.status(400).send({ message: error.message });
 		} else {

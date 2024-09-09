@@ -6,9 +6,10 @@ export class ProductItem {
 	private productName: string;
 	private attributes: Attributes = {};
 
-	public constructor(productFamilyName: string, productName: string){
+	public constructor(productFamilyName: string, productName: string, attributes: Attributes = {}) {
 		this.productFamilyName = productFamilyName;
 		this.productName = productName;
+		this.attributes = attributes;
 	}
 
 	public getAttribute<T extends AttributeValue>(name: string): T | undefined {

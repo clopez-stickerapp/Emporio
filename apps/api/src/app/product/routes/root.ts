@@ -41,11 +41,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} );
 
 	f.get( '/minimum-quantity/:family/:name', { schema: getMinimumQuantitySchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( {
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse( request.query.attributes ),
-		} );
+		const item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
 		return { minimumQuantity: emporio.getMinimumQuantity( item ) };
 	} )
@@ -59,11 +55,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/validate/:family/:name', { schema: getValidationSchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( {
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse( request.query.attributes ),
-		} );
+		const item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 
 		try {
 			emporio.validate( item, request.query.allowUnsupportedAttributeAliases, request.query.allowUnsuggestedAttributeValues, request.query.checkAgainstFilteredValues );
@@ -86,16 +78,13 @@ export default async function ( fastify: FastifyInstance ) {
 	} );
 
 	f.get( '/size/:family/:name', { schema: getSizeDetailsSchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( {
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse( request.query.attributes ),
-		} );
+		const item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 		return { sizeDetails: emporio.getSizeDetails( item, request.query.useFilters ) };
 	} );
 
 	f.get( '/attribute/available/:name/:value', { schema: isAttributeAvailableSchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( JSON.parse( request.query.item ) );
+		const itemJSON = JSON.parse( request.query.item );
+		const item = new ProductItem( itemJSON.productFamilyName, itemJSON.productName, itemJSON.attributes );
 		return { available: emporio.isAttributeAvailable( item, request.params.name, request.params.value, request.query.useFilters ) };
 	} );
 
@@ -104,11 +93,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} );
 
 	f.get( '/attribute/fixed-quantity-evaluated/:family/:name', { schema: getFixedQuantitySchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( {
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse( request.query.attributes ),
-		} );
+		const item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 		return { fixedQuantity: emporio.getFixedQuantityEvaluated( item, request.query.useFilters ) };
 	} );
 
@@ -156,12 +141,7 @@ export default async function ( fastify: FastifyInstance ) {
 	} )
 
 	f.get( '/legacy-sku/:family/:name', { schema: getLegacySKUSchema }, async function ( request ) {
-		const item = ProductItem.fromJSON( {
-			productFamilyName: request.params.family,
-			productName: request.params.name,
-			attributes: JSON.parse( request.query.attributes ),
-		} );
-
+		const item = new ProductItem( request.params.family, request.params.name, JSON.parse( request.query.attributes ) );
 		return { legacySKU: emporio.getStickerAppLegacySKU( item ) };
 	} )
 

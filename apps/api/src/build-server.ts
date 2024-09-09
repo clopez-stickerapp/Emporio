@@ -57,7 +57,7 @@ async function buildServer() {
 	 * This doesn't actually change the payload, but it does log the payload in a more readable format 
 	 * */
 
-	server.addHook('onRequest', (request, reply, done) => {
+	server.addHook('onSend', (request, reply, _payload, done) => {
 		server.log.debug({
 			message: reply.statusCode + " - " + request.routeOptions.method + " " + request.routeOptions.url,
 			url: request.url,

@@ -67,10 +67,6 @@ export class Emporio {
 
 		let price = await this.productService.retrievePriceProvider(productFamily.getPriceProviderName()).calculatePrice(productItem, units, currency);
 
-		if (!price) {
-			throw new Error("Price provider not found for product family: " + productItem.getProductFamilyName());
-		}
-
 		if (!incVAT) {
 			const vat = getVatPercentage(lang);
 			price = excludeVATFromPrice(price, vat);

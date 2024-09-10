@@ -1,6 +1,6 @@
 {
 	"name": "@stickerapp-org/nomisma",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"scripts": {
 		"clean": "rimraf dist",
 		"build:cjs": "npm run clean && tsc -p tsconfig.json",

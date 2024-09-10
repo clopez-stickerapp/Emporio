@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"outDir": "dist/cjs",
 		"baseUrl": "./src",
-		"sourceMap": true,
+		"sourceMap": false,
 		"moduleResolution": "Node",
 		"declaration": true,
 		"strict": true,

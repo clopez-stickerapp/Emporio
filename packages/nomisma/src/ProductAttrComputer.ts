@@ -150,6 +150,7 @@ export class ProductAttrComputer
 	 * Gets the first suggested value that isn't constrained.
 	 * 
 	 * @param attributeName The name of the attribute.
+	 * @returns The first suggested value that isn't constrained, or null if no such value exists. For multi-value attributes, an empty array is returned.
 	 */
 	public getDefaultValue<T extends AttributeValueSingle | []>( attributeName: string ): T | null
 	{

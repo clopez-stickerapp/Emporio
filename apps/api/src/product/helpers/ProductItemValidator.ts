@@ -56,7 +56,7 @@ export class ProductItemValidator
 			{
 				if ( attrValue !== item.getAttribute( attrName ) )
 				{
-					msg += `${ attrName } needs to be ${ attrValue }, `;
+					msg += `${ attrName } needs to ${ this.ps.retrieveAttribute( attrName ).isMultiValue() ? 'include' : 'be' } ${ attrValue }, `;
 				}
 			}
 

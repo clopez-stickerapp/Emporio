@@ -182,7 +182,7 @@ export class ProductFamily {
 		const attribute = this.getAttribute( attrAlias );
 		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
 
-		if ( !product.isAttrRequired( attrAlias ) ) 
+		if ( !product.isAttrRequired( attrAlias ) || attribute.isMultiValue() ) 
 		{
 			for ( const attrValue of attribute.getValues() ) 
 			{

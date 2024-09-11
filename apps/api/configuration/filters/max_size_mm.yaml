@@ -2,7 +2,7 @@ name: max_size_mm
 mode: highest_score_wins
 rules:
   - keys:
-      - "{MaxSizes.LASER}"
+      - 275
     conditions:
       relationMode: AND
       conditions:
@@ -22,7 +22,7 @@ rules:
                 - sheet_kiss_cut
 
   - keys:
-      - "{MaxSizes.SHEET_LEGACY}"
+      - 300
     conditions:
       relationMode: AND
       conditions:
@@ -32,7 +32,7 @@ rules:
             - sheet_legacy
 
   - keys:
-      - "{MaxSizes.ROLL}"
+      - 980
     conditions:
       relationMode: AND
       conditions:

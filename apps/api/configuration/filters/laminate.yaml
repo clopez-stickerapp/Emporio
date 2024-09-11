@@ -157,7 +157,7 @@ rules:
             - labels_on_roll
 
   - keys:
-      - uncoted
+      - uncoated
     conditions:
       relationMode: AND
       baseComplexityScore: 1001

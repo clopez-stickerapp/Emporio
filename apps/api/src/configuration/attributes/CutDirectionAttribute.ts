@@ -3,10 +3,10 @@ import { ProductAttrValueType } from "@stickerapp-org/nomisma";
 
 export const CutDirectionAttributeValues = {
 	AUTO: "auto",
+	RIGHT_FIRST: "right_first",
+	LEFT_FIRST: "left_first",
 	BOTTOM_FIRST: "bottom_first",
 	TOP_FIRST: "top_first",
-	RIGHT_FIRST: "right_first",
-	LEFT_FIRST: "left_first"
 }
 
 export const CutDirectionAttribute = new ProductAttr({

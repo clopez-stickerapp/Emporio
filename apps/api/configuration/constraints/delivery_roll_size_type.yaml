@@ -1,33 +1,6 @@
 name: delivery_roll_size_type
 rules:
   - keys:
-      - 32
-    conditions:
-      relationMode: AND
-      conditions:
-        - relationMode: OR
-          conditions:
-            - attribute: item.attributes.height_mm
-              operator: <=
-              value: 28
-            - attribute: item.attributes.cut_direction
-              operator: IN
-              value:
-                - "{CutDirectionAttributeValues.TOP_FIRST}"
-                - "{CutDirectionAttributeValues.BOTTOM_FIRST}"
-
-        - relationMode: OR
-          conditions:
-            - attribute: item.attributes.width_mm
-              operator: <=
-              value: 28
-            - attribute: item.attributes.cut_direction
-              operator: IN
-              value:
-                - "{CutDirectionAttributeValues.LEFT_FIRST}"
-                - "{CutDirectionAttributeValues.RIGHT_FIRST}"
-
-  - keys:
       - 35
     conditions:
       relationMode: AND

@@ -5,6 +5,7 @@ import { CutDirectionAttribute, CutDirectionAttributeValues } from "$/configurat
 import { DeliveryAttribute, DeliveryTypes } from "$/configuration/attributes/DeliveryAttribute";
 import { WhiteLayerAttribute, WhiteLayerValues } from "$/configuration/attributes/WhiteLayerAttribute";
 import { FeatureAttribute, ProductFeatures } from "$/configuration/attributes/FeatureAttribute";
+import { ProductNames } from "$data/ConditionValueResolver";
 
 export class ProductionHelper
 {
@@ -35,7 +36,11 @@ export class ProductionHelper
             this.item.removeAttribute( WhiteLayerAttribute.getName() );
         }
 
-        if ( !this.isRecommended( CutDirectionAttribute.getName() ) )
+		// TEMPORARY SOLUTION
+		// We don't want to remove cut direction for labels_on_roll products. When PIM 
+		// is in place, we'll add cut_direction as a required attribute on the family, 
+		// which will remove the need for checking the product name.
+        if ( !this.isRecommended( CutDirectionAttribute.getName() ) && this.item.getProductName() !== ProductNames.PRODUCT_LABELS_ON_ROLL )
         {
             this.item.removeAttribute( CutDirectionAttribute.getName() );
         }

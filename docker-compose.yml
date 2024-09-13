@@ -17,6 +17,22 @@ services:
       - atlas
     volumes:
       - /var/log/emporio:/var/log/emporio
+  emporio-ui:
+    build:
+      context: .
+      dockerfile: docker/ui.Dockerfile
+      # args:
+      #   - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
+    image: emporio-ui
+    container_name: emporio-ui
+    restart: unless-stopped
+    ports:
+      - '5173:3000'
+    environment:
+      API_URL: ${API_URL}
+      API_KEY: ${API_KEY}
+    networks:
+      - atlas
 networks:
   atlas:
     name: stickerapp_atlas

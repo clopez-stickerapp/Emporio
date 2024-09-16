@@ -22,7 +22,7 @@ rules:
               operator: IN
               value:
                 - white
-                - holographic,
+                - holographic
                 - mirror
                 - clear
                 - pixie_dust
@@ -30,7 +30,7 @@ rules:
               operator: IN
               value:
                 - glossy_uv
-                - soft_touch,
+                - soft_touch
                 - satin_matte
             - attribute: item.productName
               operator: NOT_IN

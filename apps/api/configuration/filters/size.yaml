@@ -129,8 +129,8 @@ rules:
               value: true
 
   - keys:
-      - US half letter <br> 8.5" x 5.5",
-      - A5 paper <br> 5.8" x 8.3",
+      - US half letter <br> 8.5" x 5.5"
+      - A5 paper <br> 5.8" x 8.3"
       - Thank you card <br> 5.1" x 6.4"
     conditions:
       relationMode: AND

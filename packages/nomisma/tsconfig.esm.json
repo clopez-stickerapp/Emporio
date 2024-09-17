@@ -1,18 +1,19 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "module": "ESNext",
-    "outDir": "dist/esm",
-    "plugins": [
-      {
-        "transform": "@stickerapp-org/ts-transform-module-type",
-        "import": "createModuleTypeTransformer"
-      },
-      {
-        "transform": "@stickerapp-org/ts-transform-module-type",
-        "import": "createModuleTypeFilenameTransformer",
-        "transformProgram": true
-      }
-    ]
-  }
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "type": "module",
+        "module": "ESNext",
+        "outDir": "dist/esm",
+        "plugins": [
+            {
+                "transform": "@stickerapp-org/ts-transform-module-type",
+                "import": "createModuleTypeTransformer"
+            },
+            {
+                "transform": "@stickerapp-org/ts-transform-module-type",
+                "import": "createModuleTypeFilenameTransformer",
+                "transformProgram": true
+            }
+        ]
+    }
 }

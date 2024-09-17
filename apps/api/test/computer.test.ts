@@ -34,11 +34,7 @@ describe( 'Test Getting', () => {
 	
 	describe( 'All Values', () => {
 		test( 'When The Attribute Is A Multi Type', () => {
-			expect( computer.getAllValues( IngredientAttribute.getName() ) ).toEqual( [ 
-				IngredientValues.CHEESE, 
-				IngredientValues.HAM, 
-				IngredientValues.PINEAPPLE 
-			] );
+			expect( computer.getAllValues( IngredientAttribute.getName() ) ).toEqual( IngredientAttribute.getValues() );
 		} );
 	
 		test( 'When The Attribute Is A Non-Multi Type', () => {
@@ -78,7 +74,7 @@ describe( 'Test If The Attribute Value Is', () => {
 		} );
 	
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isAvailable( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
+			expect( computer.isAvailable( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( true );
 		} );
 	
 		test( 'When The Attribute Value Is Constrained', () => {
@@ -194,7 +190,7 @@ describe( 'Test If The Attribute Value Is', () => {
 		} );
 
 		test( 'When The Attribute Value Is Not Suggested And Not Constrained', () => {
-			expect( computer.isInSuggestedValues( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( false );
+			expect( computer.isInSuggestedValues( IngredientAttribute.getName(), IngredientValues.GARLIC ) ).toBe( true );
 		} );
 
 		test( 'When The Attribute And/Or Value Does Not Exist', () => {

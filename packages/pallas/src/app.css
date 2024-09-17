@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-display: fallback;
+  font-family: FuturaPT;
+  font-style: normal;
+  font-weight: 600;
+  src: url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.eot);
+  src:
+    url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.eot?#iefix)
+      format('embedded-opentype'),
+    url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.woff2) format('woff2'),
+    url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.woff) format('woff'),
+    url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.ttf) format('truetype'),
+    url(https://d6ce0no7ktiq.cloudfront.net/fonts/Futura/FuturaPTHeavy.otf) format('opentype');
+}

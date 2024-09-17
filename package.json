@@ -24,8 +24,8 @@
 		"ts-node-dev": "^2.0.0",
 		"ts-patch": "^3.1.2",
 		"turbo": "^2.1.0",
-		"typescript": "^5.3.3",
-		"typescript-transform-paths": "^3.4.7"
+		"typescript": "^5.5.4",
+		"typescript-transform-paths": "^3.4.11"
 	},
 	"overrides": {
 		"@sinclair/typebox": "$@sinclair/typebox"

@@ -9,7 +9,8 @@
         "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
         "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
         "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
-        "lint": "prettier --check . && eslint ."
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
     "license": "UNLICENSED",
     "publishConfig": {
@@ -40,7 +41,9 @@
     "devDependencies": {
         "@stickerapp-org/ts-transform-module-type": "*",
         "@stickerapp-org/emporio-tsconfig": "*",
-        "typescript": "^5.4.5",
+        "@stickerapp-org/eslint-config": "*",
+        "@stickerapp-org/prettier-config": "*",
+        "typescript": "5.5.4",
         "concurrently": "^8.2.2",
         "rimraf": "^5.0.5"
     }

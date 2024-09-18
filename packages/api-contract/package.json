@@ -9,7 +9,8 @@
         "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
         "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
         "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
-        "lint": "prettier --check . && eslint ."
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
     "files": [
         "package.json",

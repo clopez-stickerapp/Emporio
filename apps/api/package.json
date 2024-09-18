@@ -10,7 +10,8 @@
                 "test": "vitest run",
                 "test:watch": "vitest",
                 "dev": "concurrently --kill-others \"tsc -p tsconfig.json --watch --preserveWatchOutput\" \"ts-node-dev -r tsconfig-paths/register -r dotenv/config --respawn ./src/app.ts | pino-pretty --colorize\"",
-                "lint": "prettier --check . && eslint ."
+                "lint": "eslint .",
+                "lint:fix": "eslint . --fix"
         },
         "keywords": [],
         "author": "StickerApp",

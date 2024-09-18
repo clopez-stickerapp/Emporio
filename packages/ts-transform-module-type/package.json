@@ -1,13 +1,13 @@
 {
-    "name": "@stickerapp-org/ts-transform-module-type",
-    "main": "./dist/index.js",
-    "scripts": {
-        "clean": "rimraf dist",
-        "build": "tsc -p tsconfig.json"
-    },
-    "devDependencies": {
-        "@stickerapp-org/emporio-tsconfig": "*",
-        "rimraf": "^5.0.5",
-        "typescript": "^5.3.3"
-    }
+  "name": "@stickerapp-org/ts-transform-module-type",
+  "main": "./dist/index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@stickerapp-org/emporio-tsconfig": "*",
+    "rimraf": "^5.0.5",
+    "typescript": "5.5.4"
+  }
 }

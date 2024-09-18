@@ -5,6 +5,7 @@
         "build": "turbo build",
         "dev": "turbo dev",
         "lint": "turbo lint",
+        "lint:fix": "turbo lint:fix",
         "test": "turbo test",
         "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
         "generate-migration": "npm run generate-migration -w @stickerapp-org/emporio-api",
@@ -13,6 +14,18 @@
     },
     "devDependencies": {
         "@sinclair/typebox": "0.32.13",
+        "@stickerapp-org/eslint-config": "*",
+        "@stickerapp-org/prettier-config": "*",
+        "@typescript-eslint/eslint-plugin": "6.0.0",
+        "@typescript-eslint/parser": "6.0.0",
+        "eslint": "8.28.0",
+        "eslint-config-prettier": "9.1.0",
+        "eslint-config-turbo": "2.1.2",
+        "eslint-plugin-import": "2.30.0",
+        "eslint-plugin-prettier": "5.2.1",
+        "eslint-plugin-svelte": "2.44.0",
+        "prettier": "3.1.1",
+        "prettier-plugin-svelte": "3.2.6",
         "ts-patch": "^3.1.2",
         "turbo": "^2.1.0"
     },
@@ -26,6 +39,5 @@
     "workspaces": [
         "apps/*",
         "packages/*"
-    ],
-    "dependencies": {}
+    ]
 }

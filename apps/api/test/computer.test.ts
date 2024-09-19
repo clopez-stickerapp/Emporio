@@ -34,7 +34,7 @@ describe( 'Test Getting', () => {
 	
 	describe( 'All Values', () => {
 		test( 'When The Attribute Is A Multi Type', () => {
-			expect( computer.getAllValues( IngredientAttribute.getName() ) ).toEqual( IngredientAttribute.getValues() );
+			expect( computer.getAllValues( IngredientAttribute.getName() ).sort() ).toEqual( IngredientAttribute.getValues().sort() );
 		} );
 	
 		test( 'When The Attribute Is A Non-Multi Type', () => {

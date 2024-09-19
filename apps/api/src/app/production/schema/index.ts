@@ -1,40 +1,45 @@
+import { attributes, FamilyName, ProductName } from "$/helpers/TypeHelper";
 import { Type } from "@sinclair/typebox";
-import * as TypeHelper from "$/helpers/TypeHelper";
+import { 
+	ErrorResponse, 
+	GetItemWithoutProductionSettingsQuery, 
+	GetItemWithoutProductionSettingsResponse, 
+	GetItemWithProductionSettingsQuery, 
+	GetItemWithProductionSettingsResponse,
+} from "@stickerapp-org/emporio-api-contract";
+
+GetItemWithProductionSettingsQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getItemWithProductionSettingsSchema = {
 	operationId: 'getItemWithProductionSettings',
-	tags: ['Production'],
+	tags: [ 'Production' ],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString(),
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: GetItemWithProductionSettingsQuery,
 	response: {
-		200: Type.Object( { 
-			item: TypeHelper.ProductItem( true ) 
-		} ),
-		400: TypeHelper.Error()
+		200: GetItemWithProductionSettingsResponse,
+		400: ErrorResponse
 	}
 }
 
+GetItemWithoutProductionSettingsQuery.properties.attributes.examples = [ JSON.stringify( { 
+	...attributes,
+	'production_line': 'laser',
+	'cut_direction': 'auto'	
+} ) ];
+
 export const getItemWithoutProductionSettingsSchema = {
 	operationId: 'getItemWithoutProductionSettings',
-	tags: ['Production'],
+	tags: [ 'Production' ],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString( true ),
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: GetItemWithoutProductionSettingsQuery,
 	response: {
-		200: Type.Object( { 
-			item: TypeHelper.ProductItem() 
-		} ),
-		400: TypeHelper.Error()
+		200: GetItemWithoutProductionSettingsResponse,
+		400: ErrorResponse
 	}
 }

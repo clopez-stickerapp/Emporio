@@ -1,5 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
-import { Attributes, AttributeValueMulti, FamilyName, ProductName, UseFilters } from "./shared";
+import { Attributes, AttributeValueMulti, FamilyName, ProductItem, ProductName, UseFilters } from "./shared";
 
 export const GetFamiliesQuery = Type.Object( {
 	name: Type.Optional( Type.String() )
@@ -92,12 +92,7 @@ export const CreateItemQuery = Type.Object( {
 
 export type CreateItemQueryT = Static<typeof CreateItemQuery>;
 
-export const CreateItemResponse = Type.Object( {
-	productFamilyName: FamilyName,
-	productName: ProductName,
-	attributes: Attributes,
-	sku: Type.Optional( Type.String() )
-} );
+export const CreateItemResponse = ProductItem;
 
 export type CreateItemResponseT = Static<typeof CreateItemResponse>;
 

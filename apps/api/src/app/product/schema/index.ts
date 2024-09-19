@@ -1,19 +1,44 @@
+import { attributeNames, attributes, familyNames, FamilyName, productNames, ProductName, productItem } from "$/helpers/TypeHelper";
 import { Type } from "@sinclair/typebox";
-import * as TypeHelper from "$/helpers/TypeHelper";
+import { 
+	AttributeValueSingle, 
+	CreateItemQuery, 
+	CreateItemResponse, 
+	ErrorResponse, 
+	GetAttributesMapResponse, 
+	GetAttributesQuery, 
+	GetAttributesResponse, 
+	GetConditionableMapResponse, 
+	GetFamiliesQuery, 
+	GetFamiliesResponse, 
+	GetFixedQuantityQuery, 
+	GetFixedQuantityResponse, 
+	GetLegacySKUQuery, 
+	GetLegacySKUResponse, 
+	GetMinimumQuantityQuery, 
+	GetMinimumQuantityResponse, 
+	GetOutOfStockResponse, 
+	GetSizeDetailsQuery, 
+	GetSizeDetailsResponse, 
+	IsAttributeAvailableQuery, 
+	IsAttributeAvailableResponse, 
+	isAttributeRequiredQuery, 
+	isAttributeRequiredResponse, 
+	ValidationQuery, 
+	ValidationResponse,
+} from "@stickerapp-org/emporio-api-contract";
 
 export const getCreateItemSchema = {
 	operationId: 'createItem',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: CreateItemQuery,
 	response: {
-		200: TypeHelper.ProductItem(),
-		400: TypeHelper.Error()
+		200: CreateItemResponse,
+		400: ErrorResponse
 	},
 }
 
@@ -21,32 +46,28 @@ export const getAttributeMapSchema = {
 	operationId: 'getAttributeMap',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
 	response: {
-		200: Type.Object( {
-			attributes: Type.Any(),
-		} ),
-		400: TypeHelper.Error()
+		200: GetAttributesMapResponse,
+		400: ErrorResponse
 	}
 }
+
+GetMinimumQuantityQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getMinimumQuantitySchema = {
 	operationId: 'getMinimumQuantity',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString()
-	} ),
+	querystring: GetMinimumQuantityQuery,
 	response: {
-		200: Type.Object( {
-			minimumQuantity: Type.Number()
-		} ),
-		400: TypeHelper.Error()
+		200: GetMinimumQuantityResponse,
+		400: ErrorResponse
 	}
 }
 
@@ -54,169 +75,131 @@ export const getConditionableMapSchema = {
 	operationId: 'getConditionableMap',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
+		family: FamilyName,
 	} ),
 	response: {
-		200: Type.Object( {
-			map: Type.Record( Type.String(), Type.Any() ),
-		} ),
-		400: TypeHelper.Error()
+		200: GetConditionableMapResponse,
+		400: ErrorResponse
 	}
 }
+
+ValidationQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getValidationSchema = {
 	operationId: 'validate',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString(),
-		allowUnsupportedAttributeAliases: Type.Boolean(),
-		allowUnsuggestedAttributeValues: Type.Boolean(),
-		checkAgainstFilteredValues: TypeHelper.UseFilters()
-	} ),
+	querystring: ValidationQuery,
 	response: {
-		200: Type.Object( {
-			validation: Type.Object( {
-				valid: Type.Boolean(),
-				error: Type.Optional( Type.Object( {
-					name: Type.String(),
-					message: Type.String()
-				} ) )
-			} )
-		} ),
-		400: TypeHelper.Error()
+		200: ValidationResponse,
+		400: ErrorResponse
 	}
 }
+
+GetSizeDetailsQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getSizeDetailsSchema = {
 	operationId: 'getSizeDetails',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString(),
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: GetSizeDetailsQuery,
 	response: {
-		200: Type.Record( Type.String(), Type.Any() ),
-		400: TypeHelper.Error()
+		200: GetSizeDetailsResponse,
+		400: ErrorResponse
 	}
 }
+
+IsAttributeAvailableQuery.properties.item.examples = [ JSON.stringify( productItem ) ];
 
 export const isAttributeAvailableSchema = {
 	operationId: 'isAttributeAvailable',
 	tags: ['Product'],
 	params: Type.Object( {
-		name: Type.String(),
-		value: TypeHelper.AttributeValueSingle()
+		name: Type.String( { examples: attributeNames } ),
+		value: AttributeValueSingle
 	} ),
-	querystring: Type.Object( {
-		item: TypeHelper.ProductItemString(),
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: IsAttributeAvailableQuery,
 	response: {
-		200: Type.Object( { available: Type.Boolean() } ),
-		400: TypeHelper.Error()
+		200: IsAttributeAvailableResponse,
+		400: ErrorResponse
 	}
 }
+
+isAttributeRequiredQuery.properties.family.examples = familyNames;
+isAttributeRequiredQuery.properties.name.examples = productNames;
 
 export const isAttributeRequiredSchema = {
 	operationId: 'isAttributeRequired',
 	tags: ['Product'],
 	params: Type.Object( {
-		name: Type.String()
+		name: Type.String( { examples: attributeNames } )
 	} ),
-	querystring: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
-	} ),
+	querystring: isAttributeRequiredQuery,
 	response: {
-		200: Type.Object( { required: Type.Boolean() } ),
-		400: TypeHelper.Error()
+		200: isAttributeRequiredResponse,
+		400: ErrorResponse
 	}
 }
+
+GetFixedQuantityQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getFixedQuantitySchema = {
 	operationId: 'getFixedQuantityEvaluated',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString(),
-		useFilters: TypeHelper.UseFilters()
-	} ),
+	querystring: GetFixedQuantityQuery,
 	response: {
-		200: Type.Object( { fixedQuantity: Type.Boolean() } ),
-		400: TypeHelper.Error()
+		200: GetFixedQuantityResponse,
+		400: ErrorResponse
 	}
 }
+
+GetFamiliesQuery.properties.name.examples = familyNames;
 
 export const getFamiliesSchema = {
 	operationId: 'getFamilies',
 	tags: ['Product'],
-	querystring: Type.Object( {
-		name: Type.Optional( TypeHelper.ProductFamily() )
-	} ),
+	querystring: GetFamiliesQuery,
 	response: {
-		200: Type.Object( {
-			families: Type.Record( Type.String(), Type.Object( {
-				name: Type.String(),
-				supported: Type.Array( Type.String() ),
-				required: Type.Array( Type.String() ),
-				products: Type.Record( Type.String(), Type.Object( {
-					name: Type.String(),
-					attributes: TypeHelper.Attributes(),
-					sku: Type.String(),
-					available: Type.Boolean()
-				} ) ),
-			} ) )
-		} ),
-		400: TypeHelper.Error()
+		200: GetFamiliesResponse,
+		400: ErrorResponse
 	}
 }
+
+GetAttributesQuery.properties.name.examples = attributeNames;
 
 export const getAttributesSchema = {
 	operationId: 'getAttributes',
 	tags: ['Product'],
-	querystring: Type.Object( {
-		name: Type.Optional( TypeHelper.AttributeName() )
-	} ),
+	querystring: GetAttributesQuery,
 	response: {
-		200: Type.Object( {
-			attributes: Type.Record( Type.String(), Type.Object( {
-				name: Type.String(),
-				values: TypeHelper.AttributeValueMulti(),
-				dynamic: Type.Boolean(),
-				multi: Type.Boolean(),
-				type: Type.String()
-			} ) )
-		} ),
-		400: TypeHelper.Error()
+		200: GetAttributesResponse,
+		400: ErrorResponse
 	}
 }
+
+GetLegacySKUQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getLegacySKUSchema = {
 	operationId: 'getLegacySKU',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: Type.Object( {
-		attributes: TypeHelper.AttributesString()
-	} ),
+	querystring: GetLegacySKUQuery,
 	response: {
-		200: Type.Object( {
-			legacySKU: Type.Number()
-		} ),
-		400: TypeHelper.Error()
+		200: GetLegacySKUResponse,
+		400: ErrorResponse
 	}
 }
 
@@ -224,12 +207,10 @@ export const getOutOfStockSchema = {
 	operationId: 'getOutOfStock',
 	tags: ['Product'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily()
+		family: FamilyName
 	} ),
 	response: {
-		200: Type.Object( {
-			outOfStock: Type.Array( Type.String() )
-		} ),
-		400: TypeHelper.Error()
+		200: GetOutOfStockResponse,
+		400: ErrorResponse
 	}
 }

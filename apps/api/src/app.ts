@@ -3,20 +3,20 @@ import buildServer from './build-server';
 export const options = {};
 
 export default async function app() {
-	const port = Number(process.env.API_PORT ?? '5012');
-	const host = process.env.API_HOST ?? '0.0.0.0';
+    const port = Number(process.env.API_PORT || '5012');
+    const host = process.env.API_HOST || '0.0.0.0';
 
-	process.on('unhandledRejection', (e) => {
-		console.error(e);
-	});
+    process.on('unhandledRejection', (e) => {
+        console.error(e);
+    });
 
-	const server = await buildServer();
-	await server.ready();
-	server.swagger();
-	await server.listen({
-		host,
-		port,
-	});
+    const server = await buildServer();
+    await server.ready();
+    server.swagger();
+    await server.listen({
+        host,
+        port,
+    });
 }
 
 app();

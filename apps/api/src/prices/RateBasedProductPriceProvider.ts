@@ -1,20 +1,21 @@
 import { Currencies, CurrencyConverter } from "$/currency/Currency";
 import { ProductItem } from "@stickerapp-org/nomisma";
 import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
-import { Price, calculateBreakdownSum } from "./Price";
+import { calculateBreakdownSum } from "./Price";
 import { ProductPriceProvider } from "./ProductPriceProvider";
 import { Rate, RateType } from "./Rate";
 import { RateProvider } from "./RateProvider";
+import { PriceT } from "@stickerapp-org/emporio-api-contract";
 
 export class RateBasedProductPriceProvider extends ProductPriceProvider {
 	protected rateProviders: Record<string, RateProvider> = {};
 
-	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<PriceT> {
 		let rates = await this.getRatesFor(productItem, units);
 		let breakdown = this.getBreakdownFor(rates, units);
 		let total = calculateBreakdownSum(breakdown);
 
-		let price: Price = {
+		let price: PriceT = {
 			total,
 			breakdown,
 			currency: Currencies.USD

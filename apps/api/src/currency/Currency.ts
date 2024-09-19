@@ -1,15 +1,7 @@
-import { Price } from "$/prices/Price";
+import { PriceT } from "@stickerapp-org/emporio-api-contract";
+import { Currencies } from "@stickerapp-org/nomisma";
 
-export enum Currencies{
-	USD = "USD",
-	SEK = "SEK",
-	DKK = "DKK",
-	GBP = "GBP",
-	NOK = "NOK",
-	EUR = "EUR",
-	JPY = "JPY",
-	PLN = "PLN",
-}
+export { Currencies };
 
 export function getCurrencies(): string[] {
 	return Object.values(Currencies);
@@ -72,7 +64,7 @@ export class CurrencyConverter {
 		return parseFloat((amount * toRate / fromRate).toFixed(10));
 	}
 
-	public convertPrice(price: Price, to: Currencies): Price {
+	public convertPrice(price: PriceT, to: Currencies): PriceT {
 		if (price.currency === to) {
 			return price;
 		}

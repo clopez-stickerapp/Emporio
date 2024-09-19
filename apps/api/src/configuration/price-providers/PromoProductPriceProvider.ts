@@ -1,11 +1,11 @@
 import { fetchGiftcardData } from "$/Atlas";
 import { convertToMinorUnits, Currencies } from "$/currency/Currency";
 import { ProductServiceException } from "$/product/exceptions/ProductServiceException";
-import { Price } from "$/prices/Price";
 import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
 import { FigureAttribute } from "../attributes/FigureAttribute";
 import { ProductItem } from "@stickerapp-org/nomisma";
 import { PromoProductNames } from "$data/ConditionValueResolver";
+import { PriceT } from "@stickerapp-org/emporio-api-contract";
 
 export class PromoProductPriceProvider extends ProductPriceProvider {
 	public static readonly NAME = "promo_price_provider";
@@ -98,7 +98,7 @@ export class PromoProductPriceProvider extends ProductPriceProvider {
 		super(PromoProductPriceProvider.NAME);
 	}
 
-	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price>{
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<PriceT>{
 		let price: number | null = null;
 
 		if (productItem.getProductName() in this.stickerPackPrices) {

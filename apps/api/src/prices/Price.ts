@@ -1,26 +1,13 @@
-import { Currencies, convertToMajorUnits, formatCurrency } from "$/currency/Currency";
+import { convertToMajorUnits, formatCurrency } from "$/currency/Currency";
 import { getLocale } from "$/localization/Locale";
 import { excludeVAT } from "$/tax/Vat";
-import { Static, Type } from "@sinclair/typebox";
-
-export const Price = Type.Object({
-	total: Type.Number(),
-	breakdown: Type.Optional(Type.Record(Type.String(), Type.Number())),
-	currency: Type.Enum(Currencies)
-});
-export type Price = Static<typeof Price>;
-
-export const FormattedPrice = Type.Composite([Price, Type.Object({
-	totalFormatted: Type.String(),
-	breakdownFormatted: Type.Optional(Type.Record(Type.String(), Type.String())),
-})]);
-export type FormattedPrice = Static<typeof FormattedPrice>;
+import { FormattedPriceT, PriceT } from "@stickerapp-org/emporio-api-contract";
 
 export function calculateBreakdownSum(breakdown: Record<string, number>){
 	return Object.values(breakdown).reduce((a, b) => a + b, 0);
 }
 
-export function excludeVATFromPrice(price: Price, vatPercentage: number): Price {
+export function excludeVATFromPrice(price: PriceT, vatPercentage: number): PriceT {
 	//remove vat percentage from total and breakdown
 	let total = excludeVAT(price.total, vatPercentage);
 	let breakdown: Record<string,number> = {};
@@ -36,7 +23,7 @@ export function excludeVATFromPrice(price: Price, vatPercentage: number): Price 
 	}
 }
 
-export function toMajorUnits(price: Price): Price {
+export function toMajorUnits(price: PriceT): PriceT {
 	//convert to major units
 	let total = convertToMajorUnits(price.total, price.currency);
 	let breakdown: Record<string, number> = {};
@@ -52,7 +39,7 @@ export function toMajorUnits(price: Price): Price {
 	}
 }
 
-export function formatPrice(price: Price, lang: string, maxDecimals: number): FormattedPrice{
+export function formatPrice(price: PriceT, lang: string, maxDecimals: number): FormattedPriceT {
 	let locale = getLocale(lang);
 
 	let breakdown: Record<string, number> = {};
@@ -74,7 +61,7 @@ export function formatPrice(price: Price, lang: string, maxDecimals: number): Fo
 	return result;
 }
 
-export function bundlePrice(price: Price, options: { baseName: string, separate: { [key:string]: string } }): Price {
+export function bundlePrice(price: PriceT, options: { baseName: string, separate: { [key:string]: string } }): PriceT {
 	// For every item in the breakdown that is not in separate, sum it up to the base
 	// The base price and everything separate are the only things that should be in the breakdown
 

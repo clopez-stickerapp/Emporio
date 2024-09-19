@@ -15,6 +15,7 @@
     "devDependencies": {
         "@sinclair/typebox": "0.32.13",
         "@stickerapp-org/eslint-config": "*",
+        "@stickerapp-org/emporio-tsconfig": "*",
         "@stickerapp-org/prettier-config": "*",
         "@typescript-eslint/eslint-plugin": "6.0.0",
         "@typescript-eslint/parser": "6.0.0",

@@ -1,13 +1,14 @@
 {
-  "name": "@stickerapp-org/tailwind-config",
-  "main": "tailwind.config.js",
-  "module": "tailwind.config.js",
-  "type": "module",
-  "scripts": {
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "@stickerapp-org/prettier-config": "*"
-  }
+    "name": "@stickerapp-org/tailwind-config",
+    "main": "tailwind.config.js",
+    "module": "tailwind.config.js",
+    "type": "module",
+    "scripts": {
+        "lint": "prettier --check .",
+        "lint:fix": "npm run format",
+        "format": "prettier --write ."
+    },
+    "devDependencies": {
+        "@stickerapp-org/prettier-config": "*"
+    }
 }

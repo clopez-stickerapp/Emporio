@@ -1,54 +1,55 @@
 {
-  "name": "@stickerapp-org/emporio-api-contract",
-  "version": "1.1.0",
-  "scripts": {
-    "clean": "rimraf dist",
-    "build:cjs": "npm run clean && tsc -p tsconfig.json",
-    "build:esm": "npm run clean && tsc -p tsconfig.esm.json",
-    "build": "concurrently \"npm run build:cjs\" \"npm run build:esm\"",
-    "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
-    "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
-    "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
-    "lint": "prettier --check . && eslint ."
-  },
-  "files": [
-    "package.json",
-    "dist",
-    "src"
-  ],
-  "license": "UNLICENSED",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/stickerapp-org/commerce"
-  },
-  "types": "./dist/esm/index.d.ts",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.mjs",
-  "exports": {
-    ".": {
-      "types": "./dist/esm/index.d.ts",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.js"
+    "name": "@stickerapp-org/emporio-api-contract",
+    "version": "1.1.0",
+    "scripts": {
+        "clean": "rimraf dist",
+        "build:cjs": "npm run clean && tsc -p tsconfig.json",
+        "build:esm": "npm run clean && tsc -p tsconfig.esm.json",
+        "build": "concurrently \"npm run build:cjs\" \"npm run build:esm\"",
+        "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+        "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
+        "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
-    "./*": {
-      "types": "./dist/esm/*/index.d.ts",
-      "import": "./dist/esm/*/index.mjs",
-      "require": "./dist/cjs/*/index.js"
+    "files": [
+        "package.json",
+        "dist",
+        "src"
+    ],
+    "license": "UNLICENSED",
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/stickerapp-org/commerce"
+    },
+    "types": "./dist/esm/index.d.ts",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.mjs",
+    "exports": {
+        ".": {
+            "types": "./dist/esm/index.d.ts",
+            "import": "./dist/esm/index.mjs",
+            "require": "./dist/cjs/index.js"
+        },
+        "./*": {
+            "types": "./dist/esm/*/index.d.ts",
+            "import": "./dist/esm/*/index.mjs",
+            "require": "./dist/cjs/*/index.js"
+        }
+    },
+    "dependencies": {
+        "@sinclair/typebox": "^0.32.13"
+    },
+    "devDependencies": {
+        "@stickerapp-org/eslint-config": "*",
+        "@stickerapp-org/prettier-config": "*",
+        "@stickerapp-org/ts-transform-module-type": "*",
+        "concurrently": "^8.2.2",
+        "rimraf": "^5.0.5",
+        "typescript": "5.5.4",
+        "@stickerapp-org/emporio-tsconfig": "*"
     }
-  },
-  "dependencies": {
-    "@sinclair/typebox": "^0.32.13",
-    "@stickerapp-org/nomisma": "^1.0.1"
-  },
-  "devDependencies": {
-    "@stickerapp-org/eslint-config": "*",
-    "@stickerapp-org/prettier-config": "*",
-    "@stickerapp-org/ts-transform-module-type": "*",
-    "concurrently": "^8.2.2",
-    "rimraf": "^5.0.5",
-    "typescript": "^5.5.4"
-  }
 }

@@ -16,8 +16,6 @@ export class RequestBuilder
 	 */
 	public constructor( baseURL: string = '' )
 	{
-		console.log('BELIS', this.baseURL);
-
 		this.baseURL = baseURL;
 	}
 

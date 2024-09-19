@@ -1,5 +1,5 @@
 name: MinimumValuesPriceCurves
-defaultValue: 0.09
+defaultValue: 0.085
 rules:
   - keys: 0.42
     conditions:

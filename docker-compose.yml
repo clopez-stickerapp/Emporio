@@ -1,39 +1,39 @@
 services:
-  emporio-api:
-    build:
-      context: .
-      dockerfile: docker/api.Dockerfile
-    image: emporio-api
-    container_name: emporio-api
-    restart: unless-stopped
-    user: ${UID}:${GID}
-    ports:
-      - '5012:5012'
-    environment:
-      LOG_LEVEL: ${LOG_LEVEL}
-      API_PORT: ${API_PORT}
-      ATLAS_API_URL: ${ATLAS_API_URL}
-    networks:
-      - atlas
-    volumes:
-      - /var/log/emporio:/var/log/emporio
-  emporio-ui:
-    build:
-      context: .
-      dockerfile: docker/ui.Dockerfile
-      # args:
-      #   - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
-    image: emporio-ui
-    container_name: emporio-ui
-    restart: unless-stopped
-    ports:
-      - '5173:3000'
-    environment:
-      API_URL: ${API_URL}
-      API_KEY: ${API_KEY}
-    networks:
-      - atlas
+    emporio-api:
+        build:
+            context: .
+            dockerfile: docker/api.Dockerfile
+        image: emporio-api
+        container_name: emporio-api
+        restart: unless-stopped
+        user: ${UID}:${GID}
+        ports:
+            - "5012:5012"
+        environment:
+            LOG_LEVEL: ${LOG_LEVEL}
+            API_PORT: ${API_PORT}
+            ATLAS_API_URL: ${ATLAS_API_URL}
+        networks:
+            - atlas
+        volumes:
+            - /var/log/emporio:/var/log/emporio
+    # emporio-ui:
+    #   build:
+    #     context: .
+    #     dockerfile: docker/ui.Dockerfile
+    #     # args:
+    #     #   - NODE_AUTH_TOKEN=${NODE_AUTH_TOKEN}
+    #   image: emporio-ui
+    #   container_name: emporio-ui
+    #   restart: unless-stopped
+    #   ports:
+    #     - '5173:3000'
+    #   environment:
+    #     API_URL: ${API_URL}
+    #     API_KEY: ${API_KEY}
+    #   networks:
+    #     - atlas
 networks:
-  atlas:
-    name: stickerapp_atlas
-    external: true
+    atlas:
+        name: stickerapp_atlas
+        external: true

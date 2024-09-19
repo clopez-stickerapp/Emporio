@@ -1,16 +1,6 @@
-<script module lang="ts">
-    export type Product = {
-        name: string;
-        sku: string;
-        active: ProductStatus;
-        message: string;
-        minPrice: number;
-    };
-
-    export type ProductStatus = 'Active' | 'Inactive' | 'Draft';
-</script>
-
 <script lang="ts">
+    import type { Product } from "./types";
+
     let { products }: { products: Product[] } = $props();
 </script>
 

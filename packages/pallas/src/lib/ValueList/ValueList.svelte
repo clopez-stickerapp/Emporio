@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { IconTilesProps } from '../IconTile/IconTiles.svelte';
+    import type { IconTilesProps } from "$lib/IconTile/types";
 
     let { title = '', iconTileProps }: IconTilesProps = $props();
 </script>

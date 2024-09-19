@@ -1,12 +1,6 @@
-<script module lang="ts">
-    export type IconTilesProps = {
-        title?: string;
-        iconTileProps: IconTileProps[];
-    };
-</script>
-
 <script lang="ts">
-    import IconTile, { type IconTileProps } from './IconTile.svelte';
+    import IconTile from './IconTile.svelte';
+    import type { IconTilesProps } from './types';
 
     let { title = '', iconTileProps }: IconTilesProps = $props();
 

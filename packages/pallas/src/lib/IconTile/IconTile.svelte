@@ -1,13 +1,6 @@
-<script module lang="ts">
-    export type IconTileProps = {
-        text?: string;
-        selected?: boolean;
-        enabled?: boolean;
-        imgSrc?: string;
-    };
-</script>
-
 <script lang="ts">
+    import type { IconTileProps } from "./types";
+
     let {
         text = '',
         selected = false,

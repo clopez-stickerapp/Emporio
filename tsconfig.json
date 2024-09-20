@@ -1,0 +1,3 @@
+{
+    "extends": "@stickerapp-org/emporio-tsconfig/tsconfig.json"
+}

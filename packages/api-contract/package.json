@@ -41,16 +41,15 @@
         }
     },
     "dependencies": {
-        "@sinclair/typebox": "^0.32.13",
-        "@stickerapp-org/nomisma": "^1.0.1"
+        "@sinclair/typebox": "^0.32.13"
     },
     "devDependencies": {
-        "@stickerapp-org/emporio-tsconfig": "*",
         "@stickerapp-org/eslint-config": "*",
         "@stickerapp-org/prettier-config": "*",
         "@stickerapp-org/ts-transform-module-type": "*",
         "concurrently": "^8.2.2",
         "rimraf": "^5.0.5",
-        "typescript": "5.5.4"
+        "typescript": "5.5.4",
+        "@stickerapp-org/emporio-tsconfig": "*"
     }
 }

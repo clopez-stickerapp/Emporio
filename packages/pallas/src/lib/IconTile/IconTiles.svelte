@@ -27,3 +27,11 @@
         {/each}
     </div>
 </div>
+
+<style>
+    select {
+        border: 1px solid #ccc;
+        padding: 4px;
+        border-radius: 4px;
+    }
+</style>

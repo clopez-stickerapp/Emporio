@@ -48,7 +48,8 @@
 </Page>
 
 <style>
-    input[type="text"] {
+    input[type="text"],
+    input[type="number"] {
         border: 1px solid #ccc;
         padding: 4px;
         border-radius: 4px;

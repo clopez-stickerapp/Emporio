@@ -2,7 +2,7 @@ import { Static, Type } from "@sinclair/typebox";
 import { Attributes, AttributeValueMulti, FamilyName, ProductItem, ProductName, UseFilters } from "./shared";
 
 export const GetFamiliesQuery = Type.Object( {
-	name: Type.Optional( Type.String() )
+	name: Type.Optional( FamilyName )
 } );
 
 export type GetFamiliesQueryT = Static<typeof GetFamiliesQuery>;

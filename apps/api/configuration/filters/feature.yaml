@@ -44,6 +44,11 @@ rules:
             - attribute: item.attributes.height_mm
               operator: <=
               value: "{MaxSizes.LASER}"
+        - relationMode: AND
+          conditions:
+            - attribute: item.attributes.material
+              operator: "!=="
+              value: pixie_dust
 
   - keys:
       - backpaper_print

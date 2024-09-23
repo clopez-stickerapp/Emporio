@@ -1,11 +1,11 @@
 import { Currencies } from "$/currency/Currency";
+import { PriceT } from "@stickerapp-org/emporio-api-contract";
 import { ProductItem } from "@stickerapp-org/nomisma";
-import { Price } from "./Price";
 
 export abstract class ProductPriceProvider {
 	public constructor(protected name: string) {}
 
-	public abstract calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price>;
+	public abstract calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<PriceT>;
 
 	public getName(): string {
 		return this.name;

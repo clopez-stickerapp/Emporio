@@ -1,7 +1,7 @@
 import { ConditionOperators } from "$/conditions/ConditionOperators";
 import { ConditionRelations } from "$/conditions/ConditionRelations";
 import { Currencies } from "$/currency/Currency";
-import { Price, bundlePrice } from "$/prices/Price";
+import { bundlePrice } from "$/prices/Price";
 import { Rate } from "$/prices/Rate";
 import { RateBasedProductPriceProvider } from "$/prices/RateBasedProductPriceProvider";
 import { RateList } from "$/prices/RateList";
@@ -11,6 +11,7 @@ import { ProductNames } from "$data/ConditionValueResolver";
 import { LaminateValues } from "../attributes/LaminateAttribute";
 import { MaterialValues } from "../attributes/MaterialAttribute";
 import { AuthorMarginRateProvider } from "./AuthorMarginRateProvider";
+import { PriceT } from "@stickerapp-org/emporio-api-contract";
 
 export class StickerPriceProvider extends RateBasedProductPriceProvider {
 	static readonly NAME = "sticker_rate_lists";
@@ -279,7 +280,7 @@ export class StickerPriceProvider extends RateBasedProductPriceProvider {
 		this.addRateProvider(rl_arlon_transfer);
 	}
 
-	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<Price> {
+	public async calculatePrice(productItem: ProductItem, units: number, currency: Currencies): Promise<PriceT> {
 		let price = await super.calculatePrice(productItem, units, currency);
 
 		return bundlePrice(price, {

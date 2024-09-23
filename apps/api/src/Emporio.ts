@@ -1,6 +1,5 @@
-import { Type, Static } from '@sinclair/typebox';
 import { getCurrency } from './localization/Locale';
-import { Price, FormattedPrice, excludeVATFromPrice, toMajorUnits } from './prices/Price';
+import { excludeVATFromPrice, toMajorUnits } from './prices/Price';
 import { ProductItemConditionableParam } from './product/condition/ProductItemConditionableParam';
 import { FixedQuantityHelper } from './product/helpers/FixedQuantityHelper';
 import { ProductItemBuilder } from './product/helpers/ProductItemBuilder';
@@ -21,27 +20,7 @@ import {
 } from '@stickerapp-org/nomisma';
 import { ProductServiceException } from './product/exceptions/ProductServiceException';
 import { throwIfError } from '$app/utils';
-4;
-
-export const PriceDTO = Type.Object({
-    price: Price,
-    unitPrice: Type.Number(),
-    quantity: Type.Number(),
-});
-export type PriceDTO = Static<typeof PriceDTO>;
-
-export const PriceList = Type.Array(PriceDTO);
-export type PriceList = Static<typeof PriceList>;
-
-export const FormattedPriceStep = Type.Object({
-    price: FormattedPrice,
-    unitPrice: Type.Number(),
-    quantity: Type.Number(),
-});
-export type FormattedPriceStep = Static<typeof FormattedPriceStep>;
-
-export const FormattedPriceList = Type.Array(FormattedPriceStep);
-export type FormattedPriceList = Static<typeof FormattedPriceList>;
+import { PriceDTO, PriceListT, PriceT } from '@stickerapp-org/emporio-api-contract';
 
 export class Emporio {
     protected productService: ProductService;
@@ -70,7 +49,7 @@ export class Emporio {
         units: number,
         lang: string,
         incVAT: boolean,
-    ): Promise<Price> {
+    ): Promise<PriceT> {
         const productFamily = this.productService.retrieveProductFamily(
             productItem.getProductFamilyName(),
         );
@@ -131,7 +110,7 @@ export class Emporio {
         productItem: ProductItem,
         lang: string,
         inclVat: boolean,
-    ): Promise<PriceList> {
+    ): Promise<PriceListT> {
         const productFamily = this.productService.retrieveProductFamily(
             productItem.getProductFamilyName(),
         );

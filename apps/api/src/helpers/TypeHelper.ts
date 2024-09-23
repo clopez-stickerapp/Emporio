@@ -1,7 +1,10 @@
 import { services } from "$/ServiceLoader";
-import { Type } from "@sinclair/typebox";
+import { Clone } from "@sinclair/typebox/value";
+import { FamilyName, ProductName } from "@stickerapp-org/emporio-api-contract";
 
-const attributesExample = {
+const service = services[ "stickerapp" ];
+
+export const attributes = {
 	"sheet_type": "single",
 	"sheet_name": "path",
 	"delivery": "single",
@@ -13,64 +16,21 @@ const attributesExample = {
 	"quantity": 111
 };
 
-const getAttributes = ( withProduction: boolean = false ) => {
-	return withProduction ? {
-		...attributesExample,
-		'production_line': 'laser',
-		'cut_direction': 'auto'
-	} : attributesExample;
+export const productItem = {
+	productFamilyName: 'custom_sticker',
+	productName: 'die_cut',
+	attributes: attributes,
+	sku: 'DCRS-108'
 }
 
-const service = services["stickerapp"]; //Todo: should we do it like this?
+export const familyNames = service.getProductFamilies().map( family => family.getName() );
+export const productNames = service.getProductFamilies().flatMap( family => Object.keys( family.getProducts() ) );
+export const attributeNames = service.getAttributes().map( attribute => attribute.getName() );
 
-export const ProductFamily = () => Type.String( { 
-	minLength: 1,
-	examples: service.getProductFamilies().map( family => family.getName() ),
-} );
+const FamilyNameCloned = Clone( FamilyName );
+FamilyNameCloned.examples = familyNames;
+export { FamilyNameCloned as FamilyName };
 
-export const ProductName = () => Type.String( {
-	minLength: 1,
-	examples: service.getProductFamilies().map( family => Object.keys( family.getProducts() ) ).flat()
-} );
-
-// Type.String should be last in this list to ensure proper conversion
-export const AttributeValueSingle = () => Type.Union( [ Type.Number(), Type.Boolean(), Type.String() ] );
-
-export const AttributeValueMulti = () => Type.Array( AttributeValueSingle() );
-
-export const AttributeValue = () => Type.Union( [ 
-	AttributeValueSingle(), 
-	AttributeValueMulti() 
-] );
-
-export const Attributes = ( withProductionAttributes: boolean = false ) => Type.Record( Type.String(), AttributeValue(), {
-	examples: [ getAttributes( withProductionAttributes ) ]
-} );
-
-export const AttributesString = ( withProductionAttributes: boolean = false ) => Type.String( {
-	examples: [ JSON.stringify( getAttributes( withProductionAttributes ) ) ]
-} );
-
-export const AttributeName = () => Type.String( {
-	examples: service.getAttributes().map( attribute => attribute.getName() ),
-} )
-
-export const ProductItem = ( withProductionAttributes: boolean = false ) => Type.Object( {
-	productFamilyName: ProductFamily(),
-	productName: ProductName(),
-	attributes: Attributes( withProductionAttributes ),
-	sku: Type.Optional( Type.String() )
-} );
-
-export const ProductItemString = ( withProductionAttributes: boolean = false ) => Type.String( {
-	examples: [ JSON.stringify( {
-		productFamilyName: 'custom_sticker',
-		productName: 'die_cut',
-		attributes: getAttributes( withProductionAttributes ),
-		sku: 'DCRS-108'
-	} ) ]
-} );
-
-export const UseFilters = ( defaultValue: boolean = true ) => Type.Boolean( { default: defaultValue } );
-
-export const Error = () => Type.Object( { message: Type.String() } )
+const ProductNameCloned = Clone( ProductName );
+ProductNameCloned.examples = productNames;
+export { ProductNameCloned as ProductName };

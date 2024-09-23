@@ -1,31 +1,28 @@
 import { Type } from "@sinclair/typebox";
-import * as TypeHelper from "$/helpers/TypeHelper"
-import { FormattedPriceList } from "$/Emporio";
-import { FormattedPrice } from "$/prices/Price";
+import { attributes, FamilyName, productItem, ProductName } from "$/helpers/TypeHelper";
+import { 
+	ErrorResponse, 
+	GetPriceListResponse, 
+	GetPricesResponse, 
+	PostBulkPricesRequest, 
+	PostBulkPricesResponse, 
+	PriceQuery 
+} from "@stickerapp-org/emporio-api-contract";
 
-const querySchema = Type.Object({
-	attributes: TypeHelper.AttributesString(),
-	lang: Type.String({ examples: ['us'] }),
-	incVat: Type.Boolean({ default: true }),
-	useNewCurves: Type.Optional(Type.Boolean({ default: false })),
-});
+PriceQuery.properties.lang.examples = [ 'us' ];
+PriceQuery.properties.attributes.examples = [ JSON.stringify( attributes ) ];
 
 export const getPricesSchema = {
 	operationId: 'getPrices',
 	tags: ['Price'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: querySchema,
+	querystring: PriceQuery,
 	response: {
-		200: Type.Object({ 
-			price: FormattedPrice,
-			unitPrice: Type.Number(),
-			unitPriceFormatted: Type.String(),
-			quantity: Type.Number(),
-		}),
-		400: TypeHelper.Error()
+		200: GetPricesResponse,
+		400: ErrorResponse
 	},
 }
 
@@ -33,28 +30,25 @@ export const getPriceListSchema = {
 	operationId: 'getPriceList',
 	tags: ['Price'],
 	params: Type.Object( {
-		family: TypeHelper.ProductFamily(),
-		name: TypeHelper.ProductName()
+		family: FamilyName,
+		name: ProductName
 	} ),
-	querystring: querySchema,
+	querystring: PriceQuery,
 	response: {
-		200: { prices: FormattedPriceList },
-		400: TypeHelper.Error()
+		200: GetPriceListResponse,
+		400: ErrorResponse
 	},
 }
+
+PostBulkPricesRequest.properties.lang.examples = [ 'us' ];
+PostBulkPricesRequest.properties.items.items.examples = [ JSON.stringify( productItem ) ];
 
 export const postBulkPricesSchema = {
 	operationId: 'postBulkPrices',
 	tags: ['Price'],
-	body: Type.Object({
-		items: Type.Array( TypeHelper.ProductItem()	),
-		lang: Type.String({ examples: ['us'] }),
-		incVat: Type.Boolean({ default: true }),
-	}),
+	body: PostBulkPricesRequest,
 	response: {
-		200: Type.Object({ 
-			discount: Type.Number(),
-		}),
-		400: TypeHelper.Error()
+		200: PostBulkPricesResponse,
+		400: ErrorResponse
 	},
 }

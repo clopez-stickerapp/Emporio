@@ -47,7 +47,7 @@ export const getAttributeMapSchema = {
 	tags: ['Product'],
 	params: Type.Object( {
 		family: FamilyName,
-		name: ProductName
+		name: Type.Optional( ProductName )
 	} ),
 	response: {
 		200: GetAttributesMapResponse,

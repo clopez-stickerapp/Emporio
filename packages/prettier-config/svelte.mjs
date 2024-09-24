@@ -5,7 +5,8 @@ import base from "./node.mjs";
  */
 export default {
   ...base,
-  plugins: ["prettier-plugin-svelte"],
+  plugins: ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
   overrides: [{ files: "*.svelte", options: { parser: "svelte" } }],
-  htmlWhitespaceSensitivity: "ignore"
+  htmlWhitespaceSensitivity: "ignore",
+  tailwindFunctions: ["clsx"],
 };

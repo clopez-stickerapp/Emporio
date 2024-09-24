@@ -1,14 +1,15 @@
 {
-    "name": "@stickerapp-org/prettier-config",
-    "main": "node.mjs",
-    "module": "node.mjs",
-    "scripts": {
-        "lint": "prettier --check .",
-        "lint:fix": "npm run format",
-        "format": "prettier --write ."
-    },
-    "peerDependencies": {
-        "prettier": "3.1.1",
-        "prettier-plugin-svelte": "3.2.6"
-    }
+  "name": "@stickerapp-org/prettier-config",
+  "main": "node.mjs",
+  "module": "node.mjs",
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "npm run format",
+    "format": "prettier --write ."
+  },
+  "peerDependencies": {
+    "prettier": "3.1.1",
+    "prettier-plugin-svelte": "3.2.6",
+    "prettier-plugin-tailwindcss": "0.6.6"
+  }
 }

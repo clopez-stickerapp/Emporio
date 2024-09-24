@@ -19,7 +19,7 @@ describe( 'Filter', () => {
 			rules: []
 		} );
 
-		filter.addFilter( [ '1' ], {
+		filter.addFilter( 'filter_name', [ '1' ], {
 			conditions: [ {
 				attribute: 'item.attribtues.' + MaterialAttribute.getName(),
 				operator: ConditionOperators.EQUAL,
@@ -32,7 +32,7 @@ describe( 'Filter', () => {
 
 	describe( 'Add and get conditions', () => {
 		test( "Add a condition to a filter", () => {
-			const condition = filter.addFilter( [ '1' ], {
+			const condition = filter.addFilter( 'filter_name', [ '1' ], {
 				conditions: [ {
 					attribute: 'item.attribtues.' + MaterialAttribute.getName(),
 					operator: ConditionOperators.EQUAL,
@@ -44,7 +44,7 @@ describe( 'Filter', () => {
 		} );
 
 		test( "Add a condition to a filter already containing one with the same keys", () => {
-			expect( filter.addFilter( [ true ], {} ) ).toBeInstanceOf( ProductAttrFilteredValues );
+			expect( filter.addFilter( 'filter_name', [ true ], {} ) ).toBeInstanceOf( ProductAttrFilteredValues );
 		} );
 	} );
 
@@ -80,7 +80,7 @@ describe( 'Filter', () => {
 		test( "Get all filters", () => {
 			expect( filter.getFilters() ).toBeTruthy();
 			expect( filter.getFilters().length ).toBe( 1 );
-			filter.addFilter( [ true ], {} )
+			filter.addFilter( 'filter_name', [ true ], {} )
 			expect( filter.getFilters().length ).toBe( 2 );
 		} );
 	} );

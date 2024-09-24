@@ -18,6 +18,7 @@ export type AttributeMap = {
 export type AttributesMap = Record<string, AttributeMap>
 
 export type Filter = {
+	name: string;
 	values: AttributeValueMulti;
 	conditions: string;
 	conditionsComplexityScore: number;

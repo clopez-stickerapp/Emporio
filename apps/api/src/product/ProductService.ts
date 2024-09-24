@@ -197,6 +197,7 @@ export class ProductService {
 			}
 
 			const filters = attrFilter?.getFilters().map(filteredValues => ({
+				"name": filteredValues.getName(),
 				"values": filteredValues.getValues(),
 				"conditions": `${filteredValues.conditionBuilder}`,
 				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()

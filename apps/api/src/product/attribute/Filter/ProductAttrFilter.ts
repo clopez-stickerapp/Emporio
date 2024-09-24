@@ -20,13 +20,13 @@ export class ProductAttrFilter {
 		this.attributeName = config.name;
 		this.mode = config.mode;
 
-		for ( const rule of config.rules ) {
-			this.addFilter( rule.keys, rule.conditions );
-		}
+		config.rules.forEach( ( rule, i ) => {
+			this.addFilter( rule.name ?? `${ config.name }_filter_${ i }`, rule.keys, rule.conditions );
+		} );
 	}
 
-	public addFilter( attrValues: AttributeValueMulti, config: ConditionBuilderConfig ): ProductAttrFilteredValues {
-		const filter = new ProductAttrFilteredValues( attrValues, config );
+	public addFilter( name: string, attrValues: AttributeValueMulti, config: ConditionBuilderConfig ): ProductAttrFilteredValues {
+		const filter = new ProductAttrFilteredValues( name, attrValues, config );
 		this.filters.push( filter );
 		return filter;
 	}

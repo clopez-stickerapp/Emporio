@@ -11,54 +11,55 @@ rules:
     conditions:
       conditions: []
     
-  - keys:
-      - backpaper_print
-    conditions:
-      relationMode: AND
-      conditions:
-        - relationMode: AND
-          conditions:
-            - attribute: item.attributes.material
-              operator: IN
-              value:
-                - white
-                - holographic
-                - mirror
-                - clear
-                - pixie_dust
-            - attribute: item.attributes.laminate
-              operator: IN
-              value:
-                - glossy_uv
-                - soft_touch
-                - satin_matte
-            - attribute: item.productName
-              operator: NOT_IN
-              value:
-                - library_design
-        - relationMode: AND
-          conditions:
-            - attribute: item.attributes.width_mm
-              operator: <=
-              value: "{MaxSizes.LASER}"
-            - attribute: item.attributes.height_mm
-              operator: <=
-              value: "{MaxSizes.LASER}"
-        - relationMode: AND
-          conditions:
-            - attribute: item.attributes.material
-              operator: "!=="
-              value: pixie_dust
+  # BPP is temporarily unavailable
+  # - keys:
+  #     - backpaper_print
+  #   conditions:
+  #     relationMode: AND
+  #     conditions:
+  #       - relationMode: AND
+  #         conditions:
+  #           - attribute: item.attributes.material
+  #             operator: IN
+  #             value:
+  #               - white
+  #               - holographic
+  #               - mirror
+  #               - clear
+  #               - pixie_dust
+  #           - attribute: item.attributes.laminate
+  #             operator: IN
+  #             value:
+  #               - glossy_uv
+  #               - soft_touch
+  #               - satin_matte
+  #           - attribute: item.productName
+  #             operator: NOT_IN
+  #             value:
+  #               - library_design
+  #       - relationMode: AND
+  #         conditions:
+  #           - attribute: item.attributes.width_mm
+  #             operator: <=
+  #             value: "{MaxSizes.LASER}"
+  #           - attribute: item.attributes.height_mm
+  #             operator: <=
+  #             value: "{MaxSizes.LASER}"
+  #       - relationMode: AND
+  #         conditions:
+  #           - attribute: item.attributes.material
+  #             operator: "!=="
+  #             value: pixie_dust
 
-  - keys:
-      - backpaper_print
-    conditions:
-      relationMode: AND
-      conditions:
-        - attribute: item.attributes.material
-          operator: IS_EMPTY
-        - attribute: item.attributes.laminate
-          operator: IS_EMPTY
+  # - keys:
+  #     - backpaper_print
+  #   conditions:
+  #     relationMode: AND
+  #     conditions:
+  #       - attribute: item.attributes.material
+  #         operator: IS_EMPTY
+  #       - attribute: item.attributes.laminate
+  #         operator: IS_EMPTY
 
   - keys:
       - transfer_tape

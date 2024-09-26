@@ -1,3 +1,3 @@
-import { HTMLInputAttributes } from 'svelte/elements';
+import type { HTMLInputAttributes } from 'svelte/elements';
 
 export type InputProps = HTMLInputAttributes;

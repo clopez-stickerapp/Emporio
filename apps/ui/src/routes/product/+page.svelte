@@ -12,6 +12,19 @@
   <Page.Title>Product</Page.Title>
   <Form.Root class="col-span-8 col-start-3">
     <Form.Item>
+      <Form.Select
+        label="Delivery"
+        id="delivery"
+        name="delivery"
+        description="This is a description"
+        hint="Required"
+        placeholder="Choose delivery"
+      >
+        <Form.SelectOption label="Die cut" value="die-cut" />
+        <Form.SelectOption label="Sticker sheet" value="sheet" />
+      </Form.Select>
+    </Form.Item>
+    <Form.Item>
       <Form.Input
         id="product-name"
         name="product-name"
@@ -36,11 +49,10 @@
     <IconTiles title="Laminates" iconTileProps={laminateProps} />
     <IconTiles title="Sizes" iconTileProps={sizeProps} />
     <Form.Item>
-      <Form.Input
+      <Form.Switch
         id="custom-size"
         name="product-sku"
         label="Custom size box"
-        type="checkbox"
         description="This is a description"
       />
     </Form.Item>

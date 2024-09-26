@@ -4,6 +4,7 @@ import baseConfig from '@stickerapp-org/tailwind-config';
 const config = {
   ...baseConfig,
   content: ['./src/**/*.{html,js,svelte,ts}'],
+  plugins: [require('@tailwindcss/forms')],
 };
 
 export default config;

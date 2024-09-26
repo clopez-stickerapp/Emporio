@@ -1,5 +1,6 @@
 <script lang="ts">
   import * as Page from 'components/page';
+  import * as Form from 'components/form';
   import { IconTiles } from '@stickerapp-org/pallas/IconTile';
 
   const { data } = $props();
@@ -9,25 +10,41 @@
 
 <Page.Root>
   <Page.Title>Product</Page.Title>
-  <div class="col-span-8 col-start-3">
-    <div>
-      <label for="product-name">Product Name</label>
-      <input id="product-name" type="text" />
-    </div>
-    <div>
-      <label for="product-sku">Product SKU</label>
-      <input id="product-sku" type="text" />
-    </div>
+  <Form.Root class="col-span-8 col-start-3">
+    <Form.Item>
+      <Form.Input
+        id="product-name"
+        name="product-name"
+        label="Product Name"
+        type="text"
+        description="This is a description"
+        hint="Required"
+      />
+    </Form.Item>
+    <Form.Item>
+      <Form.Input
+        id="product-sku"
+        name="product-sku"
+        label="Product SKU"
+        type="text"
+        hint="Optional"
+      />
+    </Form.Item>
 
     <IconTiles title="Shapes" iconTileProps={shapeProps} />
     <IconTiles title="Materials" iconTileProps={materialProps} />
     <IconTiles title="Laminates" iconTileProps={laminateProps} />
     <IconTiles title="Sizes" iconTileProps={sizeProps} />
+    <Form.Item>
+      <Form.Input
+        id="custom-size"
+        name="product-sku"
+        label="Custom size box"
+        type="checkbox"
+        description="This is a description"
+      />
+    </Form.Item>
 
-    <div>
-      <label for="custom-size">Custom size box</label>
-      <input id="custom-size" type="checkbox" />
-    </div>
     <div>
       <label for="min-width">Min width</label>
       <input id="min-width" type="number" />
@@ -47,11 +64,10 @@
       <label for="custom-quantity">Custom quantity box</label>
       <input id="custom-quantity" type="checkbox" />
     </div>
-  </div>
+  </Form.Root>
 </Page.Root>
 
 <style>
-  input[type='text'],
   input[type='number'] {
     border: 1px solid #ccc;
     padding: 4px;

@@ -35,3 +35,6 @@ export type FormSwitchProps = SwitchProps & {
   label: string;
   description?: string;
 };
+
+export type FormGroupProps = HTMLAttributes<HTMLFieldSetElement>;
+export type FormGroupTitleProps = HTMLAttributes<HTMLLegendElement>;

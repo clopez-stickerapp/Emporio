@@ -4,12 +4,67 @@
   import * as Card from 'components/card';
   import { Button } from 'components/button';
   import * as TilePicker from 'components/tile-picker';
+  import { getAttributeMap } from '$lib/api';
+  import {
+    ProductAttrComputer,
+    ProductItem,
+    type AttributesMap,
+    type AttributeValueMulti,
+  } from '@stickerapp-org/nomisma';
+  import type { ProductItemT } from '@stickerapp-org/emporio-api-contract';
+  import { onMount } from 'svelte';
 
-  // import { IconTiles } from '@stickerapp-org/pallas/IconTile';
+  type AttributeProps = {
+    label: string;
+    value: string;
+    imgSrc: string;
+    enabled: boolean;
+    selected: boolean;
+  };
 
-  const { data } = $props();
+  const computer = new ProductAttrComputer();
 
-  const { shapeProps, materialProps, laminateProps, sizeProps, quantityProps } = data;
+  const item: ProductItemT = {
+    productFamilyName: '',
+    productName: '',
+    attributes: {},
+  };
+
+  let laminates: AttributeProps[] = $state([]);
+  let materials: AttributeProps[] = $state([]);
+  let shapes: AttributeProps[] = $state([]);
+
+  onMount(async () => await changeFamily('custom_sticker'));
+
+  async function changeFamily(family: string): Promise<void> {
+    item.productFamilyName = family;
+    const attrMap: AttributesMap = await getAttributeMap(family);
+    evaluate(attrMap);
+  }
+
+  function evaluate(attrMap?: AttributesMap): void {
+    const productItem = new ProductItem(item.productFamilyName, item.productName, item.attributes);
+    computer.evaluate(productItem, attrMap);
+    materials = toAttributeProps('material', computer.getAllValues('material'));
+    shapes = toAttributeProps('sheet_name', computer.getAllValues('sheet_name'));
+    laminates = toAttributeProps('laminate', computer.getAllValues('laminate'));
+  }
+
+  function toAttributeProps(attrName: string, attrValues: AttributeValueMulti): AttributeProps[] {
+    return attrValues.map((attrValue) => ({
+      label: attrValue
+        .toString()
+        .split('_')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '),
+      value: String(attrValue),
+      imgSrc:
+        computer.getIcons(attrName)[String(attrValue)] ??
+        'https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_wiz-placeholder.png',
+      enabled: !computer.isConstrained(attrName, attrValue),
+      selected: false,
+    }));
+  }
 </script>
 
 <Page.Root>
@@ -49,9 +104,10 @@
                 description="This is a description"
                 hint="Required"
                 placeholder="Choose delivery"
+                onchange={(e) => changeFamily(e.currentTarget.value)}
               >
-                <Form.SelectOption label="Die cut" value="die-cut" />
-                <Form.SelectOption label="Sticker sheet" value="sheet" />
+                <Form.SelectOption label="Custom Sticker" value="custom_sticker" />
+                <Form.SelectOption label="Promo" value="promo" />
               </Form.Select>
             </Form.Item>
 
@@ -82,11 +138,11 @@
                 <h4 class="font-semibold leading-none tracking-tight">Shapes</h4>
               </Form.GroupTitle>
               <TilePicker.Root name="shape" multiple>
-                {#each shapeProps as shape}
+                {#each shapes as shape}
                   <TilePicker.Item
-                    id={shape.text}
-                    value={shape.text}
-                    label={shape.text}
+                    id={shape.value}
+                    value={shape.value}
+                    label={shape.label}
                     img={shape.imgSrc}
                   />
                 {/each}
@@ -98,12 +154,28 @@
                 <h4 class="font-semibold leading-none tracking-tight">Materials</h4>
               </Form.GroupTitle>
               <TilePicker.Root name="material" multiple>
-                {#each materialProps as shape}
+                {#each materials as material}
                   <TilePicker.Item
-                    id={shape.text}
-                    value={shape.text}
-                    label={shape.text}
-                    img={shape.imgSrc}
+                    id={material.value}
+                    value={material.value}
+                    label={material.label}
+                    img={material.imgSrc}
+                  />
+                {/each}
+              </TilePicker.Root>
+            </Form.Group>
+
+            <Form.Group class="col-span-2 space-y-4">
+              <Form.GroupTitle>
+                <h4 class="font-semibold leading-none tracking-tight">Laminates</h4>
+              </Form.GroupTitle>
+              <TilePicker.Root name="laminate" multiple>
+                {#each laminates as laminate}
+                  <TilePicker.Item
+                    id={laminate.value}
+                    value={laminate.value}
+                    label={laminate.label}
+                    img={laminate.imgSrc}
                   />
                 {/each}
               </TilePicker.Root>
@@ -117,8 +189,8 @@
                 hint="Required"
                 placeholder="Choose laminate"
               >
-                {#each laminateProps as shape}
-                  <Form.SelectOption value={shape.text} label={shape.text} />
+                {#each laminates as laminate}
+                  <Form.SelectOption value={laminate.value} label={laminate.label} />
                 {/each}
               </Form.Select>
             </Form.Item>

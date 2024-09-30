@@ -31,7 +31,7 @@
   );
 </script>
 
-<div class="flex max-w-20 flex-col items-center">
+<div class="w-20 overflow-hidden text-ellipsis whitespace-nowrap text-center">
   <button
     use:melt={$root}
     class={classes}

@@ -5,7 +5,7 @@
   import type { InputProps } from '../types';
   import { cn } from '$lib/utils';
 
-  let { class: className, id, name, ...rest }: InputProps = $props();
+  let { class: className, id, name, onchange, ...rest }: InputProps = $props();
 
   const {
     elements: { root, input },
@@ -28,5 +28,5 @@
   {#if $isChecked}
     <Check class="size-3" />
   {/if}
-  <input use:melt={$input} type="hidden" {name} />
+  <input use:melt={$input} type="hidden" {name} {onchange} />
 </button>

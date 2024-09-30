@@ -3,7 +3,10 @@
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { Label } from 'components/label';
   import type { TilePickerItemProps } from '../types';
+  import { createValueUpdater } from '../ctx';
   import { cn } from '$lib/utils';
+
+  const onchange = createValueUpdater();
 
   const {
     class: className,
@@ -17,7 +20,13 @@
 
   const {
     elements: { root, input },
-  } = createCheckbox({});
+  } = createCheckbox({
+    onCheckedChange: ({ next }) => {
+      onchange((prev) => (next ? [...prev, value] : prev.filter((item) => item !== value)));
+
+      return next;
+    },
+  });
 
   const classes = cn(
     'flex appearance-none flex-col items-center justify-center bg-white p-2 text-st-gray-900 data-[state=checked]:ring-st-yellow-500',

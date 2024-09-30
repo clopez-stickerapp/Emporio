@@ -16,6 +16,7 @@
     open: localOpen,
     label: labelText,
     placeholder,
+    onchange,
     ...rest
   }: SelectRootProps = $props();
 
@@ -47,7 +48,7 @@
 </script>
 
 <div class={cn('flex flex-col gap-y-2', className)}>
-  <input use:melt={$hiddenInput} type="hidden" />
+  <input use:melt={$hiddenInput} type="hidden" {onchange} />
   <label class="text-st-gray-90 block text-sm font-medium leading-6" use:melt={$label}>
     {#if typeof labelText === 'string'}
       {labelText}

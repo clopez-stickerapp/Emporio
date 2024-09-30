@@ -12,6 +12,7 @@
     name,
     children,
     placeholder,
+    ...rest
   }: FormSelectProps = $props();
 
   const descriptionId = description ? `${id}-desc` : undefined;
@@ -23,6 +24,7 @@
   {id}
   {placeholder}
   aria-describedby={descriptionId}
+  {...rest}
 >
   {#snippet label()}
     {#if hint}

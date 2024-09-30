@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="Multiple extends boolean">
   import { melt } from '@melt-ui/svelte';
   import type { TilePickerRootProps } from '../types';
   import { initCtx } from '../ctx';
@@ -9,12 +9,13 @@
     class: className,
     name,
     multiple = false,
+    onchange,
     ...rest
-  }: TilePickerRootProps = $props();
+  }: TilePickerRootProps<Multiple> = $props();
 
   const {
     elements: { root },
-  } = initCtx({ name, multiple });
+  } = initCtx({ name, multiple, onchange });
 
   const classes = cn('flex flex-wrap gap-4', className);
 </script>

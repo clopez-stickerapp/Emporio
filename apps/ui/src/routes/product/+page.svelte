@@ -12,7 +12,6 @@
     type AttributeValueMulti,
   } from '@stickerapp-org/nomisma';
   import type { ProductItemT } from '@stickerapp-org/emporio-api-contract';
-  import { onMount } from 'svelte';
 
   type AttributeProps = {
     label: string;
@@ -21,6 +20,8 @@
     disabled: boolean;
     selected: boolean;
   };
+
+  const { data } = $props();
 
   const computer = new ProductAttrComputer();
 
@@ -33,8 +34,6 @@
   let laminates: AttributeProps[] = $state([]);
   let materials: AttributeProps[] = $state([]);
   let shapes: AttributeProps[] = $state([]);
-
-  onMount(async () => await changeFamily('custom_sticker'));
 
   async function changeFamily(family: string): Promise<void> {
     item.productFamilyName = family;
@@ -52,11 +51,7 @@
 
   function toAttributeProps(attrName: string, attrValues: AttributeValueMulti): AttributeProps[] {
     return attrValues.map((attrValue) => ({
-      label: attrValue
-        .toString()
-        .split('_')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' '),
+      label: translate(String(attrValue)),
       value: String(attrValue),
       imgSrc:
         computer.getIcons(attrName)[String(attrValue)] ??
@@ -64,6 +59,14 @@
       disabled: computer.isConstrained(attrName, attrValue),
       selected: false,
     }));
+  }
+
+  function translate(value: string): string {
+    return value
+      .toString()
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 </script>
 
@@ -106,8 +109,9 @@
                 placeholder="Choose delivery"
                 onchange={(e) => changeFamily(e.currentTarget.value)}
               >
-                <Form.SelectOption label="Custom Sticker" value="custom_sticker" />
-                <Form.SelectOption label="Promo" value="promo" />
+                {#each data.families as family}
+                  <Form.SelectOption label={translate(family)} value={family} />
+                {/each}
               </Form.Select>
             </Form.Item>
 
@@ -125,82 +129,84 @@
       </Card.Root>
     </Form.Group>
 
-    <Form.Group>
-      <Card.Root>
-        <Card.Content>
-          <Form.GroupTitle>
-            <h3 class="font-semibold leading-none tracking-tight">Attributes</h3>
-          </Form.GroupTitle>
-          <p class="mt-1 text-sm leading-6 text-gray-600"></p>
-          <div class="mt-10 grid grid-cols-2 gap-6">
-            <Form.Group class="col-span-2 space-y-4">
-              <Form.GroupTitle>
-                <h4 class="font-semibold leading-none tracking-tight">Shapes</h4>
-              </Form.GroupTitle>
-              <TilePicker.Root name="shape" multiple>
-                {#each shapes as shape}
-                  <TilePicker.Item
-                    id={shape.value}
-                    value={shape.value}
-                    label={shape.label}
-                    img={shape.imgSrc}
-                    disabled={shape.disabled}
-                  />
-                {/each}
-              </TilePicker.Root>
-            </Form.Group>
+    {#if materials.length || shapes.length || laminates.length}
+      <Form.Group>
+        <Card.Root>
+          <Card.Content>
+            <Form.GroupTitle>
+              <h3 class="font-semibold leading-none tracking-tight">Attributes</h3>
+            </Form.GroupTitle>
+            <p class="mt-1 text-sm leading-6 text-gray-600"></p>
+            <div class="mt-10 grid grid-cols-2 gap-6">
+              <Form.Group class="col-span-2 space-y-4">
+                <Form.GroupTitle>
+                  <h4 class="font-semibold leading-none tracking-tight">Shapes</h4>
+                </Form.GroupTitle>
+                <TilePicker.Root name="shape" multiple>
+                  {#each shapes as shape}
+                    <TilePicker.Item
+                      id={shape.value}
+                      value={shape.value}
+                      label={shape.label}
+                      img={shape.imgSrc}
+                      disabled={shape.disabled}
+                    />
+                  {/each}
+                </TilePicker.Root>
+              </Form.Group>
 
-            <Form.Group class="col-span-2 space-y-4">
-              <Form.GroupTitle>
-                <h4 class="font-semibold leading-none tracking-tight">Materials</h4>
-              </Form.GroupTitle>
-              <TilePicker.Root name="material" multiple>
-                {#each materials as material}
-                  <TilePicker.Item
-                    id={material.value}
-                    value={material.value}
-                    label={material.label}
-                    img={material.imgSrc}
-                    disabled={material.disabled}
-                  />
-                {/each}
-              </TilePicker.Root>
-            </Form.Group>
+              <Form.Group class="col-span-2 space-y-4">
+                <Form.GroupTitle>
+                  <h4 class="font-semibold leading-none tracking-tight">Materials</h4>
+                </Form.GroupTitle>
+                <TilePicker.Root name="material" multiple>
+                  {#each materials as material}
+                    <TilePicker.Item
+                      id={material.value}
+                      value={material.value}
+                      label={material.label}
+                      img={material.imgSrc}
+                      disabled={material.disabled}
+                    />
+                  {/each}
+                </TilePicker.Root>
+              </Form.Group>
 
-            <Form.Group class="col-span-2 space-y-4">
-              <Form.GroupTitle>
-                <h4 class="font-semibold leading-none tracking-tight">Laminates</h4>
-              </Form.GroupTitle>
-              <TilePicker.Root name="laminate" multiple>
-                {#each laminates as laminate}
-                  <TilePicker.Item
-                    id={laminate.value}
-                    value={laminate.value}
-                    label={laminate.label}
-                    img={laminate.imgSrc}
-                    disabled={laminate.disabled}
-                  />
-                {/each}
-              </TilePicker.Root>
-            </Form.Group>
+              <Form.Group class="col-span-2 space-y-4">
+                <Form.GroupTitle>
+                  <h4 class="font-semibold leading-none tracking-tight">Laminates</h4>
+                </Form.GroupTitle>
+                <TilePicker.Root name="laminate" multiple>
+                  {#each laminates as laminate}
+                    <TilePicker.Item
+                      id={laminate.value}
+                      value={laminate.value}
+                      label={laminate.label}
+                      img={laminate.imgSrc}
+                      disabled={laminate.disabled}
+                    />
+                  {/each}
+                </TilePicker.Root>
+              </Form.Group>
 
-            <Form.Item>
-              <Form.Select
-                label="Laminates"
-                id="laminates"
-                name="laminates"
-                hint="Required"
-                placeholder="Choose laminate"
-              >
-                {#each laminates as laminate}
-                  <Form.SelectOption value={laminate.value} label={laminate.label} />
-                {/each}
-              </Form.Select>
-            </Form.Item>
-          </div>
-        </Card.Content>
-      </Card.Root>
-    </Form.Group>
+              <!-- <Form.Item>
+					<Form.Select
+						label="Laminates"
+						id="laminates"
+						name="laminates"
+						hint="Required"
+						placeholder="Choose laminate"
+					>
+						{#each laminates as laminate}
+						<Form.SelectOption value={laminate.value} label={laminate.label} />
+						{/each}
+					</Form.Select>
+				</Form.Item> -->
+            </div>
+          </Card.Content>
+        </Card.Root>
+      </Form.Group>
+    {/if}
 
     <!-- <IconTiles title="Shapes" iconTileProps={shapeProps} /> -->
     <!-- <IconTiles title="Materials" iconTileProps={materialProps} /> -->

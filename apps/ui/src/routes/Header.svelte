@@ -3,8 +3,6 @@
 </script>
 
 <Menubar.Root>
-  <Menubar.Menu>
-  </Menubar.Menu>
-  <Menubar.Menu>
-  </Menubar.Menu>
+  <Menubar.Menu></Menubar.Menu>
+  <Menubar.Menu></Menubar.Menu>
 </Menubar.Root>

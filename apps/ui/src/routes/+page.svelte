@@ -1,7 +1,10 @@
 <script lang="ts">
-    import { Page } from '@stickerapp-org/pallas/Shell';
+  import * as Page from 'components/page';
 </script>
 
-<Page name="Start">
+<Page.Root>
+  <Page.Title>Start</Page.Title>
+  <div class="col-span-8 col-start-3">
     <p>Emporio start page</p>
-</Page>
+  </div>
+</Page.Root>

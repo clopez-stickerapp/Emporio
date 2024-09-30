@@ -1,12 +1,16 @@
 <script lang="ts">
-    import { Page } from '@stickerapp-org/pallas/Shell';
-    import { ProductTable } from '@stickerapp-org/pallas/ProductTable';
+  import { ProductTable } from '@stickerapp-org/pallas/ProductTable';
+  import * as Page from 'components/page';
+  import * as Card from 'components/card';
 
-    const { data } = $props();
+  const { data } = $props();
 
-    const { products } = data;
+  const { products } = data;
 </script>
 
-<Page name="Products">
-    <ProductTable {products} />
-</Page>
+<Page.Root>
+  <Page.Title>Products</Page.Title>
+  <Card.Root class="col-span-8 col-start-3">
+    <Card.Content><ProductTable {products} /></Card.Content>
+  </Card.Root>
+</Page.Root>

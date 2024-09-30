@@ -1,8 +1,8 @@
 root = true
 
-[*.{js,jsx,tsx,ts,svelte,css,json}]
+[*.{js,mjs,cjs,ts,svelte,css,json}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 charset = utf-8
 insert_final_newline = true
 end_of_line = lf

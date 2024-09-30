@@ -1,51 +1,52 @@
 {
-    "name": "@stickerapp-org/emporio",
-    "private": true,
-    "scripts": {
-        "build": "turbo build",
-        "dev": "turbo dev",
-        "lint": "turbo lint",
-        "lint:fix": "turbo lint:fix",
-        "test": "turbo test",
-        "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
-        "generate-migration": "npm run generate-migration -w @stickerapp-org/emporio-api",
-        "migrate": "npm run migrate -w @stickerapp-org/emporio-api",
-        "prepare": "ts-patch install -s && husky"
-    },
-    "devDependencies": {
-        "@sinclair/typebox": "0.32.13",
-        "@stickerapp-org/emporio-tsconfig": "*",
-        "@stickerapp-org/eslint-config": "*",
-        "@stickerapp-org/prettier-config": "*",
-        "@typescript-eslint/eslint-plugin": "6.0.0",
-        "@typescript-eslint/parser": "6.0.0",
-        "eslint": "8.28.0",
-        "eslint-config-prettier": "9.1.0",
-        "eslint-config-turbo": "2.1.2",
-        "eslint-plugin-import": "2.30.0",
-        "eslint-plugin-prettier": "5.2.1",
-        "eslint-plugin-svelte": "2.44.0",
-        "husky": "^9.1.6",
-        "lint-staged": "^15.2.10",
-        "prettier": "3.1.1",
-        "prettier-plugin-svelte": "3.2.6",
-        "ts-patch": "^3.1.2",
-        "turbo": "^2.1.0"
-    },
-    "overrides": {
-        "@sinclair/typebox": "$@sinclair/typebox"
-    },
-    "engines": {
-        "node": ">=18"
-    },
-    "packageManager": "npm@9.6.7",
-    "workspaces": [
-        "apps/*",
-        "packages/*"
-    ],
-    "lint-staged": {
-        "*.{ts,tsx,md,svelte}": [
-            "prettier --write"
-        ]
-    }
+  "name": "@stickerapp-org/emporio",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint:fix",
+    "test": "turbo test",
+    "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
+    "generate-migration": "npm run generate-migration -w @stickerapp-org/emporio-api",
+    "migrate": "npm run migrate -w @stickerapp-org/emporio-api",
+    "prepare": "ts-patch install -s && husky"
+  },
+  "devDependencies": {
+    "@sinclair/typebox": "0.32.13",
+    "@stickerapp-org/emporio-tsconfig": "*",
+    "@stickerapp-org/eslint-config": "*",
+    "@stickerapp-org/prettier-config": "*",
+    "@typescript-eslint/eslint-plugin": "6.0.0",
+    "@typescript-eslint/parser": "6.0.0",
+    "eslint": "8.28.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-config-turbo": "2.1.2",
+    "eslint-plugin-import": "2.30.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-svelte": "2.44.0",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "prettier": "3.1.1",
+    "prettier-plugin-svelte": "3.2.6",
+    "prettier-plugin-tailwindcss": "0.6.6",
+    "ts-patch": "^3.1.2",
+    "turbo": "^2.1.0"
+  },
+  "overrides": {
+    "@sinclair/typebox": "$@sinclair/typebox"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "npm@10.2.4",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "lint-staged": {
+    "*.{ts,md,svelte,js,mjs,cjs,json}": [
+      "prettier --write"
+    ]
+  }
 }

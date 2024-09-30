@@ -1,3 +1,6 @@
-import config from '@stickerapp-org/prettier-config/svelte.mjs'
+import config from '@stickerapp-org/prettier-config/svelte.mjs';
 
-export default config;
+export default {
+  ...config,
+  tailwindConfig: './tailwind.config.js',
+};

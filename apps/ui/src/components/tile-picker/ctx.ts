@@ -26,6 +26,7 @@ export function initCtx<Multiple extends boolean>(
 
   const builder = createRadioGroup({
     onValueChange: !props.multiple ? onValueChange : undefined,
+    orientation: 'horizontal',
   });
   const ctx = writable({ ...props, value: [], builder } as TilePickerContext);
   setContext<TilePickerStore>(NAME, ctx);

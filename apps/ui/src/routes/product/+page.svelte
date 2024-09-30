@@ -18,7 +18,7 @@
     label: string;
     value: string;
     imgSrc: string;
-    enabled: boolean;
+    disabled: boolean;
     selected: boolean;
   };
 
@@ -61,7 +61,7 @@
       imgSrc:
         computer.getIcons(attrName)[String(attrValue)] ??
         'https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_wiz-placeholder.png',
-      enabled: !computer.isConstrained(attrName, attrValue),
+      disabled: computer.isConstrained(attrName, attrValue),
       selected: false,
     }));
   }
@@ -144,6 +144,7 @@
                     value={shape.value}
                     label={shape.label}
                     img={shape.imgSrc}
+                    disabled={shape.disabled}
                   />
                 {/each}
               </TilePicker.Root>
@@ -160,6 +161,7 @@
                     value={material.value}
                     label={material.label}
                     img={material.imgSrc}
+                    disabled={material.disabled}
                   />
                 {/each}
               </TilePicker.Root>
@@ -176,6 +178,7 @@
                     value={laminate.value}
                     label={laminate.label}
                     img={laminate.imgSrc}
+                    disabled={laminate.disabled}
                   />
                 {/each}
               </TilePicker.Root>

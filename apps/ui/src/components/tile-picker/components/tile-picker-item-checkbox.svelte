@@ -27,11 +27,23 @@
     'focus:ring-st-yellow-600',
     'hover:ring-st-yellow-600',
     'rounded-2xl',
+    rest.disabled ? 'pointer-events-none' : '',
     className,
+  );
+
+  const labelClasses = cn('text-center', rest.disabled ? 'cursor-not-allowed' : '');
+
+  const parentClasses = cn(
+    'w-20',
+    'overflow-hidden',
+    'text-ellipsis',
+    'whitespace-nowrap',
+    'text-center',
+    rest.disabled ? 'cursor-not-allowed opacity-50' : '',
   );
 </script>
 
-<div class="w-20 overflow-hidden text-ellipsis whitespace-nowrap text-center">
+<div class={parentClasses}>
   <button
     use:melt={$root}
     class={classes}
@@ -41,6 +53,6 @@
   >
     <img src={img} aria-hidden="true" alt="" class="size-16" />
   </button>
-  <Label id={`${id}-label`} class="text-center">{label}</Label>
+  <Label id={`${id}-label`} class={labelClasses}>{label}</Label>
   <input use:melt={$input} type="hidden" {name} {value} />
 </div>

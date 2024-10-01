@@ -3,6 +3,7 @@
   import { fade } from 'svelte/transition';
   import { melt } from '@melt-ui/svelte';
   import { ChevronDown } from 'components/icon';
+  import { onDestroy } from 'svelte';
   import type { SelectRootProps } from '../types';
   import { setCtx } from '../ctx';
   import { cn } from '$lib/utils';
@@ -22,7 +23,7 @@
 
   const {
     elements: { label, trigger, menu, hiddenInput },
-    states: { selectedLabel, open },
+    states: { selectedLabel, open, selected },
     updateOption,
   } = setCtx({
     required: required!,
@@ -45,10 +46,20 @@
     updateOption('disabled', disabled!);
     updateOption('name', name);
   });
+
+  const unsubscribe = selected.subscribe((val) => {
+    if (!val) {
+      return;
+    }
+
+    onchange?.(val.value as unknown as string);
+  });
+
+  onDestroy(unsubscribe);
 </script>
 
 <div class={cn('flex flex-col gap-y-2', className)}>
-  <input use:melt={$hiddenInput} type="hidden" {onchange} />
+  <input use:melt={$hiddenInput} type="hidden" />
   <label class="text-st-gray-90 block text-sm font-medium leading-6" use:melt={$label}>
     {#if typeof labelText === 'string'}
       {labelText}

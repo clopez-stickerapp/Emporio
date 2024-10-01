@@ -1,4 +1,4 @@
 name: feature
 values:
   backpaper_print:
-    available: false
+    available: true

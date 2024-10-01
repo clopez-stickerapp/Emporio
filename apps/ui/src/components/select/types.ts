@@ -1,17 +1,13 @@
-import type {
-  HTMLInputAttributes,
-  HTMLOptionAttributes,
-  HTMLSelectAttributes,
-} from 'svelte/elements';
+import type { HTMLOptionAttributes, HTMLSelectAttributes } from 'svelte/elements';
 import type { Snippet } from 'svelte';
 import type { LabelProps } from '../label/types';
 
-export type SelectRootProps = HTMLSelectAttributes & {
+export type SelectRootProps = Omit<HTMLSelectAttributes, 'onchange'> & {
   name: string;
   open?: boolean;
   label: string | Snippet;
   placeholder: string;
-  onchange?: HTMLInputAttributes['onchange'];
+  onchange?: (value: string) => void;
 };
 
 export type SelectLabelProps = LabelProps;

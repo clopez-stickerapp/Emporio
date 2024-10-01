@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const btn = cva(
-  'rounded-md text-sm font-semibold shadow-sm ring-1 ring-inset hover:bg-st-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2',
+  'rounded-md text-sm font-semibold shadow-sm ring-1 ring-inset hover:bg-st-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center justify-between gap-2',
   {
     variants: {
       size: {

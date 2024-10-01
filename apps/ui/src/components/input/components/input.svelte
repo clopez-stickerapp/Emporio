@@ -23,6 +23,8 @@
       'focus:ring-2',
       'focus:ring-inset',
       'focus:ring-indigo-600',
+      'disabled:bg-st-gray-200',
+      'disabled:cursor-not-allowed',
     ],
     className,
   );

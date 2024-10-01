@@ -5,6 +5,6 @@
   let { class: className, children, ...rest }: LabelProps = $props();
 </script>
 
-<label class={cn('text-st-gray-90 text-sm font-medium leading-6', className)} {...rest}>
+<label class={cn('block text-sm font-medium leading-6 text-st-gray-900', className)} {...rest}>
   {@render children?.()}
 </label>

@@ -46,7 +46,7 @@ export default async function ( fastify: FastifyInstance ) {
 		return { minimumQuantity: emporio.getMinimumQuantity( item ) };
 	} )
 
-	f.get( '/attribute-map/:family/:name', { schema: getAttributeMapSchema }, async function ( request ) {
+	f.get( '/attribute-map/:family/:name?', { schema: getAttributeMapSchema }, async function ( request ) {
 		return { attributes: emporio.getProductService().getProductMap( request.params.family, request.params.name ) };
 	} )
 

@@ -6,7 +6,7 @@ import { ProductDynamicValue } from "./value/ProductDynamicValue";
 import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
 import { Collection, CollectionItem } from "./Collection";
 import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { AttributesMap } from "@stickerapp-org/nomisma";
+import { AttributesMap, AttributeValueMulti } from "@stickerapp-org/nomisma";
 import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
 import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
 import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
@@ -167,20 +167,22 @@ export class ProductService {
 		return Object.values(this.productFamilies);
 	}
 
-	public getProductMap(familyName: string, productName: string): AttributesMap {
+	public getProductMap(familyName: string, productName?: string): AttributesMap {
 		let map: AttributesMap = {};
 
-		const product = this.retrieveProductFamily(familyName).getProduct(productName);
+		const family     = this.retrieveProductFamily( familyName );
+		const asset      = this.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, family.getAssetCollectionName() );
+		const filter     = this.retrieveCollection<ProductAttrFilter>( CollectionType.Filter, family.getFilterCollectionName() );
+		const constraint = this.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, family.getConstraintsCollectionName() );
 
-		for (const [attrName, attr] of Object.entries(this.retrieveProductFamily(product.getProductFamilyName()).getAttributes())) {
-			const family = this.retrieveProductFamily(product.getProductFamilyName());
-
+		for (const [attrName, attr] of Object.entries(family.getAttributes())) {
 			const attrValues: Record<string, string | null> = {};
 
-			const attrConstraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName())?.get(attrName);
-			const attrFilter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName())?.get(attrName);
-			const attrAsset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName())?.get(attrName);
-			const attrValueOptions = family.getAllAttributeValueOptionsForProduct(product, attrName);
+			const attrConstraint = constraint?.get( attrName );
+			const attrFilter = filter?.get( attrName );
+			const attrAsset = asset?.get( attrName );
+
+			const attrValueOptions = productName ? family.getAllAttributeValueOptionsForProduct( family.getProduct( productName ), attrName ) : family.getAttribute( attrName ).getValues();
 
 			let icons: Record<string, string> = {};
 
@@ -199,6 +201,7 @@ export class ProductService {
 			}
 
 			const filters = attrFilter?.getFilters().map(filteredValues => ({
+				"name": filteredValues.getName(),
 				"values": filteredValues.getValues(),
 				"conditions": `${filteredValues.conditionBuilder}`,
 				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()

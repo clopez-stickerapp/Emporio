@@ -33,7 +33,7 @@
     'ring-2',
     'ring-inset',
     'ring-gray-300',
-    'focus:ring-st-yellow-600',
+    'focusin:ring-st-yellow-600',
     'hover:ring-st-yellow-600',
     'rounded-2xl',
     rest.disabled ? 'pointer-events-none' : '',

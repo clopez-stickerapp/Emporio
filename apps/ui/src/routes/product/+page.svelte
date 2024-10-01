@@ -10,12 +10,12 @@
     ProductItem,
     type AttributesMap,
     type AttributeValueMulti,
+    type AttributeValueSingle,
   } from '@stickerapp-org/nomisma';
-  import type { ProductItemT } from '@stickerapp-org/emporio-api-contract';
 
   type AttributeProps = {
     label: string;
-    value: string;
+    value: AttributeValueSingle;
     imgSrc: string;
     disabled: boolean;
     selected: boolean;
@@ -25,39 +25,48 @@
 
   const computer = new ProductAttrComputer();
 
-  const item: ProductItemT = {
-    productFamilyName: '',
-    productName: '',
-    attributes: {},
-  };
+  let productItem: ProductItem = new ProductItem('', '');
 
   let laminates: AttributeProps[] = $state([]);
   let materials: AttributeProps[] = $state([]);
   let shapes: AttributeProps[] = $state([]);
 
   async function changeFamily(family: string): Promise<void> {
-    item.productFamilyName = family;
+    productItem = new ProductItem(family, '', productItem.getAttributes());
     const attrMap: AttributesMap = await getAttributeMap(family);
     evaluate(attrMap);
   }
 
   function evaluate(attrMap?: AttributesMap): void {
-    const productItem = new ProductItem(item.productFamilyName, item.productName, item.attributes);
     computer.evaluate(productItem, attrMap);
     materials = toAttributeProps('material', computer.getAllValues('material'));
-    shapes = toAttributeProps('sheet_name', computer.getAllValues('sheet_name'));
+    shapes = toAttributeProps('sheet_name', computer.getFilteredValues('sheet_name'));
     laminates = toAttributeProps('laminate', computer.getAllValues('laminate'));
+  }
+
+  function findPropsByAttrName(attrName: string): AttributeProps[] {
+    switch (attrName) {
+      case 'material':
+        return materials;
+      case 'sheet_name':
+        return shapes;
+      case 'laminate':
+        return laminates;
+      default:
+        return [];
+    }
   }
 
   function toAttributeProps(attrName: string, attrValues: AttributeValueMulti): AttributeProps[] {
     return attrValues.map((attrValue) => ({
       label: translate(String(attrValue)),
-      value: String(attrValue),
+      value: attrValue,
       imgSrc:
         computer.getIcons(attrName)[String(attrValue)] ??
         'https://d6ce0no7ktiq.cloudfront.net/images/web/wizard/ic_wiz-placeholder.png',
       disabled: computer.isConstrained(attrName, attrValue),
-      selected: false,
+      selected:
+        findPropsByAttrName(attrName).find((prop) => prop.value === attrValue)?.selected ?? false,
     }));
   }
 
@@ -67,6 +76,19 @@
       .split('_')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+
+  function handleAttributeChange(attrName: string, attribute: AttributeProps): void {
+    if (attribute.disabled || computer.isConstrained(attrName, attribute.value)) {
+      return;
+    }
+    attribute.selected = !attribute.selected;
+    if (attribute.selected) {
+      productItem.setAttribute(attrName, attribute.value);
+    } else {
+      productItem.removeAttribute(attrName);
+    }
+    evaluate();
   }
 </script>
 
@@ -107,7 +129,7 @@
                 description="This is a description"
                 hint="Required"
                 placeholder="Choose delivery"
-                onchange={(e) => changeFamily(e.currentTarget.value)}
+                onchange={(family) => changeFamily(family)}
               >
                 {#each data.families as family}
                   <Form.SelectOption label={translate(family)} value={family} />
@@ -145,11 +167,12 @@
                 <TilePicker.Root name="shape" multiple>
                   {#each shapes as shape}
                     <TilePicker.Item
-                      id={shape.value}
+                      id={shape.value.toString()}
                       value={shape.value}
                       label={shape.label}
                       img={shape.imgSrc}
                       disabled={shape.disabled}
+                      onclick={() => handleAttributeChange('sheet_name', shape)}
                     />
                   {/each}
                 </TilePicker.Root>
@@ -162,11 +185,12 @@
                 <TilePicker.Root name="material" multiple>
                   {#each materials as material}
                     <TilePicker.Item
-                      id={material.value}
+                      id={material.value.toString()}
                       value={material.value}
                       label={material.label}
                       img={material.imgSrc}
                       disabled={material.disabled}
+                      onclick={() => handleAttributeChange('material', material)}
                     />
                   {/each}
                 </TilePicker.Root>
@@ -179,11 +203,12 @@
                 <TilePicker.Root name="laminate" multiple>
                   {#each laminates as laminate}
                     <TilePicker.Item
-                      id={laminate.value}
+                      id={laminate.value.toString()}
                       value={laminate.value}
                       label={laminate.label}
                       img={laminate.imgSrc}
                       disabled={laminate.disabled}
+                      onclick={() => handleAttributeChange('laminate', laminate)}
                     />
                   {/each}
                 </TilePicker.Root>

@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { createRadioGroup, melt } from '@melt-ui/svelte';
+  import { melt } from '@melt-ui/svelte';
   import type { HTMLButtonAttributes } from 'svelte/elements';
-  import { onDestroy } from 'svelte';
   import { Label } from 'components/label';
   import type { TilePickerItemProps } from '../types';
-  import { subscribe } from '../ctx';
+  import { getCtx } from '../ctx.svelte';
   import { cn } from '$lib/utils';
 
   const {
@@ -17,15 +16,11 @@
     ...rest
   }: TilePickerItemProps & { name: string } = $props();
 
-  let item = $state<ReturnType<typeof createRadioGroup>['elements']['item']>();
-  let hiddenInput = $state<ReturnType<typeof createRadioGroup>['elements']['hiddenInput']>();
-
-  const unsubscribe = subscribe((ctx) => {
-    item = ctx.builder.elements.item;
-    hiddenInput = ctx.builder.elements.hiddenInput;
-  });
-
-  onDestroy(unsubscribe);
+  const {
+    builder: {
+      elements: { item, hiddenInput },
+    },
+  } = getCtx();
 
   const classes = cn(
     'flex appearance-none flex-col items-center justify-center bg-white p-2 text-st-gray-900 data-[state=checked]:ring-st-yellow-500',

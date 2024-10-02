@@ -3,7 +3,7 @@
   import type { HTMLButtonAttributes } from 'svelte/elements';
   import { Label } from 'components/label';
   import type { TilePickerItemProps } from '../types';
-  import { createValueUpdater } from '../ctx';
+  import { createValueUpdater } from '../ctx.svelte';
   import { cn } from '$lib/utils';
 
   const onchange = createValueUpdater();

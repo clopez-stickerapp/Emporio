@@ -1,7 +1,7 @@
 <script lang="ts" generics="Multiple extends boolean">
   import { melt } from '@melt-ui/svelte';
   import type { TilePickerRootProps } from '../types';
-  import { initCtx } from '../ctx';
+  import { initCtx } from '../ctx.svelte';
   import { cn } from '$lib/utils';
 
   const {

@@ -1,10 +1,11 @@
-import { RequestBuilder } from './request-builder';
 import {
   GetAttributesMapResponse,
   GetFamiliesResponse,
 } from '@stickerapp-org/emporio-api-contract';
+import { RequestBuilder } from './request-builder';
+import { env } from './env';
 
-const rb = new RequestBuilder(`http://0.0.0.0:5012`);
+const rb = new RequestBuilder(env.API_URL);
 
 export async function getAttributeMap(familyName: string, productName?: string) {
   const url = `/product/attribute-map/${familyName}${productName ? `/${productName}` : ''}`;

@@ -85,14 +85,14 @@ export class RequestBuilder {
    * @param params The parameters to be used in the URL.
    * @returns The current instance of the RequestBuilder.
    */
-  public setURLParams(params: Record<string, any>): this {
+  public setURLParams(params: Record<string, unknown>): this {
     for (const [key, value] of Object.entries(params)) {
       if (typeof value !== 'string') {
         params[key] = JSON.stringify(value);
       }
     }
 
-    this.urlParams = '?' + new URLSearchParams(params).toString();
+    this.urlParams = '?' + new URLSearchParams(params as Record<string, string>).toString();
 
     return this;
   }

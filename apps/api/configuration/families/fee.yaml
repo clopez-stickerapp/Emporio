@@ -7,7 +7,7 @@ rules:
     required:
       - text
       - sheet_type
-      - dynamic_string
+      - sheet_name
       - quantity
   collections:
     constraint: ''

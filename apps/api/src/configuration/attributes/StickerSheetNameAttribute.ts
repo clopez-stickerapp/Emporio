@@ -22,7 +22,6 @@ export const StickerSheetNameValues = {
   MOST_LIKED_PACK_2023: 'most_liked_pack_2023',
   SLAP_PACK: 'slap_pack',
   STICKER_FREEBIE: 'sticker_freebie',
-  TEXT: 'text',
 };
 
 export const StickerSheetNameAttribute = new ProductAttr({

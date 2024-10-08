@@ -1,50 +1,50 @@
 {
-    "name": "@stickerapp-org/nomisma",
-    "version": "1.0.1",
-    "scripts": {
-        "clean": "rimraf dist",
-        "build:cjs": "npm run clean && tsc -p tsconfig.json",
-        "build:esm": "npm run clean && tsc -p tsconfig.esm.json",
-        "build": "concurrently \"npm run build:cjs\" \"npm run build:esm\"",
-        "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
-        "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
-        "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
-        "lint": "eslint .",
-        "lint:fix": "eslint . --fix"
+  "name": "@stickerapp-org/nomisma",
+  "version": "1.0.2",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build:cjs": "npm run clean && tsc -p tsconfig.json",
+    "build:esm": "npm run clean && tsc -p tsconfig.esm.json",
+    "build": "concurrently \"npm run build:cjs\" \"npm run build:esm\"",
+    "dev:cjs": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "dev:esm": "tsc -p tsconfig.esm.json --watch --preserveWatchOutput",
+    "dev": "concurrently --kill-others \"npm run dev:cjs\" \"npm run dev:esm\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stickerapp-org/commerce.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "types": "./dist/esm/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.js"
     },
-    "license": "UNLICENSED",
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/stickerapp-org/commerce.git"
-    },
-    "files": [
-        "dist"
-    ],
-    "types": "./dist/esm/index.d.ts",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.mjs",
-    "exports": {
-        ".": {
-            "types": "./dist/esm/index.d.ts",
-            "import": "./dist/esm/index.mjs",
-            "require": "./dist/cjs/index.js"
-        },
-        "./*": {
-            "types": "./dist/esm/*/index.d.ts",
-            "import": "./dist/esm/*/index.mjs",
-            "require": "./dist/cjs/*/index.js"
-        }
-    },
-    "devDependencies": {
-        "@stickerapp-org/ts-transform-module-type": "*",
-        "@stickerapp-org/emporio-tsconfig": "*",
-        "@stickerapp-org/eslint-config": "*",
-        "@stickerapp-org/prettier-config": "*",
-        "typescript": "5.5.4",
-        "concurrently": "^8.2.2",
-        "rimraf": "^5.0.5"
+    "./*": {
+      "types": "./dist/esm/*/index.d.ts",
+      "import": "./dist/esm/*/index.mjs",
+      "require": "./dist/cjs/*/index.js"
     }
+  },
+  "devDependencies": {
+    "@stickerapp-org/ts-transform-module-type": "*",
+    "@stickerapp-org/emporio-tsconfig": "*",
+    "@stickerapp-org/eslint-config": "*",
+    "@stickerapp-org/prettier-config": "*",
+    "typescript": "5.5.4",
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.5"
+  }
 }

@@ -1,127 +1,139 @@
-import { ProductService } from "../ProductService";
-import { ProductAttrNotSupportedException } from "$/product/exceptions/ProductAttrNotSupportedException";
-import { ProductAttrValueNotSupportedException } from "$/product/exceptions/ProductAttrValueNotSupportedException";
-import { ProductItemInvalidException } from "$/product/exceptions/ProductItemInvalidException";
-import { ProductItemOutOfStockException } from "$/product/exceptions/ProductItemOutOfStockException";
-import { isEmpty } from "../../../Util";
-import { ProductAttrConstraint } from "../attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrAsset } from "../attribute/Asset/ProductAttrAsset";
-import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { ProductAttrComputer, ProductItem } from "@stickerapp-org/nomisma";
+import { ProductService } from '../ProductService';
+import { ProductAttrNotSupportedException } from '$/product/exceptions/ProductAttrNotSupportedException';
+import { ProductAttrValueNotSupportedException } from '$/product/exceptions/ProductAttrValueNotSupportedException';
+import { ProductItemInvalidException } from '$/product/exceptions/ProductItemInvalidException';
+import { ProductItemOutOfStockException } from '$/product/exceptions/ProductItemOutOfStockException';
+import { isEmpty } from '../../../Util';
+import { ProductAttrConstraint } from '../attribute/Constraint/ProductAttrConstraint';
+import { ProductAttrAsset } from '../attribute/Asset/ProductAttrAsset';
+import { CollectionType } from '$/configuration/interface/CollectionConfig';
+import { ProductAttrComputer, ProductItem } from '@stickerapp-org/nomisma';
 
-export class ProductItemValidator 
-{
-	protected ps:           ProductService;
-	protected attrComputer: ProductAttrComputer;
+export class ProductItemValidator {
+  protected ps: ProductService;
+  protected attrComputer: ProductAttrComputer;
 
-	public constructor( ps: ProductService ) 
-	{
-		this.ps           = ps;
-		this.attrComputer = new ProductAttrComputer();
-	}
+  public constructor(ps: ProductService) {
+    this.ps = ps;
+    this.attrComputer = new ProductAttrComputer();
+  }
 
-	/**
-	 * Validates a ProductItem. If invalid, an error will be thrown.
-	 * 
-	 * @param item The ProductItem to validate.
-	 * @param allowUnsupportedAttributeAliases Determines whether it should allow unsupported attribute aliases.
-	 * @param allowUnsuggestedAttributeValues Determines whether it should allow unsuggested attribute values.
-	 * @param checkAgainstFilteredValues Determines whether it should check against filtered values. Will be applied only if allowUnsuggestedAttributeValues is set to false.
-	 */
-	public validate( item: ProductItem, allowUnsupportedAttributeAliases: boolean = true, allowUnsuggestedAttributeValues: boolean = false, checkAgainstFilteredValues: boolean = true ): void 
-	{
-		const map = this.ps.getProductMap( item.getProductFamilyName(), item.getProductName() );
+  /**
+   * Validates a ProductItem. If invalid, an error will be thrown.
+   *
+   * @param item The ProductItem to validate.
+   * @param allowUnsupportedAttributeAliases Determines whether it should allow unsupported attribute aliases.
+   * @param allowUnsuggestedAttributeValues Determines whether it should allow unsuggested attribute values.
+   * @param checkAgainstFilteredValues Determines whether it should check against filtered values. Will be applied only if allowUnsuggestedAttributeValues is set to false.
+   */
+  public validate(
+    item: ProductItem,
+    allowUnsupportedAttributeAliases: boolean = true,
+    allowUnsuggestedAttributeValues: boolean = false,
+    checkAgainstFilteredValues: boolean = true,
+  ): void {
+    const map = this.ps.getProductMap(item.getProductFamilyName(), item.getProductName());
 
-		this.attrComputer.evaluate( item, map, checkAgainstFilteredValues );
-		
-		const productFamily = this.ps.retrieveProductFamily( item.getProductFamilyName() );
-		const product = productFamily.getProduct( item.getProductName() );
-		
-		if ( productFamily.calculateUnits( item ) <= 0 )
-		{
-			throw new ProductItemInvalidException( "Item units can't be zero." );
-		}
+    this.attrComputer.evaluate(item, map, checkAgainstFilteredValues);
 
-		/**
-		 * TODO:
-		 * - Does units match? float / int
-		 * - Does attr match?
-		 */
+    const productFamily = this.ps.retrieveProductFamily(item.getProductFamilyName());
+    const product = productFamily.getProduct(item.getProductName());
 
-		if ( !product.testAttributes( item.getAttributes() ) ) 
-		{
-			let msg: string = "Attributes don't match product recipe - ";
+    if (productFamily.calculateUnits(item) <= 0) {
+      throw new ProductItemInvalidException("Item units can't be zero.");
+    }
 
-			for ( const [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
-			{
-				if ( attrValue !== item.getAttribute( attrName ) )
-				{
-					msg += `${ attrName } needs to ${ this.ps.retrieveAttribute( attrName ).isMultiValue() ? 'include' : 'be' } ${ attrValue }, `;
-				}
-			}
+    /**
+     * TODO:
+     * - Does units match? float / int
+     * - Does attr match?
+     */
 
-			throw new ProductItemInvalidException( msg.slice( 0, -2 ) );
-		}
+    if (!product.getAttributeManager().test(item.getAttributes())) {
+      let msg: string = "Attributes don't match product recipe - ";
 
-		const assets = this.ps.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, productFamily.getAssetCollectionName() )?.getAll();
+      for (const [attrName, attrValue] of Object.entries(
+        product.getAttributeManager().getAllValues(),
+      )) {
+        if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
+          msg += `${attrName} needs to ${
+            this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'
+          } ${attrValue}, `;
+        }
+      }
 
-		for ( let [ attrName, value ] of Object.entries( item.getAttributes() ) ) 
-		{
-			if ( Array.isArray( value ) ) 
-			{
-				value = value.filter( v => !isEmpty( v ) );
-			}
+      throw new ProductItemInvalidException(msg.slice(0, -2));
+    }
 
-			if ( !productFamily.canHaveAttr( attrName ) )
-			{
-				if ( !allowUnsupportedAttributeAliases )
-				{
-					throw new ProductAttrNotSupportedException( `Attribute name "${ attrName }" is not supported by product` );
-				}
+    const assets = this.ps
+      .retrieveCollection<ProductAttrAsset>(
+        CollectionType.Asset,
+        productFamily.getAssetCollectionName(),
+      )
+      ?.getAll();
 
-				continue;
-			}
+    for (let [attrName, value] of Object.entries(item.getAttributes())) {
+      if (Array.isArray(value)) {
+        value = value.filter((v) => !isEmpty(v));
+      }
 
-			const attr = productFamily.getAttribute( attrName );
+      if (!productFamily.canHaveAttr(attrName)) {
+        if (!allowUnsupportedAttributeAliases) {
+          throw new ProductAttrNotSupportedException(
+            `Attribute name "${attrName}" is not supported by product`,
+          );
+        }
 
-			if ( attr.canBe( value ) )
-			{
-				const attrValues = Array.isArray( value ) ? value : [ value ];
+        continue;
+      }
 
-				if ( !allowUnsuggestedAttributeValues && !isEmpty( value ) && !attr.isDynamicValue() ) 
-				{
-					for ( const attrValue of attrValues )
-					{
-						if ( !this.attrComputer.isInSuggestedValues( attrName, attrValue ) )
-						{
-							throw new ProductAttrValueNotSupportedException( `"${ attrValue }" is not suggested as ${ attrName }` );
-						}
-					}
-				}
+      const attr = productFamily.getAttribute(attrName);
 
-				for ( const attrValue of attrValues ) 
-				{
-					const productAttrValue = attr.getAttrValue( attrValue );
+      if (attr.canBe(value)) {
+        const attrValues = Array.isArray(value) ? value : [value];
 
-					if ( productAttrValue && this.ps.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, productFamily.getConstraintsCollectionName() )?.get( attrName )?.getConstraint( productAttrValue )?.testOnItem( item ) === false )
-					{
-						throw new ProductItemInvalidException( `Failed due to constraints related to "${ productAttrValue }" (${ attrName })` );
-					}
-				}
+        if (!allowUnsuggestedAttributeValues && !isEmpty(value) && !attr.isDynamicValue()) {
+          for (const attrValue of attrValues) {
+            if (!this.attrComputer.isInSuggestedValues(attrName, attrValue)) {
+              throw new ProductAttrValueNotSupportedException(
+                `"${attrValue}" is not suggested as ${attrName}`,
+              );
+            }
+          }
+        }
 
-				if ( assets && attrName in assets ) 
-				{
-					const asset = assets[ attrName ];
+        for (const attrValue of attrValues) {
+          const productAttrValue = attr.getAttrValue(attrValue);
 
-					for ( const attrValue of attrValues ) 
-					{
-						if ( !asset.isAvailable( attrValue ) ) 
-						{
-							throw new ProductItemOutOfStockException( `${ attrName } "${ attrValue }" is out of stock` );
-						}
-					}
-				}
-			}
-		}
-	}
+          if (
+            productAttrValue &&
+            this.ps
+              .retrieveCollection<ProductAttrConstraint>(
+                CollectionType.Constraint,
+                productFamily.getConstraintsCollectionName(),
+              )
+              ?.get(attrName)
+              ?.getConstraint(productAttrValue)
+              ?.testOnItem(item) === false
+          ) {
+            throw new ProductItemInvalidException(
+              `Failed due to constraints related to "${productAttrValue}" (${attrName})`,
+            );
+          }
+        }
+
+        if (assets && attrName in assets) {
+          const asset = assets[attrName];
+
+          for (const attrValue of attrValues) {
+            if (!asset.isAvailable(attrValue)) {
+              throw new ProductItemOutOfStockException(
+                `${attrName} "${attrValue}" is out of stock`,
+              );
+            }
+          }
+        }
+      }
+    }
+  }
 }

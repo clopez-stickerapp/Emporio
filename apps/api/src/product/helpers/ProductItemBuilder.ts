@@ -1,66 +1,62 @@
-import { ProductFamily } from "../ProductFamily";
-import { Product } from "../Product";
-import { ProductItem, AttributesMap, ProductAttrComputer } from "@stickerapp-org/nomisma";
+import { ProductFamily } from '../ProductFamily';
+import { Product } from '../Product';
+import { ProductItem, AttributesMap, ProductAttrComputer } from '@stickerapp-org/nomisma';
 
-export class ProductItemBuilder 
-{
-	protected attrComputer: ProductAttrComputer;
+export class ProductItemBuilder {
+  protected attrComputer: ProductAttrComputer;
 
-	public constructor() 
-	{
-		this.attrComputer = new ProductAttrComputer();
-	}
+  public constructor() {
+    this.attrComputer = new ProductAttrComputer();
+  }
 
-	public createItem( productFamily: ProductFamily, product: Product, map: AttributesMap, useFilters: boolean = true ): ProductItem 
-	{
-		const item = new ProductItem( productFamily.getName(), product.getName() );
+  public createItem(
+    productFamily: ProductFamily,
+    product: Product,
+    map: AttributesMap,
+    useFilters: boolean = true,
+  ): ProductItem {
+    const item = new ProductItem(productFamily.getName(), product.getName());
 
-		this.attrComputer.evaluate( item, map, useFilters );
+    this.attrComputer.evaluate(item, map, useFilters);
 
-		for ( let [ attrName, attrValue ] of Object.entries( product.getRequiredAttrs() ) ) 
-		{
-			const attr = productFamily.getAttribute( attrName );
-			
-			if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-			{
-				attrValue = attrValue[ 0 ];
-			}
+    for (let [attrName, attrValue] of Object.entries(
+      product.getAttributeManager().getAllValues(),
+    )) {
+      const attr = productFamily.getAttribute(attrName);
 
-			if ( attr.canBe( attrValue ) ) 
-			{
-				item.setAttribute( attrName, attrValue );
-			}
-		}
-		
-		this.attrComputer.evaluate( item, map, useFilters );
+      if (Array.isArray(attrValue) && attrValue.length && !attr.isMultiValue()) {
+        attrValue = attrValue[0];
+      }
 
-		for ( const [ attrName, attr ] of Object.entries( productFamily.getRequiredAttrs() ) ) 
-		{
-			let attrValue = product.getAttrValue( attrName );
+      if (attrValue !== undefined && attr.canBe(attrValue)) {
+        item.setAttribute(attrName, attrValue);
+      }
+    }
 
-			if ( !attrValue ) 
-			{
-				const defaultValue = this.attrComputer.getDefaultValue( attrName );
+    this.attrComputer.evaluate(item, map, useFilters);
 
-				if ( defaultValue !== null ) 
-				{
-					attrValue = defaultValue;
-				}
+    for (const [attrName, attr] of Object.entries(productFamily.getRequiredAttrs())) {
+      let attrValue = product.getAttributeManager().getValue(attrName);
 
-				if ( Array.isArray( attrValue ) && attrValue.length && !attr.isMultiValue() ) 
-				{
-					attrValue = attrValue[ 0 ];
-				}
-	
-				if ( attrValue !== undefined )
-				{
-					item.setAttribute( attrName, attrValue );
+      if (attrValue === undefined) {
+        const defaultValue = this.attrComputer.getDefaultValue(attrName);
 
-					this.attrComputer.evaluate( item, map, useFilters );
-				}
-			}
-		}
+        if (defaultValue !== null) {
+          attrValue = defaultValue;
+        }
 
-		return item;
-	}
+        if (Array.isArray(attrValue) && attrValue.length && !attr.isMultiValue()) {
+          attrValue = attrValue[0];
+        }
+
+        if (attrValue !== undefined) {
+          item.setAttribute(attrName, attrValue);
+
+          this.attrComputer.evaluate(item, map, useFilters);
+        }
+      }
+    }
+
+    return item;
+  }
 }

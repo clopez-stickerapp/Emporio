@@ -3,6 +3,7 @@ import { ProductAttr } from './ProductAttr';
 import { ConditionBuilder } from '$/conditions/ConditionBuilder';
 import { ConditionOperators } from '$/conditions/ConditionOperators';
 import { Attributes, AttributeValue } from '@stickerapp-org/nomisma';
+import { Conditions } from '$/conditions/Conditions';
 
 type AttributeData<T> = {
   instance: ProductAttr;
@@ -48,8 +49,18 @@ export class AttributeManager<T extends Record<string, any> = {}> {
     return this.attributes[attributeName];
   }
 
+  public getValue(attributeName: string): AttributeValue | undefined {
+    return this.attributes[attributeName]?.attrValue;
+  }
+
   public getAll(): Record<string, AttributeData<T>> {
     return this.attributes;
+  }
+
+  public getAllValues(): Record<string, AttributeValue | undefined> {
+    return Object.fromEntries(
+      Object.entries(this.attributes).map(([key, value]) => [key, value.attrValue]),
+    );
   }
 
   public has(attributeName: string): boolean {
@@ -58,5 +69,9 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 
   public test(attributes: Attributes): boolean {
     return this.conditions.test(attributes);
+  }
+
+  public getConditions(): Conditions {
+    return this.conditions.getConditions();
   }
 }

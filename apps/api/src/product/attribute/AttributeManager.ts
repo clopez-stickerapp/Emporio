@@ -4,6 +4,7 @@ import { ConditionBuilder } from '$/conditions/ConditionBuilder';
 import { ConditionOperators } from '$/conditions/ConditionOperators';
 import { Attributes, AttributeValue } from '@stickerapp-org/nomisma';
 import { Conditions } from '$/conditions/Conditions';
+import { toArray } from '../../../Util';
 
 type AttributeData<T> = {
   instance: ProductAttr;
@@ -26,13 +27,11 @@ export class AttributeManager<T extends Record<string, any> = {}> {
       throw new Error(`Attribute already exists: ${attribute}`);
     }
 
-    this.attributes[attribute] = {
-      instance: productAttribute,
-      attrValue: value,
-      ...(additionalData as T),
-    };
-
     if (value !== undefined) {
+      if (toArray(value).some((v) => !productAttribute.canBe(v, true))) {
+        throw new Error(`Invalid value '${value}' for attribute: ${attribute}`);
+      }
+
       if (productAttribute.isMultiValue()) {
         const values = Array.isArray(value) ? value : [value.toString()];
         for (const subValue of values) {
@@ -47,6 +46,12 @@ export class AttributeManager<T extends Record<string, any> = {}> {
         this.conditions.addCondition({ attribute, operator, value });
       }
     }
+
+    this.attributes[attribute] = {
+      instance: productAttribute,
+      attrValue: value,
+      ...(additionalData as T),
+    };
   }
 
   public get(attributeName: string): AttributeData<T> | undefined {

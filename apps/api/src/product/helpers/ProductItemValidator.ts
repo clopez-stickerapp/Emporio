@@ -8,6 +8,7 @@ import { ProductAttrConstraint } from '../attribute/Constraint/ProductAttrConstr
 import { ProductAttrAsset } from '../attribute/Asset/ProductAttrAsset';
 import { CollectionType } from '$/configuration/interface/CollectionConfig';
 import { ProductAttrComputer, ProductItem } from '@stickerapp-org/nomisma';
+import { ProductFamily } from '../ProductFamily';
 
 export class ProductItemValidator {
   protected ps: ProductService;
@@ -49,20 +50,28 @@ export class ProductItemValidator {
      * - Does attr match?
      */
 
-    if (!product.getAttributeManager().test(item.getAttributes())) {
-      let msg: string = "Attributes don't match product recipe - ";
+    for (const instance of [productFamily, product]) {
+      if (!instance.getAttributeManager().test(item.getAttributes())) {
+        let msg: string = `Attributes don't match ${
+          instance instanceof ProductFamily ? 'family' : 'product'
+        } recipe - `;
 
-      for (const [attrName, attrValue] of Object.entries(
-        product.getAttributeManager().getAllValues(),
-      )) {
-        if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
-          msg += `${attrName} needs to ${
-            this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'
-          } ${attrValue}, `;
+        for (const [attrName, attrValue] of Object.entries(
+          instance.getAttributeManager().getAllValues(),
+        )) {
+          if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
+            const test = Array.isArray(attrValue)
+              ? `one of the following: ${attrValue.join(', ')}`
+              : `${attrValue}`;
+
+            msg += `${attrName} must ${
+              this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'
+            } ${test}`;
+          }
         }
-      }
 
-      throw new ProductItemInvalidException(msg.slice(0, -2));
+        throw new ProductItemInvalidException(msg);
+      }
     }
 
     const assets = this.ps
@@ -77,10 +86,10 @@ export class ProductItemValidator {
         value = value.filter((v) => !isEmpty(v));
       }
 
-      if (!productFamily.canHaveAttr(attrName)) {
+      if (!productFamily.getAttributeManager().has(attrName)) {
         if (!allowUnsupportedAttributeAliases) {
           throw new ProductAttrNotSupportedException(
-            `Attribute name "${attrName}" is not supported by product`,
+            `Attribute name "${attrName}" is not supported by family`,
           );
         }
 

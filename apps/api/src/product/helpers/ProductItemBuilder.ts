@@ -35,7 +35,9 @@ export class ProductItemBuilder {
 
     this.attrComputer.evaluate(item, map, useFilters);
 
-    for (const [attrName, attr] of Object.entries(productFamily.getRequiredAttrs())) {
+    for (const [attrName, { instance: attr }] of Object.entries(
+      productFamily.getAttributeManager().getAll(),
+    )) {
       let attrValue = product.getAttributeManager().getValue(attrName);
 
       if (attrValue === undefined) {

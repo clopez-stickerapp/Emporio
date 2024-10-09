@@ -5,6 +5,7 @@ import { AllUnitTypes, UnitTypeNames } from './unit-type/AllUnitTypes';
 import { UnitType } from './unit-type/UnitType';
 import { ProductConfig } from '$/configuration/interface/ProductConfig';
 import { AttributeValueMulti, ProductItem } from '@stickerapp-org/nomisma';
+import { AttributeManager } from './attribute/AttributeManager';
 
 export class ProductFamily {
   protected name: string;
@@ -18,8 +19,7 @@ export class ProductFamily {
   protected unitType: UnitType;
 
   protected products: Record<string, Product> = {};
-  protected requiredAttrs: Record<string, ProductAttr> = {};
-  protected supportedAttrs: Record<string, ProductAttr> = {};
+  protected attributeManager: AttributeManager<{ required: boolean }> = new AttributeManager();
 
   public constructor(config: FamilyConfig) {
     this.name = config.name;
@@ -81,64 +81,18 @@ export class ProductFamily {
     return this.products;
   }
 
-  public requireAttr(name: string, instance: ProductAttr): void {
-    if (this.requiredAttrs[name]) {
-      throw new Error('Attribute alias already required.');
-    }
-
-    if (this.supportedAttrs[name]) {
-      throw new Error('Attribute alias already supported.');
-    }
-
-    this.requiredAttrs[name] = instance;
-  }
-
-  public getRequiredAttrs(): Record<string, ProductAttr> {
-    return this.requiredAttrs;
-  }
-
-  public isRequired(alias: string): boolean {
-    return this.requiredAttrs[alias] !== undefined;
-  }
-
-  public supportAttr(name: string, instance: ProductAttr): void {
-    if (this.requiredAttrs[name]) {
-      throw new Error('Attribute alias already required.');
-    }
-
-    if (this.supportedAttrs[name]) {
-      throw new Error('Attribute alias already supported.');
-    }
-
-    this.supportedAttrs[name] = instance;
-  }
-
-  public getSupportedAttrs(): Record<string, ProductAttr> {
-    return this.supportedAttrs;
-  }
-
-  public isSupported(alias: string): boolean {
-    if (this.isRequired(alias)) {
-      return true;
-    }
-
-    return this.supportedAttrs[alias] !== undefined;
-  }
-
-  public getAttributes(): Record<string, ProductAttr> {
-    return { ...this.supportedAttrs, ...this.requiredAttrs };
-  }
-
   public getAttribute(name: string): ProductAttr {
-    if (this.requiredAttrs[name]) {
-      return this.requiredAttrs[name];
-    }
+    const attribute = this.attributeManager.get(name);
 
-    if (this.supportedAttrs[name]) {
-      return this.supportedAttrs[name];
+    if (attribute) {
+      return attribute.instance;
     }
 
     throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
+  }
+
+  public getAttributeManager() {
+    return this.attributeManager;
   }
 
   public getConstraintsCollectionName(): string {
@@ -167,14 +121,6 @@ export class ProductFamily {
 
   public calculateUnits(productItem: ProductItem): number {
     return this.unitType.calculateUnits(productItem);
-  }
-
-  public canHaveAttr(attrName: string): boolean {
-    if (this.getRequiredAttrs()[attrName] || this.getSupportedAttrs()[attrName]) {
-      return true;
-    }
-
-    return false;
   }
 
   public getAllAttributeValueOptionsForProduct(

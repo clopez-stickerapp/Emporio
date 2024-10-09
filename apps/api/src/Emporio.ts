@@ -241,9 +241,9 @@ export class Emporio {
   ): boolean {
     const family = this.productService.retrieveProductFamily(productFamilyName);
 
-    if (family.isRequired(attributeName)) {
+    if (family.getAttributeManager().get(attributeName)?.required) {
       return true;
-    } else if (family.isSupported(attributeName)) {
+    } else if (family.getAttributeManager().has(attributeName)) {
       const product = this.productService
         .retrieveProductFamily(productFamilyName)
         .getProduct(productName);

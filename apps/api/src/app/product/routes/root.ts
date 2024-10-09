@@ -173,8 +173,12 @@ export default async function (fastify: FastifyInstance) {
     for (const family of productFamilies) {
       families[family.getName()] = {
         name: family.getName(),
-        supported: Object.keys(family.getAttributes()),
-        required: Object.keys(family.getRequiredAttrs()),
+        supported: Object.values(family.getAttributeManager().getAll()).map((attribute) =>
+          attribute.instance.getName(),
+        ),
+        required: Object.values(family.getAttributeManager().getAll())
+          .filter((attribute) => attribute.required)
+          .map((attribute) => attribute.instance.getName()),
         products: {},
       };
       for (const product of Object.values(family.getProducts())) {

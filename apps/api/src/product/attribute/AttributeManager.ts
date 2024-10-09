@@ -22,6 +22,10 @@ export class AttributeManager<T extends Record<string, any> = {}> {
   public add(productAttribute: ProductAttr, value?: ConditionValue, additionalData?: T): void {
     let attribute = productAttribute.getName();
 
+    if (this.has(attribute)) {
+      throw new Error(`Attribute already exists: ${attribute}`);
+    }
+
     this.attributes[attribute] = {
       instance: productAttribute,
       attrValue: value,

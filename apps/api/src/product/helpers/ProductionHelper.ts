@@ -127,7 +127,7 @@ export class ProductionHelper {
 		} else if (this.attrComputer.isSupported(attributeName)) {
 			const product = this.ps.retrieveProductFamily(this.item.getProductFamilyName()).getProduct(this.item.getProductName());
 
-			return product.getAttributeManager().has(attributeName);
+			return product.attributes.has(attributeName);
 		}
 
 		return false;

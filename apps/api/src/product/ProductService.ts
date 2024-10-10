@@ -174,7 +174,7 @@ export class ProductService {
 		const filter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName());
 		const constraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName());
 
-		for (const [attrName, { instance: attr }] of Object.entries(family.getAttributeManager().getAll())) {
+		for (const [attrName, { instance: attr }] of Object.entries(family.attributes.getAll())) {
 			const attrValues: Record<string, string | null> = {};
 
 			const attrConstraint = constraint?.get(attrName);
@@ -214,7 +214,7 @@ export class ProductService {
 				isDynamicValue: attr.isDynamicValue(),
 				isMultiValue: attr.isMultiValue(),
 				valueType: attr.getValueType(),
-				isRequired: family.getAttributeManager().get(attrName)?.required === true,
+				isRequired: family.attributes.get(attrName)?.required === true,
 				valuesAndConstraints: attrValues,
 				icons: icons,
 				filters: filters,

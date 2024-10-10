@@ -25,12 +25,12 @@ const PizzeriaFamily = new ProductFamily({
 	products: [],
 });
 
-PizzeriaFamily.getAttributeManager().add(SauceBaseAttribute, undefined, { required: true });
-PizzeriaFamily.getAttributeManager().add(IngredientAttribute, undefined, { required: true });
-PizzeriaFamily.getAttributeManager().add(CuisineAttribute, undefined, { required: true });
-PizzeriaFamily.getAttributeManager().add(PortionAttribute, undefined, { required: true });
-PizzeriaFamily.getAttributeManager().add(ToppingAttribute, undefined, { required: true });
-PizzeriaFamily.getAttributeManager().add(CrustAttribute, undefined, { required: false });
+PizzeriaFamily.attributes.add(SauceBaseAttribute, undefined, { required: true });
+PizzeriaFamily.attributes.add(IngredientAttribute, undefined, { required: true });
+PizzeriaFamily.attributes.add(CuisineAttribute, undefined, { required: true });
+PizzeriaFamily.attributes.add(PortionAttribute, undefined, { required: true });
+PizzeriaFamily.attributes.add(ToppingAttribute, undefined, { required: true });
+PizzeriaFamily.attributes.add(CrustAttribute, undefined, { required: false });
 
 PizzeriaFamily.addProduct({
 	name: PizzeriaProducts.MAKE_YOUR_OWN,

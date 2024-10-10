@@ -26,7 +26,7 @@ export class Product {
 		return this.productFamilyName;
 	}
 
-	public getAttributeManager(): AttributeManager {
+	public get attributes(): AttributeManager {
 		return this.attributeManager;
 	}
 

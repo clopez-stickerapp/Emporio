@@ -6,7 +6,7 @@ import { ProductAttrValueType } from '@stickerapp-org/nomisma';
 
 class DummyProduct extends Product {
 	public getConditions(): Condition[] {
-		return Object.values(this.getAttributeManager().getConditions()) as Condition[];
+		return Object.values(this.attributes.getConditions()) as Condition[];
 	}
 }
 
@@ -23,16 +23,16 @@ describe('Product', () => {
 	});
 
 	test('attributes', () => {
-		expect(product.getAttributeManager().has('foo')).toBe(false);
-		expect(product.getAttributeManager().getAllValues()).toEqual({});
-		expect(product.getAttributeManager().getValue('foo')).toBeUndefined();
+		expect(product.attributes.has('foo')).toBe(false);
+		expect(product.attributes.getAllValues()).toEqual({});
+		expect(product.attributes.getValue('foo')).toBeUndefined();
 
-		product.getAttributeManager().add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
 
-		expect(product.getAttributeManager().has('foo')).toBe(true);
-		expect(product.getAttributeManager().getValue('foo')).toBe('bar');
+		expect(product.attributes.has('foo')).toBe(true);
+		expect(product.attributes.getValue('foo')).toBe('bar');
 
-		expect(product.getAttributeManager().getAllValues()).toEqual({ foo: 'bar' });
+		expect(product.attributes.getAllValues()).toEqual({ foo: 'bar' });
 	});
 
 	describe('requireAttr', () => {
@@ -42,7 +42,7 @@ describe('Product', () => {
 			});
 
 			test('should add condition for non multivalue attribute', () => {
-				product.getAttributeManager().add(attribute, 'bar');
+				product.attributes.add(attribute, 'bar');
 
 				const conditions = product.getConditions();
 				expect(conditions.length).toBe(1);
@@ -64,7 +64,7 @@ describe('Product', () => {
 			});
 
 			test('should add conditions for multivalue attribute', () => {
-				product.getAttributeManager().add(attribute, ['bar', 'baz']);
+				product.attributes.add(attribute, ['bar', 'baz']);
 
 				const conditions = product.getConditions();
 				expect(conditions.length).toBe(2);
@@ -88,14 +88,14 @@ describe('Product', () => {
 			baz: 'qux',
 		};
 
-		expect(product.getAttributeManager().test(attributes)).toBe(true);
+		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.getAttributeManager().add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
 
-		expect(product.getAttributeManager().test(attributes)).toBe(true);
+		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.getAttributeManager().add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING }), 'fail');
+		product.attributes.add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING }), 'fail');
 
-		expect(product.getAttributeManager().test(attributes)).toBe(false);
+		expect(product.attributes.test(attributes)).toBe(false);
 	});
 });

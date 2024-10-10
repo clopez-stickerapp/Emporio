@@ -12,7 +12,7 @@ export class ProductItemConditionablesMap {
 		this.map['item.productName'] = productNameConditionable;
 		const unitConditionable = new ProductItemConditionableParam('item.units', 'Units', true, false, 'float');
 		this.map['item.units'] = unitConditionable;
-		for (const [alias, { instance: productAttr }] of Object.entries(productFamily.getAttributeManager().getAll())) {
+		for (const [alias, { instance: productAttr }] of Object.entries(productFamily.attributes.getAll())) {
 			const values: string[] = [];
 			for (const attrValue of productAttr.getValues()) {
 				values.push(attrValue.toString());

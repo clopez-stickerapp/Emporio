@@ -67,20 +67,20 @@ describe('ProductFamily', () => {
 			values: ['foo', 'baz'],
 		});
 
-		expect(() => family.getAttributeManager().add(attrFoo, undefined, { required: true })).not.toThrowError(Error);
-		expect(() => family.getAttributeManager().add(attrFoo, undefined, { required: true })).toThrowError(Error);
-		expect(() => family.getAttributeManager().add(attrFoo, undefined, { required: false })).toThrowError(Error);
-		expect(() => family.getAttributeManager().add(attrBar, undefined, { required: false })).not.toThrowError(Error);
-		expect(() => family.getAttributeManager().add(attrBar, undefined, { required: true })).toThrowError(Error);
-		expect(() => family.getAttributeManager().add(attrBar, undefined, { required: false })).toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, { required: true })).not.toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, { required: true })).toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, { required: false })).toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, { required: false })).not.toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, { required: true })).toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, { required: false })).toThrowError(Error);
 
-		expect(family.getAttributeManager().get('foo')?.required).toBe(true);
-		expect(family.getAttributeManager().get('bar')?.required).toBe(false);
+		expect(family.attributes.get('foo')?.required).toBe(true);
+		expect(family.attributes.get('bar')?.required).toBe(false);
 
-		expect(family.getAttributeManager().has('bar')).toBe(true);
-		expect(family.getAttributeManager().has('foo')).toBe(true);
+		expect(family.attributes.has('bar')).toBe(true);
+		expect(family.attributes.has('foo')).toBe(true);
 
-		expect(family.getAttributeManager().getAll()).toEqual({
+		expect(family.attributes.getAll()).toEqual({
 			foo: {
 				instance: attrFoo,
 				attrValue: undefined,
@@ -118,7 +118,7 @@ describe('ProductFamily', () => {
 			status: 'active',
 		});
 
-		family.getAttributeManager().add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar', 'baz'] }));
+		family.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar', 'baz'] }));
 
 		expect(family.getAllAttributeValueOptionsForProduct(family.getProduct('bar'), 'foo')).toEqual(['bar', 'baz']);
 	});
@@ -147,7 +147,7 @@ describe('ProductFamily', () => {
 			status: 'active',
 		});
 
-		family.getAttributeManager().add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }));
+		family.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }));
 
 		expect(family.getDefaultAttributeValueOptionsForProduct(family.getProduct('bar'), 'foo')).toEqual([]);
 	});

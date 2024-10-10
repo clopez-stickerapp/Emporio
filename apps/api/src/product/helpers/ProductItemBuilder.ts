@@ -14,7 +14,7 @@ export class ProductItemBuilder {
 
 		this.attrComputer.evaluate(item, map, useFilters);
 
-		for (let [attrName, attrValue] of Object.entries(product.getAttributeManager().getAllValues())) {
+		for (let [attrName, attrValue] of Object.entries(product.attributes.getAllValues())) {
 			const attr = productFamily.getAttribute(attrName);
 
 			if (Array.isArray(attrValue) && attrValue.length && !attr.isMultiValue()) {
@@ -28,11 +28,11 @@ export class ProductItemBuilder {
 
 		this.attrComputer.evaluate(item, map, useFilters);
 
-		for (const [attrName, { instance: attr, required }] of Object.entries(productFamily.getAttributeManager().getAll())) {
+		for (const [attrName, { instance: attr, required }] of Object.entries(productFamily.attributes.getAll())) {
 			if (!required) {
 				continue;
 			}
-			let attrValue = product.getAttributeManager().getValue(attrName);
+			let attrValue = product.attributes.getValue(attrName);
 
 			if (attrValue === undefined) {
 				const defaultValue = this.attrComputer.getDefaultValue(attrName);

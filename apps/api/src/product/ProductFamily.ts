@@ -61,7 +61,7 @@ export class ProductFamily {
 
 		for (const [name, value] of Object.entries(config.attributes ?? {})) {
 			const productAttr = this.getAttribute(name);
-			product.getAttributeManager().add(productAttr, value);
+			product.attributes.add(productAttr, value);
 		}
 
 		this.products[config.name] = product;
@@ -91,7 +91,7 @@ export class ProductFamily {
 		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
 	}
 
-	public getAttributeManager() {
+	public get attributes() {
 		return this.attributeManager;
 	}
 
@@ -127,7 +127,7 @@ export class ProductFamily {
 		const attribute = this.getAttribute(attrAlias);
 		const attrValues = this.getDefaultAttributeValueOptionsForProduct(product, attrAlias);
 
-		if (!product.getAttributeManager().has(attrAlias) || attribute.isMultiValue()) {
+		if (!product.attributes.has(attrAlias) || attribute.isMultiValue()) {
 			for (const attrValue of attribute.getValues()) {
 				if (!attrValues.includes(attrValue)) {
 					attrValues.push(attrValue);
@@ -142,7 +142,7 @@ export class ProductFamily {
 		const attrValues: AttributeValueMulti = [];
 		const attribute = this.getAttribute(attrAlias);
 
-		let withAttrValues = product.getAttributeManager().getValue(attrAlias) ?? [];
+		let withAttrValues = product.attributes.getValue(attrAlias) ?? [];
 
 		if (!Array.isArray(withAttrValues)) {
 			withAttrValues = [withAttrValues];

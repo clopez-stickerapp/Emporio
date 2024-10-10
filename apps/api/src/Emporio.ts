@@ -169,11 +169,11 @@ export class Emporio {
 	public isAttributeRequired(productFamilyName: string, productName: string, attributeName: string): boolean {
 		const family = this.productService.retrieveProductFamily(productFamilyName);
 
-		if (family.getAttributeManager().get(attributeName)?.required) {
+		if (family.attributes.get(attributeName)?.required) {
 			return true;
-		} else if (family.getAttributeManager().has(attributeName)) {
+		} else if (family.attributes.has(attributeName)) {
 			const product = this.productService.retrieveProductFamily(productFamilyName).getProduct(productName);
-			return product.getAttributeManager().has(attributeName);
+			return product.attributes.has(attributeName);
 		}
 
 		return false;
@@ -209,7 +209,7 @@ export class Emporio {
 			return true;
 		}
 
-		for (const [attrName, attrValue] of Object.entries(product.getAttributeManager().getAllValues())) {
+		for (const [attrName, attrValue] of Object.entries(product.attributes.getAllValues())) {
 			if (attrValue !== undefined) {
 				const attrAsset = assetCollection.get(attrName);
 				if (attrAsset && toArray(attrValue).some((value) => !attrAsset.isAvailable(value))) {

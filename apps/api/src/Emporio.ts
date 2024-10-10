@@ -12,15 +12,11 @@ import { StickerAppProductLegacySKUService } from './configuration/StickerAppPro
 import { ProductNames } from '$data/ConditionValueResolver';
 import { ProductAttrAsset } from './product/attribute/Asset/ProductAttrAsset';
 import { CollectionType } from './configuration/interface/CollectionConfig';
-import {
-  ProductAttrComputer,
-  SizeHelper,
-  ProductItem,
-  AttributeValueSingle,
-} from '@stickerapp-org/nomisma';
+import { ProductAttrComputer, SizeHelper, ProductItem, AttributeValueSingle } from '@stickerapp-org/nomisma';
 import { ProductServiceException } from './product/exceptions/ProductServiceException';
 import { throwIfError } from '$app/utils';
 import { PriceDTO, PriceListT, PriceT } from '@stickerapp-org/emporio-api-contract';
+import { toArray } from '../Util';
 
 export class Emporio {
   protected productService: ProductService;
@@ -38,34 +34,21 @@ export class Emporio {
   }
 
   public calculateUnits(productItem: ProductItem): number {
-    const productFamily = this.productService.retrieveProductFamily(
-      productItem.getProductFamilyName(),
-    );
+    const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
     return productFamily.calculateUnits(productItem);
   }
 
-  public async calculatePriceByUnits(
-    productItem: ProductItem,
-    units: number,
-    lang: string,
-    incVAT: boolean,
-  ): Promise<PriceT> {
-    const productFamily = this.productService.retrieveProductFamily(
-      productItem.getProductFamilyName(),
-    );
+  public async calculatePriceByUnits(productItem: ProductItem, units: number, lang: string, incVAT: boolean): Promise<PriceT> {
+    const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
     const currency = throwIfError(() => getCurrency(lang), ProductServiceException);
 
-    const minUnits = this.productService
-      .retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName())
-      .getValue(productItem);
+    const minUnits = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName()).getValue(productItem);
 
     if (units < minUnits && productItem.getProductName() !== ProductNames.PRODUCT_LIBRARY_DESIGN) {
       units = minUnits;
     }
 
-    let price = await this.productService
-      .retrievePriceProvider(productFamily.getPriceProviderName())
-      .calculatePrice(productItem, units, currency);
+    let price = await this.productService.retrievePriceProvider(productFamily.getPriceProviderName()).calculatePrice(productItem, units, currency);
 
     if (!incVAT) {
       const vat = throwIfError(() => getVatPercentage(lang), ProductServiceException);
@@ -77,20 +60,10 @@ export class Emporio {
     return price;
   }
 
-  public async calculatePrice(
-    productItem: ProductItem,
-    quantity: number,
-    lang: string,
-    incVAT: boolean,
-  ): Promise<PriceDTO> {
-    const productFamily = this.productService.retrieveProductFamily(
-      productItem.getProductFamilyName(),
-    );
+  public async calculatePrice(productItem: ProductItem, quantity: number, lang: string, incVAT: boolean): Promise<PriceDTO> {
+    const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
 
-    let units =
-      (productFamily.calculateUnits(productItem) /
-        (productItem.getAttribute<number>('quantity') ?? 1)) *
-      quantity;
+    let units = (productFamily.calculateUnits(productItem) / (productItem.getAttribute<number>('quantity') ?? 1)) * quantity;
     let price = await this.calculatePriceByUnits(productItem, units, lang, incVAT);
 
     let unitPrice = price.total / quantity;
@@ -103,19 +76,12 @@ export class Emporio {
     };
   }
 
-  public async getPriceList(
-    productItem: ProductItem,
-    lang: string,
-    inclVat: boolean,
-  ): Promise<PriceListT> {
-    const productFamily = this.productService.retrieveProductFamily(
-      productItem.getProductFamilyName(),
-    );
+  public async getPriceList(productItem: ProductItem, lang: string, inclVat: boolean): Promise<PriceListT> {
+    const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
     const minQuantity = this.getMinimumQuantity(productItem) ?? 1;
     const steps =
-      this.productService
-        .retrieveQuantityListCollection(productFamily.getQuantityCollectionName())
-        .getQuantityStepsFor(productItem, minQuantity) ?? [];
+      this.productService.retrieveQuantityListCollection(productFamily.getQuantityCollectionName()).getQuantityStepsFor(productItem, minQuantity) ??
+      [];
 
     const prices = await Promise.all(
       steps.map(async (step: number) => {
@@ -127,23 +93,15 @@ export class Emporio {
   }
 
   public getMinimumQuantity(productItem: ProductItem): number {
-    const productFamily = this.productService.retrieveProductFamily(
-      productItem.getProductFamilyName(),
-    );
-    const minUnitsCollection = this.productService.retrieveMinimumUnitsCollection(
-      productFamily.getMinimumUnitsCollectionName(),
-    );
+    const productFamily = this.productService.retrieveProductFamily(productItem.getProductFamilyName());
+    const minUnitsCollection = this.productService.retrieveMinimumUnitsCollection(productFamily.getMinimumUnitsCollectionName());
     const units = productFamily.calculateUnits(productItem);
     const quantity = productItem.getAttribute<number>('quantity') ?? 1;
 
     return Math.ceil(minUnitsCollection.getValue(productItem) / (units / quantity));
   }
 
-  public createItem(
-    productFamilyName: string,
-    productName: string,
-    useFilters: boolean,
-  ): ProductItem {
+  public createItem(productFamilyName: string, productName: string, useFilters: boolean): ProductItem {
     const productFamily = this.productService.retrieveProductFamily(productFamilyName);
     const product = productFamily.getProduct(productName);
     const map = this.productService.getProductMap(productFamilyName, productName);
@@ -151,9 +109,7 @@ export class Emporio {
     return this.builder.createItem(productFamily, product, map, useFilters);
   }
 
-  public getConditionableMap(
-    productFamilyName: string,
-  ): Record<string, ProductItemConditionableParam> {
+  public getConditionableMap(productFamilyName: string): Record<string, ProductItemConditionableParam> {
     const productFamily = this.productService.retrieveProductFamily(productFamilyName);
     const conditionableMap = new ProductItemConditionablesMap(productFamily);
     return conditionableMap.map;
@@ -165,19 +121,11 @@ export class Emporio {
     allowUnsuggestedAttributeValues: boolean,
     checkAgainstFilteredValues: boolean,
   ): void {
-    return this.validator.validate(
-      productItem,
-      allowUnsupportedAttributeAliases,
-      allowUnsuggestedAttributeValues,
-      checkAgainstFilteredValues,
-    );
+    return this.validator.validate(productItem, allowUnsupportedAttributeAliases, allowUnsuggestedAttributeValues, checkAgainstFilteredValues);
   }
 
   public setProductionSettingsOnItem(productItem: ProductItem, useFilters: boolean): ProductItem {
-    const map = this.productService.getProductMap(
-      productItem.getProductFamilyName(),
-      productItem.getProductName(),
-    );
+    const map = this.productService.getProductMap(productItem.getProductFamilyName(), productItem.getProductName());
     this.computer.evaluate(productItem, map, useFilters);
     const productionHelper = new ProductionHelper(this.productService, this.computer, productItem);
     productionHelper.setSettingsAutomatically();
@@ -185,10 +133,7 @@ export class Emporio {
   }
 
   public unsetProductionSettingsOnItem(productItem: ProductItem, useFilters: boolean): ProductItem {
-    const map = this.productService.getProductMap(
-      productItem.getProductFamilyName(),
-      productItem.getProductName(),
-    );
+    const map = this.productService.getProductMap(productItem.getProductFamilyName(), productItem.getProductName());
     this.computer.evaluate(productItem, map, useFilters);
     const productionHelper = new ProductionHelper(this.productService, this.computer, productItem);
     productionHelper.unsetSettingsAutomatically();
@@ -196,10 +141,7 @@ export class Emporio {
   }
 
   public getSizeDetails(productItem: ProductItem, useFilters: boolean) {
-    const map = this.productService.getProductMap(
-      productItem.getProductFamilyName(),
-      productItem.getProductName(),
-    );
+    const map = this.productService.getProductMap(productItem.getProductFamilyName(), productItem.getProductName());
     this.computer.evaluate(productItem, map, useFilters);
     const sizeHelper = new SizeHelper(this.computer, productItem);
     sizeHelper.evaluate();
@@ -217,36 +159,20 @@ export class Emporio {
     };
   }
 
-  public isAttributeAvailable(
-    productItem: ProductItem,
-    attributeName: string,
-    attributeValue: AttributeValueSingle,
-    useFilters: boolean,
-  ): boolean {
-    const map = this.productService.getProductMap(
-      productItem.getProductFamilyName(),
-      productItem.getProductName(),
-    );
+  public isAttributeAvailable(productItem: ProductItem, attributeName: string, attributeValue: AttributeValueSingle, useFilters: boolean): boolean {
+    const map = this.productService.getProductMap(productItem.getProductFamilyName(), productItem.getProductName());
     this.computer.evaluate(productItem, map, useFilters);
-    const attributeValueParsed =
-      this.computer.parseAttribute<AttributeValueSingle>(attributeName, attributeValue) ??
-      attributeValue;
+    const attributeValueParsed = this.computer.parseAttribute<AttributeValueSingle>(attributeName, attributeValue) ?? attributeValue;
     return this.computer.isAvailable(attributeName, attributeValueParsed);
   }
 
-  public isAttributeRequired(
-    productFamilyName: string,
-    productName: string,
-    attributeName: string,
-  ): boolean {
+  public isAttributeRequired(productFamilyName: string, productName: string, attributeName: string): boolean {
     const family = this.productService.retrieveProductFamily(productFamilyName);
 
     if (family.getAttributeManager().get(attributeName)?.required) {
       return true;
     } else if (family.getAttributeManager().has(attributeName)) {
-      const product = this.productService
-        .retrieveProductFamily(productFamilyName)
-        .getProduct(productName);
+      const product = this.productService.retrieveProductFamily(productFamilyName).getProduct(productName);
       return product.getAttributeManager().has(attributeName);
     }
 
@@ -254,10 +180,7 @@ export class Emporio {
   }
 
   public getFixedQuantityEvaluated(productItem: ProductItem, useFilters: boolean): boolean {
-    const map = this.productService.getProductMap(
-      productItem.getProductFamilyName(),
-      productItem.getProductName(),
-    );
+    const map = this.productService.getProductMap(productItem.getProductFamilyName(), productItem.getProductName());
     this.computer.evaluate(productItem, map, useFilters);
     const fixedQuantityHelper = new FixedQuantityHelper(this.computer, productItem);
     fixedQuantityHelper.evaluate();
@@ -280,22 +203,16 @@ export class Emporio {
       return false;
     }
 
-    const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>(
-      CollectionType.Asset,
-      productFamily.getAssetCollectionName(),
-    );
+    const assetCollection = this.productService.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, productFamily.getAssetCollectionName());
 
     if (!assetCollection) {
       return true;
     }
 
-    for (const [attrName, attrValue] of Object.entries(
-      product.getAttributeManager().getAllValues(),
-    )) {
+    for (const [attrName, attrValue] of Object.entries(product.getAttributeManager().getAllValues())) {
       if (attrValue !== undefined) {
-        const values = Array.isArray(attrValue) ? attrValue : [attrValue];
         const attrAsset = assetCollection.get(attrName);
-        if (attrAsset && values.some((value) => !attrAsset.isAvailable(value))) {
+        if (attrAsset && toArray(attrValue).some((value) => !attrAsset.isAvailable(value))) {
           return false;
         }
       }

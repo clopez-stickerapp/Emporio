@@ -52,21 +52,12 @@ export class ProductItemValidator {
 
     for (const instance of [productFamily, product]) {
       if (!instance.getAttributeManager().test(item.getAttributes())) {
-        let msg: string = `Attributes don't match ${
-          instance instanceof ProductFamily ? 'family' : 'product'
-        } recipe - `;
+        let msg: string = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe - `;
 
-        for (const [attrName, attrValue] of Object.entries(
-          instance.getAttributeManager().getAllValues(),
-        )) {
+        for (const [attrName, attrValue] of Object.entries(instance.getAttributeManager().getAllValues())) {
           if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
-            const test = Array.isArray(attrValue)
-              ? `one of the following: ${attrValue.join(', ')}`
-              : `${attrValue}`;
-
-            msg += `${attrName} must ${
-              this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'
-            } ${test}`;
+            const text = Array.isArray(attrValue) ? `one of the following: ${attrValue.join(', ')}` : `${attrValue}`;
+            msg += `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'} ${text}`;
           }
         }
 
@@ -74,12 +65,7 @@ export class ProductItemValidator {
       }
     }
 
-    const assets = this.ps
-      .retrieveCollection<ProductAttrAsset>(
-        CollectionType.Asset,
-        productFamily.getAssetCollectionName(),
-      )
-      ?.getAll();
+    const assets = this.ps.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, productFamily.getAssetCollectionName())?.getAll();
 
     for (let [attrName, value] of Object.entries(item.getAttributes())) {
       if (Array.isArray(value)) {
@@ -88,9 +74,7 @@ export class ProductItemValidator {
 
       if (!productFamily.getAttributeManager().has(attrName)) {
         if (!allowUnsupportedAttributeAliases) {
-          throw new ProductAttrNotSupportedException(
-            `Attribute name "${attrName}" is not supported by family`,
-          );
+          throw new ProductAttrNotSupportedException(`Attribute name "${attrName}" is not supported by family`);
         }
 
         continue;
@@ -104,9 +88,7 @@ export class ProductItemValidator {
         if (!allowUnsuggestedAttributeValues && !isEmpty(value) && !attr.isDynamicValue()) {
           for (const attrValue of attrValues) {
             if (!this.attrComputer.isInSuggestedValues(attrName, attrValue)) {
-              throw new ProductAttrValueNotSupportedException(
-                `"${attrValue}" is not suggested as ${attrName}`,
-              );
+              throw new ProductAttrValueNotSupportedException(`"${attrValue}" is not suggested as ${attrName}`);
             }
           }
         }
@@ -117,17 +99,12 @@ export class ProductItemValidator {
           if (
             productAttrValue &&
             this.ps
-              .retrieveCollection<ProductAttrConstraint>(
-                CollectionType.Constraint,
-                productFamily.getConstraintsCollectionName(),
-              )
+              .retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, productFamily.getConstraintsCollectionName())
               ?.get(attrName)
               ?.getConstraint(productAttrValue)
               ?.testOnItem(item) === false
           ) {
-            throw new ProductItemInvalidException(
-              `Failed due to constraints related to "${productAttrValue}" (${attrName})`,
-            );
+            throw new ProductItemInvalidException(`Failed due to constraints related to "${productAttrValue}" (${attrName})`);
           }
         }
 
@@ -136,9 +113,7 @@ export class ProductItemValidator {
 
           for (const attrValue of attrValues) {
             if (!asset.isAvailable(attrValue)) {
-              throw new ProductItemOutOfStockException(
-                `${attrName} "${attrValue}" is out of stock`,
-              );
+              throw new ProductItemOutOfStockException(`${attrName} "${attrValue}" is out of stock`);
             }
           }
         }

@@ -60,9 +60,23 @@ export class ProductFamily {
 
 		const product = new Product(this.getName(), config);
 
-		for (const [name, value] of Object.entries(config.attributes ?? {})) {
-			const productAttr = this.getAttribute(name);
-			product.attributes.add(productAttr, value);
+		for (const [name, attrValueOnProduct] of Object.entries(config.attributes ?? {})) {
+			const attribute = this.attributes.get(name);
+			const attrValueOnFamily = attribute?.attrValue;
+
+			if (!attribute) {
+				throw new Error(`Failed to add attribute '${name}': The attribute is not supported by the family`);
+			} else if (attrValueOnFamily !== undefined) {
+				for (const value of toArray(attrValueOnProduct)) {
+					if (!toArray(attrValueOnFamily).includes(value)) {
+						throw new Error(
+							`Failed to add value '${value}' for attribute '${name}' on product '${product.getName()}': The value is not supported by the family`,
+						);
+					}
+				}
+			}
+
+			product.attributes.add(attribute.instance, attrValueOnProduct);
 		}
 
 		this.products[config.name] = product;

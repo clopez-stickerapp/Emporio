@@ -4,5 +4,6 @@
 export default {
   singleQuote: true,
   trailingComma: "all",
-  printWidth: 100,
+  printWidth: 150,
+  useTabs: true,
 };

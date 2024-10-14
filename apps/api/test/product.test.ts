@@ -1,97 +1,101 @@
-import { Condition } from "$/conditions/Condition";
-import { ConditionOperators } from "$/conditions/ConditionOperators";
-import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { Product } from "$/product/Product";
-import { ProductAttrValueType } from "@stickerapp-org/nomisma";
+import { Condition } from '$/conditions/Condition';
+import { ConditionOperators } from '$/conditions/ConditionOperators';
+import { ProductAttr } from '$/product/attribute/ProductAttr';
+import { Product } from '$/product/Product';
+import { ProductAttrValueType } from '@stickerapp-org/nomisma';
 
 class DummyProduct extends Product {
 	public getConditions(): Condition[] {
-		return Object.values(this.conditions.getConditions()) as Condition[];
+		return Object.values(this.attributes.getConditions()) as Condition[];
 	}
 }
 
-describe("Product", () => {
+describe('Product', () => {
 	let product: DummyProduct;
 	let attribute: ProductAttr;
 
 	beforeEach(() => {
-		product = new DummyProduct("someFamily", {
-			name: "test-product",
-			sku: "sku123",
+		product = new DummyProduct('someFamily', {
+			name: 'test-product',
+			sku: 'sku123',
 			available: true,
 		});
 	});
 
-	test("attributes", () => {
-		expect(product.isAttrRequired("foo")).toBe(false);
-		expect(product.getRequiredAttrs()).toEqual({});
-		expect(product.getAttrValue("foo")).toBeUndefined();
+	test('attributes', () => {
+		expect(product.attributes.has('foo')).toBe(false);
+		expect(product.attributes.getAllValues()).toEqual({});
+		expect(product.attributes.getValue('foo')).toBeUndefined();
 
-		product.requireAttr(new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING }), "bar");
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
 
-		expect(product.isAttrRequired("foo")).toBe(true);
-		expect(product.getAttrValue("foo")).toBe("bar");
+		expect(product.attributes.has('foo')).toBe(true);
+		expect(product.attributes.getValue('foo')).toBe('bar');
 
-		expect(product.getRequiredAttrs()).toEqual({ foo: "bar" });
+		expect(product.attributes.getAllValues()).toEqual({ foo: 'bar' });
 	});
 
-	describe("requireAttr", () => {
-		describe("non multivalue attribute", () => {
+	describe('requireAttr', () => {
+		describe('non multivalue attribute', () => {
 			beforeEach(() => {
-				attribute = new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING });
+				attribute = new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING });
 			});
 
-			test("should add condition for non multivalue attribute", () => {
-				product.requireAttr(attribute, "bar");
+			test('should add condition for non multivalue attribute', () => {
+				product.attributes.add(attribute, 'bar');
 
 				const conditions = product.getConditions();
 				expect(conditions.length).toBe(1);
 
 				const condition = conditions[0];
-				expect(condition.columnName).toBe("foo");
+				expect(condition.columnName).toBe('foo');
 				expect(condition.operator).toBe(ConditionOperators.EQUAL);
-				expect(condition.conditionValue).toBe("bar");
+				expect(condition.conditionValue).toBe('bar');
 			});
 		});
 
-		describe("multivalue attribute", () => {
+		describe('multivalue attribute', () => {
 			beforeEach(() => {
-				attribute = new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING, multivalue: true });
+				attribute = new ProductAttr({
+					name: 'foo',
+					type: ProductAttrValueType.STRING,
+					multivalue: true,
+				});
 			});
 
-			test("should add conditions for multivalue attribute", () => {
-				product.requireAttr(attribute, ["bar", "baz"]);
+			test('should add conditions for multivalue attribute', () => {
+				product.attributes.add(attribute, ['bar', 'baz']);
 
 				const conditions = product.getConditions();
 				expect(conditions.length).toBe(2);
 
 				const condition1 = conditions[0];
-				expect(condition1.columnName).toBe("foo");
+				expect(condition1.columnName).toBe('foo');
 				expect(condition1.operator).toBe(ConditionOperators.IN);
-				expect(condition1.conditionValue).toBe("bar");
+				expect(condition1.conditionValue).toBe('bar');
 
 				const condition2 = conditions[1];
-				expect(condition2.columnName).toBe("foo");
+				expect(condition2.columnName).toBe('foo');
 				expect(condition2.operator).toBe(ConditionOperators.IN);
-				expect(condition2.conditionValue).toBe("baz");
+				expect(condition2.conditionValue).toBe('baz');
 			});
 		});
 	});
 
-	test("testAttributes", () => {
+	test('testAttributes', () => {
 		const attributes = {
-			foo: "bar",
-			baz: "qux",
+			foo: 'bar',
+			baz: 'qux',
 		};
 
-		expect(product.testAttributes(attributes)).toBe(true);
+		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.requireAttr(new ProductAttr({ name: "foo", type: ProductAttrValueType.STRING }), "bar");
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
 
-		expect(product.testAttributes(attributes)).toBe(true);
+		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.requireAttr(new ProductAttr({ name: "baz", type: ProductAttrValueType.STRING }), "fail");
+		product.attributes.add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING }), 'fail');
 
-		expect(product.testAttributes(attributes)).toBe(false);
+		expect(product.attributes.test(attributes)).toBe(false);
 	});
 });

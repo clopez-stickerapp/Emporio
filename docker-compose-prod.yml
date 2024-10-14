@@ -1,5 +1,5 @@
 services:
     emporio-api:
-        image: stickerapp/emporio-api:afb9c34811
+        image: stickerapp/emporio-api:53c427a004
     # emporio-ui:
     #     image: stickerapp/emporio-api: __TAG__

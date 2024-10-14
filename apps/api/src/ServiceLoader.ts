@@ -1,42 +1,42 @@
-import { readFolder, readYaml, extractFileName } from "$/helpers/FileSystem";
-import { ProductFamily } from "$/product/ProductFamily";
-import { ProductService } from "$/product/ProductService";
-import { ProductAttr } from "$/product/attribute/ProductAttr";
-import { NamedConfig } from "$data/NamedConfig";
-import { allAttributes } from "./configuration/attributes/attributes";
-import { RuleConfig } from "./configuration/interface/RuleConfig";
-import { FamilyConfig } from "./configuration/interface/FamilyConfig";
-import { PriceProviderConfig } from "./configuration/interface/PriceProviderConfig";
-import { ProductConfig } from "./configuration/interface/ProductConfig";
-import { QuantityProviderConfig } from "./configuration/interface/QuantityProviderConfig";
-import { ServiceConfig } from "./configuration/interface/ServiceConfig";
-import { ProductAttrConstraint } from "$/product/attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrFilter } from "$/product/attribute/Filter/ProductAttrFilter";
-import { DynamicValueConfig } from "./configuration/interface/DynamicValueConfig";
-import { ProductPriceProvider } from "$/prices/ProductPriceProvider";
-import { StickerPriceProvider } from "./configuration/price-providers/StickerPriceProvider";
-import { PromoProductPriceProvider } from "./configuration/price-providers/PromoProductPriceProvider";
-import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { StickerQuantityListCollection } from "./configuration/quantity-providers/StickerQuantityListCollection";
-import { ProductQuantityListCollection } from "$/prices/ProductQuantityListCollection";
-import { Collection } from "$/product/Collection";
-import { CollectionConfig, CollectionType } from "./configuration/interface/CollectionConfig";
-import { ProductAttrAsset } from "$/product/attribute/Asset/ProductAttrAsset";
-import { AssetConfig } from "./configuration/interface/AssetConfig";
-import { FilterConfig } from "./configuration/interface/FilterConfig";
-import { CurvePriceProvider } from "./configuration/price-providers/CurvePriceProvider";
-import path from "path";
+import { readFolder, readYaml, extractFileName } from '$/helpers/FileSystem';
+import { ProductFamily } from '$/product/ProductFamily';
+import { ProductService } from '$/product/ProductService';
+import { ProductAttr } from '$/product/attribute/ProductAttr';
+import { NamedConfig } from '$data/NamedConfig';
+import { allAttributes } from './configuration/attributes/attributes';
+import { RuleConfig } from './configuration/interface/RuleConfig';
+import { FamilyConfig } from './configuration/interface/FamilyConfig';
+import { PriceProviderConfig } from './configuration/interface/PriceProviderConfig';
+import { ProductConfig } from './configuration/interface/ProductConfig';
+import { QuantityProviderConfig } from './configuration/interface/QuantityProviderConfig';
+import { ServiceConfig } from './configuration/interface/ServiceConfig';
+import { ProductAttrConstraint } from '$/product/attribute/Constraint/ProductAttrConstraint';
+import { ProductAttrFilter } from '$/product/attribute/Filter/ProductAttrFilter';
+import { DynamicValueConfig } from './configuration/interface/DynamicValueConfig';
+import { ProductPriceProvider } from '$/prices/ProductPriceProvider';
+import { StickerPriceProvider } from './configuration/price-providers/StickerPriceProvider';
+import { PromoProductPriceProvider } from './configuration/price-providers/PromoProductPriceProvider';
+import { MinimumUnitsCollection } from '$/prices/MinimumUnitsCollection';
+import { StickerQuantityListCollection } from './configuration/quantity-providers/StickerQuantityListCollection';
+import { ProductQuantityListCollection } from '$/prices/ProductQuantityListCollection';
+import { Collection } from '$/product/Collection';
+import { CollectionConfig, CollectionType } from './configuration/interface/CollectionConfig';
+import { ProductAttrAsset } from '$/product/attribute/Asset/ProductAttrAsset';
+import { AssetConfig } from './configuration/interface/AssetConfig';
+import { FilterConfig } from './configuration/interface/FilterConfig';
+import { CurvePriceProvider } from './configuration/price-providers/CurvePriceProvider';
+import path from 'path';
 
-const root = path.join(__dirname , '..')
+const root = path.join(__dirname, '..');
 
-const servicePathFolder = root + "/configuration/services";
-const familyConfigFolder = root + "/configuration/families";
-const productConfigFolder = root + "/configuration/products";
-const constraintPathFolder = root + "/configuration/constraints";
-const filterPathFolder = root + "/configuration/filters";
-const minUnitPathFolder = root + "/configuration/min-units";
-const collectionPathFolder = root + "/configuration/collections";
-const assetPathFolder = root + "/configuration/assets";
+const servicePathFolder = root + '/configuration/services';
+const familyConfigFolder = root + '/configuration/families';
+const productConfigFolder = root + '/configuration/products';
+const constraintPathFolder = root + '/configuration/constraints';
+const filterPathFolder = root + '/configuration/filters';
+const minUnitPathFolder = root + '/configuration/min-units';
+const collectionPathFolder = root + '/configuration/collections';
+const assetPathFolder = root + '/configuration/assets';
 
 export class ServiceLoader {
 	protected serviceConfigs: Record<string, ServiceConfig> = {};
@@ -74,95 +74,101 @@ export class ServiceLoader {
 	}
 
 	protected load(): void {
-		console.debug("Loading services...");
+		console.debug('Loading services...');
 
 		// Load all service configs
-		console.debug("Loading service configs...");
+		console.debug('Loading service configs...');
 		this.serviceConfigs = this.readConfigs<ServiceConfig>(servicePathFolder);
 
 		// Load all family configs
-		console.debug("Loading family configs...");
+		console.debug('Loading family configs...');
 		this.familyConfigs = this.readConfigs<FamilyConfig>(familyConfigFolder);
 
 		// Load all product configs
-		console.debug("Loading product configs...");
+		console.debug('Loading product configs...');
 		this.productConfigs = this.readConfigs<ProductConfig>(productConfigFolder);
 
 		// Load constraints
-		console.debug("Loading constraint configs...");
+		console.debug('Loading constraint configs...');
 		this.constraintConfigs = this.readConfigs<RuleConfig>(constraintPathFolder);
 
 		// Load filters
-		console.debug("Loading filter configs...");
+		console.debug('Loading filter configs...');
 		this.filterConfigs = this.readConfigs<FilterConfig>(filterPathFolder);
 
 		// Load assets
-		console.debug("Loading asset configs...");
+		console.debug('Loading asset configs...');
 		this.assetConfigs = this.readConfigs<AssetConfig>(assetPathFolder);
 
 		// Load min units
-		console.debug("Loading min units configs...");
+		console.debug('Loading min units configs...');
 		this.minUnitsConfigs = this.readConfigs<DynamicValueConfig>(minUnitPathFolder);
 
 		// Load collections
-		console.debug("Loading collection configs...");
+		console.debug('Loading collection configs...');
 		this.collectionConfigs = this.readConfigs<CollectionConfig>(collectionPathFolder);
 	}
 
 	protected instantiate(): void {
-		console.debug("Instantiating services...");
+		console.debug('Instantiating services...');
 
 		// Instantiate all services
-		console.debug("Instantiating service instances...");
+		console.debug('Instantiating service instances...');
 		this.services = this.instantiateFromConfig<ServiceConfig, ProductService>(this.serviceConfigs, () => new ProductService());
 
 		// Instantiate all families
-		console.debug("Instantiating family instances...");
+		console.debug('Instantiating family instances...');
 		this.families = this.instantiateFromConfig<FamilyConfig, ProductFamily>(this.familyConfigs, (config) => new ProductFamily(config));
 
 		// Instantiate all attributes
-		console.debug("Instantiating attribute instances...");
-		this.attributes = Object.fromEntries(allAttributes.map((attribute) => [ attribute.getName(), attribute ]));
+		console.debug('Instantiating attribute instances...');
+		this.attributes = Object.fromEntries(allAttributes.map((attribute) => [attribute.getName(), attribute]));
 
 		// Instantiate all constraints
-		console.debug("Instantiating constraint instances...");
-		this.constraints = this.instantiateFromConfig<RuleConfig, ProductAttrConstraint>(this.constraintConfigs, (config) => new ProductAttrConstraint(config));
+		console.debug('Instantiating constraint instances...');
+		this.constraints = this.instantiateFromConfig<RuleConfig, ProductAttrConstraint>(
+			this.constraintConfigs,
+			(config) => new ProductAttrConstraint(config),
+		);
 
 		// Instantiate all filters
-		console.debug("Instantiating filter instances...");
+		console.debug('Instantiating filter instances...');
 		this.filters = this.instantiateFromConfig<FilterConfig, ProductAttrFilter>(this.filterConfigs, (config) => new ProductAttrFilter(config));
 
 		// Instantiate all assets
-		console.debug("Instantiating asset instances...");
+		console.debug('Instantiating asset instances...');
 		this.assets = this.instantiateFromConfig<AssetConfig, ProductAttrAsset>(this.assetConfigs, (config) => new ProductAttrAsset(config));
 
 		// Instantiate all min units
-		console.debug("Instantiating min units instances...");
-		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(this.minUnitsConfigs, (config) => new MinimumUnitsCollection(config));
+		console.debug('Instantiating min units instances...');
+		this.minUnits = this.instantiateFromConfig<DynamicValueConfig, MinimumUnitsCollection>(
+			this.minUnitsConfigs,
+			(config) => new MinimumUnitsCollection(config),
+		);
 
 		// Instantiate all price providers
-		console.debug("Instantiating price provider instances...");
+		console.debug('Instantiating price provider instances...');
 		// this.priceProviders = this.instantiateFromConfig<PriceProviderConfig, PriceProvider>(this.priceProviderConfigs, (config) => new PriceProvider(config));
 		this.priceProviders[StickerPriceProvider.NAME] = new StickerPriceProvider();
 		this.priceProviders[PromoProductPriceProvider.NAME] = new PromoProductPriceProvider();
 		this.priceProviders[CurvePriceProvider.NAME] = new CurvePriceProvider();
 
 		// Instantiate all quantity providers
-		console.debug("Instantiating quantity provider instances...");
+		console.debug('Instantiating quantity provider instances...');
 		// this.quantityProviders = this.instantiateFromConfig<QuantityProviderConfig, QuantityProvider>(this.quantityProviderConfigs, (config) => new QuantityProvider(config));
-		this.quantityProviders["sticker_quantity_lists"] = new StickerQuantityListCollection();
+		this.quantityProviders['sticker_quantity_lists'] = new StickerQuantityListCollection();
 
 		// Instantiate all collections
-		console.debug("Instantiating collection instances...");
+		console.debug('Instantiating collection instances...');
 		this.collections = this.instantiateFromConfig<CollectionConfig, Collection<any>>(this.collectionConfigs, (config) => new Collection(config));
 	}
 
 	protected registerAttributes(): void {
-		console.debug("Registering attributes...");
+		console.debug('Registering attributes...');
 
 		// Register all attributes to services
-		for(const [name, attribute] of Object.entries(this.attributes)) {
-			for(const service of Object.values(this.services)) {
+		for (const [name, attribute] of Object.entries(this.attributes)) {
+			for (const service of Object.values(this.services)) {
 				service.registerAttribute(name, attribute);
 			}
 		}
@@ -170,38 +176,38 @@ export class ServiceLoader {
 
 	protected registerFamilies(): void {
 		// Register all families to services
-		for(const [name, serviceConfig] of Object.entries(this.serviceConfigs)) {
+		for (const [name, serviceConfig] of Object.entries(this.serviceConfigs)) {
 			const service = this.services[name];
 
-			for(const family of serviceConfig.families?? []) {
+			for (const family of serviceConfig.families ?? []) {
 				console.debug(`Registering family '${family}' for service '${name}'...`);
 				const familyInstance = this.families[family];
 				this.services[name].registerProductFamily(family, familyInstance);
 
-				// Require all attributes for all families		
+				// Require all attributes for all families
 				const familyConfig = this.familyConfigs[family];
-				for(const attribute of familyConfig.rules.attributes?.required?? []) {
+				for (const attribute of familyConfig.rules.attributes?.required ?? []) {
 					console.debug(`Requiring attribute '${attribute}' for family '${family}'...`);
 					const attributeInstance = service.retrieveAttribute(attribute);
-					familyInstance.requireAttr(attribute, attributeInstance);
+					familyInstance.attributes.add(attributeInstance, undefined, { required: true });
 				}
 
 				// Support optional attributes for all families
-				for(const attribute of familyConfig.rules.attributes?.optional ?? []) {
+				for (const attribute of familyConfig.rules.attributes?.optional ?? []) {
 					console.debug(`Supporting attribute '${attribute}' for family '${family}'...`);
 					const attributeInstance = service.retrieveAttribute(attribute);
-					familyInstance.supportAttr(attribute, attributeInstance);
+					familyInstance.attributes.add(attributeInstance, undefined, { required: false });
 				}
-			}	
+			}
 		}
 	}
 
 	protected registerProducts(): void {
-		console.debug("Registering products...");
+		console.debug('Registering products...');
 
 		// Register all products to families
-		for(const [name, familyConfig] of Object.entries(this.familyConfigs)) {
-			for(const product of familyConfig.products) {
+		for (const [name, familyConfig] of Object.entries(this.familyConfigs)) {
+			for (const product of familyConfig.products) {
 				console.debug(`Registering product '${product}' for family '${name}'...`);
 				this.families[name].addProduct(this.productConfigs[product]);
 			}
@@ -209,10 +215,10 @@ export class ServiceLoader {
 	}
 
 	protected registerMinUnits(): void {
-		console.debug("Registering min units...");
+		console.debug('Registering min units...');
 
-		for(const [serviceName, service] of Object.entries(this.services)) {
-			for(const [name, minUnit] of Object.entries(this.minUnits)) {
+		for (const [serviceName, service] of Object.entries(this.services)) {
+			for (const [name, minUnit] of Object.entries(this.minUnits)) {
 				console.debug(`Registering min unit '${name}' for service '${serviceName}'...`);
 				service.registerMinimumUnitsCollection(minUnit);
 			}
@@ -220,10 +226,10 @@ export class ServiceLoader {
 	}
 
 	protected registerPriceProviders(): void {
-		console.debug("Registering price providers...");
+		console.debug('Registering price providers...');
 
-		for(const [serviceName, service] of Object.entries(this.services)) {
-			for(const [name, priceProvider] of Object.entries(this.priceProviders)) {
+		for (const [serviceName, service] of Object.entries(this.services)) {
+			for (const [name, priceProvider] of Object.entries(this.priceProviders)) {
 				console.debug(`Registering price provider '${name}' for service '${serviceName}'...`);
 				service.registerPriceProvider(priceProvider);
 			}
@@ -231,10 +237,10 @@ export class ServiceLoader {
 	}
 
 	protected registerQuantityLists(): void {
-		console.debug("Registering quantity lists...");
+		console.debug('Registering quantity lists...');
 
-		for(const [serviceName, service] of Object.entries(this.services)) {
-			for(const [name, quantityProvider] of Object.entries(this.quantityProviders)) {
+		for (const [serviceName, service] of Object.entries(this.services)) {
+			for (const [name, quantityProvider] of Object.entries(this.quantityProviders)) {
 				console.debug(`Registering quantity provider '${name}' for service '${serviceName}'...`);
 				service.registerQuantityListCollection(quantityProvider);
 			}
@@ -242,25 +248,25 @@ export class ServiceLoader {
 	}
 
 	protected registerCollections(): void {
-		console.debug( "Registering collections..." );
-		const collectionValues: Record<CollectionType, any> = { 
-			[CollectionType.Constraint]: this.constraints, 
+		console.debug('Registering collections...');
+		const collectionValues: Record<CollectionType, any> = {
+			[CollectionType.Constraint]: this.constraints,
 			[CollectionType.Filter]: this.filters,
 			[CollectionType.Asset]: this.assets,
 		};
 
-		for ( const config of Object.values( this.collectionConfigs ) ) {
-			for ( const value of config.values ) {
-				console.log( `Adding ${config.type} for '${value}' attribute to collection '${config.name}'...` );
-				this.collections[ config.name ].add( collectionValues[ config.type ][value]  );
+		for (const config of Object.values(this.collectionConfigs)) {
+			for (const value of config.values) {
+				console.log(`Adding ${config.type} for '${value}' attribute to collection '${config.name}'...`);
+				this.collections[config.name].add(collectionValues[config.type][value]);
 			}
 		}
 
-		for ( const [ serviceName, serviceConfig ] of Object.entries( this.serviceConfigs ) ) {
+		for (const [serviceName, serviceConfig] of Object.entries(this.serviceConfigs)) {
 			for (const [type, collectionNames] of Object.entries(serviceConfig.collections)) {
-				for ( const collectionName of collectionNames ) {
-					console.debug( `Registering collection '${collectionName}' of type '${type}' for service '${serviceName}'...` );
-					this.services[ serviceName ].registerCollection( this.collections[ collectionName ] );
+				for (const collectionName of collectionNames) {
+					console.debug(`Registering collection '${collectionName}' of type '${type}' for service '${serviceName}'...`);
+					this.services[serviceName].registerCollection(this.collections[collectionName]);
 				}
 			}
 		}
@@ -268,34 +274,34 @@ export class ServiceLoader {
 
 	protected readConfigs<T extends NamedConfig>(folder: string): Record<string, T> {
 		const configs: Record<string, T> = {};
-	
-		for(const configPath of readFolder(folder)) {
-			const config = readYaml<T>(folder + "/" + configPath);
+
+		for (const configPath of readFolder(folder)) {
+			const config = readYaml<T>(folder + '/' + configPath);
 			const configName = extractFileName(configPath);
-	
+
 			// Check if config name matches file name
-			if(config.name !== configName){
+			if (config.name !== configName) {
 				throw new Error(`Config name '${config.name}' does not match file name '${configName}'`);
 			}
-	
+
 			// Check for duplicate config names
-			if(configs[configName]){
+			if (configs[configName]) {
 				throw new Error(`Config with name '${configName}' already exists`);
 			}
-	
+
 			configs[configName] = config;
 		}
-	
+
 		return configs;
 	}
-	
+
 	protected instantiateFromConfig<T, V>(configs: Record<string, T>, constructor: (config: T) => V): Record<string, V> {
 		const instances: Record<string, any> = {};
-	
-		for(const [name, config] of Object.entries(configs)) {
+
+		for (const [name, config] of Object.entries(configs)) {
 			instances[name] = constructor(config);
 		}
-	
+
 		return instances;
 	}
 

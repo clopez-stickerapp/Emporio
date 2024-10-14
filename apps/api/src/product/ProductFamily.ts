@@ -1,10 +1,11 @@
-import { Product } from "./Product";
-import { FamilyConfig } from "$/configuration/interface/FamilyConfig";
-import { ProductAttr } from "./attribute/ProductAttr";
-import { AllUnitTypes, UnitTypeNames } from "./unit-type/AllUnitTypes";
-import { UnitType } from "./unit-type/UnitType";
-import { ProductConfig } from "$/configuration/interface/ProductConfig";
-import { AttributeValueMulti, ProductItem } from "@stickerapp-org/nomisma";
+import { Product } from './Product';
+import { FamilyConfig } from '$/configuration/interface/FamilyConfig';
+import { ProductAttr } from './attribute/ProductAttr';
+import { AllUnitTypes, UnitTypeNames } from './unit-type/AllUnitTypes';
+import { UnitType } from './unit-type/UnitType';
+import { ProductConfig } from '$/configuration/interface/ProductConfig';
+import { AttributeValueMulti, ProductItem } from '@stickerapp-org/nomisma';
+import { AttributeManager } from './attribute/AttributeManager';
 
 export class ProductFamily {
 	protected name: string;
@@ -18,10 +19,9 @@ export class ProductFamily {
 	protected unitType: UnitType;
 
 	protected products: Record<string, Product> = {};
-	protected requiredAttrs: Record<string, ProductAttr> = {};
-	protected supportedAttrs: Record<string, ProductAttr> = {};
+	protected attributeManager: AttributeManager<{ required: boolean }> = new AttributeManager();
 
-	public constructor(config: FamilyConfig){
+	public constructor(config: FamilyConfig) {
 		this.name = config.name;
 		this.attrConstraintCollectionName = config.rules.collections.constraint;
 		this.attrFilterCollectionName = config.rules.collections.filter;
@@ -54,14 +54,14 @@ export class ProductFamily {
 
 	public addProduct(config: ProductConfig): Product {
 		if (this.products[config.name]) {
-			throw new Error("Product already exists: " + config.name);
+			throw new Error('Product already exists: ' + config.name);
 		}
 
 		const product = new Product(this.getName(), config);
 
-		for ( const [ name, value ] of Object.entries( config.attributes ?? {} ) ) {
-			const productAttr = this.getAttribute( name );
-			product.requireAttr( productAttr, value );
+		for (const [name, value] of Object.entries(config.attributes ?? {})) {
+			const productAttr = this.getAttribute(name);
+			product.attributes.add(productAttr, value);
 		}
 
 		this.products[config.name] = product;
@@ -74,71 +74,25 @@ export class ProductFamily {
 			return this.products[productName];
 		}
 
-		throw new Error("Product not found: " + productName);
+		throw new Error('Product not found: ' + productName);
 	}
 
 	public getProducts(): Record<string, Product> {
 		return this.products;
 	}
 
-	public requireAttr(name: string, instance: ProductAttr): void {
-		if (this.requiredAttrs[name]) {
-			throw new Error("Attribute alias already required.");
-		}
-
-		if (this.supportedAttrs[name]) {
-			throw new Error("Attribute alias already supported.");
-		}
-
-		this.requiredAttrs[name] = instance;
-	}
-
-	public getRequiredAttrs(): Record<string, ProductAttr> {
-		return this.requiredAttrs;
-	}
-
-	public isRequired(alias: string): boolean {
-		return this.requiredAttrs[alias] !== undefined;
-	}
-
-	public supportAttr(name: string, instance: ProductAttr): void {
-		if (this.requiredAttrs[name]) {
-			throw new Error("Attribute alias already required.");
-		}
-
-		if (this.supportedAttrs[name]) {
-			throw new Error("Attribute alias already supported.");
-		}
-
-		this.supportedAttrs[name] = instance;
-	}
-
-	public getSupportedAttrs(): Record<string, ProductAttr> {
-		return this.supportedAttrs;
-	}
-
-	public isSupported(alias: string): boolean {
-		if (this.isRequired(alias)) {
-			return true;
-		}
-
-		return this.supportedAttrs[alias] !== undefined;
-	}
-
-	public getAttributes(): Record<string, ProductAttr> {
-		return {...this.supportedAttrs, ...this.requiredAttrs};
-	}
-
 	public getAttribute(name: string): ProductAttr {
-		if (this.requiredAttrs[name]) {
-			return this.requiredAttrs[name];
-		}
+		const attribute = this.attributeManager.get(name);
 
-		if (this.supportedAttrs[name]) {
-			return this.supportedAttrs[name];
+		if (attribute) {
+			return attribute.instance;
 		}
 
 		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
+	}
+
+	public get attributes() {
+		return this.attributeManager;
 	}
 
 	public getConstraintsCollectionName(): string {
@@ -169,26 +123,14 @@ export class ProductFamily {
 		return this.unitType.calculateUnits(productItem);
 	}
 
-	public canHaveAttr(attrName: string): boolean {
-		if(this.getRequiredAttrs()[attrName] || this.getSupportedAttrs()[attrName]){
-			return true;
-		}
+	public getAllAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
+		const attribute = this.getAttribute(attrAlias);
+		const attrValues = this.getDefaultAttributeValueOptionsForProduct(product, attrAlias);
 
-		return false;
-	}
-
-	public getAllAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti
-	{
-		const attribute = this.getAttribute( attrAlias );
-		const attrValues = this.getDefaultAttributeValueOptionsForProduct( product, attrAlias );
-
-		if ( !product.isAttrRequired( attrAlias ) || attribute.isMultiValue() ) 
-		{
-			for ( const attrValue of attribute.getValues() ) 
-			{
-				if ( !attrValues.includes( attrValue ) ) 
-				{
-					attrValues.push( attrValue );
+		if (!product.attributes.has(attrAlias) || attribute.isMultiValue()) {
+			for (const attrValue of attribute.getValues()) {
+				if (!attrValues.includes(attrValue)) {
+					attrValues.push(attrValue);
 				}
 			}
 		}
@@ -196,31 +138,24 @@ export class ProductFamily {
 		return attrValues;
 	}
 
-	public getDefaultAttributeValueOptionsForProduct( product: Product, attrAlias: string ): AttributeValueMulti 
-	{
+	public getDefaultAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
 		const attrValues: AttributeValueMulti = [];
-		const attribute = this.getAttribute( attrAlias );
+		const attribute = this.getAttribute(attrAlias);
 
-		let withAttrValues = product.getAttrValue( attrAlias ) ?? [];
+		let withAttrValues = product.attributes.getValue(attrAlias) ?? [];
 
-		if ( !Array.isArray( withAttrValues ) ) 
-		{
-			withAttrValues = [ withAttrValues ]
+		if (!Array.isArray(withAttrValues)) {
+			withAttrValues = [withAttrValues];
 		}
 
-		for ( const attrRawValue of withAttrValues ) 
-		{
-			if ( attribute.isDynamicValue() ) 
-			{
-				attrValues.push( attrRawValue );
-			} 
-			else 
-			{
-				const attrValue = attribute.getAttrValue( attrRawValue );
+		for (const attrRawValue of withAttrValues) {
+			if (attribute.isDynamicValue()) {
+				attrValues.push(attrRawValue);
+			} else {
+				const attrValue = attribute.getAttrValue(attrRawValue);
 
-				if ( attrValue !== null ) 
-				{
-					attrValues.push( attrValue );
+				if (attrValue !== null) {
+					attrValues.push(attrValue);
 				}
 			}
 		}

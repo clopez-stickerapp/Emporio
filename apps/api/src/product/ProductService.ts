@@ -1,15 +1,15 @@
-import { ProductPriceProvider } from "../prices/ProductPriceProvider";
-import { ProductQuantityListCollection } from "../prices/ProductQuantityListCollection";
-import { ProductAttr } from "./attribute/ProductAttr";
-import { ProductFamily } from "./ProductFamily";
-import { ProductDynamicValue } from "./value/ProductDynamicValue";
-import { MinimumUnitsCollection } from "$/prices/MinimumUnitsCollection";
-import { Collection, CollectionItem } from "./Collection";
-import { CollectionType } from "$/configuration/interface/CollectionConfig";
-import { AttributesMap, AttributeValueMulti } from "@stickerapp-org/nomisma";
-import { ProductAttrAsset } from "./attribute/Asset/ProductAttrAsset";
-import { ProductAttrConstraint } from "./attribute/Constraint/ProductAttrConstraint";
-import { ProductAttrFilter } from "./attribute/Filter/ProductAttrFilter";
+import { ProductPriceProvider } from '../prices/ProductPriceProvider';
+import { ProductQuantityListCollection } from '../prices/ProductQuantityListCollection';
+import { ProductAttr } from './attribute/ProductAttr';
+import { ProductFamily } from './ProductFamily';
+import { ProductDynamicValue } from './value/ProductDynamicValue';
+import { MinimumUnitsCollection } from '$/prices/MinimumUnitsCollection';
+import { Collection, CollectionItem } from './Collection';
+import { CollectionType } from '$/configuration/interface/CollectionConfig';
+import { AttributesMap } from '@stickerapp-org/nomisma';
+import { ProductAttrAsset } from './attribute/Asset/ProductAttrAsset';
+import { ProductAttrConstraint } from './attribute/Constraint/ProductAttrConstraint';
+import { ProductAttrFilter } from './attribute/Filter/ProductAttrFilter';
 
 export class ProductService {
 	protected attributes: Record<string, ProductAttr> = {};
@@ -21,7 +21,7 @@ export class ProductService {
 	protected collections: Record<CollectionType, Record<string, Collection<any>>> = {
 		filter: {},
 		constraint: {},
-		asset: {}
+		asset: {},
 	};
 
 	/**
@@ -37,7 +37,7 @@ export class ProductService {
 	protected priceProviders: Record<string, ProductPriceProvider> = {};
 
 	/**
-	 * Minimum units are used to tell the product service which are the minimum units 
+	 * Minimum units are used to tell the product service which are the minimum units
 	 * for a product. No less than the minimum units can be ordered.
 	 */
 	protected minimumUnitsCollections: Record<string, ProductDynamicValue> = {};
@@ -46,14 +46,14 @@ export class ProductService {
 		const type = collection.getType();
 
 		if (!this.collections[type]) {
-			throw new Error("Collection type not found with name " + type);
+			throw new Error('Collection type not found with name ' + type);
 		}
 
 		if (this.collections[type][collection.getCollectionName()]) {
-			throw new Error("Collection already exists with name " + collection.getCollectionName());
+			throw new Error('Collection already exists with name ' + collection.getCollectionName());
 		}
 
-		this.collections[type][collection.getCollectionName()] = collection
+		this.collections[type][collection.getCollectionName()] = collection;
 	}
 
 	public retrieveCollection<T extends CollectionItem>(type: CollectionType, collectionName: string): Collection<T> | null {
@@ -70,7 +70,7 @@ export class ProductService {
 
 	public registerMinimumUnitsCollection(collection: MinimumUnitsCollection): void {
 		if (this.minimumUnitsCollections[collection.getCollectionName()]) {
-			throw new Error("Minimum units collection already exists with name " + collection.getCollectionName());
+			throw new Error('Minimum units collection already exists with name ' + collection.getCollectionName());
 		}
 
 		this.minimumUnitsCollections[collection.getCollectionName()] = collection;
@@ -78,7 +78,7 @@ export class ProductService {
 
 	public retrieveMinimumUnitsCollection(collectionName: string): ProductDynamicValue {
 		if (!this.minimumUnitsCollections[collectionName]) {
-			throw new Error("Minimum units collection not found with name " + collectionName);
+			throw new Error('Minimum units collection not found with name ' + collectionName);
 		}
 
 		return this.minimumUnitsCollections[collectionName];
@@ -86,7 +86,7 @@ export class ProductService {
 
 	public registerAttribute(name: string, attr: ProductAttr): void {
 		if (this.attributes[name]) {
-			throw new Error("Attribute already exists with name " + attr.getName());
+			throw new Error('Attribute already exists with name ' + attr.getName());
 		}
 
 		this.attributes[name] = attr;
@@ -94,18 +94,17 @@ export class ProductService {
 
 	public retrieveAttribute(attrName: string): ProductAttr {
 		if (!this.attributes[attrName]) {
-
 			/** Start tempory compatibility code */
 			/** This code allows MaterialAttribute to resolve to material, the new name */
 			/** TODO: remove when no longer needed */
-			const lowerAttrName = attrName.toLowerCase().replace("attribute", "");
+			const lowerAttrName = attrName.toLowerCase().replace('attribute', '');
 
-			if(this.attributes[lowerAttrName]) {
+			if (this.attributes[lowerAttrName]) {
 				return this.attributes[lowerAttrName];
 			}
 			/** End of temporary code */
 
-			throw new Error("Attribute not found with name " + attrName);
+			throw new Error('Attribute not found with name ' + attrName);
 		}
 
 		return this.attributes[attrName];
@@ -113,7 +112,7 @@ export class ProductService {
 
 	public registerProductFamily(name: string, instance: ProductFamily): void {
 		if (this.productFamilies[name]) {
-			throw new Error("Product family already exists with name " + instance.getName());
+			throw new Error('Product family already exists with name ' + instance.getName());
 		}
 
 		this.productFamilies[name] = instance;
@@ -121,7 +120,7 @@ export class ProductService {
 
 	public retrieveProductFamily(productFamilyName: string): ProductFamily {
 		if (!this.productFamilies[productFamilyName]) {
-			throw new Error("Product family not found with name " + productFamilyName);
+			throw new Error('Product family not found with name ' + productFamilyName);
 		}
 
 		return this.productFamilies[productFamilyName];
@@ -129,7 +128,7 @@ export class ProductService {
 
 	public registerPriceProvider(provider: ProductPriceProvider): void {
 		if (this.priceProviders[provider.getName()]) {
-			throw new Error("PriceProvider already exists with name " + provider.getName());
+			throw new Error('PriceProvider already exists with name ' + provider.getName());
 		}
 
 		this.priceProviders[provider.getName()] = provider;
@@ -137,7 +136,7 @@ export class ProductService {
 
 	public retrievePriceProvider(providerName: string): ProductPriceProvider {
 		if (!this.priceProviders[providerName]) {
-			throw new Error("PriceProvider not found with name " + providerName);
+			throw new Error('PriceProvider not found with name ' + providerName);
 		}
 
 		return this.priceProviders[providerName];
@@ -145,7 +144,7 @@ export class ProductService {
 
 	public registerQuantityListCollection(collection: ProductQuantityListCollection): void {
 		if (this.quantityListCollections[collection.getCollectionName()]) {
-			throw new Error("QuantityList collection already exists with name " + collection.getCollectionName());
+			throw new Error('QuantityList collection already exists with name ' + collection.getCollectionName());
 		}
 
 		this.quantityListCollections[collection.getCollectionName()] = collection;
@@ -153,7 +152,7 @@ export class ProductService {
 
 	public retrieveQuantityListCollection(collectionName: string): ProductQuantityListCollection {
 		if (!this.quantityListCollections[collectionName]) {
-			throw new Error("QuantityList collection not found with name " + collectionName);
+			throw new Error('QuantityList collection not found with name ' + collectionName);
 		}
 
 		return this.quantityListCollections[collectionName];
@@ -170,19 +169,21 @@ export class ProductService {
 	public getProductMap(familyName: string, productName?: string): AttributesMap {
 		let map: AttributesMap = {};
 
-		const family     = this.retrieveProductFamily( familyName );
-		const asset      = this.retrieveCollection<ProductAttrAsset>( CollectionType.Asset, family.getAssetCollectionName() );
-		const filter     = this.retrieveCollection<ProductAttrFilter>( CollectionType.Filter, family.getFilterCollectionName() );
-		const constraint = this.retrieveCollection<ProductAttrConstraint>( CollectionType.Constraint, family.getConstraintsCollectionName() );
+		const family = this.retrieveProductFamily(familyName);
+		const asset = this.retrieveCollection<ProductAttrAsset>(CollectionType.Asset, family.getAssetCollectionName());
+		const filter = this.retrieveCollection<ProductAttrFilter>(CollectionType.Filter, family.getFilterCollectionName());
+		const constraint = this.retrieveCollection<ProductAttrConstraint>(CollectionType.Constraint, family.getConstraintsCollectionName());
 
-		for (const [attrName, attr] of Object.entries(family.getAttributes())) {
+		for (const [attrName, { instance: attr }] of Object.entries(family.attributes.getAll())) {
 			const attrValues: Record<string, string | null> = {};
 
-			const attrConstraint = constraint?.get( attrName );
-			const attrFilter = filter?.get( attrName );
-			const attrAsset = asset?.get( attrName );
+			const attrConstraint = constraint?.get(attrName);
+			const attrFilter = filter?.get(attrName);
+			const attrAsset = asset?.get(attrName);
 
-			const attrValueOptions = productName ? family.getAllAttributeValueOptionsForProduct( family.getProduct( productName ), attrName ) : family.getAttribute( attrName ).getValues();
+			const attrValueOptions = productName
+				? family.getAllAttributeValueOptionsForProduct(family.getProduct(productName), attrName)
+				: attr.getValues();
 
 			let icons: Record<string, string> = {};
 
@@ -200,24 +201,25 @@ export class ProductService {
 				attrValues[attrValue.toString()] = conditionsBuilder ? `${conditionsBuilder}` : null;
 			}
 
-			const filters = attrFilter?.getFilters().map(filteredValues => ({
-				"name": filteredValues.getName(),
-				"values": filteredValues.getValues(),
-				"conditions": `${filteredValues.conditionBuilder}`,
-				"conditionsComplexityScore": filteredValues.conditionBuilder.calculateComplexityScore()
-			})) ?? [];
+			const filters =
+				attrFilter?.getFilters().map((filteredValues) => ({
+					name: filteredValues.getName(),
+					values: filteredValues.getValues(),
+					conditions: `${filteredValues.conditionBuilder}`,
+					conditionsComplexityScore: filteredValues.conditionBuilder.calculateComplexityScore(),
+				})) ?? [];
 
 			map[attrName] = {
-				"alias": attrName,
-				"isDynamicValue": attr.isDynamicValue(),
-				"isMultiValue": attr.isMultiValue(),
-				"valueType": attr.getValueType(),
-				"isRequired": family.isRequired(attrName),
-				"valuesAndConstraints": attrValues,
-				"icons": icons,
-				"filters": filters,
-				"filterMode": attrFilter?.getMode() ?? null,
-				"outOfStockValues": attrAsset?.getUnavailableValues() ?? []
+				alias: attrName,
+				isDynamicValue: attr.isDynamicValue(),
+				isMultiValue: attr.isMultiValue(),
+				valueType: attr.getValueType(),
+				isRequired: family.attributes.get(attrName)?.required === true,
+				valuesAndConstraints: attrValues,
+				icons: icons,
+				filters: filters,
+				filterMode: attrFilter?.getMode() ?? null,
+				outOfStockValues: attrAsset?.getUnavailableValues() ?? [],
 			};
 		}
 

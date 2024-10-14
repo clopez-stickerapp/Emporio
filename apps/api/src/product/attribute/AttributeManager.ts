@@ -33,18 +33,11 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 			}
 
 			if (productAttribute.isMultiValue()) {
-				const values = Array.isArray(value) ? value : [value.toString()];
-				for (const subValue of values) {
-					this.conditions.addCondition({
-						attribute,
-						operator: ConditionOperators.IN,
-						value: subValue,
-					});
-				}
-			} else {
-				const operator = Array.isArray(value) ? ConditionOperators.IN : ConditionOperators.EQUAL;
-				this.conditions.addCondition({ attribute, operator, value });
+				value = Array.isArray(value) ? value : [value.toString()];
 			}
+
+			const operator = Array.isArray(value) ? ConditionOperators.IN : ConditionOperators.EQUAL;
+			this.conditions.addCondition({ attribute, operator, value });
 		}
 
 		this.attributes[attribute] = {

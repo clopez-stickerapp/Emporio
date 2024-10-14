@@ -94,7 +94,7 @@ describe('ProductFamily', () => {
 		});
 	});
 
-	test('getAllAttributeValueOptionsForProduct', () => {
+	test('getAttributeValueOptions', () => {
 		let family = new ProductFamily({
 			name: 'foo',
 			products: [],
@@ -118,37 +118,9 @@ describe('ProductFamily', () => {
 			status: 'active',
 		});
 
-		family.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar', 'baz'] }));
+		const attribute = new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar', 'baz'] });
+		family.attributes.add(attribute);
 
-		expect(family.getAllAttributeValueOptionsForProduct(family.getProduct('bar'), 'foo')).toEqual(['bar', 'baz']);
-	});
-
-	test('getDefaultAttributeValueOptionsForProduct', () => {
-		let family = new ProductFamily({
-			name: 'foo',
-			products: [],
-			rules: {
-				collections: {
-					asset: '',
-					constraint: '',
-					filter: '',
-					min_units: '',
-					price_provider: '',
-					quantity_provider: '',
-				},
-			},
-			unitType: UnitTypeNames.PerPiece,
-		});
-
-		family.addProduct({
-			name: 'bar',
-			sku: 'baz',
-			available: true,
-			status: 'active',
-		});
-
-		family.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }));
-
-		expect(family.getDefaultAttributeValueOptionsForProduct(family.getProduct('bar'), 'foo')).toEqual([]);
+		expect(family.getAttributeValueOptions(attribute, family.getProduct('bar'))).toEqual(['bar', 'baz']);
 	});
 });

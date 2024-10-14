@@ -6,6 +6,7 @@ import { UnitType } from './unit-type/UnitType';
 import { ProductConfig } from '$/configuration/interface/ProductConfig';
 import { AttributeValueMulti, ProductItem } from '@stickerapp-org/nomisma';
 import { AttributeManager } from './attribute/AttributeManager';
+import { toArray, unique } from '../../Util';
 
 export class ProductFamily {
 	protected name: string;
@@ -91,10 +92,6 @@ export class ProductFamily {
 		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
 	}
 
-	public get attributes() {
-		return this.attributeManager;
-	}
-
 	public getConstraintsCollectionName(): string {
 		return this.attrConstraintCollectionName;
 	}
@@ -123,43 +120,18 @@ export class ProductFamily {
 		return this.unitType.calculateUnits(productItem);
 	}
 
-	public getAllAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
-		const attribute = this.getAttribute(attrAlias);
-		const attrValues = this.getDefaultAttributeValueOptionsForProduct(product, attrAlias);
-
-		if (!product.attributes.has(attrAlias) || attribute.isMultiValue()) {
-			for (const attrValue of attribute.getValues()) {
-				if (!attrValues.includes(attrValue)) {
-					attrValues.push(attrValue);
-				}
-			}
+	public getAttributeValueOptions(attribute: ProductAttr, product?: Product): AttributeValueMulti {
+		let attrValues = toArray(product?.attributes.getValue(attribute.getName()) ?? []);
+		if (!attrValues.length) {
+			attrValues = toArray(this.attributes.getValue(attribute.getName()) ?? []);
 		}
-
+		if (!attrValues.length || attribute.isMultiValue()) {
+			return unique(attrValues, attribute.getValues());
+		}
 		return attrValues;
 	}
 
-	public getDefaultAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
-		const attrValues: AttributeValueMulti = [];
-		const attribute = this.getAttribute(attrAlias);
-
-		let withAttrValues = product.attributes.getValue(attrAlias) ?? [];
-
-		if (!Array.isArray(withAttrValues)) {
-			withAttrValues = [withAttrValues];
-		}
-
-		for (const attrRawValue of withAttrValues) {
-			if (attribute.isDynamicValue()) {
-				attrValues.push(attrRawValue);
-			} else {
-				const attrValue = attribute.getAttrValue(attrRawValue);
-
-				if (attrValue !== null) {
-					attrValues.push(attrValue);
-				}
-			}
-		}
-
-		return attrValues;
+	public get attributes() {
+		return this.attributeManager;
 	}
 }

@@ -27,7 +27,7 @@ describe('Product', () => {
 		expect(product.attributes.getAllValues()).toEqual({});
 		expect(product.attributes.getValue('foo')).toBeUndefined();
 
-		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar'] }), 'bar');
 
 		expect(product.attributes.has('foo')).toBe(true);
 		expect(product.attributes.getValue('foo')).toBe('bar');
@@ -38,7 +38,7 @@ describe('Product', () => {
 	describe('requireAttr', () => {
 		describe('non multivalue attribute', () => {
 			beforeEach(() => {
-				attribute = new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING });
+				attribute = new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar'] });
 			});
 
 			test('should add condition for non multivalue attribute', () => {
@@ -60,6 +60,7 @@ describe('Product', () => {
 					name: 'foo',
 					type: ProductAttrValueType.STRING,
 					multivalue: true,
+					values: ['bar', 'baz'],
 				});
 			});
 
@@ -90,11 +91,11 @@ describe('Product', () => {
 
 		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING }), 'bar');
+		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar'] }), 'bar');
 
 		expect(product.attributes.test(attributes)).toBe(true);
 
-		product.attributes.add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING }), 'fail');
+		product.attributes.add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING, values: ['fail'] }), 'fail');
 
 		expect(product.attributes.test(attributes)).toBe(false);
 	});

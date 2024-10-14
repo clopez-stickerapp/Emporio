@@ -96,16 +96,6 @@ export class ProductFamily {
 		return this.products;
 	}
 
-	public getAttribute(name: string): ProductAttr {
-		const attribute = this.attributeManager.get(name);
-
-		if (attribute) {
-			return attribute.instance;
-		}
-
-		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
-	}
-
 	public getConstraintsCollectionName(): string {
 		return this.attrConstraintCollectionName;
 	}

@@ -12,7 +12,7 @@ type AttributeData<T> = {
 } & T;
 
 /**
- * A class that helps manage product attributes and their conditions.
+ * A class that helps manage attributes.
  *
  * @template T - Additional data that can be stored with each attribute.
  */
@@ -24,12 +24,12 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 		let attribute = productAttribute.getName();
 
 		if (this.has(attribute)) {
-			throw new Error(`Attribute already exists: ${attribute}`);
+			throw new Error(`Failed to add attribute '${attribute}': The attribute already exists`);
 		}
 
 		if (value !== undefined) {
-			if (toArray(value).some((v) => !productAttribute.canBe(v, true))) {
-				throw new Error(`Invalid value '${value}' for attribute: ${attribute}`);
+			for (const attrValue of toArray(value)) {
+				productAttribute.canBe(attrValue, true);
 			}
 
 			if (productAttribute.isMultiValue()) {

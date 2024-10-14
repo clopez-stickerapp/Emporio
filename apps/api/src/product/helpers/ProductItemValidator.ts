@@ -54,7 +54,7 @@ export class ProductItemValidator {
 			if (!instance.attributes.test(item.getAttributes())) {
 				let msg: string = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe - `;
 
-				for (const [attrName, attrValue] of Object.entries(instance.attributes.getAllValues())) {
+				for (const [attrName, { attrValue }] of Object.entries(instance.attributes.getAll())) {
 					if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
 						const text = Array.isArray(attrValue) ? `one of the following: ${attrValue.join(', ')}` : `${attrValue}`;
 						msg += `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'} ${text}`;
@@ -72,15 +72,15 @@ export class ProductItemValidator {
 				value = value.filter((v) => !isEmpty(v));
 			}
 
-			if (!productFamily.attributes.has(attrName)) {
+			const attr = productFamily.attributes.get(attrName)?.instance;
+
+			if (!attr) {
 				if (!allowUnsupportedAttributeAliases) {
 					throw new ProductAttrNotSupportedException(`Attribute name "${attrName}" is not supported by family`);
 				}
 
 				continue;
 			}
-
-			const attr = productFamily.getAttribute(attrName);
 
 			if (attr.canBe(value)) {
 				const attrValues = Array.isArray(value) ? value : [value];

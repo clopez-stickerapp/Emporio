@@ -3,7 +3,7 @@ import { ProductAttrNotSupportedException } from '$/product/exceptions/ProductAt
 import { ProductAttrValueNotSupportedException } from '$/product/exceptions/ProductAttrValueNotSupportedException';
 import { ProductItemInvalidException } from '$/product/exceptions/ProductItemInvalidException';
 import { ProductItemOutOfStockException } from '$/product/exceptions/ProductItemOutOfStockException';
-import { isEmpty } from '../../../Util';
+import { isEmpty, toArray } from '../../../Util';
 import { ProductAttrConstraint } from '../attribute/Constraint/ProductAttrConstraint';
 import { ProductAttrAsset } from '../attribute/Asset/ProductAttrAsset';
 import { CollectionType } from '$/configuration/interface/CollectionConfig';
@@ -44,24 +44,33 @@ export class ProductItemValidator {
 			throw new ProductItemInvalidException("Item units can't be zero.");
 		}
 
-		/**
-		 * TODO:
-		 * - Does units match? float / int
-		 * - Does attr match?
-		 */
+		for (const instance of [product, productFamily]) {
+			const test = () => {
+				try {
+					return instance.attributes.test(item.getAttributes());
+				} catch (e) {
+					return false;
+				}
+			};
 
-		for (const instance of [productFamily, product]) {
-			if (!instance.attributes.test(item.getAttributes())) {
-				let msg: string = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe - `;
+			if (!test()) {
+				const errors: string[] = [];
 
-				for (const [attrName, { attrValue }] of Object.entries(instance.attributes.getAll())) {
-					if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
-						const text = Array.isArray(attrValue) ? `one of the following: ${attrValue.join(', ')}` : `${attrValue}`;
-						msg += `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'} ${text}`;
+				for (const [attrName, attribute] of Object.entries(instance.attributes.getAll())) {
+					const attrValueRequired = attribute.attrValue;
+					if (attrValueRequired !== undefined) {
+						const attrValueOnItem = item.getAttribute(attrName);
+						if (toArray(attrValueRequired).every((v) => !toArray(attrValueOnItem ?? []).includes(v))) {
+							let error = `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'}`;
+							error += Array.isArray(attrValueRequired) ? ' one of the following: ' : ' ';
+							error += toArray(attrValueRequired).join(', ');
+							errors.push(error);
+						}
 					}
 				}
 
-				throw new ProductItemInvalidException(msg);
+				const title = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe`;
+				throw new ProductItemInvalidException(`${title} - ${errors.map((e) => `${e}`).join('; ')}`);
 			}
 		}
 

@@ -59,10 +59,14 @@ export class ProductItemValidator {
 				for (const [attrName, attribute] of Object.entries(instance.attributes.getAll())) {
 					const attrValueRequired = attribute.attrValue;
 					if (attrValueRequired !== undefined) {
-						const attrValueOnItem = item.getAttribute(attrName);
-						if (toArray(attrValueRequired).every((v) => !toArray(attrValueOnItem ?? []).includes(v))) {
-							let error = `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'}`;
-							error += Array.isArray(attrValueRequired) ? ' one of the following: ' : ' ';
+						const attrValueOnItem = item.getAttribute(attrName) ?? [];
+						const requireAll = attribute.requireAll && attribute.instance.isMultiValue();
+						const valid = toArray(attrValueRequired)[requireAll ? 'every' : 'some']((value) => toArray(attrValueOnItem).includes(value));
+						if (!valid) {
+							let error = `${attrName} must ${attribute.instance.isMultiValue() ? 'include ' : 'be '}`;
+							if (Array.isArray(attrValueRequired)) {
+								error += (requireAll ? 'all ' : 'one ') + 'of the following: ';
+							}
 							error += toArray(attrValueRequired).join(', ');
 							errors.push(error);
 						}

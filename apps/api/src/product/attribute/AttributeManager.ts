@@ -16,6 +16,14 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 	protected conditions: ConditionBuilder = new ConditionBuilder();
 	protected attributes: Record<string, AttributeData<T>> = {};
 
+	/**
+	 * Adds an attribute to the manager.
+	 *
+	 * @param attribute - The attribute to add.
+	 * @param value - The condition value(s) for the attribute.
+	 * @param requireAll - Whether all condition values must be required. For attributes that support multiple values. Defaults to true.
+	 * @param additionalData - Additional data to associate with the attribute.
+	 */
 	public add(attribute: ProductAttr, value?: ConditionValue, requireAll: boolean = true, additionalData?: T): void {
 		if (this.has(attribute.getName())) {
 			throw new Error(`Failed to add attribute '${attribute.getName()}': The attribute already exists`);

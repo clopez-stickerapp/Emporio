@@ -189,14 +189,14 @@ export class ServiceLoader {
 				for (const attribute of familyConfig.rules.attributes?.required ?? []) {
 					console.debug(`Requiring attribute '${attribute}' for family '${family}'...`);
 					const attributeInstance = service.retrieveAttribute(attribute);
-					familyInstance.attributes.add(attributeInstance, undefined, { required: true });
+					familyInstance.attributes.add(attributeInstance, undefined, false, { required: true });
 				}
 
 				// Support optional attributes for all families
 				for (const attribute of familyConfig.rules.attributes?.optional ?? []) {
 					console.debug(`Supporting attribute '${attribute}' for family '${family}'...`);
 					const attributeInstance = service.retrieveAttribute(attribute);
-					familyInstance.attributes.add(attributeInstance, undefined, { required: false });
+					familyInstance.attributes.add(attributeInstance, undefined, false, { required: false });
 				}
 			}
 		}

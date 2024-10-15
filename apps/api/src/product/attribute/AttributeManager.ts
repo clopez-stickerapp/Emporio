@@ -9,40 +9,44 @@ import { toArray } from '../../../Util';
 type AttributeData<T> = {
 	instance: ProductAttr;
 	attrValue: AttributeValue | undefined;
+	requireAll: boolean;
 } & T;
 
-/**
- * A class that helps manage attributes.
- *
- * @template T - Additional data that can be stored with each attribute.
- */
 export class AttributeManager<T extends Record<string, any> = {}> {
 	protected conditions: ConditionBuilder = new ConditionBuilder();
 	protected attributes: Record<string, AttributeData<T>> = {};
 
-	public add(productAttribute: ProductAttr, value?: ConditionValue, additionalData?: T): void {
-		let attribute = productAttribute.getName();
-
-		if (this.has(attribute)) {
-			throw new Error(`Failed to add attribute '${attribute}': The attribute already exists`);
+	public add(attribute: ProductAttr, value?: ConditionValue, requireAll: boolean = true, additionalData?: T): void {
+		if (this.has(attribute.getName())) {
+			throw new Error(`Failed to add attribute '${attribute.getName()}': The attribute already exists`);
 		}
 
 		if (value !== undefined) {
 			for (const attrValue of toArray(value)) {
-				productAttribute.canBe(attrValue, true);
+				attribute.canBe(attrValue, true);
 			}
 
-			if (productAttribute.isMultiValue()) {
-				value = Array.isArray(value) ? value : [value.toString()];
+			if (attribute.isMultiValue() && requireAll) {
+				for (const subValue of toArray(value)) {
+					this.conditions.addCondition({
+						attribute: attribute.getName(),
+						operator: ConditionOperators.IN,
+						value: subValue,
+					});
+				}
+			} else {
+				this.conditions.addCondition({
+					attribute: attribute.getName(),
+					operator: Array.isArray(value) || attribute.isMultiValue() ? ConditionOperators.IN : ConditionOperators.EQUAL,
+					value,
+				});
 			}
-
-			const operator = Array.isArray(value) ? ConditionOperators.IN : ConditionOperators.EQUAL;
-			this.conditions.addCondition({ attribute, operator, value });
 		}
 
-		this.attributes[attribute] = {
-			instance: productAttribute,
+		this.attributes[attribute.getName()] = {
+			instance: attribute,
 			attrValue: value,
+			requireAll,
 			...(additionalData as T),
 		};
 	}

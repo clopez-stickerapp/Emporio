@@ -67,12 +67,12 @@ describe('ProductFamily', () => {
 			values: ['foo', 'baz'],
 		});
 
-		expect(() => family.attributes.add(attrFoo, undefined, { required: true })).not.toThrowError(Error);
-		expect(() => family.attributes.add(attrFoo, undefined, { required: true })).toThrowError(Error);
-		expect(() => family.attributes.add(attrFoo, undefined, { required: false })).toThrowError(Error);
-		expect(() => family.attributes.add(attrBar, undefined, { required: false })).not.toThrowError(Error);
-		expect(() => family.attributes.add(attrBar, undefined, { required: true })).toThrowError(Error);
-		expect(() => family.attributes.add(attrBar, undefined, { required: false })).toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, false, { required: true })).not.toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, false, { required: true })).toThrowError(Error);
+		expect(() => family.attributes.add(attrFoo, undefined, false, { required: false })).toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, false, { required: false })).not.toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, false, { required: true })).toThrowError(Error);
+		expect(() => family.attributes.add(attrBar, undefined, false, { required: false })).toThrowError(Error);
 
 		expect(family.attributes.get('foo')?.required).toBe(true);
 		expect(family.attributes.get('bar')?.required).toBe(false);
@@ -80,18 +80,7 @@ describe('ProductFamily', () => {
 		expect(family.attributes.has('bar')).toBe(true);
 		expect(family.attributes.has('foo')).toBe(true);
 
-		expect(family.attributes.getAll()).toEqual({
-			foo: {
-				instance: attrFoo,
-				attrValue: undefined,
-				required: true,
-			},
-			bar: {
-				instance: attrBar,
-				attrValue: undefined,
-				required: false,
-			},
-		});
+		expect(Object.values(family.attributes.getAll()).map((attribute) => attribute.instance)).toEqual([attrFoo, attrBar]);
 	});
 
 	test('getAttributeValueOptions', () => {

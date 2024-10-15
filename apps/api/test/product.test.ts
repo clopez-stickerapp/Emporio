@@ -89,14 +89,17 @@ describe('Product', () => {
 			baz: 'qux',
 		};
 
-		expect(product.attributes.test(attributes)).toBe(true);
+		expect(product.attributes.test(attributes).success).toBe(true);
+		expect(product.attributes.test(attributes).errors.length).toBe(0);
 
 		product.attributes.add(new ProductAttr({ name: 'foo', type: ProductAttrValueType.STRING, values: ['bar'] }), 'bar');
 
-		expect(product.attributes.test(attributes)).toBe(true);
+		expect(product.attributes.test(attributes).success).toBe(true);
+		expect(product.attributes.test(attributes).errors.length).toBe(0);
 
 		product.attributes.add(new ProductAttr({ name: 'baz', type: ProductAttrValueType.STRING, values: ['fail'] }), 'fail');
 
-		expect(product.attributes.test(attributes)).toBe(false);
+		expect(product.attributes.test(attributes).success).toBe(false);
+		expect(product.attributes.test(attributes).errors.length).toBe(1);
 	});
 });

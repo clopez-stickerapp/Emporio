@@ -79,8 +79,40 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 		return attributeName in this.attributes;
 	}
 
-	public test(attributes: Attributes): boolean {
-		return this.conditions.test(attributes);
+	public test(attributes: Attributes) {
+		const test = (): boolean => {
+			try {
+				return this.conditions.test(attributes);
+			} catch (e) {
+				return false;
+			}
+		};
+
+		const result = {
+			success: test(),
+			errors: [] as string[],
+		};
+
+		if (!result.success) {
+			for (const [attrName, attribute] of Object.entries(this.getAll())) {
+				const attrValueRequired = attribute.attrValue;
+				if (attrValueRequired !== undefined) {
+					const attrValueOnItem = attributes[attrName] ?? [];
+					const requireAll = attribute.requireAll && attribute.instance.isMultiValue();
+					const valid = toArray(attrValueRequired)[requireAll ? 'every' : 'some']((value) => toArray(attrValueOnItem).includes(value));
+					if (!valid) {
+						let error = `${attrName} must ${attribute.instance.isMultiValue() ? 'include ' : 'be '}`;
+						if (Array.isArray(attrValueRequired)) {
+							error += (requireAll ? 'all ' : 'one ') + 'of the following: ';
+						}
+						error += toArray(attrValueRequired).join(', ');
+						result.errors.push(error);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public getConditions(): Conditions {

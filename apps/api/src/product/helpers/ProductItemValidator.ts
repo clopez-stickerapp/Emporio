@@ -45,36 +45,10 @@ export class ProductItemValidator {
 		}
 
 		for (const instance of [product, productFamily]) {
-			const test = () => {
-				try {
-					return instance.attributes.test(item.getAttributes());
-				} catch (e) {
-					return false;
-				}
-			};
-
-			if (!test()) {
-				const errors: string[] = [];
-
-				for (const [attrName, attribute] of Object.entries(instance.attributes.getAll())) {
-					const attrValueRequired = attribute.attrValue;
-					if (attrValueRequired !== undefined) {
-						const attrValueOnItem = item.getAttribute(attrName) ?? [];
-						const requireAll = attribute.requireAll && attribute.instance.isMultiValue();
-						const valid = toArray(attrValueRequired)[requireAll ? 'every' : 'some']((value) => toArray(attrValueOnItem).includes(value));
-						if (!valid) {
-							let error = `${attrName} must ${attribute.instance.isMultiValue() ? 'include ' : 'be '}`;
-							if (Array.isArray(attrValueRequired)) {
-								error += (requireAll ? 'all ' : 'one ') + 'of the following: ';
-							}
-							error += toArray(attrValueRequired).join(', ');
-							errors.push(error);
-						}
-					}
-				}
-
+			const result = instance.attributes.test(item.getAttributes());
+			if (!result.success) {
 				const title = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe`;
-				throw new ProductItemInvalidException(`${title} - ${errors.map((e) => `${e}`).join('; ')}`);
+				throw new ProductItemInvalidException(`${title} - ${result.errors.map((e) => `${e}`).join('; ')}`);
 			}
 		}
 

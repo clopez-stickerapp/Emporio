@@ -3,7 +3,7 @@ import { ProductAttrNotSupportedException } from '$/product/exceptions/ProductAt
 import { ProductAttrValueNotSupportedException } from '$/product/exceptions/ProductAttrValueNotSupportedException';
 import { ProductItemInvalidException } from '$/product/exceptions/ProductItemInvalidException';
 import { ProductItemOutOfStockException } from '$/product/exceptions/ProductItemOutOfStockException';
-import { isEmpty } from '../../../Util';
+import { isEmpty, toArray } from '../../../Util';
 import { ProductAttrConstraint } from '../attribute/Constraint/ProductAttrConstraint';
 import { ProductAttrAsset } from '../attribute/Asset/ProductAttrAsset';
 import { CollectionType } from '$/configuration/interface/CollectionConfig';
@@ -44,24 +44,11 @@ export class ProductItemValidator {
 			throw new ProductItemInvalidException("Item units can't be zero.");
 		}
 
-		/**
-		 * TODO:
-		 * - Does units match? float / int
-		 * - Does attr match?
-		 */
-
-		for (const instance of [productFamily, product]) {
-			if (!instance.attributes.test(item.getAttributes())) {
-				let msg: string = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe - `;
-
-				for (const [attrName, attrValue] of Object.entries(instance.attributes.getAllValues())) {
-					if (attrValue !== undefined && attrValue !== item.getAttribute(attrName)) {
-						const text = Array.isArray(attrValue) ? `one of the following: ${attrValue.join(', ')}` : `${attrValue}`;
-						msg += `${attrName} must ${this.ps.retrieveAttribute(attrName).isMultiValue() ? 'include' : 'be'} ${text}`;
-					}
-				}
-
-				throw new ProductItemInvalidException(msg);
+		for (const instance of [product, productFamily]) {
+			const result = instance.attributes.test(item.getAttributes());
+			if (!result.success) {
+				const title = `Attributes don't match ${instance instanceof ProductFamily ? 'family' : 'product'} recipe`;
+				throw new ProductItemInvalidException(`${title} - ${result.errors.map((e) => `${e}`).join('; ')}`);
 			}
 		}
 
@@ -72,15 +59,15 @@ export class ProductItemValidator {
 				value = value.filter((v) => !isEmpty(v));
 			}
 
-			if (!productFamily.attributes.has(attrName)) {
+			const attr = productFamily.attributes.get(attrName)?.instance;
+
+			if (!attr) {
 				if (!allowUnsupportedAttributeAliases) {
 					throw new ProductAttrNotSupportedException(`Attribute name "${attrName}" is not supported by family`);
 				}
 
 				continue;
 			}
-
-			const attr = productFamily.getAttribute(attrName);
 
 			if (attr.canBe(value)) {
 				const attrValues = Array.isArray(value) ? value : [value];

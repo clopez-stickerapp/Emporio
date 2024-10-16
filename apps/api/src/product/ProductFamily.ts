@@ -6,6 +6,7 @@ import { UnitType } from './unit-type/UnitType';
 import { ProductConfig } from '$/configuration/interface/ProductConfig';
 import { AttributeValueMulti, ProductItem } from '@stickerapp-org/nomisma';
 import { AttributeManager } from './attribute/AttributeManager';
+import { toArray, unique } from '../../Util';
 
 export class ProductFamily {
 	protected name: string;
@@ -59,9 +60,23 @@ export class ProductFamily {
 
 		const product = new Product(this.getName(), config);
 
-		for (const [name, value] of Object.entries(config.attributes ?? {})) {
-			const productAttr = this.getAttribute(name);
-			product.attributes.add(productAttr, value);
+		for (const [name, attrValueOnProduct] of Object.entries(config.attributes ?? {})) {
+			const attribute = this.attributes.get(name);
+			const attrValueOnFamily = attribute?.attrValue;
+
+			if (!attribute) {
+				throw new Error(`Failed to add attribute '${name}': The attribute is not supported by the family`);
+			} else if (attrValueOnFamily !== undefined) {
+				for (const value of toArray(attrValueOnProduct)) {
+					if (!toArray(attrValueOnFamily).includes(value)) {
+						throw new Error(
+							`Failed to add value '${value}' for attribute '${name}' on product '${product.getName()}': The value is not supported by the family`,
+						);
+					}
+				}
+			}
+
+			product.attributes.add(attribute.instance, attrValueOnProduct);
 		}
 
 		this.products[config.name] = product;
@@ -79,20 +94,6 @@ export class ProductFamily {
 
 	public getProducts(): Record<string, Product> {
 		return this.products;
-	}
-
-	public getAttribute(name: string): ProductAttr {
-		const attribute = this.attributeManager.get(name);
-
-		if (attribute) {
-			return attribute.instance;
-		}
-
-		throw new Error("Alias is not supported by '" + this.getName() + "' family: " + name);
-	}
-
-	public get attributes() {
-		return this.attributeManager;
 	}
 
 	public getConstraintsCollectionName(): string {
@@ -123,43 +124,18 @@ export class ProductFamily {
 		return this.unitType.calculateUnits(productItem);
 	}
 
-	public getAllAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
-		const attribute = this.getAttribute(attrAlias);
-		const attrValues = this.getDefaultAttributeValueOptionsForProduct(product, attrAlias);
-
-		if (!product.attributes.has(attrAlias) || attribute.isMultiValue()) {
-			for (const attrValue of attribute.getValues()) {
-				if (!attrValues.includes(attrValue)) {
-					attrValues.push(attrValue);
-				}
-			}
+	public getAttributeValueOptions(attribute: ProductAttr, product?: Product): AttributeValueMulti {
+		let attrValues = toArray(product?.attributes.getValue(attribute.getName()) ?? []);
+		if (!attrValues.length) {
+			attrValues = toArray(this.attributes.getValue(attribute.getName()) ?? []);
 		}
-
+		if (!attrValues.length || attribute.isMultiValue()) {
+			return unique(attrValues, attribute.getValues());
+		}
 		return attrValues;
 	}
 
-	public getDefaultAttributeValueOptionsForProduct(product: Product, attrAlias: string): AttributeValueMulti {
-		const attrValues: AttributeValueMulti = [];
-		const attribute = this.getAttribute(attrAlias);
-
-		let withAttrValues = product.attributes.getValue(attrAlias) ?? [];
-
-		if (!Array.isArray(withAttrValues)) {
-			withAttrValues = [withAttrValues];
-		}
-
-		for (const attrRawValue of withAttrValues) {
-			if (attribute.isDynamicValue()) {
-				attrValues.push(attrRawValue);
-			} else {
-				const attrValue = attribute.getAttrValue(attrRawValue);
-
-				if (attrValue !== null) {
-					attrValues.push(attrValue);
-				}
-			}
-		}
-
-		return attrValues;
+	public get attributes() {
+		return this.attributeManager;
 	}
 }

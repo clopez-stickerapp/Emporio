@@ -181,9 +181,7 @@ export class ProductService {
 			const attrFilter = filter?.get(attrName);
 			const attrAsset = asset?.get(attrName);
 
-			const attrValueOptions = productName
-				? family.getAllAttributeValueOptionsForProduct(family.getProduct(productName), attrName)
-				: attr.getValues();
+			const attrValueOptions = family.getAttributeValueOptions(attr, productName ? family.getProduct(productName) : undefined);
 
 			let icons: Record<string, string> = {};
 

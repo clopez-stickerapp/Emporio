@@ -6,10 +6,14 @@ export function isEmpty(value: any): boolean {
 
 /**
  * Converts an attribute value to an array.
- *
- * @param value The attribute value.
- * @returns The attribute value as an array.
  */
 export function toArray(value: AttributeValue): AttributeValueMulti {
 	return Array.isArray(value) ? value : [value];
+}
+
+/**
+ * Returns a unique array of values.
+ */
+export function unique<T>(...arrays: T[][]): T[] {
+	return [...new Set(arrays.flat())];
 }

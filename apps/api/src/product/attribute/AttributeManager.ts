@@ -9,47 +9,52 @@ import { toArray } from '../../../Util';
 type AttributeData<T> = {
 	instance: ProductAttr;
 	attrValue: AttributeValue | undefined;
+	requireAll: boolean;
 } & T;
 
-/**
- * A class that helps manage product attributes and their conditions.
- *
- * @template T - Additional data that can be stored with each attribute.
- */
 export class AttributeManager<T extends Record<string, any> = {}> {
 	protected conditions: ConditionBuilder = new ConditionBuilder();
 	protected attributes: Record<string, AttributeData<T>> = {};
 
-	public add(productAttribute: ProductAttr, value?: ConditionValue, additionalData?: T): void {
-		let attribute = productAttribute.getName();
-
-		if (this.has(attribute)) {
-			throw new Error(`Attribute already exists: ${attribute}`);
+	/**
+	 * Adds an attribute to the manager.
+	 *
+	 * @param attribute - The attribute to add.
+	 * @param value - The condition value(s) for the attribute.
+	 * @param requireAll - Whether all condition values must be required. For attributes that support multiple values. Defaults to true.
+	 * @param additionalData - Additional data to associate with the attribute.
+	 */
+	public add(attribute: ProductAttr, value?: ConditionValue, requireAll: boolean = true, additionalData?: T): void {
+		if (this.has(attribute.getName())) {
+			throw new Error(`Failed to add attribute '${attribute.getName()}': The attribute already exists`);
 		}
 
 		if (value !== undefined) {
-			if (toArray(value).some((v) => !productAttribute.canBe(v, true))) {
-				throw new Error(`Invalid value '${value}' for attribute: ${attribute}`);
+			for (const attrValue of toArray(value)) {
+				attribute.canBe(attrValue, true);
 			}
 
-			if (productAttribute.isMultiValue()) {
-				const values = Array.isArray(value) ? value : [value.toString()];
-				for (const subValue of values) {
+			if (attribute.isMultiValue() && requireAll) {
+				for (const subValue of toArray(value)) {
 					this.conditions.addCondition({
-						attribute,
+						attribute: attribute.getName(),
 						operator: ConditionOperators.IN,
 						value: subValue,
 					});
 				}
 			} else {
-				const operator = Array.isArray(value) ? ConditionOperators.IN : ConditionOperators.EQUAL;
-				this.conditions.addCondition({ attribute, operator, value });
+				this.conditions.addCondition({
+					attribute: attribute.getName(),
+					operator: Array.isArray(value) || attribute.isMultiValue() ? ConditionOperators.IN : ConditionOperators.EQUAL,
+					value,
+				});
 			}
 		}
 
-		this.attributes[attribute] = {
-			instance: productAttribute,
+		this.attributes[attribute.getName()] = {
+			instance: attribute,
 			attrValue: value,
+			requireAll,
 			...(additionalData as T),
 		};
 	}
@@ -74,8 +79,40 @@ export class AttributeManager<T extends Record<string, any> = {}> {
 		return attributeName in this.attributes;
 	}
 
-	public test(attributes: Attributes): boolean {
-		return this.conditions.test(attributes);
+	public test(attributes: Attributes) {
+		const test = (): boolean => {
+			try {
+				return this.conditions.test(attributes);
+			} catch (e) {
+				return false;
+			}
+		};
+
+		const result = {
+			success: test(),
+			errors: [] as string[],
+		};
+
+		if (!result.success) {
+			for (const [attrName, attribute] of Object.entries(this.getAll())) {
+				const attrValueRequired = attribute.attrValue;
+				if (attrValueRequired !== undefined) {
+					const attrValueOnItem = attributes[attrName] ?? [];
+					const requireAll = attribute.requireAll && attribute.instance.isMultiValue();
+					const valid = toArray(attrValueRequired)[requireAll ? 'every' : 'some']((value) => toArray(attrValueOnItem).includes(value));
+					if (!valid) {
+						let error = `${attrName} must ${attribute.instance.isMultiValue() ? 'include ' : 'be '}`;
+						if (Array.isArray(attrValueRequired)) {
+							error += (requireAll ? 'all ' : 'one ') + 'of the following: ';
+						}
+						error += toArray(attrValueRequired).join(', ');
+						result.errors.push(error);
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public getConditions(): Conditions {

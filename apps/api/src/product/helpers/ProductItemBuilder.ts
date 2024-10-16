@@ -1,55 +1,32 @@
 import { ProductFamily } from '../ProductFamily';
 import { Product } from '../Product';
 import { ProductItem, AttributesMap, ProductAttrComputer } from '@stickerapp-org/nomisma';
+import { toArray } from '../../../Util';
 
 export class ProductItemBuilder {
-	protected attrComputer: ProductAttrComputer;
-
-	public constructor() {
-		this.attrComputer = new ProductAttrComputer();
-	}
+	// TODO: Replace ProductItemBuilder with a single function "createItem" ?
+	protected computer: ProductAttrComputer = new ProductAttrComputer();
 
 	public createItem(productFamily: ProductFamily, product: Product, map: AttributesMap, useFilters: boolean = true): ProductItem {
+		const attributes = productFamily.attributes.getAll();
 		const item = new ProductItem(productFamily.getName(), product.getName());
 
-		this.attrComputer.evaluate(item, map, useFilters);
-
-		for (let [attrName, attrValue] of Object.entries(product.attributes.getAllValues())) {
-			const attr = productFamily.getAttribute(attrName);
-
-			if (Array.isArray(attrValue) && attrValue.length && !attr.isMultiValue()) {
-				attrValue = attrValue[0];
-			}
-
-			if (attrValue !== undefined && attr.canBe(attrValue)) {
-				item.setAttribute(attrName, attrValue);
+		for (const [attrName, attribute] of Object.entries(attributes)) {
+			const attrValueOnFamily = attribute.attrValue;
+			const attrValueOnProduct = product.attributes.getValue(attrName);
+			for (const value of [attrValueOnProduct, attrValueOnFamily].filter((v) => v !== undefined).map(toArray)) {
+				item.setAttribute(attrName, attribute.instance.isMultiValue() ? value : value[0]);
+				break;
 			}
 		}
 
-		this.attrComputer.evaluate(item, map, useFilters);
+		this.computer.evaluate(item, map, useFilters);
 
-		for (const [attrName, { instance: attr, required }] of Object.entries(productFamily.attributes.getAll())) {
-			if (!required) {
-				continue;
-			}
-			let attrValue = product.attributes.getValue(attrName);
-
-			if (attrValue === undefined) {
-				const defaultValue = this.attrComputer.getDefaultValue(attrName);
-
-				if (defaultValue !== null) {
-					attrValue = defaultValue;
-				}
-
-				if (Array.isArray(attrValue) && attrValue.length && !attr.isMultiValue()) {
-					attrValue = attrValue[0];
-				}
-
-				if (attrValue !== undefined) {
-					item.setAttribute(attrName, attrValue);
-
-					this.attrComputer.evaluate(item, map, useFilters);
-				}
+		for (const { instance } of Object.values(attributes).filter((attr) => attr.required && !item.hasAttribute(attr.instance.getName()))) {
+			const attrValue = this.computer.getDefaultValue(instance.getName()) ?? [];
+			if (!Array.isArray(attrValue)) {
+				item.setAttribute(instance.getName(), attrValue);
+				this.computer.evaluate(item, map, useFilters);
 			}
 		}
 
